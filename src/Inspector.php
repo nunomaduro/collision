@@ -11,8 +11,6 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use Whoops\Util\Misc;
-
 /**
  * This is an Collision Laravel Inspector implementation.
  *
