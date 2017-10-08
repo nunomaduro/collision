@@ -1,5 +1,5 @@
 <p align="center">
-    <img title="Collision" height="300" src="https://raw.githubusercontent.com/nunomaduro/collision/stable/src/docs/example.png" />
+    <img title="Collision" height="300" src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/example.png" />
 </p>
 <p align="center">
   <a href="https://styleci.io/repos/105197315"><img src="https://styleci.io/repos/105197315/shield" alt="StyleCI Status"></img></a>
