@@ -11,10 +11,10 @@
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Handler\Handler as AbstractHandler;
-use Symfony\Component\Console\Output\OutputInterface;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Handler\Handler as AbstractHandler;
 
 /**
  * This is an Collision Handler implementation.
@@ -37,7 +37,7 @@ class Handler extends AbstractHandler implements HandlerContract
      */
     public function __construct(WriterContract $writer = null)
     {
-        $this->writer = $writer ?: new Writer;
+        $this->writer = $writer ?: new Writer();
     }
 
     /**
@@ -47,7 +47,7 @@ class Handler extends AbstractHandler implements HandlerContract
     {
         $this->writer->write($this->getInspector());
 
-        return Handler::QUIT;
+        return self::QUIT;
     }
 
     /**

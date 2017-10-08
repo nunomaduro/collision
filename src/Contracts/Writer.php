@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Exception\Inspector;
 
 /**
  * This is the Collision writer interface.
@@ -31,7 +31,7 @@ interface Writer
     /**
      * Sets the output.
      *
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */

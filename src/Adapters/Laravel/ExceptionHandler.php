@@ -12,9 +12,9 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
-use NunoMaduro\Collision\Provider;
-use NunoMaduro\Collision\Contracts\Handler;
 use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
+use NunoMaduro\Collision\Contracts\Handler;
+use NunoMaduro\Collision\Provider;
 
 /**
  * This is an Collision Laravel ExceptionHandler implementation.
@@ -30,7 +30,7 @@ class ExceptionHandler extends LaravelHandler
      */
     public function renderForConsole($output, Exception $e)
     {
-        (new Provider)->register()
+        (new Provider())->register()
             ->getHandler()
             ->setOutput($output);
 

@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Handler\HandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Handler\HandlerInterface;
 
 /**
  * This is an Collision Handler implementation.
@@ -24,7 +24,7 @@ interface Handler extends HandlerInterface
     /**
      * Sets the output.
      *
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */
