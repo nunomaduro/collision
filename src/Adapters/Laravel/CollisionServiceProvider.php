@@ -13,7 +13,6 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Contracts\Handler;
-use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 /**

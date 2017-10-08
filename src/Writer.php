@@ -15,8 +15,8 @@ use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use \NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use \NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 
 /**
  * This is an Collision Writer implementation.
@@ -94,7 +94,7 @@ class Writer implements WriterContract
         $class = $inspector->getExceptionName();
 
         $this->render("<bg=red;options=bold>$class</> : <comment>$message</>");
-        $this->render("at <fg=green>".$exception->getFile()."</>".": <fg=green>".$exception->getLine()."</>");
+        $this->render('at <fg=green>'.$exception->getFile().'</>'.': <fg=green>'.$exception->getLine().'</>');
 
         return $this;
     }
@@ -131,7 +131,6 @@ class Writer implements WriterContract
     {
         $this->render('<comment>Exception trace:</comment>');
         foreach ($frames as $i => $frame) {
-
             if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity(
                 ) < OutputInterface::VERBOSITY_VERBOSE) {
                 $this->render('<info>Please use the argument <fg=red>-v</> to see all trace.</info>');
@@ -163,7 +162,7 @@ class Writer implements WriterContract
     protected function render(string $message, bool $break = true): WriterContract
     {
         if ($break) {
-            $this->output->writeln("");
+            $this->output->writeln('');
         }
 
         $this->output->writeln("  $message");
