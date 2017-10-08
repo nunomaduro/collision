@@ -1,7 +1,7 @@
 {
     "name": "nunomaduro/collision",
     "description": "Cli error handling for console/command-line PHP applications.",
-    "keywords": ["console", "cli", "error", "handling", "laravel-zero"],
+    "keywords": ["console", "command-line", "php", "cli", "error", "handling", "laravel-zero", "laravel", "artisan", "symfony"],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/nunomaduro/collision/issues",
@@ -28,5 +28,12 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
+            ]
+        }
     }
 }

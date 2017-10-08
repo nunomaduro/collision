@@ -9,13 +9,16 @@
  *  file that was distributed with this source code.
  */
 
-namespace NunoMaduro\Collision;
+namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Contracts\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 /**
- * This is an Collision Argument Formatter implementation.
+ * This is an Collision Laravel Service Provider implementation.
+ *
+ * Registers the Error Handler on Laravel.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -26,9 +29,8 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $handler = (new Provider)->register()
-            ->getHandler();
-
-        $this->app->instance(Handler::class, $handler);
+        if ($this->app->runningInConsole()) {
+            $this->app->singleton(ExceptionHandlerContract::class, ExceptionHandler::class);
+        }
     }
 }

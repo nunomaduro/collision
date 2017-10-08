@@ -35,7 +35,7 @@ class ArgumentFormatter implements ArgumentFormatterContract
                 case is_array($argument):
                     $associative = array_keys($argument) !== range(0, count($argument) - 1);
                     if ($recursive && $associative && count($argument) <= 5) {
-                        $result[] = "[".$this->format($argument, false)."]";
+                        $result[] = '['.$this->format($argument, false).']';
                     }
                     break;
                 case is_object($argument):

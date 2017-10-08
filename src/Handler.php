@@ -47,7 +47,7 @@ class Handler extends AbstractHandler implements HandlerContract
     {
         $this->writer->write($this->getInspector());
 
-        return Handler::QUIT;
+        return static::QUIT;
     }
 
     /**

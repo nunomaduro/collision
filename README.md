@@ -1,24 +1,32 @@
+<p align="center">
+    <img title="Collision" height="300" src="https://raw.githubusercontent.com/nunomaduro/collision/stable/src/docs/example.png" />
+</p>
+<p align="center">
+  <a href="https://styleci.io/repos/105197315"><img src="https://styleci.io/repos/105197315/shield" alt="StyleCI Status"></img></a>
+  <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/g/nunomaduro/collision.svg?style=flat-square" alt="Quality Score"></img></a>
+  <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/v/stable.svg" alt="Latest Stable Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License"></img></a>
+</p>
+
 ## About Collision
 
 Collision was created and maintained by [Nuno Maduro](https://github.com/nunomaduro). Collision is an error handler framework for console/command-line PHP applications.
 
 - Build on top of the [Whoops](https://github.com/filp/whoops).
-- Supports [Laravel](https://github.com/laravel/laravel) Artisan Tool.
+- Supports [Laravel](https://github.com/laravel/laravel) Artisan.
 - Built with [PHP 7](https://php.net) using modern coding standards.
 
 ## Installation & Usage
 
 > **Requires [PHP 7.1+](https://php.net/releases/)**
 
-Via Collision Installer
-
 Require Collision project using [Composer](https://getcomposer.org):
 
 ```bash
-composer require nunomaduro\collision
+composer require nunomaduro\collision --dev
 ```
 
-Register the handler in your code (On Laravel is automatic):
+If you are not using Laravel, you need to register the handler in your code:
 
 ```php
 (\NunoMaduro\Collision\Provider)->register();
