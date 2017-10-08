@@ -23,7 +23,7 @@ Collision was created and maintained by [Nuno Maduro](https://github.com/nunomad
 Require Collision project using [Composer](https://getcomposer.org):
 
 ```bash
-composer require nunomaduro\collision --dev
+composer require nunomaduro/collision --dev
 ```
 
 If you are not using Laravel, you need to register the handler in your code:
