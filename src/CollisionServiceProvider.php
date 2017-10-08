@@ -15,7 +15,9 @@ use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Contracts\Handler;
 
 /**
- * This is an Collision Argument Formatter implementation.
+ * This is an Collision Service Provider implementation.
+ *
+ * Registers the Error Handler on Laravel.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -26,9 +28,11 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $handler = (new Provider)->register()
-            ->getHandler();
+        if ($this->app->runningInConsole()) {
+            $handler = (new Provider)->register()
+                ->getHandler();
 
-        $this->app->instance(Handler::class, $handler);
+            $this->app->instance(Handler::class, $handler);
+        }
     }
 }

@@ -10,8 +10,6 @@ Collision was created and maintained by [Nuno Maduro](https://github.com/nunomad
 
 > **Requires [PHP 7.1+](https://php.net/releases/)**
 
-Via Collision Installer
-
 Require Collision project using [Composer](https://getcomposer.org):
 
 ```bash
