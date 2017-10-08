@@ -1,0 +1,9 @@
+/vendor/
+.idea/*
+
+.idea/codeStyleSettings.xml
+
+.twgit_features_subject
+
+/builds/
+/database/
