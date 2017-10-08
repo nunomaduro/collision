@@ -11,7 +11,6 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use Whoops\Util\Misc;
 use Whoops\Exception\Inspector as BaseInspector;
 
 /**
