@@ -3,7 +3,7 @@
 Collision was created and maintained by [Nuno Maduro](https://github.com/nunomaduro). Collision is an error handler framework for console/command-line PHP applications.
 
 - Build on top of the [Whoops](https://github.com/filp/whoops).
-- Supports [Laravel](https://github.com/laravel/laravel) Artisan Tool.
+- Supports [Laravel](https://github.com/laravel/laravel) Artisan.
 - Built with [PHP 7](https://php.net) using modern coding standards.
 
 ## Installation & Usage
@@ -16,7 +16,7 @@ Require Collision project using [Composer](https://getcomposer.org):
 composer require nunomaduro\collision
 ```
 
-Register the handler in your code (On Laravel is automatic):
+If you are not using Laravel, you need to register the handler in your code:
 
 ```php
 (\NunoMaduro\Collision\Provider)->register();
