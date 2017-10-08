@@ -22,8 +22,8 @@ interface ArgumentFormatter
      * Formats the provided array of arguments into
      * an understandable description.
      *
-     * @param  array $arguments
-     * @param  bool $recursive
+     * @param array $arguments
+     * @param bool  $recursive
      *
      * @return string
      */

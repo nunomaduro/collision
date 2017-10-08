@@ -11,12 +11,12 @@
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Exception\Frame;
-use Whoops\Exception\Inspector;
+use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use \NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use \NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use Whoops\Exception\Frame;
+use Whoops\Exception\Inspector;
 
 /**
  * This is an Collision Writer implementation.
@@ -52,8 +52,8 @@ class Writer implements WriterContract
      */
     public function __construct(OutputInterface $output = null, ArgumentFormatterContract $argumentFormatter = null)
     {
-        $this->output = $output ?: new ConsoleOutput;
-        $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
+        $this->output = $output ?: new ConsoleOutput();
+        $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter();
     }
 
     /**
@@ -94,7 +94,7 @@ class Writer implements WriterContract
         $class = $inspector->getExceptionName();
 
         $this->render("<bg=red;options=bold>$class</> : <comment>$message</>");
-        $this->render("at <fg=green>".$exception->getFile()."</>".": <fg=green>".$exception->getLine()."</>");
+        $this->render('at <fg=green>'.$exception->getFile().'</>'.': <fg=green>'.$exception->getLine().'</>');
 
         return $this;
     }
@@ -123,7 +123,7 @@ class Writer implements WriterContract
     /**
      * Renders the trace of the exception.
      *
-     * @param  array $frames
+     * @param array $frames
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -131,7 +131,6 @@ class Writer implements WriterContract
     {
         $this->render('<comment>Exception trace:</comment>');
         foreach ($frames as $i => $frame) {
-
             if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity(
                 ) < OutputInterface::VERBOSITY_VERBOSE) {
                 $this->render('<info>Please use the argument <fg=red>-v</> to see all trace.</info>');
@@ -155,15 +154,15 @@ class Writer implements WriterContract
     /**
      * Renders an message into the console.
      *
-     * @param  string $message
-     * @param  bool $break
+     * @param string $message
+     * @param bool   $break
      *
      * @return $this
      */
     protected function render(string $message, bool $break = true): WriterContract
     {
         if ($break) {
-            $this->output->writeln("");
+            $this->output->writeln('');
         }
 
         $this->output->writeln("  $message");
