@@ -32,7 +32,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "NunoMaduro\\Collision\\CollisionServiceProvider"
+                "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
             ]
         }
     }
