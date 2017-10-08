@@ -67,7 +67,10 @@ class Writer implements WriterContract
             ->getArray();
 
         $this->renderEditor(array_shift($frames));
-        $this->renderTrace($frames);
+
+        if (! empty($frames)) {
+            $this->renderTrace($frames);
+        }
     }
 
     /**

@@ -30,10 +30,12 @@ class ExceptionHandler extends LaravelHandler
      */
     public function renderForConsole($output, Exception $e)
     {
-        (new Provider)->register()
+        $handler = (new Provider)->register()
             ->getHandler()
             ->setOutput($output);
 
-        throw $e;
+        $handler->setInspector((new Inspector($e)));
+
+        $handler->handle();
     }
 }
