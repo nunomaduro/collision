@@ -12,7 +12,7 @@
 
 Collision was created and maintained by [Nuno Maduro](https://github.com/nunomaduro). Collision is an error handler framework for console/command-line PHP applications.
 
-- Build on top of the [Whoops](https://github.com/filp/whoops).
+- Build on top of [Whoops](https://github.com/filp/whoops).
 - Supports [Laravel](https://github.com/laravel/laravel) Artisan.
 - Built with [PHP 7](https://php.net) using modern coding standards.
 
@@ -20,7 +20,7 @@ Collision was created and maintained by [Nuno Maduro](https://github.com/nunomad
 
 > **Requires [PHP 7.1+](https://php.net/releases/)**
 
-Require Collision project using [Composer](https://getcomposer.org):
+Require Collision using [Composer](https://getcomposer.org):
 
 ```bash
 composer require nunomaduro/collision --dev
