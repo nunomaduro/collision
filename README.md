@@ -35,6 +35,16 @@ If you are not using Laravel, you need to register the handler in your code:
 (new \NunoMaduro\Collision\Provider)->register();
 ```
 
+## Phpunit adapter
+
+Add the following configuration to your `phpunit.xml`
+
+```xml
+    <listeners>
+        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
+    </listeners>
+```
+
 ## Contributing
 
 Thank you for considering to contribute to Collision. All the contribution guidelines are mentioned [here](CONTRIBUTING.md).

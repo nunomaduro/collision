@@ -14,7 +14,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Whoops\Exception\Inspector as BaseInspector;
 
 /**
- * This is an Collision Laravel Inspector implementation.
+ * This is an Collision Laravel Adapter Inspector implementation.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

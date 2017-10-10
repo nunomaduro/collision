@@ -12,6 +12,7 @@
 namespace NunoMaduro\Collision;
 
 use Whoops\Exception\Frame;
+use Whoops\Exception\FrameCollection;
 use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,6 +46,21 @@ class Writer implements WriterContract
     protected $argumentFormatter;
 
     /**
+     * Ignores traces where the file string matches one
+     * of the provided regex expressions.
+     *
+     * @var string[]
+     */
+    protected $ignore = [];
+
+    /**
+     * Declares whether or not the trace should appear.
+     *
+     * @var bool
+     */
+    protected $showTrace = true;
+
+    /**
      * Creates an instance of the writer.
      *
      * @param \Symfony\Component\Console\Output\OutputInterface|null $output
@@ -63,14 +79,34 @@ class Writer implements WriterContract
     {
         $this->renderTitle($inspector);
 
-        $frames = $inspector->getFrames()
-            ->getArray();
-
+        $frames = $this->getFrames($inspector);
         $this->renderEditor(array_shift($frames));
 
-        if (! empty($frames)) {
+        if ($this->showTrace && ! empty($frames)) {
             $this->renderTrace($frames);
+        } else {
+            $this->output->writeln('');
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function ignoreFilesIn(array $ignore): WriterContract
+    {
+        $this->ignore = $ignore;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function showTrace(bool $show): WriterContract
+    {
+        $this->showTrace = $show;
+
+        return $this;
     }
 
     /**
@@ -81,6 +117,31 @@ class Writer implements WriterContract
         $this->output = $output;
 
         return $this;
+    }
+
+    /**
+     * Returns pertinent frames.
+     *
+     * @param  \Whoops\Exception\Inspector $inspector
+     *
+     * @return array
+     */
+    protected function getFrames(Inspector $inspector): array
+    {
+        return $inspector->getFrames()
+            ->filter(
+                function ($frame) {
+
+                    foreach ($this->ignore as $ignore) {
+                        if (preg_match($ignore, $frame->getFile())) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            )
+            ->getArray();
     }
 
     /**
@@ -97,7 +158,6 @@ class Writer implements WriterContract
         $class = $inspector->getExceptionName();
 
         $this->render("<bg=red;options=bold>$class</> : <comment>$message</>");
-        $this->render('at <fg=green>'.$exception->getFile().'</>'.': <fg=green>'.$exception->getLine().'</>');
 
         return $this;
     }
@@ -112,6 +172,8 @@ class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
+        $this->render('at <fg=green>'.$frame->getFile().'</>'.': <fg=green>'.$frame->getLine().'</>');
+
         $range = $frame->getFileLines($frame->getLine() - 5, 10);
 
         foreach ($range as $k => $code) {
