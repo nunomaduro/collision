@@ -12,7 +12,6 @@
 namespace NunoMaduro\Collision;
 
 use Whoops\Exception\Frame;
-use Whoops\Exception\FrameCollection;
 use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -131,7 +130,6 @@ class Writer implements WriterContract
         return $inspector->getFrames()
             ->filter(
                 function ($frame) {
-
                     foreach ($this->ignore as $ignore) {
                         if (preg_match($ignore, $frame->getFile())) {
                             return false;
