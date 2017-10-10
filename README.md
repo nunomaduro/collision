@@ -1,6 +1,9 @@
 <p align="center">
-    <img title="Collision" height="300" src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/example.png" />
+    <img src="https://raw.githubusercontent.com/caneco/collision/stable/LOGO.png" alt="Collision logo" width="480">
+    <br>
+    <img src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/example.png" alt="Collision preview" height="300">
 </p>
+
 <p align="center">
   <a href="https://styleci.io/repos/105197315"><img src="https://styleci.io/repos/105197315/shield" alt="StyleCI Status"></img></a>
   <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/g/nunomaduro/collision.svg?style=flat-square" alt="Quality Score"></img></a>
