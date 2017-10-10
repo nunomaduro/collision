@@ -29,7 +29,7 @@ composer require nunomaduro/collision --dev
 If you are not using Laravel, you need to register the handler in your code:
 
 ```php
-(\NunoMaduro\Collision\Provider)->register();
+(new \NunoMaduro\Collision\Provider)->register();
 ```
 
 ## Contributing
