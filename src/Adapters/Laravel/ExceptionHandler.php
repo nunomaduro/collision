@@ -17,7 +17,7 @@ use NunoMaduro\Collision\Contracts\Handler;
 use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
 
 /**
- * This is an Collision Laravel ExceptionHandler implementation.
+ * This is an Collision Laravel Adapter ExceptionHandler implementation.
  *
  * Registers the Error Handler on Laravel.
  *
