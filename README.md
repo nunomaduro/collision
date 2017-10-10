@@ -32,7 +32,7 @@ If you are not using Laravel, you need to register the handler in your code:
 (\NunoMaduro\Collision\Provider)->register();
 ```
 
-## Phpunit
+## Phpunit adapter
 
 Add the following configuration to your `phpunit.xml`
 
