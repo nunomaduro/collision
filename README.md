@@ -35,7 +35,7 @@ If you are not using Laravel, you need to register the handler in your code:
 (new \NunoMaduro\Collision\Provider)->register();
 ```
 
-## Phpunit adapter
+## Phpunit adapter BETA
 
 Add the following configuration to your `phpunit.xml`
 
