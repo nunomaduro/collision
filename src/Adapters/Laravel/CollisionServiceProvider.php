@@ -12,8 +12,9 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use NunoMaduro\Collision\Contracts\Handler;
+use NunoMaduro\Collision\Adapters\Phpunit\Listener;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
 /**
  * This is an Collision Laravel Adapter Service Provider implementation.
@@ -30,7 +31,16 @@ class CollisionServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->runningInConsole()) {
-            $this->app->singleton(ExceptionHandlerContract::class, ExceptionHandler::class);
+            $this->app->singleton(ListenerContract::class, Listener::class);
+
+            $appExceptionHandler = $this->app->make(ExceptionHandlerContract::class);
+
+            $this->app->singleton(
+                ExceptionHandlerContract::class,
+                function ($app) use ($appExceptionHandler) {
+                    return new ExceptionHandler($app, $appExceptionHandler);
+                }
+            );
         }
     }
 }

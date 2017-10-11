@@ -18,19 +18,19 @@ use PHPUnit\Framework\Warning;
 use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestListener;
 use Symfony\Component\Console\Application;
 use PHPUnit\Framework\AssertionFailedError;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
 /**
  * This is an Collision Phpunit Adapter implementation.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
-class Listener implements TestListener
+class Listener implements ListenerContract
 {
     /**
      * Holds an instance of the writer.
@@ -38,6 +38,13 @@ class Listener implements TestListener
      * @var \NunoMaduro\Collision\Contracts\Writer
      */
     protected $writer;
+
+    /**
+     * Whether or not an exception was found.
+     *
+     * @var bool
+     */
+    protected static $exceptionFound = false;
 
     /**
      * Creates a new instance of the class.
@@ -52,13 +59,23 @@ class Listener implements TestListener
     /**
      * {@inheritdoc}
      */
+    public function render(\Throwable $e)
+    {
+        if (! static::$exceptionFound) {
+            $inspector = new Inspector($e);
+
+            $this->writer->write($inspector);
+
+            static::$exceptionFound = true;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addError(Test $test, Exception $e, $time)
     {
-        $inspector = new Inspector($e);
-
-        $this->writer->write($inspector);
-
-        exit();
+        $this->render($e);
     }
 
     /**
@@ -66,7 +83,7 @@ class Listener implements TestListener
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
-        $this->addError($test, $e, $time);
+        $this->render($e);
     }
 
     /**
@@ -77,7 +94,7 @@ class Listener implements TestListener
         $this->writer->ignoreFilesIn(['/vendor/'])
             ->showTrace(false);
 
-        $this->addError($test, $e, $time);
+        $this->render($e);
     }
 
     /**
@@ -120,6 +137,8 @@ class Listener implements TestListener
      */
     public function startTest(Test $test)
     {
+        $test->getTestResultObject()
+            ->stopOnFailure(true);
     }
 
     /**

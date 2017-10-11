@@ -13,8 +13,10 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
 use NunoMaduro\Collision\Provider;
-use NunoMaduro\Collision\Contracts\Handler;
-use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
+use Illuminate\Contracts\Foundation\Application;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
@@ -23,8 +25,55 @@ use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
-class ExceptionHandler extends LaravelHandler
+class ExceptionHandler implements ExceptionHandlerContract
 {
+    /**
+     * Holds an instance of the application exception handler.
+     *
+     * @var \Illuminate\Contracts\Debug\ExceptionHandler
+     */
+    protected $appExceptionHandler;
+
+    /**
+     * Holds an instance of the application.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
+
+    /**
+     * Creates a new instance of the ExceptionHandler.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Debug\ExceptionHandler $appExceptionHandler
+     */
+    public function __construct(Application $app, ExceptionHandlerContract $appExceptionHandler)
+    {
+        $this->app = $app;
+        $this->appExceptionHandler = $appExceptionHandler;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function report(Exception $e)
+    {
+        $this->appExceptionHandler->report($e);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function render($request, Exception $e)
+    {
+        if ($this->app->environment() === 'testing' && ! $e instanceof HttpException) {
+            $this->app->make(ListenerContract::class)
+                ->render($e);
+        }
+
+        return $this->appExceptionHandler->render($request, $e);
+    }
+
     /**
      * {@inheritdoc}
      */
