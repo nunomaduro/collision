@@ -12,10 +12,10 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
 use NunoMaduro\Collision\Provider;
-use NunoMaduro\Collision\Contracts\Handler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
 /**
@@ -25,18 +25,53 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
-class ExceptionHandler extends LaravelHandler
+class ExceptionHandler implements ExceptionHandlerContract
 {
+    /**
+     * Holds an instance of the application exception handler.
+     *
+     * @var \Illuminate\Contracts\Debug\ExceptionHandler
+     */
+    protected $appExceptionHandler;
+
+    /**
+     * Holds an instance of the application
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
+
+    /**
+     * Creates a new instance of the ExceptionHandler.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Debug\ExceptionHandler $appExceptionHandler
+     */
+    public function __construct(Application $app, ExceptionHandlerContract $appExceptionHandler)
+    {
+        $this->app = $app;
+        $this->appExceptionHandler = $appExceptionHandler;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function report(Exception $e)
+    {
+        $this->appExceptionHandler->report($e);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function render($request, Exception $e)
     {
-        if (app('env') === 'testing' && ! $e instanceof HttpException) {
-            app(ListenerContract::class)->render($e);
+        if ($this->app->environment() === 'testing' && ! $e instanceof HttpException) {
+            $this->app->make(ListenerContract::class)
+                ->render($e);
         }
 
-        return parent::render($request, $e);
+        return $this->appExceptionHandler->render($request, $e);
     }
 
     /**
