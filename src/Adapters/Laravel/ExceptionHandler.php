@@ -12,8 +12,8 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
 use NunoMaduro\Collision\Provider;
+use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
@@ -35,7 +35,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     protected $appExceptionHandler;
 
     /**
-     * Holds an instance of the application
+     * Holds an instance of the application.
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
