@@ -14,7 +14,9 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Exception;
 use NunoMaduro\Collision\Provider;
 use NunoMaduro\Collision\Contracts\Handler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
@@ -25,6 +27,18 @@ use Illuminate\Foundation\Exceptions\Handler as LaravelHandler;
  */
 class ExceptionHandler extends LaravelHandler
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function render($request, Exception $e)
+    {
+        if (app('env') === 'testing' && ! $e instanceof HttpException) {
+            app(ListenerContract::class)->render($e);
+        }
+
+        return parent::render($request, $e);
+    }
+
     /**
      * {@inheritdoc}
      */
