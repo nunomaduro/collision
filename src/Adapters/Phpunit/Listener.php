@@ -40,6 +40,13 @@ class Listener implements ListenerContract
     protected $writer;
 
     /**
+     * Whether or not an exception was found.
+     *
+     * @var bool
+     */
+    protected static $exceptionFound = false;
+
+    /**
      * Creates a new instance of the class.
      *
      * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
@@ -54,9 +61,13 @@ class Listener implements ListenerContract
      */
     public function render(\Throwable $e)
     {
-        $inspector = new Inspector($e);
+        if (! static::$exceptionFound) {
+            $inspector = new Inspector($e);
 
-        $this->writer->write($inspector);
+            $this->writer->write($inspector);
+
+            static::$exceptionFound = true;
+        }
     }
 
     /**
@@ -126,6 +137,8 @@ class Listener implements ListenerContract
      */
     public function startTest(Test $test)
     {
+        $test->getTestResultObject()
+            ->stopOnFailure(true);
     }
 
     /**

@@ -119,6 +119,14 @@ class Writer implements WriterContract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getOutput(): OutputInterface
+    {
+        return $this->output;
+    }
+
+    /**
      * Returns pertinent frames.
      *
      * @param  \Whoops\Exception\Inspector $inspector

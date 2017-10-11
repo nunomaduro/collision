@@ -55,4 +55,11 @@ interface Writer
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
     public function setOutput(OutputInterface $output): Writer;
+
+    /**
+     * Gets the output.
+     *
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function getOutput(): OutputInterface;
 }
