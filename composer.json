@@ -14,9 +14,9 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": "^7.1",
         "filp/whoops": "^2.1.4",
-        "symfony/console": "~3.3"
+        "symfony/console": "~2.8|~3.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
