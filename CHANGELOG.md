@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.5] - 2017-10-17
 ### Added
-- Adds support to `symfony/console` version 2.8 (#16)
+- Adds support to `symfony/console` version 2.8 (#16)[https://github.com/nunomaduro/collision/pull/16]
 
 ## [1.1.0] - 2017-10-10
 ### Added
