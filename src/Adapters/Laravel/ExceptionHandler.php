@@ -66,7 +66,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function render($request, Exception $e)
     {
-        if ($this->app->environment() === 'testing' && ! $e instanceof HttpException) {
+        if ($this->app->environment() === 'testing' && $this->appExceptionHandler->shouldReport($e)) {
             $this->app->make(ListenerContract::class)
                 ->render($e);
         }
