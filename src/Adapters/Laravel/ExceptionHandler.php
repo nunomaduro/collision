@@ -14,7 +14,6 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Exception;
 use NunoMaduro\Collision\Provider;
 use Illuminate\Contracts\Foundation\Application;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
