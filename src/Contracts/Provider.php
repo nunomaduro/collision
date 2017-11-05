@@ -25,7 +25,7 @@ interface Provider
      *
      * @return \NunoMaduro\Collision\Contracts\Provider
      */
-    public function register(): self;
+    public function register(): Provider;
 
     /**
      * Returns the handler.

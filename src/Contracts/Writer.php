@@ -29,7 +29,7 @@ interface Writer
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
-    public function ignoreFilesIn(array $ignore): self;
+    public function ignoreFilesIn(array $ignore): Writer;
 
     /**
      * Declares whether or not the Writer should show the trace.
@@ -38,7 +38,7 @@ interface Writer
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
-    public function showTrace(bool $show): self;
+    public function showTrace(bool $show): Writer;
 
     /**
      * Writes the details of the exception on the console.
@@ -54,7 +54,7 @@ interface Writer
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
-    public function setOutput(OutputInterface $output): self;
+    public function setOutput(OutputInterface $output): Writer;
 
     /**
      * Gets the output.

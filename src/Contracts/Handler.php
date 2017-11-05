@@ -28,5 +28,5 @@ interface Handler extends HandlerInterface
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */
-    public function setOutput(OutputInterface $output): self;
+    public function setOutput(OutputInterface $output): Handler;
 }
