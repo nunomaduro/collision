@@ -59,4 +59,12 @@ class Handler extends AbstractHandler implements HandlerContract
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWriter(): WriterContract
+    {
+        return $this->writer;
+    }
 }

@@ -41,6 +41,15 @@ interface Writer
     public function showTrace(bool $show): Writer;
 
     /**
+     * Declares whether or not the Writer should show the editor.
+     *
+     * @param  bool $show
+     *
+     * @return \NunoMaduro\Collision\Contracts\Writer
+     */
+    public function showEditor(bool $show): Writer;
+
+    /**
      * Writes the details of the exception on the console.
      *
      * @param \Whoops\Exception\Inspector $inspector

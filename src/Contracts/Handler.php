@@ -29,4 +29,11 @@ interface Handler extends HandlerInterface
      * @return \NunoMaduro\Collision\Contracts\Handler
      */
     public function setOutput(OutputInterface $output): Handler;
+
+    /**
+     * Returns the writer.
+     *
+     * @return \NunoMaduro\Collision\Contracts\Writer
+     */
+    public function getWriter(): Writer;
 }
