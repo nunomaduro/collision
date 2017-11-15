@@ -39,6 +39,8 @@ If you are not using Laravel, you need to register the handler in your code:
 
 Add the following configuration to your `phpunit.xml`
 
+Phpunit must be 6.0 or higher.
+
 ```xml
     <listeners>
         <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
