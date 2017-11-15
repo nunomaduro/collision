@@ -13,7 +13,7 @@ namespace NunoMaduro\Collision;
 
 use Whoops\Run;
 use Whoops\RunInterface;
-use Whoops\Handler\HandlerInterface;
+use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 
 /**
@@ -41,9 +41,9 @@ class Provider implements ProviderContract
      * Creates a new instance of the Provider.
      *
      * @param \Whoops\RunInterface|null $run
-     * @param \Whoops\Handler\HandlerInterface|null $handler
+     * @param \NunoMaduro\Collision\Contracts\Handler|null $handler
      */
-    public function __construct(RunInterface $run = null, HandlerInterface $handler = null)
+    public function __construct(RunInterface $run = null, HandlerContract $handler = null)
     {
         $this->run = $run ?: new Run;
         $this->handler = $handler ?: new Handler;
@@ -63,7 +63,7 @@ class Provider implements ProviderContract
     /**
      * {@inheritdoc}
      */
-    public function getHandler(): HandlerInterface
+    public function getHandler(): HandlerContract
     {
         return $this->handler;
     }

@@ -60,6 +60,13 @@ class Writer implements WriterContract
     protected $showTrace = true;
 
     /**
+     * Declares whether or not the editor should appear.
+     *
+     * @var bool
+     */
+    protected $showEditor = true;
+
+    /**
      * Creates an instance of the writer.
      *
      * @param \Symfony\Component\Console\Output\OutputInterface|null $output
@@ -79,7 +86,12 @@ class Writer implements WriterContract
         $this->renderTitle($inspector);
 
         $frames = $this->getFrames($inspector);
-        $this->renderEditor(array_shift($frames));
+
+        $editorFrame = array_shift($frames);
+
+        if ($this->showEditor) {
+            $this->renderEditor($editorFrame);
+        }
 
         if ($this->showTrace && ! empty($frames)) {
             $this->renderTrace($frames);
@@ -104,6 +116,16 @@ class Writer implements WriterContract
     public function showTrace(bool $show): WriterContract
     {
         $this->showTrace = $show;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function showEditor(bool $show): WriterContract
+    {
+        $this->showEditor = $show;
 
         return $this;
     }

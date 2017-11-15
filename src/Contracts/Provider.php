@@ -11,8 +11,6 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Handler\HandlerInterface;
-
 /**
  * This is an Collision Provider implementation.
  *
@@ -30,7 +28,7 @@ interface Provider
     /**
      * Returns the handler.
      *
-     * @return \Whoops\Handler\HandlerInterface
+     * @return \NunoMaduro\Collision\Contracts\Handler
      */
-    public function getHandler(): HandlerInterface;
+    public function getHandler(): Handler;
 }

@@ -14,6 +14,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Exception;
 use NunoMaduro\Collision\Provider;
 use Illuminate\Contracts\Foundation\Application;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
@@ -39,6 +40,15 @@ class ExceptionHandler implements ExceptionHandlerContract
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
+
+    /**
+     * A list of the exceptions where the editor and the trace should't appear.
+     *
+     * @var array
+     */
+    protected $hideDetails = [
+        CommandNotFoundException::class,
+    ];
 
     /**
      * Creates a new instance of the ExceptionHandler.
@@ -83,6 +93,12 @@ class ExceptionHandler implements ExceptionHandlerContract
             ->setOutput($output);
 
         $handler->setInspector((new Inspector($e)));
+
+        if (in_array(get_class($e), $this->hideDetails)) {
+            $handler->getWriter()
+                ->showTrace(false)
+                ->showEditor(false);
+        }
 
         $handler->handle();
     }
