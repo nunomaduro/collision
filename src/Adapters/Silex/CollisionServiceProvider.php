@@ -11,12 +11,12 @@
 namespace NunoMaduro\Collision\Adapters\Silex;
 
 use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\Api\EventListenerProviderInterface;
 use Silex\ExceptionListenerWrapper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use NunoMaduro\Collision\Adapters\Pimple\CollisionServiceProvider as PimpleCollisionServiceProvider;
 
 class CollisionServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface

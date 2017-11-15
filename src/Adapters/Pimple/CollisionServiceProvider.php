@@ -10,12 +10,12 @@
 
 namespace NunoMaduro\Collision\Adapters\Pimple;
 
+use Whoops\Run;
 use Pimple\Container;
+use NunoMaduro\Collision\Handler;
 use Pimple\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use NunoMaduro\Collision\Handler;
-use Whoops\Run;
 
 class CollisionServiceProvider implements ServiceProviderInterface
 {
@@ -38,6 +38,7 @@ class CollisionServiceProvider implements ServiceProviderInterface
             $run = new Run;
             $run->allowQuit(false);
             $run->pushHandler($container['collision.error_page_handler']);
+
             return $run;
         };
     }
@@ -57,6 +58,7 @@ class CollisionServiceProvider implements ServiceProviderInterface
             $container['collision']->$method($e);
             $response = ob_get_clean();
             $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
+
             return new Response($response, $code);
         });
     }
