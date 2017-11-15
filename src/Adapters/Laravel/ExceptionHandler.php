@@ -42,11 +42,11 @@ class ExceptionHandler implements ExceptionHandlerContract
     protected $app;
 
     /**
-     * A list of the exceptions where the stack trace should't appear.
+     * A list of the exceptions where the editor and the trace should't appear.
      *
      * @var array
      */
-    protected $withoutStackTrace = [
+    protected $hideDetails = [
         CommandNotFoundException::class,
     ];
 
@@ -94,7 +94,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 
         $handler->setInspector((new Inspector($e)));
 
-        if (in_array(get_class($e), $this->withoutStackTrace)) {
+        if (in_array(get_class($e), $this->hideDetails)) {
             $handler->getWriter()
                 ->showTrace(false)
                 ->showEditor(false);
