@@ -13,7 +13,7 @@
 
 ## About Collision
 
-Collision was created and maintained by [Nuno Maduro](https://github.com/nunomaduro). Collision is an error handler framework for console/command-line PHP applications.
+Collision was created by, and is maintained by [Nuno Maduro](https://github.com/nunomaduro), and is an error handler framework for console/command-line PHP applications.
 
 - Build on top of [Whoops](https://github.com/filp/whoops).
 - Supports [Laravel](https://github.com/laravel/laravel) Artisan & [PHPUnit](https://github.com/sebastianbergmann/phpunit).
@@ -35,11 +35,11 @@ If you are not using Laravel, you need to register the handler in your code:
 (new \NunoMaduro\Collision\Provider)->register();
 ```
 
-## Phpunit adapter BETA
-
-Add the following configuration to your `phpunit.xml`
+## Phpunit adapter
 
 Phpunit must be 6.0 or higher.
+
+Add the following configuration to your `phpunit.xml`:
 
 ```xml
     <listeners>
@@ -51,9 +51,7 @@ Phpunit must be 6.0 or higher.
 
 Thank you for considering to contribute to Collision. All the contribution guidelines are mentioned [here](CONTRIBUTING.md).
 
-## Stay In Touch
-
-You can have a look at the [CHANGELOG](CHANGELOG.md) & [Releases](https://github.com/collision/collision/releases) for constant updates & detailed information about the changes. You can also follow the twitter account for latest announcements or just come say hi!: [@enunomaduro](https://twitter.com/enunomaduro)
+You can have a look at the [CHANGELOG](CHANGELOG.md) for constant updates & detailed information about the changes. You can also follow the twitter account for latest announcements or just come say hi!: [@enunomaduro](https://twitter.com/enunomaduro)
 
 ## License
 
