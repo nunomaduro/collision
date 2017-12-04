@@ -88,8 +88,7 @@ class Writer implements WriterContract
         $frames = $this->getFrames($inspector);
 
         $editorFrame = array_shift($frames);
-
-        if ($this->showEditor) {
+        if ($this->showEditor && $editorFrame !== null) {
             $this->renderEditor($editorFrame);
         }
 
