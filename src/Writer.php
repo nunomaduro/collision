@@ -204,10 +204,12 @@ class Writer implements WriterContract
 
         $range = $frame->getFileLines($frame->getLine() - 5, 10);
 
-        foreach ($range as $k => $code) {
-            $line = $k + 1;
-            $code = $line === $frame->getLine() ? "<bg=red>$code</>" : $code;
-            $this->render("$line: $code", false);
+        if (! empty($range)) {
+            foreach ($range as $k => $code) {
+                $line = $k + 1;
+                $code = $line === $frame->getLine() ? "<bg=red>$code</>" : $code;
+                $this->render("$line: $code", false);
+            }
         }
 
         return $this;
