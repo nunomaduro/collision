@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.12] - 2017-10-17
+## [1.1.12] - 2017-12-11
 ### Added
 - Adds support to `symfony/console` version 4.0 ([#28](https://github.com/nunomaduro/collision/pull/28))
 
