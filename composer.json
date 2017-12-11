@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.1",
         "filp/whoops": "^2.1.4",
-        "symfony/console": "~2.8|~3.3"
+        "symfony/console": "~2.8|~3.3|~4.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
