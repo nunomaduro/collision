@@ -13,10 +13,10 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
 use NunoMaduro\Collision\Provider;
-use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
+use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
