@@ -184,7 +184,7 @@ class Writer implements WriterContract
         $message = $exception->getMessage();
         $class = $inspector->getExceptionName();
 
-        $this->render("<bg=red;options=bold>$class</> : <comment>$message</>");
+        $this->render("<bg=red;options=bold> $class </> : <comment>$message</>");
 
         return $this;
     }
