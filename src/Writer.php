@@ -227,7 +227,7 @@ class Writer implements WriterContract
         foreach ($frames as $i => $frame) {
             if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity(
                 ) < OutputInterface::VERBOSITY_VERBOSE) {
-                $this->render('<info>Please use the argument <fg=red>-v</> to see all trace.</info>');
+                $this->render('<info>Please use the argument <fg=red>-v</> to see more details.</info>');
                 break;
             }
 
