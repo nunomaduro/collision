@@ -13,6 +13,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
 use NunoMaduro\Collision\Provider;
+use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
@@ -39,15 +40,6 @@ class ExceptionHandler implements ExceptionHandlerContract
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
-
-    /**
-     * A list of the exceptions where the editor and the trace should't appear.
-     *
-     * @var array
-     */
-    protected $hideDetailsExceptions = [
-        \Symfony\Component\Console\Exception\ExceptionInterface::class,
-    ];
 
     /**
      * Creates a new instance of the ExceptionHandler.
@@ -87,25 +79,16 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function renderForConsole($output, Exception $e)
     {
-        $handler = (new Provider)->register()
-            ->getHandler()
-            ->setOutput($output);
+        if ($e instanceof SymfonyConsoleExceptionInterface) {
+            $this->appExceptionHandler->renderForConsole($output, $e);
+        } else {
+            $handler = (new Provider)->register()
+                ->getHandler()
+                ->setOutput($output);
 
-        $handler->setInspector((new Inspector($e)));
+            $handler->setInspector((new Inspector($e)));
 
-        $hideDetails = false;
-        foreach ($this->hideDetailsExceptions as $hideDetailsException) {
-            if ($e instanceof $hideDetailsException) {
-                $hideDetails = true;
-            }
+            $handler->handle();
         }
-
-        if ($hideDetails) {
-            $handler->getWriter()
-                ->showTrace(false)
-                ->showEditor(false);
-        }
-
-        $handler->handle();
     }
 }
