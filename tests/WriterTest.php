@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Whoops\Exception\Inspector;
 use PHPUnit\Framework\TestCase;
+use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
 use Whoops\Exception\FrameCollection;
 use Symfony\Component\Console\Output\ConsoleOutput;
