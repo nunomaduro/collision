@@ -18,6 +18,14 @@
         "filp/whoops": "^2.1.4",
         "symfony/console": "~2.8|~3.3|~4.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~6.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
