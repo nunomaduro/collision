@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.17] - 2017-12-19
+### Changed
+- Laravel adapter: Don't register Collision on testing env.
+
 ## [1.1.16] - 2017-12-17
 ### Changed
 - Laravel adapter: Defaults to renderForConsole when exception is an `Symfony\Component\Console\Exception\ExceptionInterface`.
