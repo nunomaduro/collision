@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.16] - 2017-12-17
 ### Changed
-- Defaults to renderForConsole when exception is an `Symfony\Component\Console\Exception\ExceptionInterface`.
+- Laravel adapter: Defaults to renderForConsole when exception is an `Symfony\Component\Console\Exception\ExceptionInterface`.
 
 ## [1.1.15] - 2017-12-17
 ### Changed
-- Ignores exception details when exception implements `Symfony\Component\Console\Exception\ExceptionInterface`.
+- Laravel adapter: Ignores exception details when exception implements `Symfony\Component\Console\Exception\ExceptionInterface`.
 
 ## [1.1.12] - 2017-12-11
 ### Added
