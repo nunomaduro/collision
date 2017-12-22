@@ -83,7 +83,6 @@ class Listener implements ListenerContract
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
-        $this->render($e);
     }
 
     /**
@@ -137,8 +136,11 @@ class Listener implements ListenerContract
      */
     public function startTest(Test $test)
     {
-        $test->getTestResultObject()
-            ->stopOnFailure(true);
+        $testResultObject = $test->getTestResultObject();
+
+        if ($testResultObject !== null) {
+            $testResultObject->stopOnFailure(true);
+        }
     }
 
     /**
