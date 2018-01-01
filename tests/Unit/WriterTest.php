@@ -3,11 +3,8 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
-use Whoops\Exception\FrameCollection;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 
 class WriterTest extends TestCase

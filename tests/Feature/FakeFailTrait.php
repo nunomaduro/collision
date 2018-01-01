@@ -8,6 +8,6 @@ trait FakeFailTrait
     {
         $args = $withDetails ? '-v' : '';
 
-        return shell_exec("cd ".__DIR__." && php ./FakeProgram/Binary.php $args");
+        return shell_exec('cd '.__DIR__." && php ./FakeProgram/Binary.php $args");
     }
 }
