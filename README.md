@@ -55,9 +55,11 @@ Thank you for considering to contribute to Collision. All the contribution guide
 
 You can have a look at the [CHANGELOG](CHANGELOG.md) for constant updates & detailed information about the changes. You can also follow the twitter account for latest announcements or just come say hi!: [@enunomaduro](https://twitter.com/enunomaduro)
 
-## Support me
+## Support the development
+**Do you like this project? Support it by donating**
 
-Does your business depend on this project? Reach out and support me on [Patreon](https://www.patreon.com/nunomaduro).
+- PayPal: [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L)
+- Patreon: [Donate](https://www.patreon.com/nunomaduro)
 
 ## License
 
