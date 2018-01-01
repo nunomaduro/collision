@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\Unit;
 
 use Whoops\Run;
 use Whoops\RunInterface;
