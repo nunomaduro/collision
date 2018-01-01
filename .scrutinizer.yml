@@ -3,6 +3,10 @@ checks:
         code_rating: true
         duplication: true
 
+filter:
+    excluded_paths:
+        - tests/*
+
 build:
     tests:
         override:
