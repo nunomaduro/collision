@@ -9,9 +9,4 @@ before_script:
     - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
-    - vendor/bin/phpunit
-
-after_success:
-    - composer require illuminate/support illuminate/contracts
     - vendor/bin/phpunit --coverage-clover=coverage.xml
-    - bash <(curl -s https://codecov.io/bash)
