@@ -3,8 +3,8 @@
 namespace Tests\Unit\Adapters;
 
 use PHPUnit\Framework\Test;
-use Whoops\Exception\Inspector;
 use PHPUnit\Framework\TestCase;
+use Whoops\Exception\Inspector;
 use PHPUnit\Framework\TestResult;
 use NunoMaduro\Collision\Contracts\Writer;
 use PHPUnit\Framework\AssertionFailedError;
