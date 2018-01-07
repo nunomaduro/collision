@@ -3,11 +3,11 @@
 namespace Tests\Unit\Adapters;
 
 use Exception;
-use Illuminate\Container\Container;
-use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
+use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 class LaravelTest extends TestCase
