@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\FakeProgram;
+namespace Tests\FakeProgram;
 
 class HelloWorldFile2
 {
     public static function say()
     {
-        HelloWorldFile3::say();
+        return HelloWorldFile3::say();
     }
 }

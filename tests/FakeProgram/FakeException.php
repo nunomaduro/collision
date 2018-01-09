@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\FakeProgram;
+namespace Tests\FakeProgram;
 
 use Exception;
 
