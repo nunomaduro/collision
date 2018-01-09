@@ -41,14 +41,16 @@ class WriterTest extends TestCase
         $inspector = new Inspector(HelloWorldFile1::say());
 
         $output = new BufferedOutput();
-        
+
         (new Writer($output))->write($inspector);
+
+        $projectDir = dirname(__DIR__);
 
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
   5: class HelloWorldFile3
   6: {
   7:     public static function say()
@@ -61,10 +63,10 @@ class WriterTest extends TestCase
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php : 9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php : 9
 
   Please use the argument -v to see more details.
 
@@ -81,11 +83,14 @@ EOF;
         ($output = new BufferedOutput())->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
         (new Writer($output))->write($inspector);
+
+        $projectDir = dirname(__DIR__);
+
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
   5: class HelloWorldFile3
   6: {
   7:     public static function say()
@@ -98,13 +103,13 @@ EOF;
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php : 9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php : 9
 
   3   Tests\FakeProgram\HelloWorldFile1::say()
-      /Users/nunomaduro/dev/collision/tests/Unit/WriterTest.php :
+      $projectDir/Unit/WriterTest.php :
 EOF;
 
         $this->assertContains($result, $output->fetch());
@@ -119,11 +124,13 @@ EOF;
 
         (new Writer($output))->ignoreFilesIn(['*/FakeProgram/*'])->write($inspector);
 
+        $projectDir = dirname(__DIR__);
+
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at /Users/nunomaduro/dev/collision/tests/Unit/WriterTest.php
+  at $projectDir/Unit/WriterTest.php
 EOF;
 
         $this->assertContains($result, $output->fetch());
@@ -137,6 +144,9 @@ EOF;
         $output = new BufferedOutput();
 
         (new Writer($output))->showEditor(false)->write($inspector);
+
+        $projectDir = dirname(__DIR__);
+
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException  : Fail description
@@ -144,10 +154,10 @@ EOF;
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php : 9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php : 9
 
   Please use the argument -v to see more details.
 
@@ -164,11 +174,14 @@ EOF;
         $output = new BufferedOutput();
 
         (new Writer($output))->showTrace(false)->write($inspector);
+
+        $projectDir = dirname(__DIR__);
+
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at /Users/nunomaduro/dev/collision/tests/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
   5: class HelloWorldFile3
   6: {
   7:     public static function say()
