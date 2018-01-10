@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use NunoMaduro\Collision\Contracts\Handler;
-use Symfony\Component\Console\Output\BufferedOutput;
 use NunoMaduro\Collision\Adapters\Laravel\Inspector;
+use Symfony\Component\Console\Output\BufferedOutput;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -103,7 +103,7 @@ class LaravelTest extends TestCase
         $providerMock = $this->createMock(ProviderContract::class);
         $providerMock->expects($this->once())->method('register')->willReturn($providerMock);
         $providerMock->expects($this->once())->method('getHandler')->willReturn($handlerMock);
-        $app->instance(ProviderContract::class, $providerMock);;
+        $app->instance(ProviderContract::class, $providerMock);
 
         $exceptionHandler = new ExceptionHandler($app, $app->make(ExceptionHandlerContract::class));
         $exceptionHandler->renderForConsole($output, $exception);
