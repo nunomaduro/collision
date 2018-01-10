@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.19] - 2018-01-10
+### Removed
+- Laravel adapter: Removes unused code.
+
 ## [1.1.18] - 2017-12-22
 ### Changed
 - PHPUnit adapter: Don't render warnings.
