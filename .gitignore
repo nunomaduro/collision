@@ -6,3 +6,4 @@ composer.lock
 /builds/
 /database/
 /vendor/
+coverage.xml

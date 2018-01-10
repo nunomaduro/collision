@@ -6,8 +6,8 @@
 
 <p align="center">
   <a href="https://travis-ci.org/nunomaduro/collision"><img src="https://img.shields.io/travis/nunomaduro/collision/stable.svg" alt="Build Status"></img></a>
-  <a href="https://styleci.io/repos/105197315"><img src="https://styleci.io/repos/105197315/shield" alt="StyleCI Status"></img></a>
   <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/g/nunomaduro/collision.svg" alt="Quality Score"></img></a>
+  <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/coverage/g/nunomaduro/collision.svg" alt="Coverage"></img></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/d/total.svg" alt="Total Downloads"></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/v/stable.svg" alt="Latest Stable Version"></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/license.svg" alt="License"></a>
@@ -55,9 +55,11 @@ Thank you for considering to contribute to Collision. All the contribution guide
 
 You can have a look at the [CHANGELOG](CHANGELOG.md) for constant updates & detailed information about the changes. You can also follow the twitter account for latest announcements or just come say hi!: [@enunomaduro](https://twitter.com/enunomaduro)
 
-## Support me
+## Support the development
+**Do you like this project? Support it by donating**
 
-Does your business depend on this project? Reach out and support me on [Patreon](https://www.patreon.com/nunomaduro).
+- PayPal: [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L)
+- Patreon: [Donate](https://www.patreon.com/nunomaduro)
 
 ## License
 
