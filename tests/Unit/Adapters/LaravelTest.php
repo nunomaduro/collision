@@ -77,6 +77,7 @@ class LaravelTest extends TestCase
         $exceptionHandler->report($exception);
     }
 
+    /** @test */
     public function it_renders_to_the_original_exception_handler(): void
     {
         $app = $this->createApplication();
