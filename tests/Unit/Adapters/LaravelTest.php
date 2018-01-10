@@ -3,10 +3,16 @@
 namespace Tests\Unit\Adapters;
 
 use Exception;
+use ReflectionMethod;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
+use NunoMaduro\Collision\Contracts\Handler;
+use Symfony\Component\Console\Output\BufferedOutput;
+use NunoMaduro\Collision\Adapters\Laravel\Inspector;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
+use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
@@ -71,7 +77,6 @@ class LaravelTest extends TestCase
         $exceptionHandler->report($exception);
     }
 
-    /** @test */
     public function it_renders_to_the_original_exception_handler(): void
     {
         $app = $this->createApplication();
@@ -85,15 +90,47 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_renders_non_symfony_console_exceptions(): void
+    public function it_renders_non_symfony_console_exceptions_with_collision(): void
     {
         $app = $this->createApplication();
         $exception = new Exception();
+        $output = new BufferedOutput();
+
+        $handlerMock = $this->createMock(Handler::class);
+        $handlerMock->expects($this->once())->method('setOutput')->with($output);
+
+        $providerMock = $this->createMock(ProviderContract::class);
+        $providerMock->expects($this->once())->method('register')->willReturn($providerMock);
+        $providerMock->expects($this->once())->method('getHandler')->willReturn($handlerMock);
+        $app->instance(ProviderContract::class, $providerMock);;
+
+        $exceptionHandler = new ExceptionHandler($app, $app->make(ExceptionHandlerContract::class));
+        $exceptionHandler->renderForConsole($output, $exception);
+    }
+
+    /** @test */
+    public function it_renders_non_symfony_console_exceptions_with_symfony(): void
+    {
+        $app = $this->createApplication();
+        $exception = new InvalidArgumentException();
+        $output = new BufferedOutput();
+
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
-        $originalExceptionHandlerMock->expects($this->once())->method('report')->with($exception);
+        $originalExceptionHandlerMock->expects($this->once())->method('renderForConsole')->with($output, $exception);
 
         $exceptionHandler = new ExceptionHandler($app, $originalExceptionHandlerMock);
-        $exceptionHandler->report($exception);
+        $exceptionHandler->renderForConsole($output, $exception);
+    }
+
+    /** @test */
+    public function is_inspector_gets_trace(): void
+    {
+        $method = new ReflectionMethod(Inspector::class, 'getTrace');
+        $method->setAccessible(true);
+
+        $exception = new Exception('Foo');
+
+        $this->assertSame($method->invokeArgs(new Inspector($exception), [$exception]), $exception->getTrace());
     }
 
     /**
