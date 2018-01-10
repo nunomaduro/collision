@@ -72,6 +72,19 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
+    public function it_renders_to_the_original_exception_handler(): void
+    {
+        $app = $this->createApplication();
+        $exception = new Exception();
+        $request = new \stdClass();
+        $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
+        $originalExceptionHandlerMock->expects($this->once())->method('render')->with($request, $exception);
+
+        $exceptionHandler = new ExceptionHandler($app, $originalExceptionHandlerMock);
+        $exceptionHandler->render($request, $exception);
+    }
+
+    /** @test */
     public function it_renders_non_symfony_console_exceptions(): void
     {
         $app = $this->createApplication();
