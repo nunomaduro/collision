@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use Symfony\Component\Console\Output\OutputInterface;
-use Whoops\Exception\Inspector;
 use PHPUnit\Framework\TestCase;
+use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
 use Tests\FakeProgram\HelloWorldFile1;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 
 class WriterTest extends TestCase
@@ -196,4 +196,3 @@ EOF;
         $this->assertContains($result, $output->fetch());
     }
 }
-
