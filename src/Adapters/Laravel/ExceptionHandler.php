@@ -15,7 +15,6 @@ use Exception;
 use NunoMaduro\Collision\Provider;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
-use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 
 /**
