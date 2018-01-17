@@ -5,7 +5,6 @@ namespace Tests\Unit\Adapters;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestCase;
-use Whoops\Exception\Inspector;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use NunoMaduro\Collision\Contracts\Writer;
