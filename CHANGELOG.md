@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- Phpunit adapter: Respects `--stop-on-failure` and `--stop-on-error` options.
+
+### Changed
+- Phpunit adapter: Exception render place. 
+
 ## [1.1.19] - 2018-01-10
 ### Removed
 - Laravel adapter: Removes unused code.

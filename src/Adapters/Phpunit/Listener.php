@@ -40,11 +40,11 @@ class Listener implements ListenerContract
     protected $writer;
 
     /**
-     * Whether or not an exception was found.
+     * Holds the exception found, if any.
      *
-     * @var bool
+     * @var \Throwable|null
      */
-    protected static $exceptionFound = false;
+    protected $exceptionFound;
 
     /**
      * Creates a new instance of the class.
@@ -61,13 +61,9 @@ class Listener implements ListenerContract
      */
     public function render(\Throwable $e)
     {
-        if (! static::$exceptionFound) {
-            $inspector = new Inspector($e);
+        $inspector = new Inspector($e);
 
-            $this->writer->write($inspector);
-
-            static::$exceptionFound = true;
-        }
+        $this->writer->write($inspector);
     }
 
     /**
@@ -75,7 +71,9 @@ class Listener implements ListenerContract
      */
     public function addError(Test $test, Exception $e, $time)
     {
-        $this->render($e);
+        if ($this->exceptionFound === null) {
+            $this->exceptionFound = $e;
+        }
     }
 
     /**
@@ -93,7 +91,9 @@ class Listener implements ListenerContract
         $this->writer->ignoreFilesIn(['/vendor/'])
             ->showTrace(false);
 
-        $this->render($e);
+        if ($this->exceptionFound === null) {
+            $this->exceptionFound = $e;
+        }
     }
 
     /**
@@ -136,11 +136,6 @@ class Listener implements ListenerContract
      */
     public function startTest(Test $test)
     {
-        $testResultObject = $test->getTestResultObject();
-
-        if ($testResultObject !== null) {
-            $testResultObject->stopOnFailure(true);
-        }
     }
 
     /**
@@ -148,6 +143,16 @@ class Listener implements ListenerContract
      */
     public function endTest(Test $test, $time)
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __destruct()
+    {
+        if ($this->exceptionFound !== null) {
+            $this->render($this->exceptionFound);
+        }
     }
 
     /**
