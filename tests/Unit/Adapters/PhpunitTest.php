@@ -21,6 +21,15 @@ class PhpunitTest extends TestCase
     }
 
     /** @test */
+    public function it_renders_exceptions_using_the_writer(): void
+    {
+        $writerMock = $this->createMock(Writer::class);
+        $exception = new FakeException();
+        $writerMock->expects($this->once())->method('write')->with(new Inspector($exception));
+        (new Listener($writerMock))->render($exception);
+    }
+
+    /** @test */
     public function it_adds_an_error(): void
     {
         $listenerMock = $this->createPartialMock(Listener::class, ['render']);
@@ -58,6 +67,7 @@ class PhpunitTest extends TestCase
         $listenerMock->expects($this->never())->method('render');
         $listenerMock->startTestSuite($testSuite);
         $listenerMock->endTestSuite($testSuite);
+        $listenerMock->startTest($testSuite);
         $listenerMock->endTest($testSuite, 0);
     }
 
