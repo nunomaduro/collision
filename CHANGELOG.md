@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.22] - 2018-02-07
+### Fixed
+- Phpunit adapter: Fixes usage with `laravel-ide-helper`.
+
 ## [1.1.20] - 2018-01-18
 ### Fixed
 - Phpunit adapter: Respects `--stop-on-failure` and `--stop-on-error` options.
