@@ -96,11 +96,11 @@ class PhpunitTest extends TestCase
 
 class FakeTest implements Test
 {
-    public function run(TestResult $result = null)
+    public function run(TestResult $result = null): TestResult
     {
     }
 
-    public function count()
+    public function count(): int
     {
         return 0;
     }

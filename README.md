@@ -39,7 +39,7 @@ If you are not using Laravel, you need to register the handler in your code:
 
 ## Phpunit adapter
 
-Phpunit must be 6.0 or higher.
+Phpunit must be 7.0 or higher.
 
 Add the following configuration to your `phpunit.xml`:
 

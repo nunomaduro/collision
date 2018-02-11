@@ -11,7 +11,6 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use Exception;
 use ReflectionObject;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\Warning;
@@ -61,9 +60,9 @@ class Listener implements ListenerContract
     /**
      * {@inheritdoc}
      */
-    public function render(\Throwable $e)
+    public function render(\Throwable $t)
     {
-        $inspector = new Inspector($e);
+        $inspector = new Inspector($t);
 
         $this->writer->write($inspector);
     }
@@ -71,79 +70,79 @@ class Listener implements ListenerContract
     /**
      * {@inheritdoc}
      */
-    public function addError(Test $test, Exception $e, $time)
+    public function addError(Test $test, \Throwable $t, float $time): void
     {
         if ($this->exceptionFound === null) {
-            $this->exceptionFound = $e;
+            $this->exceptionFound = $t;
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $t, float $time): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $t, float $time): void
     {
         $this->writer->ignoreFilesIn(['/vendor/'])
             ->showTrace(false);
 
         if ($this->exceptionFound === null) {
-            $this->exceptionFound = $e;
+            $this->exceptionFound = $t;
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addIncompleteTest(Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addRiskyTest(Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSkippedTest(Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, float $time): void
     {
     }
 
