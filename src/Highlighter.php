@@ -21,30 +21,42 @@ use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
-class Highlighter implements HighlighterContract
+class Highlighter extends BaseHighlighter implements HighlighterContract
 {
     /**
-     * Holds an instance of the
-     * base Highlighter.
+     * Holds the theme.
      *
-     * @var \JakubOnderka\PhpConsoleHighlighter\Highlighter
+     * @var array
      */
-    protected $baseHighlighter;
+    protected $theme = [
+        BaseHighlighter::TOKEN_STRING => ['light_gray'],
+        BaseHighlighter::TOKEN_COMMENT => ['dark_gray', 'italic'],
+        BaseHighlighter::TOKEN_KEYWORD => ['yellow'],
+        BaseHighlighter::TOKEN_DEFAULT => ['default', 'bold'],
+        BaseHighlighter::TOKEN_HTML => ['blue', 'bold'],
+        BaseHighlighter::ACTUAL_LINE_MARK => ['bg_red', 'bold'],
+        BaseHighlighter::LINE_NUMBER => ['dark_gray', 'italic'],
+    ];
 
     /**
      * Creates an instance of the Highlighter.
      *
-     * @param \JakubOnderka\PhpConsoleHighlighter\Highlighter|null $baseHighlighter
+     * @param \JakubOnderka\PhpConsoleHighlighter\ConsoleColor|null $color
      */
-    public function __construct(BaseHighlighter $baseHighlighter = null)
+    public function __construct(ConsoleColor $color = null)
     {
-        $this->baseHighlighter = new BaseHighlighter(new ConsoleColor);
+        parent::__construct($color = $color ?: new ConsoleColor);
+
+        foreach ($this->theme as $name => $styles) {
+            $color->addTheme($name, $styles);
+        }
     }
+
     /**
      * {@inheritdoc}
      */
     public function highlight(string $content, int $line): string
     {
-        return $this->baseHighlighter->getCodeSnippet($content, $line, 3, 3);
+        return rtrim($this->getCodeSnippet($content, $line, 4, 4));
     }
 }
