@@ -79,7 +79,7 @@ class Writer implements WriterContract
      *
      * @param \Symfony\Component\Console\Output\OutputInterface|null $output
      * @param \NunoMaduro\Collision\Contracts\ArgumentFormatter|null $argumentFormatter
-     * @param NunoMaduro\Collision\Contracts\Highlighter|null $highlighter
+     * @param \NunoMaduro\Collision\Contracts\Highlighter|null $highlighter
      */
     public function __construct(
         OutputInterface $output = null,
@@ -213,8 +213,6 @@ class Writer implements WriterContract
     protected function renderEditor(Frame $frame): WriterContract
     {
         $this->render('at <fg=green>'.$frame->getFile().'</>'.': <fg=green>'.$frame->getLine().'</>');
-
-        $range = $frame->getFileLines();
 
         $content = $this->highlighter->highlight($frame->getFileContents(), (int) $frame->getLine());
 
