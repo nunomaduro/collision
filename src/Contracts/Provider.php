@@ -12,7 +12,7 @@
 namespace NunoMaduro\Collision\Contracts;
 
 /**
- * This is an Collision Provider implementation.
+ * This is an Collision Provider contract.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
