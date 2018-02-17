@@ -88,7 +88,7 @@ class Writer implements WriterContract
     ) {
         $this->output = $output ?: new ConsoleOutput;
         $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
-        $this->highlighter = $highlighter ?: new Highlighter();
+        $this->highlighter = $highlighter ?: new Highlighter;
     }
 
     /**
