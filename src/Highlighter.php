@@ -12,7 +12,6 @@
 namespace NunoMaduro\Collision;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Symfony\Component\Console\Output\OutputInterface;
 use JakubOnderka\PhpConsoleHighlighter\Highlighter as BaseHighlighter;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 

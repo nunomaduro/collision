@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use ReflectionClass;
 use PHPUnit\Framework\TestCase;
 use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
