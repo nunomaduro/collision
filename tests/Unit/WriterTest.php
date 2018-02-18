@@ -5,7 +5,9 @@ namespace Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Whoops\Exception\Inspector;
 use NunoMaduro\Collision\Writer;
+use NunoMaduro\Collision\Highlighter;
 use Tests\FakeProgram\HelloWorldFile1;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,9 +42,7 @@ class WriterTest extends TestCase
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
-        $output = new BufferedOutput();
-
-        (new Writer($output))->write($inspector);
+        ($writer = $this->createWriter())->write($inspector);
 
         $projectDir = dirname(__DIR__);
 
@@ -51,14 +51,14 @@ class WriterTest extends TestCase
    Tests\FakeProgram\FakeException  : Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php: 9
-  5: class HelloWorldFile3
-  6: {
-  7:     public static function say()
-  8:     {
-  9:         return new FakeException('Fail description');
-  10:     }
-  11: }
-  12: 
+     5| class HelloWorldFile3
+     6| {
+     7|     public static function say()
+     8|     {
+  >  9|         return new FakeException('Fail description');
+    10|     }
+    11| }
+    12|
 
   Exception trace:
 
@@ -72,7 +72,11 @@ class WriterTest extends TestCase
 
 EOF;
 
-        $this->assertEquals($output->fetch(), $result);
+        $this->assertEquals(
+            $writer->getOutput()
+                ->fetch(),
+            $result
+        );
     }
 
     /** @test */
@@ -80,9 +84,10 @@ EOF;
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
-        ($output = new BufferedOutput())->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
+        $writer = $this->createWriter();
+        $writer->getOutput()->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
-        (new Writer($output))->write($inspector);
+        $writer->write($inspector);
 
         $projectDir = dirname(__DIR__);
 
@@ -91,14 +96,14 @@ EOF;
    Tests\FakeProgram\FakeException  : Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php: 9
-  5: class HelloWorldFile3
-  6: {
-  7:     public static function say()
-  8:     {
-  9:         return new FakeException('Fail description');
-  10:     }
-  11: }
-  12: 
+     5| class HelloWorldFile3
+     6| {
+     7|     public static function say()
+     8|     {
+  >  9|         return new FakeException('Fail description');
+    10|     }
+    11| }
+    12|
 
   Exception trace:
 
@@ -112,7 +117,7 @@ EOF;
       $projectDir/Unit/WriterTest.php :
 EOF;
 
-        $this->assertContains($result, $output->fetch());
+        $this->assertContains($result, $writer->getOutput()->fetch());
     }
 
     /** @test */
@@ -120,9 +125,8 @@ EOF;
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
-        $output = new BufferedOutput();
-
-        (new Writer($output))->ignoreFilesIn(['*/FakeProgram/*'])->write($inspector);
+        ($writer = $this->createWriter())->ignoreFilesIn(['*/FakeProgram/*'])
+            ->write($inspector);
 
         $projectDir = dirname(__DIR__);
 
@@ -133,7 +137,11 @@ EOF;
   at $projectDir/Unit/WriterTest.php
 EOF;
 
-        $this->assertContains($result, $output->fetch());
+        $this->assertContains(
+            $result,
+            $writer->getOutput()
+                ->fetch()
+        );
     }
 
     /** @test */
@@ -141,9 +149,8 @@ EOF;
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
-        $output = new BufferedOutput();
-
-        (new Writer($output))->showEditor(false)->write($inspector);
+        ($writer = $this->createWriter())->showEditor(false)
+            ->write($inspector);
 
         $projectDir = dirname(__DIR__);
 
@@ -163,7 +170,11 @@ EOF;
 
 EOF;
 
-        $this->assertContains($result, $output->fetch());
+        $this->assertContains(
+            $result,
+            $writer->getOutput()
+                ->fetch()
+        );
     }
 
     /** @test */
@@ -171,9 +182,8 @@ EOF;
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
-        $output = new BufferedOutput();
-
-        (new Writer($output))->showTrace(false)->write($inspector);
+        ($writer = $this->createWriter())->showTrace(false)
+            ->write($inspector);
 
         $projectDir = dirname(__DIR__);
 
@@ -182,17 +192,29 @@ EOF;
    Tests\FakeProgram\FakeException  : Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php: 9
-  5: class HelloWorldFile3
-  6: {
-  7:     public static function say()
-  8:     {
-  9:         return new FakeException('Fail description');
-  10:     }
-  11: }
-  12: 
-
+     5| class HelloWorldFile3
+     6| {
+     7|     public static function say()
+     8|     {
+  >  9|         return new FakeException('Fail description');
+    10|     }
+    11| }
+    12|
 EOF;
 
-        $this->assertContains($result, $output->fetch());
+        $this->assertContains(
+            $result,
+            $writer->getOutput()
+                ->fetch()
+        );
+    }
+
+    protected function createWriter()
+    {
+        $output = new BufferedOutput();
+
+        $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
+
+        return new Writer($output, null, new Highlighter($colorMock));
     }
 }

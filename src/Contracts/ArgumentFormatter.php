@@ -12,7 +12,7 @@
 namespace NunoMaduro\Collision\Contracts;
 
 /**
- * This is an Collision Argument Formatter implementation.
+ * This is an Collision Argument Formatter contract.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

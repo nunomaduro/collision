@@ -15,7 +15,7 @@ use Whoops\Handler\HandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This is an Collision Handler implementation.
+ * This is an Collision Handler contract.
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
