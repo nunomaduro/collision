@@ -26,11 +26,11 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
 
 if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Version::id(), 0, 2) === '7.') {
 
-/**
- * This is an Collision Phpunit Adapter implementation.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
- */
+    /**
+     * This is an Collision Phpunit Adapter implementation.
+     *
+     * @author Nuno Maduro <enunomaduro@gmail.com>
+     */
     class Listener implements ListenerContract
     {
         /**
