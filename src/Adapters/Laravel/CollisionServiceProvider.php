@@ -53,4 +53,12 @@ class CollisionServiceProvider extends ServiceProvider
             );
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function provides()
+    {
+        return [ProviderContract::class];
+    }
 }
