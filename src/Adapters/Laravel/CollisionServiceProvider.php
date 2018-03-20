@@ -28,6 +28,13 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
 class CollisionServiceProvider extends ServiceProvider
 {
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
+    /**
      * {@inheritdoc}
      */
     public function register()
@@ -45,5 +52,13 @@ class CollisionServiceProvider extends ServiceProvider
                 }
             );
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function provides()
+    {
+        return [ProviderContract::class];
     }
 }
