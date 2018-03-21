@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.2] - 2018-03-21
+### Added
+- Possibility of open file on the specified line. ([#45](https://github.com/nunomaduro/collision/pull/45))
+
 ## [2.0.1] - 2018-03-20
 ### Added
 - Laravel adapter: Defer service provider. ([#46](https://github.com/nunomaduro/collision/pull/46))
