@@ -50,7 +50,7 @@ class WriterTest extends TestCase
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -63,10 +63,10 @@ class WriterTest extends TestCase
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php:9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php:9
 
   Please use the argument -v to see more details.
 
@@ -95,7 +95,7 @@ EOF;
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -108,13 +108,13 @@ EOF;
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php:9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php:9
 
   3   Tests\FakeProgram\HelloWorldFile1::say()
-      $projectDir/Unit/WriterTest.php :
+      $projectDir/Unit/WriterTest.php:
 EOF;
 
         $this->assertContains($result, $writer->getOutput()->fetch());
@@ -161,10 +161,10 @@ EOF;
   Exception trace:
 
   1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php : 9
+      $projectDir/FakeProgram/HelloWorldFile2.php:9
 
   2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php : 9
+      $projectDir/FakeProgram/HelloWorldFile1.php:9
 
   Please use the argument -v to see more details.
 
@@ -191,7 +191,7 @@ EOF;
 
    Tests\FakeProgram\FakeException  : Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php: 9
+  at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
