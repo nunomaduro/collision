@@ -134,6 +134,14 @@ class LaravelTest extends TestCase
         $this->assertSame($method->invokeArgs(new Inspector($exception), [$exception]), $exception->getTrace());
     }
 
+    /** @test */
+    public function it_provides_only_the_provider_contract(): void
+    {
+        $app = $this->createApplication();
+        $provides = (new CollisionServiceProvider($app))->provides();
+        $this->assertEquals([ProviderContract::class], $provides);
+    }
+
     /**
      * Creates a new instance of Laravel Application.
      *
