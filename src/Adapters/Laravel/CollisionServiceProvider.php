@@ -28,9 +28,7 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
 class CollisionServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
+     * {@inheritdoc}
      */
     protected $defer = true;
 
