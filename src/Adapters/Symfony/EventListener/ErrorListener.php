@@ -41,4 +41,3 @@ class ErrorListener
         $event->setExitCode(0);
     }
 }
-
