@@ -33,7 +33,7 @@ class Provider implements ProviderContract
     /**
      * Holds an instance of the handler.
      *
-     * @var \Whoops\Handler\HandlerInterface
+     * @var \NunoMaduro\Collision\Contracts\Handler
      */
     protected $handler;
 

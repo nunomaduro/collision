@@ -214,7 +214,7 @@ class Writer implements WriterContract
     {
         $this->render('at <fg=green>'.$frame->getFile().'</>'.':<fg=green>'.$frame->getLine().'</>');
 
-        $content = $this->highlighter->highlight($frame->getFileContents(), (int) $frame->getLine());
+        $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
         $this->output->writeln($content);
 

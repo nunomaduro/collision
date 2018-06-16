@@ -9,4 +9,5 @@ before_script:
     - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
+    - vendor/bin/phpstan analyse -l 7 src
     - vendor/bin/phpunit --coverage-clover=coverage.xml
