@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3] - 2018-06-17
+### Fixes
+- Ensure that `Highlighter::class` receives a string on the `highlight` method. ([3da3e13](https://github.com/nunomaduro/collision/commit/3da3e13db3e269b63298b8afa4b509da07181c9a))
+
 ## [2.0.2] - 2018-03-21
 ### Added
 - Possibility of open file on the specified line. ([#45](https://github.com/nunomaduro/collision/pull/45))
