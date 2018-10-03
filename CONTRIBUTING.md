@@ -7,7 +7,6 @@ Contributions are welcome, and are accepted via pull requests. Please review the
 
 ## Guidelines
 
-* The git branching model used for development is the one described and assisted by `twgit` tool: [https://github.com/Twenga/twgit](https://github.com/Twenga/twgit).
 * Please follow the [PSR-2 Coding Style Guide](http://www.php-fig.org/psr/psr-2/), enforced by [StyleCI](https://styleci.io/).
 * Ensure that the current tests pass, and if you've added something new, add the tests where relevant.
 * Send a coherent commit history, making sure each individual commit in your pull request is meaningful.
