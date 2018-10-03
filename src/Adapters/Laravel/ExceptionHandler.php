@@ -86,4 +86,15 @@ class ExceptionHandler implements ExceptionHandlerContract
             $handler->handle();
         }
     }
+
+    /**
+     * Determine if the exception should be reported.
+     *
+     * @param  \Exception  $e
+     * @return bool
+     */
+    public function shouldReport(Exception $e)
+    {
+        return $this->appExceptionHandler->shouldReport($e);
+    }
 }
