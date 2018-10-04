@@ -243,7 +243,7 @@ class Writer implements WriterContract
             $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
             $function = $frame->getFunction();
             $args = $this->argumentFormatter->format($frame->getArgs());
-            $pos = str_pad($i + 1, 4, ' ');
+            $pos = str_pad((int) $i + 1, 4, ' ');
 
             $this->render("<comment><fg=cyan>$pos</>$class$function($args)</comment>");
             $this->render("    <fg=green>$file</>:<fg=green>$line</>", false);

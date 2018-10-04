@@ -47,7 +47,7 @@ class Highlighter extends BaseHighlighter implements HighlighterContract
         parent::__construct($color = $color ?: new ConsoleColor);
 
         foreach ($this->theme as $name => $styles) {
-            $color->addTheme($name, $styles);
+            $color->addTheme((string) $name, $styles);
         }
     }
 
