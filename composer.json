@@ -17,7 +17,7 @@
         "php": "^7.1",
         "filp/whoops": "^2.1.4",
         "symfony/console": "~2.8|~3.3|~4.0",
-        "jakub-onderka/php-console-highlighter": "0.3.*"
+        "jakub-onderka/php-console-highlighter": "0.3.*|0.4.*"
     },
     "require-dev": {
         "laravel/framework": "5.7.*",
