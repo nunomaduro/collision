@@ -51,28 +51,47 @@ class ExceptionHandler implements ExceptionHandlerContract
         $this->app = $app;
         $this->appExceptionHandler = $appExceptionHandler;
     }
+    
+    /**
+     * Converts \Throwable to \Exception
+     *
+     * @param  \Throwable|\Exception $e
+     *
+     * @return \Exception
+     */
+    protected function convertThrowable($e)
+    {  
+       return ($e instanceof \Throwable) ? new Exception($e->getMessage(), $e->getCode(), $e) : $e;
+    }
+    
 
     /**
      * {@inheritdoc}
      */
-    public function report(Exception $e)
+    public function report($e)
     {
-        $this->appExceptionHandler->report($e);
+        $this->appExceptionHandler->report(
+            $this->convertThrowable($e)
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function render($request, Exception $e)
+    public function render($request, $e)
     {
-        return $this->appExceptionHandler->render($request, $e);
+        return $this->appExceptionHandler->render(
+            $request, $this->convertThrowable($e)
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderForConsole($output, Exception $e)
+    public function renderForConsole($output, $e)
     {
+        $e = $this->convertThrowable($e);
+        
         if ($e instanceof SymfonyConsoleExceptionInterface) {
             $this->appExceptionHandler->renderForConsole($output, $e);
         } else {
@@ -93,8 +112,10 @@ class ExceptionHandler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return bool
      */
-    public function shouldReport(Exception $e)
+    public function shouldReport($e)
     {
-        return $this->appExceptionHandler->shouldReport($e);
+        return $this->appExceptionHandler->shouldReport(
+            $this->convertThrowable($e)
+        );
     }
 }
