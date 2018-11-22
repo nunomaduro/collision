@@ -52,7 +52,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * Converts \Throwable to \Exception
+     * Converts \Throwable to \Exception.
      *
      * @param  \Throwable|\Exception $e
      *
@@ -62,7 +62,6 @@ class ExceptionHandler implements ExceptionHandlerContract
     {
         return ($e instanceof \Throwable) ? new \Exception($e->getMessage(), $e->getCode(), $e) : $e;
     }
-
 
     /**
      * {@inheritdoc}
