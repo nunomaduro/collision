@@ -88,8 +88,6 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function renderForConsole($output, $e)
     {
-        $e = $this->convertThrowable($e);
-
         if ($e instanceof SymfonyConsoleExceptionInterface) {
             $this->appExceptionHandler->renderForConsole($output, $e);
         } else {
@@ -112,8 +110,6 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function shouldReport($e)
     {
-        return $this->appExceptionHandler->shouldReport(
-            $this->convertThrowable($e)
-        );
+        return $this->appExceptionHandler->shouldReport($e);
     }
 }
