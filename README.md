@@ -64,3 +64,5 @@ You can have a look at the [CHANGELOG](CHANGELOG.md) for constant updates & deta
 ## License
 
 Collision is an open-sourced software licensed under the [MIT license](LICENSE.md).
+
+Logo by [Caneco](https://twitter.com/caneco).
