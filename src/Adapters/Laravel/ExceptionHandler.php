@@ -34,11 +34,11 @@ class ExceptionHandler implements ExceptionHandlerContract
     protected $appExceptionHandler;
 
     /**
-     * Holds an instance of the application.
+     * Holds an instance of the container.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Creates a new instance of the ExceptionHandler.
