@@ -12,7 +12,7 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container as Application;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
