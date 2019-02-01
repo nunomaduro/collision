@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
-if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Version::id(), 0, 2) === '7.') {
+if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) >= 7) {
 
     /**
      * This is an Collision Phpunit Adapter implementation.
