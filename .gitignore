@@ -7,3 +7,4 @@ composer.lock
 /database/
 /vendor/
 coverage.xml
+.phpunit.result.cache
