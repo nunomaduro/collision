@@ -23,7 +23,7 @@
         "laravel/framework": "5.8.*",
         "nunomaduro/larastan": "^0.3.0",
         "phpstan/phpstan": "^0.11",
-        "phpunit/phpunit": "~7.3"
+        "phpunit/phpunit": "~8.0"
     },
     "autoload-dev": {
         "psr-4": {

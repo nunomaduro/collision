@@ -117,7 +117,7 @@ EOF;
       $projectDir/Unit/WriterTest.php:
 EOF;
 
-        $this->assertContains($result, $writer->getOutput()->fetch());
+        $this->assertStringContainsString($result, $writer->getOutput()->fetch());
     }
 
     /** @test */
@@ -137,7 +137,7 @@ EOF;
   at $projectDir/Unit/WriterTest.php
 EOF;
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $result,
             $writer->getOutput()
                 ->fetch()
@@ -170,7 +170,7 @@ EOF;
 
 EOF;
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $result,
             $writer->getOutput()
                 ->fetch()
@@ -202,7 +202,7 @@ EOF;
     12|
 EOF;
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $result,
             $writer->getOutput()
                 ->fetch()
