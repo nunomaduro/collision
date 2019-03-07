@@ -6,5 +6,5 @@ parameters:
         - src
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Contracts\\Debug\\ExceptionHandler::shouldReport().#'
         - '#Parameter \#1 \$input of function str_pad expects string, int given.#'
+        - '#Cannot call method addTheme\(\) on array|JakubOnderka\\PhpConsoleColor\\ConsoleColor#'
