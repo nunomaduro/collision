@@ -59,6 +59,14 @@ class ExceptionHandler implements ExceptionHandlerContract
     {
         $this->appExceptionHandler->report($e);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function shouldReport(Exception $e)
+    {
+        $this->appExceptionHandler->shouldReport($e);
+    }
 
     /**
      * {@inheritdoc}
