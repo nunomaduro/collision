@@ -59,7 +59,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     {
         $this->appExceptionHandler->report($e);
     }
-    
+
     /**
      * {@inheritdoc}
      */
