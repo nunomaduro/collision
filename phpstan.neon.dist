@@ -3,8 +3,7 @@ includes:
 parameters:
     level: max
     paths:
-        - src
+        - src/
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        - '#Parameter \#1 \$input of function str_pad expects string, int given.#'
-        - '#Cannot call method addTheme\(\) on array|JakubOnderka\\PhpConsoleColor\\ConsoleColor#'
+        - '#Parameter \#1 \$input of function str_pad expects string, int given\.#'
