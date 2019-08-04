@@ -20,7 +20,7 @@
         "jakub-onderka/php-console-highlighter": "0.3.*|0.4.*"
     },
     "require-dev": {
-        "laravel/framework": "5.8.*",
+        "laravel/framework": "^6.0",
         "nunomaduro/larastan": "^0.3.0",
         "phpstan/phpstan": "^0.11",
         "phpunit/phpunit": "~8.0"
