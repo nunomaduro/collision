@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "laravel/framework": "^6.0",
-        "nunomaduro/larastan": "^0.3.0",
+        "nunomaduro/larastan": "^0.4",
+        "orchestra/testbench": "^3.8",
         "phpstan/phpstan": "^0.11",
         "phpunit/phpunit": "~8.0"
     },
