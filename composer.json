@@ -47,5 +47,13 @@
                 "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "phpstan:test": "phpstan analyse --ansi",
+        "phpunit:test": "phpunit --colors=always",
+        "test": [
+            "@phpstan:test",
+            "@phpunit:test"
+        ]
     }
 }
