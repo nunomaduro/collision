@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": "^7.1",
+        "facade/ignition-contracts": "^1.0",
         "filp/whoops": "^2.1.4",
         "symfony/console": "~2.8|~3.3|~4.0",
         "jakub-onderka/php-console-highlighter": "0.3.*|0.4.*"
