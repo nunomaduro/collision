@@ -14,17 +14,14 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "filp/whoops": "^2.1.4",
-        "symfony/console": "~2.8|~3.3|~4.0",
-        "jakub-onderka/php-console-highlighter": "0.3.*|0.4.*"
+        "php": "^7.2.5",
+        "filp/whoops": "^2.4",
+        "symfony/console": "^5.0",
+        "jakub-onderka/php-console-highlighter": "^0.4"
     },
     "require-dev": {
-        "laravel/framework": "^6.0",
-        "nunomaduro/larastan": "^0.4",
-        "orchestra/testbench": "^3.8",
-        "phpstan/phpstan": "^0.11",
-        "phpunit/phpunit": "~8.0"
+        "laravel/framework": "^7.0",
+        "phpunit/phpunit": "^8.4.3"
     },
     "autoload-dev": {
         "psr-4": {
@@ -50,11 +47,11 @@
         }
     },
     "scripts": {
-        "phpstan:test": "phpstan analyse --ansi",
-        "phpunit:test": "phpunit --colors=always",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "phpunit --colors=always",
         "test": [
-            "@phpstan:test",
-            "@phpunit:test"
+            "@test:unit",
+            "@test:types"
         ]
     }
 }
