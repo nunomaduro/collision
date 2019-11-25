@@ -53,5 +53,10 @@
             "@test:unit",
             "@test:types"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "4.x-dev"
+        }
     }
 }
