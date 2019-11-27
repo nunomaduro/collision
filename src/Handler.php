@@ -11,10 +11,10 @@
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Handler\Handler as AbstractHandler;
-use Symfony\Component\Console\Output\OutputInterface;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Handler\Handler as AbstractHandler;
 
 /**
  * This is an Collision Handler implementation.

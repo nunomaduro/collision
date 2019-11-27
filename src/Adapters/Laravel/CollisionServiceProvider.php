@@ -11,12 +11,12 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use NunoMaduro\Collision\Provider;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Adapters\Phpunit\Listener;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
-use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
+use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use NunoMaduro\Collision\Provider;
 
 /**
  * This is an Collision Laravel Adapter Service Provider implementation.

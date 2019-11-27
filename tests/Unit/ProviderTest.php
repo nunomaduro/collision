@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use Whoops\Run;
-use Whoops\RunInterface;
-use PHPUnit\Framework\TestCase;
+use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use PHPUnit\Framework\TestCase;
+use Whoops\Run;
+use Whoops\RunInterface;
 
 class ProviderTest extends TestCase
 {

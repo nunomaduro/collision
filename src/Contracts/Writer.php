@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Exception\Inspector;
 
 /**
  * This is the Collision Writer contract.

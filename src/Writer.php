@@ -11,13 +11,13 @@
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Exception\Frame;
-use Whoops\Exception\Inspector;
+use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
-use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use Whoops\Exception\Frame;
+use Whoops\Exception\Inspector;
 
 /**
  * This is an Collision Writer implementation.
