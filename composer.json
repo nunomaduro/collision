@@ -47,6 +47,9 @@
             "providers": [
                 "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-next": "4.x-dev"
         }
     },
     "scripts": {
