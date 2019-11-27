@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use NunoMaduro\Collision\ArgumentFormatter;
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use PHPUnit\Framework\TestCase;
 
 class ArgumentFormatterTest extends TestCase
 {

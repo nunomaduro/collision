@@ -11,10 +11,10 @@
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Run;
-use Whoops\RunInterface;
 use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use Whoops\Run;
+use Whoops\RunInterface;
 
 /**
  * This is an Collision Provider implementation.
