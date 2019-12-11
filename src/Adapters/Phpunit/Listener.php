@@ -11,18 +11,18 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use ReflectionObject;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\Warning;
-use Whoops\Exception\Inspector;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Writer;
-use PHPUnit\Framework\TestSuite;
-use Symfony\Component\Console\Application;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
+use ReflectionObject;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
+use Whoops\Exception\Inspector;
 
 if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) >= 7) {
 

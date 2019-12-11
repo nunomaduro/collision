@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Adapters;
 
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestCase;
-use Whoops\Exception\Inspector;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestResult;
+use NunoMaduro\Collision\Adapters\Phpunit\Listener;
 use NunoMaduro\Collision\Contracts\Writer;
 use PHPUnit\Framework\AssertionFailedError;
-use NunoMaduro\Collision\Adapters\Phpunit\Listener;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
+use Whoops\Exception\Inspector;
 
 class PhpunitTest extends TestCase
 {

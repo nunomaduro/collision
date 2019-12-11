@@ -13,8 +13,8 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Throwable;
 use Illuminate\Contracts\Container\Container;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 
 /**

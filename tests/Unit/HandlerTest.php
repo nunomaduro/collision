@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use NunoMaduro\Collision\Writer;
-use NunoMaduro\Collision\Handler;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
+use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use NunoMaduro\Collision\Handler;
+use NunoMaduro\Collision\Writer;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class HandlerTest extends TestCase
 {
