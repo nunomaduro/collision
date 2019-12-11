@@ -21,6 +21,7 @@
         "jakub-onderka/php-console-highlighter": "^0.4"
     },
     "require-dev": {
+        "orchestra/testbench": "^5.0",
         "laravel/framework": "^7.0",
         "phpunit/phpunit": "^8.4.3"
     },
