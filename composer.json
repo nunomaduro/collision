@@ -49,7 +49,7 @@
             ]
         },
         "branch-alias": {
-            "dev-next": "4.x-dev"
+            "dev-stable": "3.x-dev"
         }
     },
     "scripts": {
