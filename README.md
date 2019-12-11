@@ -19,11 +19,10 @@ Collision was created by, and is maintained by [Nuno Maduro](https://github.com/
 
 - Build on top of [Whoops](https://github.com/filp/whoops).
 - Supports [Laravel](https://github.com/laravel/laravel) Artisan & [PHPUnit](https://github.com/sebastianbergmann/phpunit).
-- Built with [PHP 7](https://php.net) using modern coding standards.
 
 ## Installation & Usage
 
-> **Requires [PHP 7.1+](https://php.net/releases/)**
+> **Requires [PHP 7.2.5+](https://php.net/releases/)**
 
 Require Collision using [Composer](https://getcomposer.org):
 
