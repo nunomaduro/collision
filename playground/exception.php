@@ -4,7 +4,7 @@ use Facade\IgnitionContracts\BaseSolution;
 use Facade\IgnitionContracts\ProvidesSolution;
 use Facade\IgnitionContracts\Solution;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 (new \NunoMaduro\Collision\Provider)->register();
 
@@ -17,4 +17,4 @@ class ClassNotFoundException extends Exception implements ProvidesSolution
     }
 }
 
-throw new ClassNotFoundException("Class `Post` not found.");
+throw new ClassNotFoundException('Class `Post` not found.');
