@@ -204,8 +204,9 @@ class Writer implements WriterContract
         $message = $exception->getMessage();
         $class = $inspector->getExceptionName();
 
-        $this->render("<fg=red;options=bold> $class </>");
-        $this->output->writeln("   $message");
+        $this->render("<fg=red;options=bold>$class</>");
+        $this->output->writeln('');
+        $this->output->writeln("<fg=default;options=bold>  $message</>");
 
         return $this;
     }
@@ -275,8 +276,20 @@ class Writer implements WriterContract
      */
     protected function renderTrace(array $frames): WriterContract
     {
-        $this->render('<comment>Exception trace:</comment>');
+        $this->render('<comment>Stack trace:</comment>');
+
+        $vendorFrames = 0;
         foreach ($frames as $i => $frame) {
+            if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
+                $vendorFrames++;
+                continue;
+            }
+
+            if ($vendorFrames > 0) {
+                $this->render("<fg=default>$vendorFrames   vendor frames...</>");
+                $vendorFrames = 0;
+            }
+
             if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
                 $this->render('<info>Please use the argument <fg=red>-v</> to see more details.</info>');
                 break;
@@ -289,8 +302,8 @@ class Writer implements WriterContract
             $args = $this->argumentFormatter->format($frame->getArgs());
             $pos = str_pad((int) $i + 1, 4, ' ');
 
-            $this->render("<comment><fg=cyan>$pos</>$class$function($args)</comment>");
-            $this->render("    <fg=green>$file</>:<fg=green>$line</>", false);
+            $this->render("<fg=green>$pos$class$function($args)</>");
+            $this->render("    $file:$line", false);
         }
 
         return $this;
