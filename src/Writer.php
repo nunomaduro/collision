@@ -285,8 +285,11 @@ class Writer implements WriterContract
                 continue;
             }
 
+
             if ($vendorFrames > 0) {
-                $this->render("<fg=default>$vendorFrames   vendor frames...</>");
+                $pos = str_pad((int) $vendorFrames + 1, 4, ' ');
+                $description = 'vendor frames...';
+                $this->render("<fg=default>$pos$description</>");
                 $vendorFrames = 0;
             }
 
