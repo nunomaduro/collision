@@ -14,6 +14,10 @@ namespace NunoMaduro\Collision;
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use Facade\IgnitionContracts\Solution;
+use Facade\IgnitionContracts\ProvidesSolution;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Whoops\Exception\Frame;
@@ -77,16 +81,17 @@ class Writer implements WriterContract
     /**
      * Creates an instance of the writer.
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface|null $output
-     * @param \NunoMaduro\Collision\Contracts\ArgumentFormatter|null $argumentFormatter
-     * @param \NunoMaduro\Collision\Contracts\Highlighter|null $highlighter
+     * @param  \Symfony\Component\Console\Output\OutputInterface|null  $output
+     * @param  \NunoMaduro\Collision\Contracts\ArgumentFormatter|null  $argumentFormatter
+     * @param  \NunoMaduro\Collision\Contracts\Highlighter|null  $highlighter
      */
     public function __construct(
         OutputInterface $output = null,
         ArgumentFormatterContract $argumentFormatter = null,
         HighlighterContract $highlighter = null
-    ) {
-        $this->output = $output ?: new ConsoleOutput;
+    )
+    {
+        $this->output = $output ?: new SymfonyStyle(new ArrayInput([]), new ConsoleOutput);
         $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
         $this->highlighter = $highlighter ?: new Highlighter;
     }
@@ -98,9 +103,12 @@ class Writer implements WriterContract
     {
         $this->renderTitle($inspector);
 
+        $this->renderSolution($inspector);
+
         $frames = $this->getFrames($inspector);
 
         $editorFrame = array_shift($frames);
+
         if ($this->showEditor && $editorFrame !== null) {
             $this->renderEditor($editorFrame);
         }
@@ -163,7 +171,7 @@ class Writer implements WriterContract
     /**
      * Returns pertinent frames.
      *
-     * @param  \Whoops\Exception\Inspector $inspector
+     * @param  \Whoops\Exception\Inspector  $inspector
      *
      * @return array
      */
@@ -187,7 +195,7 @@ class Writer implements WriterContract
     /**
      * Renders the title of the exception.
      *
-     * @param \Whoops\Exception\Inspector $inspector
+     * @param  \Whoops\Exception\Inspector  $inspector
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -197,7 +205,45 @@ class Writer implements WriterContract
         $message = $exception->getMessage();
         $class = $inspector->getExceptionName();
 
-        $this->render("<bg=red;options=bold> $class </> : <comment>$message</>");
+        $this->render("<fg=red;options=bold> $class </>");
+        $this->output->writeln("   $message");
+
+        return $this;
+    }
+
+    /**
+     * Renders the solution of the exception, if any.
+     *
+     * @param  \Whoops\Exception\Inspector  $inspector
+     *
+     * @return \NunoMaduro\Collision\Contracts\Writer
+     */
+    protected function renderSolution(Inspector $inspector): WriterContract
+    {
+        $throwable = $inspector->getException();
+        $solutions = [];
+
+        if ($throwable instanceof Solution) {
+            $solutions[] = $throwable;
+        }
+
+        if ($throwable instanceof ProvidesSolution) {
+            $solutions[] = $throwable->getSolution();
+        }
+
+        foreach ($solutions as $solution) {
+            $this->output->newline();
+            /** @var \Facade\IgnitionContracts\Solution $solution */
+            $title = $solution->getSolutionTitle();
+            $description = $solution->getSolutionDescription();
+            $links = $solution->getDocumentationLinks();
+
+            $this->output->block("  $title \n  $description", null, 'fg=black;bg=green', ' ', true);
+
+            foreach ($links as $link) {
+                $this->render($link);
+            }
+        }
 
         return $this;
     }
@@ -206,13 +252,13 @@ class Writer implements WriterContract
      * Renders the editor containing the code that was the
      * origin of the exception.
      *
-     * @param \Whoops\Exception\Frame $frame
+     * @param  \Whoops\Exception\Frame  $frame
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $this->render('at <fg=green>'.$frame->getFile().'</>'.':<fg=green>'.$frame->getLine().'</>');
+        $this->render('at <fg=green>' . $frame->getFile() . '</>' . ':<fg=green>' . $frame->getLine() . '</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -224,7 +270,7 @@ class Writer implements WriterContract
     /**
      * Renders the trace of the exception.
      *
-     * @param  array $frames
+     * @param  array  $frames
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -232,15 +278,14 @@ class Writer implements WriterContract
     {
         $this->render('<comment>Exception trace:</comment>');
         foreach ($frames as $i => $frame) {
-            if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity(
-                ) < OutputInterface::VERBOSITY_VERBOSE) {
+            if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
                 $this->render('<info>Please use the argument <fg=red>-v</> to see more details.</info>');
                 break;
             }
 
             $file = $frame->getFile();
             $line = $frame->getLine();
-            $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
+            $class = empty($frame->getClass()) ? '' : $frame->getClass() . '::';
             $function = $frame->getFunction();
             $args = $this->argumentFormatter->format($frame->getArgs());
             $pos = str_pad((int) $i + 1, 4, ' ');
@@ -255,8 +300,8 @@ class Writer implements WriterContract
     /**
      * Renders an message into the console.
      *
-     * @param  string $message
-     * @param  bool $break
+     * @param  string  $message
+     * @param  bool  $break
      *
      * @return $this
      */
@@ -269,5 +314,24 @@ class Writer implements WriterContract
         $this->output->writeln("  $message");
 
         return $this;
+    }
+
+    /**
+     * Formats a message as a block of text.
+     *
+     * @param  string|array  $messages The message to write in the block
+     * @param  string|null  $type The block type (added in [] on first line)
+     * @param  string|null  $style The style to apply to the whole block
+     * @param  string  $prefix The prefix for the block
+     * @param  bool  $padding Whether to add vertical padding
+     * @param  bool  $escape Whether to escape the message
+     */
+    protected function block($messages, $type = null, $style = null, $prefix = ' ', $padding = false, $escape = true)
+    {
+        $messages = \is_array($messages) ? array_values($messages) : [$messages];
+
+        $this->autoPrependBlock();
+        $this->writeln($this->createBlock($messages, $type, $style, $prefix, $padding, $escape));
+        $this->newLine();
     }
 }
