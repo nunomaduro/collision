@@ -163,7 +163,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         protected function buildWriter(): WriterContract
         {
-            $writer = new Writer;
+            $writer = new Writer();
 
             $application = new Application();
             $reflector = new ReflectionObject($application);
