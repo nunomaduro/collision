@@ -17,10 +17,11 @@
         "php": "^7.2.5",
         "facade/ignition-contracts": "^1.0",
         "filp/whoops": "^2.4",
-        "symfony/console": "^5.0",
-        "jakub-onderka/php-console-highlighter": "^0.4"
+        "jakub-onderka/php-console-highlighter": "^0.4",
+        "symfony/console": "^5.0"
     },
     "require-dev": {
+        "nunomaduro/larastan": "dev-master",
         "orchestra/testbench": "^5.0",
         "laravel/framework": "^7.0",
         "phpunit/phpunit": "^8.4.3"
