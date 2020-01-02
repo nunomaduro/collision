@@ -15,6 +15,8 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\ExceptionWrapper;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
@@ -41,16 +43,9 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         protected $writer;
 
         /**
-         * Holds the exception found, if any.
-         *
-         * @var \Throwable|null
-         */
-        protected $exceptionFound;
-
-        /**
          * Creates a new instance of the class.
          *
-         * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
+         * @param  \NunoMaduro\Collision\Contracts\Writer|null  $writer
          */
         public function __construct(WriterContract $writer = null)
         {
@@ -62,9 +57,21 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function render(\Throwable $t)
         {
+            if ($t instanceof ExceptionWrapper && $t->getOriginalException() !== null) {
+                $t = $t->getOriginalException();
+            }
+
             $inspector = new Inspector($t);
 
+            $this->writer->getOutput()->writeln('');
+
             $this->writer->write($inspector);
+
+            if ($t instanceof ExpectationFailedException && $comparisionFailure = $t->getComparisonFailure()) {
+                $this->writer->getOutput()->write($comparisionFailure->getDiff());
+            }
+
+            $this->terminate();
         }
 
         /**
@@ -72,9 +79,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addError(Test $test, \Throwable $t, float $time): void
         {
-            if ($this->exceptionFound === null) {
-                $this->exceptionFound = $t;
-            }
+            $this->render($t);
         }
 
         /**
@@ -89,12 +94,21 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addFailure(Test $test, AssertionFailedError $t, float $time): void
         {
-            $this->writer->ignoreFilesIn(['/vendor/'])
-            ->showTrace(false);
+            $this->writer->ignoreFilesIn([
+                '/vendor\/phpunit\/phpunit\/src/',
+                '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/'
+            ]);
 
-            if ($this->exceptionFound === null) {
-                $this->exceptionFound = $t;
+            $reflector = new ReflectionObject($t);
+
+            if ($reflector->hasProperty('message')) {
+                $message = trim((string) preg_replace("/\r|\n/", ' ', $t->getMessage()));
+                $property = $reflector->getProperty('message');
+                $property->setAccessible(true);
+                $property->setValue($t, $message);
             }
+
+            $this->render($t);
         }
 
         /**
@@ -147,16 +161,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         }
 
         /**
-         * {@inheritdoc}
-         */
-        public function __destruct()
-        {
-            if ($this->exceptionFound !== null) {
-                $this->render($this->exceptionFound);
-            }
-        }
-
-        /**
          * Builds an Writer.
          *
          * @return \NunoMaduro\Collision\Contracts\Writer
@@ -172,6 +176,14 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
             $method->invoke($application, new ArgvInput, $output = new ConsoleOutput);
 
             return $writer->setOutput($output);
+        }
+
+        /**
+         * Terminates the test.
+         */
+        public function terminate(): void
+        {
+            exit(1);
         }
     }
 }
