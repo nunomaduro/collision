@@ -11,7 +11,6 @@
 
 namespace NunoMaduro\Collision\SolutionsRepositories;
 
-use Facade\IgnitionContracts\BaseSolution;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use Throwable;
 
@@ -23,7 +22,7 @@ use Throwable;
 class NullSolutionsRepository implements SolutionsRepository
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getFromThrowable(Throwable $throwable): array
     {
