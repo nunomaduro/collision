@@ -18,7 +18,6 @@
     <testsuites>
         <testsuite name="Collision Test Suite">
             <directory suffix="Test.php">./tests</directory>
-            <exclude>./tests/Unit/WriterTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>

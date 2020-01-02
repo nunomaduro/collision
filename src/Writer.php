@@ -11,15 +11,13 @@
 
 namespace NunoMaduro\Collision;
 
-use Facade\IgnitionContracts\ProvidesSolution;
-use Facade\IgnitionContracts\Solution;
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
+use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use Symfony\Component\Console\Input\ArrayInput;
+use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
@@ -34,6 +32,13 @@ class Writer implements WriterContract
      * The number of frames if no verbosity is specified.
      */
     const VERBOSITY_NORMAL_FRAMES = 1;
+
+    /**
+     * Holds an instance of the solutions repository.
+     *
+     * @var \NunoMaduro\Collision\Contracts\SolutionsRepository
+     */
+    private $solutionsRepository;
 
     /**
      * Holds an instance of the Output.
@@ -81,16 +86,20 @@ class Writer implements WriterContract
     /**
      * Creates an instance of the writer.
      *
+     * @param  \NunoMaduro\Collision\Contracts\SolutionsRepository|null  $solutionsRepository
      * @param  \Symfony\Component\Console\Output\OutputInterface|null  $output
      * @param  \NunoMaduro\Collision\Contracts\ArgumentFormatter|null  $argumentFormatter
      * @param  \NunoMaduro\Collision\Contracts\Highlighter|null  $highlighter
      */
     public function __construct(
+        SolutionsRepository $solutionsRepository = null,
         OutputInterface $output = null,
         ArgumentFormatterContract $argumentFormatter = null,
         HighlighterContract $highlighter = null
-    ) {
-        $this->output = $output ?: new SymfonyStyle(new ArrayInput([]), new ConsoleOutput);
+    )
+    {
+        $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository();
+        $this->output = $output ?: new ConsoleOutput();
         $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
         $this->highlighter = $highlighter ?: new Highlighter;
     }
@@ -102,8 +111,6 @@ class Writer implements WriterContract
     {
         $this->renderTitle($inspector);
 
-        $this->renderSolution($inspector);
-
         $frames = $this->getFrames($inspector);
 
         $editorFrame = array_shift($frames);
@@ -111,6 +118,8 @@ class Writer implements WriterContract
         if ($this->showEditor && $editorFrame !== null) {
             $this->renderEditor($editorFrame);
         }
+
+        $this->renderSolution($inspector);
 
         if ($this->showTrace && ! empty($frames)) {
             $this->renderTrace($frames);
@@ -204,7 +213,7 @@ class Writer implements WriterContract
         $message = $exception->getMessage();
         $class = $inspector->getExceptionName();
 
-        $this->render("<fg=red;options=bold>$class</>");
+        $this->render("<bg=red;options=bold> $class </>");
         $this->output->writeln('');
         $this->output->writeln("<fg=default;options=bold>  $message</>");
 
@@ -221,28 +230,24 @@ class Writer implements WriterContract
     protected function renderSolution(Inspector $inspector): WriterContract
     {
         $throwable = $inspector->getException();
-        $solutions = [];
-
-        if ($throwable instanceof Solution) {
-            $solutions[] = $throwable;
-        }
-
-        if ($throwable instanceof ProvidesSolution) {
-            $solutions[] = $throwable->getSolution();
-        }
+        $solutions = $this->solutionsRepository->getFromThrowable($throwable);
 
         foreach ($solutions as $solution) {
-            $this->output->newline();
             /** @var \Facade\IgnitionContracts\Solution $solution */
             $title = $solution->getSolutionTitle();
             $description = $solution->getSolutionDescription();
             $links = $solution->getDocumentationLinks();
 
-            $this->output->block("  $title \n  $description", null, 'fg=black;bg=green', ' ', true);
+            $description = trim((string) preg_replace("/\n/", "\n    ", $description));
 
-            foreach ($links as $link) {
-                $this->render($link);
-            }
+            $this->render(sprintf(
+                "<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s",
+                rtrim($title, '.'),
+                $description,
+                implode(', ', array_map(function (string $link) {
+                    return sprintf("\n    <fg=blue>%s</>", $link);
+                }, $links))
+            ));
         }
 
         return $this;
@@ -258,7 +263,7 @@ class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $this->render('at <fg=green>'.$frame->getFile().'</>'.':<fg=green>'.$frame->getLine().'</>');
+        $this->render('at <fg=green>' . $frame->getFile() . '</>' . ':<fg=green>' . $frame->getLine() . '</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -276,37 +281,37 @@ class Writer implements WriterContract
      */
     protected function renderTrace(array $frames): WriterContract
     {
-        $this->render('<comment>Stack trace:</comment>');
-
         $vendorFrames = 0;
+        $userFrames = 0;
         foreach ($frames as $i => $frame) {
+
             if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
                 $vendorFrames++;
                 continue;
             }
 
-
-            if ($vendorFrames > 0) {
-                $pos = str_pad((int) $vendorFrames + 1, 4, ' ');
-                $description = 'vendor frames...';
-                $this->render("<fg=default>$pos$description</>");
-                $vendorFrames = 0;
-            }
-
-            if ($i > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
-                $this->render('<info>Please use the argument <fg=red>-v</> to see more details.</info>');
+            if ($userFrames > static::VERBOSITY_NORMAL_FRAMES && $this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
                 break;
             }
 
+            $userFrames++;
+
             $file = $frame->getFile();
             $line = $frame->getLine();
-            $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
+            $class = empty($frame->getClass()) ? '' : $frame->getClass() . '::';
             $function = $frame->getFunction();
             $args = $this->argumentFormatter->format($frame->getArgs());
             $pos = str_pad((int) $i + 1, 4, ' ');
 
-            $this->render("<fg=green>$pos$class$function($args)</>");
-            $this->render("    $file:$line", false);
+            if ($vendorFrames > 0) {
+                $this->output->write(
+                    sprintf("\n      \e[2m+%s vendor frames \e[22m", $vendorFrames)
+                );
+                $vendorFrames = 0;
+            }
+
+            $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>");
+            $this->render("<fg=white>    $class$function($args)</>", false);
         }
 
         return $this;
@@ -329,24 +334,5 @@ class Writer implements WriterContract
         $this->output->writeln("  $message");
 
         return $this;
-    }
-
-    /**
-     * Formats a message as a block of text.
-     *
-     * @param  string|array  $messages The message to write in the block
-     * @param  string|null  $type The block type (added in [] on first line)
-     * @param  string|null  $style The style to apply to the whole block
-     * @param  string  $prefix The prefix for the block
-     * @param  bool  $padding Whether to add vertical padding
-     * @param  bool  $escape Whether to escape the message
-     */
-    protected function block($messages, $type = null, $style = null, $prefix = ' ', $padding = false, $escape = true)
-    {
-        $messages = \is_array($messages) ? array_values($messages) : [$messages];
-
-        $this->autoPrependBlock();
-        $this->writeln($this->createBlock($messages, $type, $style, $prefix, $padding, $escape));
-        $this->newLine();
     }
 }

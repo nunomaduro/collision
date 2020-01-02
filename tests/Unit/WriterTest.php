@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
 use Whoops\Exception\Inspector;
+use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 
 class WriterTest extends TestCase
 {
@@ -24,7 +25,7 @@ class WriterTest extends TestCase
     /** @test */
     public function it_gets_the_output(): void
     {
-        $writer = new Writer($output = new ConsoleOutput());
+        $writer = new Writer(new NullSolutionsRepository(), $output = new ConsoleOutput());
 
         $this->assertEquals($writer->getOutput(), $output);
     }
@@ -48,7 +49,9 @@ class WriterTest extends TestCase
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
+
+  Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
@@ -60,15 +63,11 @@ class WriterTest extends TestCase
     11| }
     12|
 
-  Exception trace:
+  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
-
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  Please use the argument -v to see more details.
+  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 
 EOF;
 
@@ -93,7 +92,9 @@ EOF;
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
+
+  Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
@@ -105,16 +106,14 @@ EOF;
     11| }
     12|
 
-  Exception trace:
+  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
+  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  3   Tests\FakeProgram\HelloWorldFile1::say()
-      $projectDir/Unit/WriterTest.php:
+  3   $projectDir/Unit/WriterTest.php:84
+      Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
@@ -132,7 +131,9 @@ EOF;
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
+
+  Fail description
 
   at $projectDir/Unit/WriterTest.php
 EOF;
@@ -156,18 +157,15 @@ EOF;
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  Exception trace:
+  Fail description
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
+  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  Please use the argument -v to see more details.
-
+  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 EOF;
 
         $this->assertStringContainsString(
@@ -189,7 +187,9 @@ EOF;
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
+
+  Fail description
 
   at $projectDir/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
@@ -200,6 +200,7 @@ EOF;
     10|     }
     11| }
     12|
+
 EOF;
 
         $this->assertStringContainsString(
@@ -215,6 +216,6 @@ EOF;
 
         $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
 
-        return new Writer($output, null, new Highlighter($colorMock));
+        return new Writer(new NullSolutionsRepository(), $output, null, new Highlighter($colorMock));
     }
 }
