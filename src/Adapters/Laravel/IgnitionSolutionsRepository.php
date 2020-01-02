@@ -11,8 +11,6 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use Facade\IgnitionContracts\ProvidesSolution;
-use Facade\IgnitionContracts\Solution;
 use Facade\IgnitionContracts\SolutionProviderRepository;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use Throwable;
@@ -44,7 +42,7 @@ class IgnitionSolutionsRepository implements SolutionsRepository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getFromThrowable(Throwable $throwable): array
     {

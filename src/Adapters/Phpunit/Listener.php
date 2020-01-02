@@ -96,7 +96,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         {
             $this->writer->ignoreFilesIn([
                 '/vendor\/phpunit\/phpunit\/src/',
-                '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/'
+                '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
             ]);
 
             $reflector = new ReflectionObject($t);

@@ -96,8 +96,7 @@ class Writer implements WriterContract
         OutputInterface $output = null,
         ArgumentFormatterContract $argumentFormatter = null,
         HighlighterContract $highlighter = null
-    )
-    {
+    ) {
         $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository();
         $this->output = $output ?: new ConsoleOutput();
         $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
@@ -241,7 +240,7 @@ class Writer implements WriterContract
             $description = trim((string) preg_replace("/\n/", "\n    ", $description));
 
             $this->render(sprintf(
-                "<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s",
+                '<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s',
                 rtrim($title, '.'),
                 $description,
                 implode(', ', array_map(function (string $link) {
@@ -263,7 +262,7 @@ class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $this->render('at <fg=green>' . $frame->getFile() . '</>' . ':<fg=green>' . $frame->getLine() . '</>');
+        $this->render('at <fg=green>'.$frame->getFile().'</>'.':<fg=green>'.$frame->getLine().'</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -284,7 +283,6 @@ class Writer implements WriterContract
         $vendorFrames = 0;
         $userFrames = 0;
         foreach ($frames as $i => $frame) {
-
             if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
                 $vendorFrames++;
                 continue;
@@ -298,7 +296,7 @@ class Writer implements WriterContract
 
             $file = $frame->getFile();
             $line = $frame->getLine();
-            $class = empty($frame->getClass()) ? '' : $frame->getClass() . '::';
+            $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
             $function = $frame->getFunction();
             $args = $this->argumentFormatter->format($frame->getArgs());
             $pos = str_pad((int) $i + 1, 4, ' ');
