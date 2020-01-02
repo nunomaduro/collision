@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Highlighter;
+use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -12,7 +13,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
 use Whoops\Exception\Inspector;
-use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 
 class WriterTest extends TestCase
 {
