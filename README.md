@@ -13,12 +13,13 @@
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/license.svg" alt="License"></a>
 </p>
 
-## About Collision
+---
 
-Collision was created by, and is maintained by [Nuno Maduro](https://github.com/nunomaduro), and is an error handler framework for console/command-line PHP applications.
+Collision was created by, and is maintained by **[Nuno Maduro](https://github.com/nunomaduro)**, and is a package designed to give you beautiful error reporting when interacting with your app through the command line.
 
-- Build on top of [Whoops](https://github.com/filp/whoops).
-- Supports [Laravel](https://github.com/laravel/laravel) Artisan & [PHPUnit](https://github.com/sebastianbergmann/phpunit).
+* It's included on **[Laravel](https://laravel.com)**, the most popular free, open-source PHP framework in the world.
+* Built on top of the **[Whoops](https://github.com/filp/whoops)** error handler.
+* Supports [Laravel](https://github.com/laravel/laravel), [Symfony](https://symfony.com), [PHPUnit](https://github.com/sebastianbergmann/phpunit), and many other frameworks.
 
 ## Installation & Usage
 
@@ -28,12 +29,6 @@ Require Collision using [Composer](https://getcomposer.org):
 
 ```bash
 composer require nunomaduro/collision --dev
-```
-
-If you are not using Laravel, you need to register the handler in your code:
-
-```php
-(new \NunoMaduro\Collision\Provider)->register();
 ```
 
 ## Lumen adapter
@@ -51,9 +46,17 @@ Phpunit must be 7.0 or higher.
 Add the following configuration to your `phpunit.xml`:
 
 ```xml
-    <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
-    </listeners>
+<listeners>
+    <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
+</listeners>
+```
+
+## No adapter
+
+You need to register the handler in your code:
+
+```php
+(new \NunoMaduro\Collision\Provider)->register();
 ```
 
 ## Contributing
