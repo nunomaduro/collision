@@ -270,7 +270,8 @@ class Writer implements WriterContract
     {
         $file = $this->getFileRelativePath((string) $frame->getFile());
 
-        $line = $frame->getLine() ?? '0';
+        // getLine() might return null so cast to int to get 0 instead
+        $line = (int) $frame->getLine();
         $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$line.'</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
