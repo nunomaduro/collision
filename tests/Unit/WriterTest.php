@@ -45,15 +45,13 @@ class WriterTest extends TestCase
 
         ($writer = $this->createWriter())->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException 
 
   Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -63,10 +61,10 @@ class WriterTest extends TestCase
     11| }
     12|
 
-  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:9
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:9
       Tests\FakeProgram\HelloWorldFile2::say()
 
 EOF;
@@ -88,15 +86,13 @@ EOF;
 
         $writer->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException 
 
   Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -106,13 +102,13 @@ EOF;
     11| }
     12|
 
-  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:9
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:9
       Tests\FakeProgram\HelloWorldFile2::say()
 
-  3   $projectDir/Unit/WriterTest.php:84
+  3   tests/Unit/WriterTest.php:82
       Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
@@ -127,15 +123,13 @@ EOF;
         ($writer = $this->createWriter())->ignoreFilesIn(['*/FakeProgram/*'])
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException 
 
   Fail description
 
-  at $projectDir/Unit/WriterTest.php
+  at tests/Unit/WriterTest.php
 EOF;
 
         $this->assertStringContainsString(
@@ -153,18 +147,16 @@ EOF;
         ($writer = $this->createWriter())->showEditor(false)
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException 
 
   Fail description
 
-  1   $projectDir/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:9
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   $projectDir/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:9
       Tests\FakeProgram\HelloWorldFile2::say()
 EOF;
 
@@ -183,15 +175,13 @@ EOF;
         ($writer = $this->createWriter())->showTrace(false)
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
    Tests\FakeProgram\FakeException 
 
   Fail description
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()

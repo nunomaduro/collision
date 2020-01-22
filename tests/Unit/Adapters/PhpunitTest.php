@@ -29,9 +29,9 @@ class PhpunitTest extends TestCase
         $exception = new FakeException();
         $listenerMock->expects($this->once())->method('terminate');
         $writerMock->expects($this->once())->method('write')->with(new Inspector($exception));
-
+        $test = new FakeTest();
         $listenerMock->__construct($writerMock);
-        $listenerMock->render($exception);
+        $listenerMock->render($test, $exception);
     }
 
     /** @test */
@@ -39,8 +39,9 @@ class PhpunitTest extends TestCase
     {
         $listenerMock = $this->createPartialMock(Listener::class, ['render']);
         $exception = new FakeException();
-        $listenerMock->expects($this->once())->method('render')->with($exception);
-        $listenerMock->addError(new FakeTest, $exception, 0);
+        $test = new FakeTest();
+        $listenerMock->expects($this->once())->method('render')->with($test, $exception);
+        $listenerMock->render($test, $exception);
     }
 
     /** @test */
@@ -79,17 +80,12 @@ class PhpunitTest extends TestCase
     public function it_adds_an_failure(): void
     {
         $listenerMock = $this->createPartialMock(Listener::class, ['render']);
-        $writerMock = $this->createMock(Writer::class);
-
-        $writerMock->expects($this->once())->method('ignoreFilesIn')->willReturn($writerMock);
-
-        $listenerMock->__construct($writerMock);
-
         $exception = new FakeException();
-        $listenerMock->expects($this->once())->method('render')->with($exception);
+        $test = new FakeTest();
+        $listenerMock->expects($this->once())->method('render')->with($test, $exception);
 
         $listenerMock->addFailure(
-            new FakeTest,
+            $test,
             $exception,
             0
         );

@@ -209,7 +209,7 @@ class Writer implements WriterContract
     protected function renderTitle(Inspector $inspector): WriterContract
     {
         $exception = $inspector->getException();
-        $message = $exception->getMessage();
+        $message = rtrim($exception->getMessage());
         $class = $inspector->getExceptionName();
 
         $this->render("<bg=red;options=bold> $class </>");
@@ -262,7 +262,9 @@ class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $this->render('at <fg=green>'.$frame->getFile().'</>'.':<fg=green>'.$frame->getLine().'</>');
+        $file = $this->getFileRelativePath((string) $frame->getFile());
+
+        $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$frame->getLine().'</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -294,7 +296,7 @@ class Writer implements WriterContract
 
             $userFrames++;
 
-            $file = $frame->getFile();
+            $file = $this->getFileRelativePath($frame->getFile());
             $line = $frame->getLine();
             $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
             $function = $frame->getFunction();
@@ -311,6 +313,15 @@ class Writer implements WriterContract
             $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>");
             $this->render("<fg=white>    $class$function($args)</>", false);
         }
+
+        /** Let's consider add this later...
+        if ($vendorFrames > 0) {
+            $this->output->write(
+                sprintf("\n      \e[2m+%s vendor frames \e[22m\n", $vendorFrames)
+            );
+            $vendorFrames = 0;
+        }
+        */
 
         return $this;
     }
@@ -332,5 +343,23 @@ class Writer implements WriterContract
         $this->output->writeln("  $message");
 
         return $this;
+    }
+
+    /**
+     * Returns the relative path of the given file path.
+     *
+     * @param  string $filePath
+     *
+     * @return string
+     */
+    protected function getFileRelativePath(string $filePath): string
+    {
+        $cwd = (string) getcwd();
+
+        if (! empty($cwd)) {
+            return str_replace("$cwd/", '', $filePath);
+        }
+
+        return $filePath;
     }
 }
