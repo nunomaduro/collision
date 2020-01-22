@@ -11,11 +11,11 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
+use Throwable;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
@@ -55,7 +55,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     /**
      * {@inheritdoc}
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         $this->appExceptionHandler->report($e);
     }
@@ -63,7 +63,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     /**
      * {@inheritdoc}
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         return $this->appExceptionHandler->render($request, $e);
     }
@@ -71,7 +71,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     /**
      * {@inheritdoc}
      */
-    public function renderForConsole($output, Exception $e)
+    public function renderForConsole($output, Throwable $e)
     {
         if ($e instanceof SymfonyConsoleExceptionInterface) {
             $this->appExceptionHandler->renderForConsole($output, $e);
@@ -93,7 +93,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return bool
      */
-    public function shouldReport(Exception $e)
+    public function shouldReport(Throwable $e)
     {
         return $this->appExceptionHandler->shouldReport($e);
     }

@@ -4,7 +4,9 @@ parameters:
     level: max
     paths:
         - src
+    checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Parameter \#1 \$input of function str_pad expects string, int given.#'
         - '#Cannot call method addTheme\(\) on array|JakubOnderka\\PhpConsoleColor\\ConsoleColor#'
+        - '#Method NunoMaduro\\Collision\\Adapters\\Laravel\\IgnitionSolutionsRepository::getFromThrowable\(\) should return array<int,#'

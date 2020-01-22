@@ -23,10 +23,15 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_renders_exceptions_using_the_writer(): void
     {
+        $listenerMock = $this->createPartialMock(Listener::class, ['terminate']);
+
         $writerMock = $this->createMock(Writer::class);
         $exception = new FakeException();
+        $listenerMock->expects($this->once())->method('terminate');
         $writerMock->expects($this->once())->method('write')->with(new Inspector($exception));
-        (new Listener($writerMock))->render($exception);
+        $test = new FakeTest();
+        $listenerMock->__construct($writerMock);
+        $listenerMock->render($test, $exception);
     }
 
     /** @test */
@@ -34,9 +39,9 @@ class PhpunitTest extends TestCase
     {
         $listenerMock = $this->createPartialMock(Listener::class, ['render']);
         $exception = new FakeException();
-        $listenerMock->expects($this->once())->method('render')->with($exception);
-        $listenerMock->addError(new FakeTest, $exception, 0);
-        $listenerMock->__destruct();
+        $test = new FakeTest();
+        $listenerMock->expects($this->once())->method('render')->with($test, $exception);
+        $listenerMock->render($test, $exception);
     }
 
     /** @test */
@@ -75,22 +80,15 @@ class PhpunitTest extends TestCase
     public function it_adds_an_failure(): void
     {
         $listenerMock = $this->createPartialMock(Listener::class, ['render']);
-        $writerMock = $this->createMock(Writer::class);
-
-        $writerMock->expects($this->once())->method('ignoreFilesIn')->willReturn($writerMock);
-        $writerMock->expects($this->once())->method('showTrace')->with(false);
-
-        $listenerMock->__construct($writerMock);
-
         $exception = new FakeException();
-        $listenerMock->expects($this->once())->method('render')->with($exception);
+        $test = new FakeTest();
+        $listenerMock->expects($this->once())->method('render')->with($test, $exception);
+
         $listenerMock->addFailure(
-            new FakeTest,
+            $test,
             $exception,
             0
         );
-
-        $listenerMock->__destruct();
     }
 }
 

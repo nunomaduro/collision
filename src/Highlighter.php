@@ -30,11 +30,11 @@ class Highlighter extends BaseHighlighter implements HighlighterContract
     protected $theme = [
         BaseHighlighter::TOKEN_STRING => ['light_gray'],
         BaseHighlighter::TOKEN_COMMENT => ['dark_gray', 'italic'],
-        BaseHighlighter::TOKEN_KEYWORD => ['yellow'],
+        BaseHighlighter::TOKEN_KEYWORD => ['magenta', 'bold'],
         BaseHighlighter::TOKEN_DEFAULT => ['default', 'bold'],
         BaseHighlighter::TOKEN_HTML => ['blue', 'bold'],
-        BaseHighlighter::ACTUAL_LINE_MARK => ['bg_red', 'bold'],
-        BaseHighlighter::LINE_NUMBER => ['dark_gray', 'italic'],
+        BaseHighlighter::ACTUAL_LINE_MARK => ['red', 'bold'],
+        BaseHighlighter::LINE_NUMBER => ['dark_gray'],
     ];
 
     /**

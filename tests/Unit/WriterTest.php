@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Highlighter;
+use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -24,7 +25,7 @@ class WriterTest extends TestCase
     /** @test */
     public function it_gets_the_output(): void
     {
-        $writer = new Writer($output = new ConsoleOutput());
+        $writer = new Writer(new NullSolutionsRepository(), $output = new ConsoleOutput());
 
         $this->assertEquals($writer->getOutput(), $output);
     }
@@ -44,13 +45,13 @@ class WriterTest extends TestCase
 
         ($writer = $this->createWriter())->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  Fail description
+
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -60,15 +61,11 @@ class WriterTest extends TestCase
     11| }
     12|
 
-  Exception trace:
+  1   tests/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
-
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  Please use the argument -v to see more details.
+  2   tests/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 
 EOF;
 
@@ -89,13 +86,13 @@ EOF;
 
         $writer->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  Fail description
+
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -105,16 +102,14 @@ EOF;
     11| }
     12|
 
-  Exception trace:
+  1   tests/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  3   Tests\FakeProgram\HelloWorldFile1::say()
-      $projectDir/Unit/WriterTest.php:
+  3   tests/Unit/WriterTest.php:82
+      Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
@@ -128,13 +123,13 @@ EOF;
         ($writer = $this->createWriter())->ignoreFilesIn(['*/FakeProgram/*'])
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  at $projectDir/Unit/WriterTest.php
+  Fail description
+
+  at tests/Unit/WriterTest.php
 EOF;
 
         $this->assertStringContainsString(
@@ -152,22 +147,17 @@ EOF;
         ($writer = $this->createWriter())->showEditor(false)
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  Exception trace:
+  Fail description
 
-  1   Tests\FakeProgram\HelloWorldFile3::say()
-      $projectDir/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:9
+      Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   Tests\FakeProgram\HelloWorldFile2::say()
-      $projectDir/FakeProgram/HelloWorldFile1.php:9
-
-  Please use the argument -v to see more details.
-
+  2   tests/FakeProgram/HelloWorldFile1.php:9
+      Tests\FakeProgram\HelloWorldFile2::say()
 EOF;
 
         $this->assertStringContainsString(
@@ -185,13 +175,13 @@ EOF;
         ($writer = $this->createWriter())->showTrace(false)
             ->write($inspector);
 
-        $projectDir = dirname(__DIR__);
-
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException  : Fail description
+   Tests\FakeProgram\FakeException 
 
-  at $projectDir/FakeProgram/HelloWorldFile3.php:9
+  Fail description
+
+  at tests/FakeProgram/HelloWorldFile3.php:9
      5| class HelloWorldFile3
      6| {
      7|     public static function say()
@@ -200,6 +190,7 @@ EOF;
     10|     }
     11| }
     12|
+
 EOF;
 
         $this->assertStringContainsString(
@@ -215,6 +206,6 @@ EOF;
 
         $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
 
-        return new Writer($output, null, new Highlighter($colorMock));
+        return new Writer(new NullSolutionsRepository(), $output, null, new Highlighter($colorMock));
     }
 }
