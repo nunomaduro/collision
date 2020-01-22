@@ -187,6 +187,12 @@ class Writer implements WriterContract
         return $inspector->getFrames()
             ->filter(
                 function ($frame) {
+                    // If we are in verbose mode, we always
+                    // display the full stack trace.
+                    if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                        return true;
+                    }
+
                     foreach ($this->ignore as $ignore) {
                         if (preg_match($ignore, $frame->getFile())) {
                             return false;
