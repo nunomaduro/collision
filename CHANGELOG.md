@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [4.0.1] - 2020-01-22
+### Fixed
+- Required version of phpunit
+
 ## [4.0.0] - 2020-01-22
 ### Added
 - Better visuals
