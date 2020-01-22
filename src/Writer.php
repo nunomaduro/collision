@@ -270,7 +270,8 @@ class Writer implements WriterContract
     {
         $file = $this->getFileRelativePath((string) $frame->getFile());
 
-        $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$frame->getLine().'</>');
+        $line = $frame->getLine() ?? '0';
+        $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$line.'</>');
 
         $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -307,7 +308,7 @@ class Writer implements WriterContract
             $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
             $function = $frame->getFunction();
             $args = $this->argumentFormatter->format($frame->getArgs());
-            $pos = str_pad((int) $i + 1, 4, ' ');
+            $pos = str_pad((string) ((int) $i + 1), 4, ' ');
 
             if ($vendorFrames > 0) {
                 $this->output->write(

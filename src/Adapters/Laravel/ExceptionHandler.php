@@ -90,7 +90,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     /**
      * Determine if the exception should be reported.
      *
-     * @param  \Exception  $e
+     * @param  Throwable $e
      * @return bool
      */
     public function shouldReport(Throwable $e)
