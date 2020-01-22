@@ -68,7 +68,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
 
             if (method_exists($test, 'getName')) {
                 $output->writeln("\n");
-                $name = "\e[2m" . get_class($test) . "\e[22m";
+                $name = "\e[2m".get_class($test)."\e[22m";
                 $output->writeln(sprintf(
                     '  <bg=red;options=bold> FAIL </> <fg=red;options=bold></><fg=default>%s <fg=red;options=bold>➜</> %s</>',
                     $name,
