@@ -21,11 +21,12 @@
         "symfony/console": "^5.0"
     },
     "require-dev": {
-        "nunomaduro/larastan": "^0.5",
-        "phpstan/phpstan": "^0.12.3",
-        "orchestra/testbench": "^5.0",
         "laravel/framework": "^7.0",
-        "phpunit/phpunit": "^8.5.1"
+        "nunomaduro/larastan": "^0.5",
+        "orchestra/testbench": "^5.0",
+        "phpstan/phpstan": "^0.12.3",
+        "phpunit/phpunit": "^8.5.1",
+        "vimeo/psalm": "^3.8"
     },
     "autoload-dev": {
         "psr-4": {
