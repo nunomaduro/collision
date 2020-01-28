@@ -77,6 +77,13 @@ class Writer implements WriterContract
     protected $showTrace = true;
 
     /**
+     * Declares whether or not the title should appear.
+     *
+     * @var bool
+     */
+    protected $showTitle = true;
+
+    /**
      * Declares whether or not the editor should appear.
      *
      * @var bool
@@ -108,7 +115,7 @@ class Writer implements WriterContract
      */
     public function write(Inspector $inspector): void
     {
-        $this->renderTitle($inspector);
+        $this->renderTitleAndDescription($inspector);
 
         $frames = $this->getFrames($inspector);
 
@@ -143,6 +150,16 @@ class Writer implements WriterContract
     public function showTrace(bool $show): WriterContract
     {
         $this->showTrace = $show;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function showTitle(bool $show): WriterContract
+    {
+        $this->showTitle = $show;
 
         return $this;
     }
@@ -212,14 +229,17 @@ class Writer implements WriterContract
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
-    protected function renderTitle(Inspector $inspector): WriterContract
+    protected function renderTitleAndDescription(Inspector $inspector): WriterContract
     {
         $exception = $inspector->getException();
         $message = rtrim($exception->getMessage());
         $class = $inspector->getExceptionName();
 
-        $this->render("<bg=red;options=bold> $class </>");
-        $this->output->writeln('');
+        if ($this->showTitle) {
+            $this->render("<bg=red;options=bold> $class </>");
+            $this->output->writeln('');
+        }
+
         $this->output->writeln("<fg=default;options=bold>  $message</>");
 
         return $this;

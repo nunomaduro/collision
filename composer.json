@@ -21,15 +21,22 @@
         "symfony/console": "^5.0"
     },
     "require-dev": {
-        "nunomaduro/larastan": "^0.5",
-        "phpstan/phpstan": "^0.12.3",
-        "orchestra/testbench": "^5.0",
+        "facade/ignition": "^2.0",
+        "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^1.0",
         "laravel/framework": "^7.0",
+        "laravel/tinker": "^2.0",
+        "nunomaduro/larastan": "^0.5",
+        "orchestra/testbench": "^5.0",
+        "phpstan/phpstan": "^0.12.3",
         "phpunit/phpunit": "^8.5.1"
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\Unit\\": "tests/Unit",
+            "Tests\\FakeProgram\\": "tests/FakeProgram",
+            "Tests\\": "tests/LaravelApp/tests",
+            "App\\": "tests/LaravelApp/app/"
         }
     },
     "minimum-stability": "dev",

@@ -11,116 +11,107 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
-use NunoMaduro\Collision\Writer;
+use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\ExceptionWrapper;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use ReflectionObject;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Whoops\Exception\Inspector;
+use Throwable;
+use PHPUnit\Util\Printer;
 
+/**
+ * This `if` condition exists because phpunit
+ * is not a direct dependency of Collision.
+ */
 if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) >= 8) {
 
     /**
      * This is an Collision Phpunit Adapter implementation.
      *
-     * @author Nuno Maduro <enunomaduro@gmail.com>
+     * @internal
      */
-    class Listener implements ListenerContract
+    final class Listener extends Printer implements TestListener
     {
         /**
-         * Holds an instance of the writer.
+         * Holds an instance of the console input.
          *
-         * @var \NunoMaduro\Collision\Contracts\Writer
+         * @var InputInterface
          */
-        protected $writer;
+        private $input;
 
         /**
-         * Creates a new instance of the class.
+         * Holds an instance of the console input.
          *
-         * @param  \NunoMaduro\Collision\Contracts\Writer|null  $writer
+         * @var ConsoleOutput
          */
-        public function __construct(WriterContract $writer = null)
+        private $output;
+
+        /**
+         * The current section, if any.
+         *
+         * @var Section
+         */
+        private $section;
+
+        /**
+         * Creates a new instance of the listener.
+         *
+         * @param  InputInterface  $input
+         * @param  ConsoleOutput  $output
+         *
+         * @throws \ReflectionException
+         */
+        public function __construct(InputInterface $input = null, ConsoleOutput $output = null)
         {
-            $this->writer = $writer ?: $this->buildWriter();
+            parent::__construct();
+
+            $this->input = $input ?? new ArgvInput();
+            $this->output = $output ?? new ConsoleOutput();
+            ConfigureIO::of($this->input, $this->output);
+            $this->section = Section::create($this->output, new TestSuite());
         }
 
         /**
-         * {@inheritdoc}
-         */
-        public function render(Test $test, \Throwable $throwable)
-        {
-            $this->writer->ignoreFilesIn([
-                '/vendor\/phpunit\/phpunit\/src/',
-                '/vendor\/mockery\/mockery/',
-                '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
-                '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
-            ]);
-
-            $output = $this->writer->getOutput();
-
-            if (method_exists($test, 'getName')) {
-                $output->writeln("\n");
-                $name = "\e[2m".get_class($test)."\e[22m";
-                $output->writeln(sprintf(
-                    '  <bg=red;options=bold> FAIL </> <fg=red;options=bold></><fg=default>%s <fg=red;options=bold>➜</> %s</>',
-                    $name,
-                    $test->getName(false)
-                ));
-            }
-
-            if ($throwable instanceof ExceptionWrapper && $throwable->getOriginalException() !== null) {
-                $throwable = $throwable->getOriginalException();
-            }
-
-            $inspector = new Inspector($throwable);
-
-            $this->writer->write($inspector);
-
-            if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
-                $output->write($comparisionFailure->getDiff());
-            }
-
-            $this->terminate();
-        }
-
-        /**
-         * {@inheritdoc}
+         * @inheritdoc
          */
         public function addError(Test $test, \Throwable $throwable, float $time): void
         {
-            $this->render($test, $throwable);
+            $this->section->fail();
+
+            OnError::display($this->output, $throwable);
         }
 
         /**
-         * {@inheritdoc}
+         * @inheritdoc
          */
-        public function addWarning(Test $test, Warning $t, float $time): void
+        public function addWarning(Test $test, Warning $warning, float $time): void
         {
+            $this->section->warn($warning);
         }
 
         /**
-         * {@inheritdoc}
+         * @inheritdoc
          */
-        public function addFailure(Test $test, AssertionFailedError $throwable, float $time): void
+        public function addFailure(Test $test, AssertionFailedError $error, float $time): void
         {
-            $reflector = new ReflectionObject($throwable);
+            $this->section->fail();
+
+            $reflector = new ReflectionObject($error);
 
             if ($reflector->hasProperty('message')) {
-                $message = trim((string) preg_replace("/\r|\n/", ' ', $throwable->getMessage()));
+                $message = trim((string) preg_replace("/\r|\n/", ' ', $error->getMessage()));
                 $property = $reflector->getProperty('message');
                 $property->setAccessible(true);
-                $property->setValue($throwable, $message);
+                $property->setValue($error, $message);
             }
 
-            $this->render($test, $throwable);
+            OnError::display($this->output, $error);
         }
 
         /**
@@ -128,6 +119,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
         {
+            $this->section->incomplete($t);
         }
 
         /**
@@ -135,13 +127,15 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addRiskyTest(Test $test, \Throwable $t, float $time): void
         {
+            $this->section->risky();
         }
 
         /**
          * {@inheritdoc}
          */
-        public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+        public function addSkippedTest(Test $test, Throwable $t, float $time): void
         {
+            $this->section->skipped($t);
         }
 
         /**
@@ -149,6 +143,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function startTestSuite(TestSuite $suite): void
         {
+            $this->section = Section::create($this->output, $suite);
         }
 
         /**
@@ -156,6 +151,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function endTestSuite(TestSuite $suite): void
         {
+            $this->section->end();
         }
 
         /**
@@ -163,6 +159,11 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function startTest(Test $test): void
         {
+            if (! $test instanceof TestCase) {
+                throw new ShouldNotHappen();
+            }
+
+            $this->section->runs($test);
         }
 
         /**
@@ -170,32 +171,22 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function endTest(Test $test, float $time): void
         {
+            $this->section->pass();
         }
 
+
         /**
-         * Builds an Writer.
+         * Intencionally left blank as we
+         * output things on events of the
+         * listener.
          *
-         * @return \NunoMaduro\Collision\Contracts\Writer
+         * @param  string  $content
+         *
+         * @return  void
          */
-        protected function buildWriter(): WriterContract
+        public function write(string $content): void
         {
-            $writer = new Writer();
-
-            $application = new Application();
-            $reflector = new ReflectionObject($application);
-            $method = $reflector->getMethod('configureIO');
-            $method->setAccessible(true);
-            $method->invoke($application, new ArgvInput, $output = new ConsoleOutput);
-
-            return $writer->setOutput($output);
-        }
-
-        /**
-         * Terminates the test.
-         */
-        public function terminate(): void
-        {
-            exit(1);
+            //
         }
     }
 }
