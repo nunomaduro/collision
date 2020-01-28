@@ -41,4 +41,3 @@ final class ConfigureIO
         $method->invoke($application, $input, $output);
     }
 }
-

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Adapters;
 
+use NunoMaduro\Collision\Adapters\Phpunit\Listener;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\Test;
-use NunoMaduro\Collision\Adapters\Phpunit\Listener;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\Printer;
 use Symfony\Component\Process\Process;
-use PHPUnit\Framework\TestListener;
 
 class PhpunitTest extends TestCase
 {
@@ -56,13 +56,13 @@ class PhpunitTest extends TestCase
             'NunoMaduro\Collision\Adapters\Phpunit\Listener',
             '--exclude-group',
             'fail',
-        ], __DIR__ . '/../../..');
+        ], __DIR__.'/../../..');
 
         $process->setTty(false);
         $process->setPty(false);
         $process->run();
 
-        self::assertStringContainsString(<<<EOF
+        self::assertStringContainsString(<<<'EOF'
 
   s skipped example → This is a skip description
   i incomplete example → This is a incomplete description
@@ -84,7 +84,7 @@ EOF
             'tests/LaravelApp/phpunit.xml',
             '--printer',
             'NunoMaduro\Collision\Adapters\Phpunit\Listener',
-        ], __DIR__ . '/../../..');
+        ], __DIR__.'/../../..');
 
         $process->setTty(false);
         $process->setPty(false);
@@ -111,7 +111,6 @@ EOF
 
 EOF
             , $output);
-
 
         $this->assertFalse($process->isSuccessful());
     }

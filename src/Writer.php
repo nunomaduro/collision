@@ -348,7 +348,7 @@ class Writer implements WriterContract
          * sprintf("\n      \e[2m+%s vendor frames \e[22m\n", $vendorFrames)
          * );
          * $vendorFrames = 0;
-         * }
+         * }.
          */
 
         return $this;
