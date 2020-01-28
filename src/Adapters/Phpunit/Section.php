@@ -38,7 +38,7 @@ final class Section
     private $testSuite;
 
     /**
-     * If the current testSuite is dirty
+     * If the current testSuite is dirty.
      *
      * @var bool
      */
@@ -108,7 +108,6 @@ final class Section
 
         $this->updateTest('•', 'yellow', true);
     }
-
 
     /**
      * Passes the current test case.
@@ -223,7 +222,7 @@ final class Section
         );
 
         if ($note) {
-            $value .= sprintf(" → <fg=%s>%s</>", $color, trim((string) preg_replace("/\r|\n/", ' ', $note)));
+            $value .= sprintf(' → <fg=%s>%s</>', $color, trim((string) preg_replace("/\r|\n/", ' ', $note)));
         }
 
         if ($create) {
@@ -295,4 +294,3 @@ final class Section
         $this->update();
     }
 }
-

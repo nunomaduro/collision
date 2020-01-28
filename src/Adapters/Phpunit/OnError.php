@@ -64,4 +64,3 @@ final class OnError
         exit(1);
     }
 }
-

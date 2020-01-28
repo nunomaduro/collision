@@ -18,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Util\Printer;
 use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
-use PHPUnit\Util\Printer;
 
 /**
  * This `if` condition exists because phpunit
@@ -78,7 +78,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         }
 
         /**
-         * @inheritdoc
+         * {@inheritdoc}
          */
         public function addError(Test $test, \Throwable $throwable, float $time): void
         {
@@ -88,7 +88,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         }
 
         /**
-         * @inheritdoc
+         * {@inheritdoc}
          */
         public function addWarning(Test $test, Warning $warning, float $time): void
         {
@@ -96,7 +96,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         }
 
         /**
-         * @inheritdoc
+         * {@inheritdoc}
          */
         public function addFailure(Test $test, AssertionFailedError $error, float $time): void
         {
@@ -173,7 +173,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         {
             $this->section->pass();
         }
-
 
         /**
          * Intencionally left blank as we
