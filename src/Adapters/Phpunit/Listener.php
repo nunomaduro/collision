@@ -53,11 +53,75 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
         private $output;
 
         /**
-         * The current section, if any.
+         * Holds an instance of Section.
          *
          * @var Section
          */
         private $section;
+
+        /**
+         * The timer.
+         *
+         * @var Timer
+         */
+        private $timer;
+
+        /**
+         * The number of total tests.
+         *
+         * @var int|null
+         */
+        private $totalTests;
+
+        /**
+         * Indicates that the method `end`
+         * was called already.
+         *
+         * @var bool
+         */
+        private $sectionEnded = false;
+
+        /**
+         * The current test number.
+         *
+         * @var int
+         */
+        private $currentTestNumber = 0;
+
+        /**
+         * The number of passed tests.
+         *
+         * @var int
+         */
+        private $passedTests = 0;
+
+        /**
+         * The number of skipped tests.
+         *
+         * @var int
+         */
+        private $skippedTests = 0;
+
+        /**
+         * The number of warning tests.
+         *
+         * @var int
+         */
+        private $warningsTests = 0;
+
+        /**
+         * The number of incomplete tests.
+         *
+         * @var int
+         */
+        private $incompleteTests = 0;
+
+        /**
+         * The number of risky tests.
+         *
+         * @var int
+         */
+        private $riskyTests = 0;
 
         /**
          * Creates a new instance of the listener.
@@ -74,7 +138,12 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
             $this->input = $input ?? new ArgvInput();
             $this->output = $output ?? new ConsoleOutput();
             ConfigureIO::of($this->input, $this->output);
-            $this->section = Section::create($this->output, new TestSuite());
+            $this->section = new Section($this->output);
+
+            /**
+             * Starts the timer.
+             */
+            $this->timer = Timer::start();
         }
 
         /**
@@ -92,6 +161,8 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addWarning(Test $test, Warning $warning, float $time): void
         {
+            $this->warningsTests++;
+
             $this->section->warn($warning);
         }
 
@@ -119,6 +190,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
         {
+            $this->incompleteTests++;
             $this->section->incomplete($t);
         }
 
@@ -127,6 +199,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addRiskyTest(Test $test, \Throwable $t, float $time): void
         {
+            $this->riskyTests++;
             $this->section->risky();
         }
 
@@ -135,6 +208,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function addSkippedTest(Test $test, Throwable $t, float $time): void
         {
+            $this->skippedTests++;
             $this->section->skipped($t);
         }
 
@@ -143,7 +217,9 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function startTestSuite(TestSuite $suite): void
         {
-            $this->section = Section::create($this->output, $suite);
+            if ($this->totalTests === null) {
+                $this->totalTests = $suite->count();
+            }
         }
 
         /**
@@ -151,7 +227,41 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function endTestSuite(TestSuite $suite): void
         {
-            $this->section->end();
+            if (! $this->sectionEnded && $this->totalTests === $this->currentTestNumber) {
+                $this->sectionEnded = true;
+                $this->section->end();
+                $this->output->writeln('');
+
+                $tests = [];
+
+                foreach (['warnings', 'risky', 'incomplete', 'skipped'] as $countName) {
+                    if ($countTests = $this->{$countName . 'Tests'}) {
+                        $tests[] = "<fg=yellow;options=bold>$countTests $countName</>";
+                    }
+                }
+
+                if ($passedTests = $this->passedTests) {
+                    $tests[] = "<fg=green;options=bold>$passedTests passed</>";
+                }
+
+                $totalTests = $this->totalTests;
+                $tests[] = "$totalTests total";
+
+                $this->output->writeln(
+                    sprintf(
+                        '  <fg=white;options=bold>Tests:  </><fg=default>%s</>',
+                        implode(', ', $tests)
+                    )
+                );
+
+                $timeElapsed = number_format($this->timer->result(), 2, '.', '');
+                $this->output->writeln(
+                    sprintf(
+                        '  <fg=white;options=bold>Time:   </><fg=default>%ss</>',
+                        $timeElapsed
+                    )
+                );
+            }
         }
 
         /**
@@ -163,6 +273,8 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
                 throw new ShouldNotHappen();
             }
 
+            $this->currentTestNumber++;
+
             $this->section->runs($test);
         }
 
@@ -171,7 +283,10 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
          */
         public function endTest(Test $test, float $time): void
         {
-            $this->section->pass();
+            if ($this->section->shouldPass) {
+                $this->passedTests++;
+                $this->section->pass();
+            }
         }
 
         /**

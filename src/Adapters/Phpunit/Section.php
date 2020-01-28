@@ -12,7 +12,6 @@
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
@@ -24,18 +23,25 @@ use Throwable;
 final class Section
 {
     /**
-     * Holds an instance of the section.
+     * Holds an instance of the console output.
+     *
+     * @var ConsoleOutput
+     */
+    private $output;
+
+    /**
+     * Holds an instance of the console section.
      *
      * @var ConsoleSectionOutput
      */
     private $section;
 
     /**
-     * Holds an instance of the test suite.
+     * Holds an instance of the console section.
      *
-     * @var TestSuite
+     * @var ConsoleSectionOutput
      */
-    private $testSuite;
+    private $footer;
 
     /**
      * If the current testSuite is dirty.
@@ -56,7 +62,7 @@ final class Section
      *
      * @var bool
      */
-    private $shouldPass = true;
+    public $shouldPass = true;
 
     /**
      * Holds the content of the section.
@@ -68,26 +74,15 @@ final class Section
     /**
      * Section constructor.
      *
-     * @param  ConsoleSectionOutput  $section
-     * @param  TestSuite  $testSuite
+     * @param  ConsoleOutput  $output
      */
-    public function __construct(ConsoleSectionOutput $section, TestSuite $testSuite)
+    public function __construct(ConsoleOutput $output)
     {
-        $this->section = $section;
-        $this->testSuite = $testSuite;
+        $this->output = $output;
+        $this->section = $output->section();
+        $this->footer = $output->section();
         $this->testCase = new class extends TestCase {
         };
-    }
-
-    /**
-     * @param  ConsoleOutput  $output
-     * @param  TestSuite  $testSuite
-     *
-     * @return Section
-     */
-    public static function create(ConsoleOutput $output, TestSuite $testSuite): Section
-    {
-        return new self($output->section(), $testSuite);
     }
 
     /**
@@ -99,13 +94,15 @@ final class Section
      */
     public function runs(TestCase $test): void
     {
-        $this->testCase = $test;
-        $this->shouldPass = true;
-
-        if (count($this->tests) === 0) {
-            $this->title('RUNS', 'yellow');
+        if (get_class($this->testCase) !== get_class($test)) {
+            $this->end();
+            $this->section = $this->output->section();
+            $this->tests = [];
+            $this->dirty = false;
         }
 
+        $this->shouldPass = true;
+        $this->testCase = $test;
         $this->updateTest('•', 'yellow', true);
     }
 
@@ -128,8 +125,11 @@ final class Section
      */
     public function fail(): void
     {
-        $this->title('FAIL', 'red');
         $this->updateTest('✕', 'red');
+        $this->title('FAIL', 'red');
+
+        $this->footer->clear();
+        $this->section->write($this->tests);
 
         $this->dirty = true;
         $this->shouldPass = false;
@@ -145,7 +145,6 @@ final class Section
     public function incomplete(Throwable $throwable): void
     {
         $this->updateTest('i', 'yellow', false, $throwable->getMessage());
-        $this->title('WARN', 'yellow');
 
         $this->dirty = true;
         $this->shouldPass = false;
@@ -159,7 +158,6 @@ final class Section
     public function risky(): void
     {
         $this->updateTest('r', 'yellow');
-        $this->title('WARN', 'yellow');
 
         $this->dirty = true;
         $this->shouldPass = false;
@@ -175,7 +173,6 @@ final class Section
     public function skipped(Throwable $throwable): void
     {
         $this->updateTest('s', 'yellow', false, $throwable->getMessage());
-        $this->title('WARN', 'yellow');
 
         $this->dirty = true;
         $this->shouldPass = false;
@@ -189,17 +186,34 @@ final class Section
     public function warn(Warning $warning): void
     {
         $this->updateTest('w', 'yellow', false, $warning->getMessage());
-        $this->title('WARN', 'yellow');
 
         $this->dirty = true;
         $this->shouldPass = false;
     }
 
+    /**
+     * Ends the current test suite.
+     *
+     * Here we do 3 things:
+     *
+     * 0. Remove the footer.
+     * 1. Display the title.
+     * 2. Display the tests results.
+     */
     public function end(): void
     {
-        if (! $this->dirty && count($this->tests)) {
-            $this->title('PASS', 'green');
+        if (count($this->tests)) {
+            $this->footer->clear();
+
+            if (! $this->dirty) {
+                $this->title('PASS', 'green');
+            } else {
+                $this->title('WARN', 'yellow');
+            }
+
+            $this->section->write($this->tests);
         }
+
     }
 
     /**
@@ -227,22 +241,12 @@ final class Section
 
         if ($create) {
             $this->tests[] = $value;
-        } else {
-            $this->tests[count($this->tests) - 1] = $value;
         }
 
-        $this->update();
-    }
+        $this->tests[count($this->tests) - 1] = $value;
 
-    /**
-     * Updates the console with the current state.
-     *
-     * @return void
-     */
-    private function update(): void
-    {
-        $this->section->clear();
-        $this->section->writeln($this->tests);
+        $this->footer('RUNS', 'yellow');
+        $this->footer->write($value);
     }
 
     /**
@@ -252,7 +256,7 @@ final class Section
      */
     private function getTestCaseDescription(): string
     {
-        $name = $this->testCase->getName(false);
+        $name = $this->testCase->getName(true);
 
         // First, lets replace underscore by spaces.
         $name = str_replace('_', ' ', $name);
@@ -270,7 +274,7 @@ final class Section
         return (string) mb_strtolower($name);
     }
 
-    private function title(string $title, string $color): void
+    private function footer(string $title, string $color): void
     {
         $fg = $title === 'FAIL' ? 'default' : 'black';
 
@@ -283,14 +287,35 @@ final class Section
         $nonHighlightedPart = implode('\\', $classParts);
         $class = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
 
-        $this->tests[0] = sprintf(
+        $this->footer->clear();
+        $this->footer = $this->output->section();
+        $this->footer->write(sprintf(
             "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
             $fg,
             $color,
             $title,
             $class
-        );
+        ));
+    }
 
-        $this->update();
+    private function title(string $title, string $color): void
+    {
+        $fg = $title === 'FAIL' ? 'default' : 'black';
+        $classParts = explode('\\', get_class($this->testCase));
+
+        // Removes `Tests` part
+        array_shift($classParts);
+
+        $highlightedPart = array_pop($classParts);
+        $nonHighlightedPart = implode('\\', $classParts);
+        $class = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+
+        $this->section->write(sprintf(
+            "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
+            $fg,
+            $color,
+            $title,
+            $class
+        ));
     }
 }
