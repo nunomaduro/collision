@@ -17,7 +17,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 final class Timer
 {
     /**
-     * @var
+     * @var float
      */
     private $start;
 

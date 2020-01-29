@@ -46,57 +46,28 @@ class PhpunitTest extends TestCase
     }
 
     /** @test */
-    public function test_successful_output(): void
+    public function it_was_recap(): void
     {
-        $process = new Process([
-            './vendor/bin/phpunit',
-            '-c',
-            'tests/LaravelApp/phpunit.xml',
-            '--printer',
-            'NunoMaduro\Collision\Adapters\Phpunit\Listener',
+        $process = $this->runTests([
             '--exclude-group',
             'fail',
-        ], __DIR__.'/../../..');
+        ]);
 
-        $process->setTty(false);
-        $process->setPty(false);
-        $process->run();
-
-        self::assertStringContainsString(<<<'EOF'
-
-  s skipped example → This is a skip description
-  i incomplete example → This is a incomplete description
-  r risky example
-  w warn example → This is a warning description
-  ✓ pass example
-
+        self::assertStringContainsString(<<<EOF
+  Tests:  1 warnings, 1 risky, 1 incomplete, 1 skipped, 2 passed, 6 total
 EOF
             , $process->getOutput());
         $this->assertTrue($process->isSuccessful());
     }
 
     /** @test */
-    public function test_failing_output(): void
+    public function it_was_failure(): void
     {
-        $process = new Process([
-            './vendor/bin/phpunit',
-            '-c',
-            'tests/LaravelApp/phpunit.xml',
-            '--printer',
-            'NunoMaduro\Collision\Adapters\Phpunit\Listener',
-        ], __DIR__.'/../../..');
-
-        $process->setTty(false);
-        $process->setPty(false);
-        $process->run();
-        $output = $process->getOutput();
+        $process = $this->runTests();
 
         $code = '$this->assertFalse(true);';
 
         self::assertStringContainsString(<<<EOF
-  ✓ basic test
-  ✕ fail example
-
   Failed asserting that true is false.
 
   at tests/LaravelApp/tests/Unit/ExampleTest.php:19
@@ -108,10 +79,31 @@ EOF
     20|     }
     21| }
     22|
-
 EOF
-            , $output);
+            , $process->getOutput());
 
         $this->assertFalse($process->isSuccessful());
+    }
+
+    /**
+     * @param  array  $arguments
+     *
+     * @return Process
+     */
+    private function runTests(array $arguments = []): Process
+    {
+        $process = new Process(array_merge([
+            './vendor/bin/phpunit',
+            '-c',
+            'tests/LaravelApp/phpunit.xml',
+            '--printer',
+            'NunoMaduro\Collision\Adapters\Phpunit\Listener',
+        ], $arguments), __DIR__ . '/../../..');
+
+        $process->setTty(false);
+        $process->setPty(false);
+        $process->run();
+
+        return $process;
     }
 }
