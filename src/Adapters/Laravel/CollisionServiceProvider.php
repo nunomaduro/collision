@@ -13,6 +13,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
+use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
@@ -34,6 +35,18 @@ class CollisionServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = true;
+
+    /**
+     * Boots application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->commands([
+            TestCommand::class,
+        ]);
+    }
 
     /**
      * {@inheritdoc}
