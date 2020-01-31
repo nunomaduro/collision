@@ -29,7 +29,8 @@
         "nunomaduro/larastan": "^0.5",
         "orchestra/testbench": "^5.0",
         "phpstan/phpstan": "^0.12.3",
-        "phpunit/phpunit": "^8.5.1"
+        "phpunit/phpunit": "^8.5.1",
+        "vimeo/psalm": "^3.8"
     },
     "autoload-dev": {
         "psr-4": {
