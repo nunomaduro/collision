@@ -49,7 +49,7 @@ final class Style
     }
 
     /**
-     * Prints the content similar too:
+     * Prints the content similar too:.
      *
      * ```
      *    PASS  Unit\ExampleTest
@@ -139,7 +139,7 @@ final class Style
                 sprintf(
                     '  <fg=white;options=bold>Tests:  </><fg=default>%s</>',
                     implode(', ', $tests)
-                )
+                ),
             ]));
         }
     }

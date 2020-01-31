@@ -1,10 +1,9 @@
 <?php
 
-
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
@@ -54,7 +53,7 @@ class TestCommand extends Command
         try {
             $process->setTty(! $this->option('without-tty'));
         } catch (RuntimeException $e) {
-            $this->output->writeln('Warning: ' . $e->getMessage());
+            $this->output->writeln('Warning: '.$e->getMessage());
         }
 
         try {
