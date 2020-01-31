@@ -44,7 +44,6 @@ class PhpunitTest extends TestCase
         (new Printer())->startTest($test);
     }
 
-
     /** @test */
     public function it_was_tests(): void
     {
@@ -60,7 +59,6 @@ class PhpunitTest extends TestCase
 
         $this->assertTrue($process->isSuccessful());
     }
-
 
     /** @test */
     public function it_was_recap(): void
@@ -115,7 +113,7 @@ EOF
             'tests/LaravelApp/phpunit.xml',
             '--printer',
             'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-        ], $arguments), __DIR__ . '/../../..');
+        ], $arguments), __DIR__.'/../../..');
 
         $process->setTty(false);
         $process->setPty(false);

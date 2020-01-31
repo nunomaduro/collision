@@ -11,7 +11,6 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -160,7 +159,7 @@ final class TestResult
                 return 'red';
             case self::SKIPPED:
             case self::INCOMPLETE:
-            case self::RISKY;
+            case self::RISKY:
             case self::WARN:
             case self::RUNS:
                 return 'yellow';

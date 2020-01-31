@@ -1,8 +1,6 @@
 <?php
 
-
 namespace NunoMaduro\Collision\Adapters\Phpunit;
-
 
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\AssertionFailedError;
@@ -74,7 +72,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addError(Test $testCase, Throwable $throwable, float $time): void
     {
@@ -86,7 +84,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addWarning(Test $testCase, Warning $warning, float $time): void
     {
@@ -96,7 +94,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addFailure(Test $testCase, AssertionFailedError $error, float $time): void
     {
@@ -117,7 +115,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addIncompleteTest(Test $testCase, Throwable $t, float $time): void
     {
@@ -127,7 +125,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addRiskyTest(Test $testCase, Throwable $t, float $time): void
     {
@@ -137,7 +135,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSkippedTest(Test $testCase, Throwable $t, float $time): void
     {
@@ -147,7 +145,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function startTestSuite(TestSuite $suite): void
     {
@@ -157,7 +155,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function endTestSuite(TestSuite $suite): void
     {
@@ -172,14 +170,14 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function startTest(Test $testCase): void
     {
         $testCase = $this->testCaseFromTest($testCase);
 
         // Let's check first if the testCase is over.
-        if ($this->state->testCaseHasChanged($testCase))  {
+        if ($this->state->testCaseHasChanged($testCase)) {
             $this->style->writeCurrentRecap($this->state);
 
             $this->state->moveTo($testCase);
@@ -189,7 +187,7 @@ trait PrinterContents
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function endTest(Test $testCase, float $time): void
     {

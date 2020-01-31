@@ -142,7 +142,6 @@ final class State
         return count($this->suiteTests);
     }
 
-
     /**
      * Checks if the given test case is different from the current one.
      *
