@@ -6,6 +6,8 @@ parameters:
         - src
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+        - src/Adapters/Phpunit/Printer
     ignoreErrors:
         - '#Parameter \#1 \$input of function str_pad expects string, int given.#'
         - '#Cannot call method addTheme\(\) on array|JakubOnderka\\PhpConsoleColor\\ConsoleColor#'

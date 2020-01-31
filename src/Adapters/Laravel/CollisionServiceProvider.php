@@ -13,6 +13,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
+use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
@@ -29,14 +30,26 @@ use NunoMaduro\Collision\Writer;
 class CollisionServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @var bool
      */
     protected $defer = true;
 
     /**
-     * {@inheritdoc}
+     * Boots application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->commands([
+            TestCommand::class,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function register()
     {
@@ -68,7 +81,7 @@ class CollisionServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function provides()
     {

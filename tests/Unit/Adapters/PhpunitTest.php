@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Adapters;
 
-use NunoMaduro\Collision\Adapters\Phpunit\Listener;
+use NunoMaduro\Collision\Adapters\Phpunit\Printer;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Util\Printer;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
@@ -16,13 +15,13 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_respects_is_contract(): void
     {
-        $this->assertInstanceOf(TestListener::class, new Listener());
+        $this->assertInstanceOf(TestListener::class, new Printer());
     }
 
     /** @test */
     public function it_is_a_printer(): void
     {
-        $this->assertInstanceOf(Printer::class, new Listener());
+        $this->assertInstanceOf(Printer::class, new Printer());
     }
 
     /** @test */
@@ -42,8 +41,26 @@ class PhpunitTest extends TestCase
 
         $this->expectException(ShouldNotHappen::class);
 
-        (new Listener())->startTest($test);
+        (new Printer())->startTest($test);
     }
+
+
+    /** @test */
+    public function it_was_tests(): void
+    {
+        $process = $this->runTests([
+            '--exclude-group',
+            'fail',
+        ]);
+
+        self::assertStringContainsString(
+            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed',
+            $process->getOutput()
+        );
+
+        $this->assertTrue($process->isSuccessful());
+    }
+
 
     /** @test */
     public function it_was_recap(): void
@@ -53,10 +70,10 @@ class PhpunitTest extends TestCase
             'fail',
         ]);
 
-        self::assertStringContainsString(<<<EOF
-  Tests:  1 warnings, 1 risky, 1 incomplete, 1 skipped, 2 passed, 6 total
-EOF
-            , $process->getOutput());
+        self::assertStringContainsString(
+            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed',
+            $process->getOutput()
+        );
         $this->assertTrue($process->isSuccessful());
     }
 
@@ -97,7 +114,7 @@ EOF
             '-c',
             'tests/LaravelApp/phpunit.xml',
             '--printer',
-            'NunoMaduro\Collision\Adapters\Phpunit\Listener',
+            'NunoMaduro\Collision\Adapters\Phpunit\Printer',
         ], $arguments), __DIR__ . '/../../..');
 
         $process->setTty(false);
