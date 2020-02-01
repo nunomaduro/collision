@@ -59,13 +59,11 @@
         }
     },
     "scripts": {
-        "test:types": "phpstan analyse --ansi",
-        "test:static": "psalm",
+        "test:types": "phpstan analyse --ansi && psalm",
         "test:unit": "phpunit --colors=always",
         "test": [
             "@test:unit",
-            "@test:types",
-            "@test:static"
+            "@test:types"
         ]
     }
 }
