@@ -60,10 +60,12 @@
     },
     "scripts": {
         "test:types": "phpstan analyse --ansi",
+        "test:static": "psalm",
         "test:unit": "phpunit --colors=always",
         "test": [
             "@test:unit",
-            "@test:types"
+            "@test:types",
+            "@test:static"
         ]
     }
 }
