@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [4.1.0] - 2020-02-04
+### Added
+- Adds `test` artisan Command to laravel adapter
+- Support to phpunit 9 to phpunit adapter
+
 ## [4.0.1] - 2020-01-22
 ### Fixed
 - Required version of phpunit
