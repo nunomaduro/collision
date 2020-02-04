@@ -130,7 +130,7 @@ final class Style
 
         $pending = $state->suiteTotalTests - $state->testSuiteTestsCount();
         if ($pending) {
-            $tests[] = "$pending pending";
+            $tests[] = "\e[2m$pending pending\e[22m";
         }
 
         if (! empty($tests)) {
