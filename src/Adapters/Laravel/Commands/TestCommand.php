@@ -35,6 +35,18 @@ class TestCommand extends Command
     ];
 
     /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->ignoreValidationErrors();
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
