@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## [Unreleased]
 
 ## [4.1.0] - 2020-02-04
 ### Added
@@ -97,6 +97,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds `phpunit` adapter
 
-## [1.0.0] - 2017-10-08
+## 1.0.0 - 2017-10-08
 ### Added
 - Adds first version
+
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/nunomaduro/collision/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/nunomaduro/collision/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/nunomaduro/collision/compare/v3.0.0...v4.0.0
+[3.0.0]: https://github.com/nunomaduro/collision/compare/v2.1.1...v3.0.0
+[2.1.1]: https://github.com/nunomaduro/collision/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/nunomaduro/collision/compare/v2.0.3...v2.1.0
+[2.0.3]: https://github.com/nunomaduro/collision/compare/v2.0.2...v2.0.3
+[2.0.2]: https://github.com/nunomaduro/collision/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/nunomaduro/collision/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/nunomaduro/collision/compare/v1.1.22...v2.0.0
+[1.1.22]: https://github.com/nunomaduro/collision/compare/v1.1.20...v1.1.22
+[1.1.20]: https://github.com/nunomaduro/collision/compare/v1.1.19...v1.1.20
+[1.1.19]: https://github.com/nunomaduro/collision/compare/v1.1.18...v1.1.19
+[1.1.18]: https://github.com/nunomaduro/collision/compare/v1.1.17...v1.1.18
+[1.1.17]: https://github.com/nunomaduro/collision/compare/v1.1.16...v1.1.17
+[1.1.16]: https://github.com/nunomaduro/collision/compare/v1.1.15...v1.1.16
+[1.1.15]: https://github.com/nunomaduro/collision/compare/v1.1.12...v1.1.15
+[1.1.12]: https://github.com/nunomaduro/collision/compare/v1.1.5...v1.1.12
+[1.1.5]: https://github.com/nunomaduro/collision/compare/v1.1.0...v1.1.5
+[1.1.0]: https://github.com/nunomaduro/collision/compare/v1.0.0...v1.1.0
