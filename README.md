@@ -46,7 +46,7 @@ Add the following configuration to your `phpunit.xml`:
 
 ```xml
 <listeners>
-    <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
+    <listener class="NunoMaduro\Collision\Adapters\Phpunit\Printer" />
 </listeners>
 ```
 
