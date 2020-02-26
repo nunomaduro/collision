@@ -93,7 +93,9 @@ final class State
             if ($test->type === TestResult::FAIL) {
                 return 'FAIL';
             }
+        }
 
+        foreach ($this->testCaseTests as $test) {
             if ($test->type !== TestResult::PASS) {
                 return 'WARN';
             }
@@ -113,7 +115,9 @@ final class State
             if ($test->type === TestResult::FAIL) {
                 return 'red';
             }
+        }
 
+        foreach ($this->testCaseTests as $test) {
             if ($test->type !== TestResult::PASS) {
                 return 'yellow';
             }
