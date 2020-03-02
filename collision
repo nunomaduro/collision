@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+$workingPath = getcwd();
+
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    // Development environment.
+    require __DIR__.'/vendor/autoload.php';
+} else {
+    // Installation environment.
+    require __DIR__.'/../../autoload.php';
+}
+
+$app = new Symfony\Component\Console\Application('Collision', '4.2');
+
+$app->add(new NunoMaduro\Collision\Adapters\Phpunit\Commands\TestCommand($workingPath));
+
+$app->run();
