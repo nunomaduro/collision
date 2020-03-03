@@ -67,7 +67,7 @@ class TestCommand extends Command
         try {
             $process->setTty(! $this->option('without-tty'));
         } catch (RuntimeException $e) {
-            $this->output->writeln('Warning: ' . $e->getMessage());
+            $this->output->writeln('Warning: '.$e->getMessage());
         }
 
         try {
