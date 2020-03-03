@@ -55,17 +55,19 @@ class TestCommand extends Command
     {
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
 
+        $envs = $this->phpunitEnvs();
+
         $process = (new Process(array_merge(
             $this->binary(), array_merge(
                 $this->arguments,
                 $this->phpunitArguments($options)
             )
-        )))->setTimeout(null);
+        ), null, $envs))->setTimeout(null);
 
         try {
             $process->setTty(! $this->option('without-tty'));
         } catch (RuntimeException $e) {
-            $this->output->writeln('Warning: '.$e->getMessage());
+            $this->output->writeln('Warning: ' . $e->getMessage());
         }
 
         try {
@@ -111,5 +113,42 @@ class TestCommand extends Command
         }
 
         return array_merge(['-c', $file], $options);
+    }
+
+    /**
+     * Gets an array with phpunit envs detected on the phpunit.xml file.
+     *
+     * @return array
+     */
+    protected function phpunitEnvs()
+    {
+        $envs = [];
+
+        if (! file_exists($file = base_path('phpunit.xml'))) {
+            $file = base_path('phpunit.xml.dist');
+        }
+
+        if (file_exists($file)) {
+            /** @var \SimpleXMLElement $xml */
+            $xml = simplexml_load_string((string) file_get_contents($file));
+
+            if (is_iterable($xml->php->server)) {
+                foreach ($xml->php->server as $env) {
+                    if (isset($env['name'])) {
+                        $envs[$env['name']->__toString()] = false;
+                    }
+                }
+            }
+
+            if (is_iterable($xml->php->env)) {
+                foreach ($xml->php->env as $env) {
+                    if (isset($env['name'])) {
+                        $envs[$env['name']->__toString()] = false;
+                    }
+                }
+            }
+        }
+
+        return $envs;
     }
 }
