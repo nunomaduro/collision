@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.2] - 2020-03-03
+### Fixed
+- `phpunit.xml` envs variables being ignored ([235132d](https://github.com/nunomaduro/collision/commit/235132db538b68892cd164948bac6caa7893a4ad))
+
 ## [4.1.1] - 2020-02-26
 ### Fixed
 - `WARN` title being shown on failures
