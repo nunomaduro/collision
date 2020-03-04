@@ -12,3 +12,8 @@ parameters:
         - '#Parameter \#1 \$input of function str_pad expects string, int given.#'
         - '#Cannot call method addTheme\(\) on array|JakubOnderka\\PhpConsoleColor\\ConsoleColor#'
         - '#Method NunoMaduro\\Collision\\Adapters\\Laravel\\IgnitionSolutionsRepository::getFromThrowable\(\) should return array<int,#'
+        - '#Result of static method Dotenv\\Repository\\RepositoryBuilder::create\(\) \(void\) is used.#'
+        - message: '#Cannot call method make\(\) on void.#'
+          paths:
+                - src/Adapters/Laravel/Commands/*
+
