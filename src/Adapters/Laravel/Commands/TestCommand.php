@@ -122,10 +122,7 @@ class TestCommand extends Command
      */
     protected function phpunitEnvs()
     {
-        $envs = [
-            // Default envs.
-            'TELESCOPE_ENABLED' => false,
-        ];
+        $envs = [];
 
         if (! file_exists($file = base_path('phpunit.xml'))) {
             $file = base_path('phpunit.xml.dist');
