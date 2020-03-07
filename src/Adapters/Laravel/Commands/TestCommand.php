@@ -2,6 +2,8 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
+use Dotenv\Dotenv;
+use Dotenv\Repository\RepositoryBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -55,14 +57,15 @@ class TestCommand extends Command
     {
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
 
-        $envs = $this->phpunitEnvs();
+        $this->clearEnv();
 
         $process = (new Process(array_merge(
-            $this->binary(), array_merge(
+            $this->binary(),
+            array_merge(
                 $this->arguments,
                 $this->phpunitArguments($options)
             )
-        ), null, $envs))->setTimeout(null);
+        )))->setTimeout(null);
 
         try {
             $process->setTty(! $this->option('without-tty'));
@@ -116,39 +119,25 @@ class TestCommand extends Command
     }
 
     /**
-     * Gets an array with phpunit envs detected on the phpunit.xml file.
+     * Clears any set Environment variables set by Laravel if the --env option is empty.
      *
-     * @return array
+     * @return void
      */
-    protected function phpunitEnvs()
+    protected function clearEnv()
     {
-        $envs = [];
+        if (! $this->option('env')) {
+            $repositories = RepositoryBuilder::create()
+                ->make();
 
-        if (! file_exists($file = base_path('phpunit.xml'))) {
-            $file = base_path('phpunit.xml.dist');
-        }
+            $envs = Dotenv::create(
+                $repositories,
+                $this->laravel->environmentPath(),
+                $this->laravel->environmentFile()
+            )->safeLoad();
 
-        if (file_exists($file)) {
-            /** @var \SimpleXMLElement $xml */
-            $xml = simplexml_load_string((string) file_get_contents($file));
-
-            if (is_iterable($xml->php->server)) {
-                foreach ($xml->php->server as $env) {
-                    if (isset($env['name'])) {
-                        $envs[$env['name']->__toString()] = false;
-                    }
-                }
-            }
-
-            if (is_iterable($xml->php->env)) {
-                foreach ($xml->php->env as $env) {
-                    if (isset($env['name'])) {
-                        $envs[$env['name']->__toString()] = false;
-                    }
-                }
+            foreach ($envs as $name => $value) {
+                $repositories->clear($name);
             }
         }
-
-        return $envs;
     }
 }
