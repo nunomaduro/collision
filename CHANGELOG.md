@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.3] - 2020-03-07
+### Fixed
+- Missing support for `.env.testing` ([#96](https://github.com/nunomaduro/collision/pull/96))
+
 ## [4.1.2] - 2020-03-03
 ### Fixed
 - `phpunit.xml` envs variables being ignored ([235132d](https://github.com/nunomaduro/collision/commit/235132db538b68892cd164948bac6caa7893a4ad))
