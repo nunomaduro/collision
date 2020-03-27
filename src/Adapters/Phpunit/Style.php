@@ -72,7 +72,7 @@ final class Style
             $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
             $state->getTestCaseTitleColor(),
             $state->getTestCaseTitle(),
-            $state->testCaseClass
+            $state->testCaseName
         ));
 
         $state->eachTestCaseTests(function (TestResult $testResult) {
@@ -209,26 +209,38 @@ final class Style
      * @param  string  $fg
      * @param  string  $bg
      * @param  string  $title
-     * @param  string  $testCaseClass
+     * @param  string  $testCaseName
      *
      * @return string
      */
-    private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseClass): string
+    private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName): string
     {
-        $classParts = explode('\\', $testCaseClass);
-        // Removes `Tests` part
-        array_shift($classParts);
-        $highlightedPart = array_pop($classParts);
-        $nonHighlightedPart = implode('\\', $classParts);
+        if (class_exists($testCaseName)) {
+            $nameParts = explode('\\', $testCaseName);
+            // Removes `Tests` part
+            array_shift($nameParts);
+            $highlightedPart = array_pop($nameParts);
+            $nonHighlightedPart = implode('\\', $nameParts);
 
-        $testCaseClass = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+            $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+        } else if (file_exists($testCaseName)) {
+            $testCaseName = ltrim($testCaseName, (string) getcwd());
+            $nameParts = explode(DIRECTORY_SEPARATOR, $testCaseName);
+            // Removes `Tests` part
+            array_shift($nameParts);
+            $highlightedPart = (string) array_pop($nameParts);
+            $highlightedPart = substr($highlightedPart, 0, (int) strrpos($highlightedPart, "."));
+            $nonHighlightedPart = implode('\\', $nameParts);
+
+            $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+        }
 
         return sprintf(
             "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
             $fg,
             $bg,
             $title,
-            $testCaseClass
+            $testCaseName
         );
     }
 

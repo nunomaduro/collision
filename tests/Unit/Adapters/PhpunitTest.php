@@ -47,38 +47,63 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_was_tests(): void
     {
-        $process = $this->runTests([
+        $output = $this->runTests([
             '--exclude-group',
-            'fail',
+            'fail,custom-name',
         ]);
 
-        self::assertStringContainsString(
-            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed',
-            $process->getOutput()
-        );
+        self::assertStringContainsString(<<<EOF
+   WARN  Feature\ExampleTest
+  s skipped example → This is a skip description
+  i incomplete example
+  r risky example → This test did not perform any assertions  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleTest.php:19
+  w warn example → This is a warning description
+  ✓ pass example
 
-        $this->assertTrue($process->isSuccessful());
+  Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed
+  Time:
+EOF,
+            $output
+        );
+    }
+
+    /** @test */
+    public function it_was_custom_test_case_name(): void
+    {
+        $output = $this->runTests([
+            '--group',
+            'custom-name',
+        ]);
+
+        self::assertStringContainsString(<<<EOF
+   PASS  LaravelApp\\tests\\Feature\\ExampleWithCustomNameTest
+  ✓ pass example
+
+  Tests:  1 passed
+  Time:
+EOF,
+            $output
+        );
     }
 
     /** @test */
     public function it_was_recap(): void
     {
-        $process = $this->runTests([
+        $output = $this->runTests([
             '--exclude-group',
             'fail',
         ]);
 
         self::assertStringContainsString(
             'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed',
-            $process->getOutput()
+            $output
         );
-        $this->assertTrue($process->isSuccessful());
     }
 
     /** @test */
     public function it_was_failure(): void
     {
-        $process = $this->runTests();
+        $output = $this->runTests([], 1);
 
         $code = '$this->assertFalse(true);';
 
@@ -95,17 +120,15 @@ class PhpunitTest extends TestCase
     21| }
     22|
 EOF
-            , $process->getOutput());
-
-        $this->assertFalse($process->isSuccessful());
+            , $output);
     }
 
     /**
      * @param  array  $arguments
      *
-     * @return Process
+     * @return string
      */
-    private function runTests(array $arguments = []): Process
+    private function runTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
             './vendor/bin/phpunit',
@@ -119,6 +142,8 @@ EOF
         $process->setPty(false);
         $process->run();
 
-        return $process;
+        $this->assertEquals($exitCode, $process->getExitCode());
+
+        return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $process->getOutput());
     }
 }

@@ -12,6 +12,7 @@
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use PHPUnit\Framework\TestCase;
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 
 /**
  * @internal
@@ -37,7 +38,7 @@ final class State
      *
      * @var string
      */
-    public $testCaseClass;
+    public $testCaseName;
 
     /**
      * The current test case tests.
@@ -49,11 +50,11 @@ final class State
     /**
      * The state constructor.
      *
-     * @param  string  $testCaseClass
+     * @param  string  $testCaseName
      */
-    private function __construct(string $testCaseClass)
+    private function __construct(string $testCaseName)
     {
-        $this->testCaseClass = $testCaseClass;
+        $this->testCaseName = $testCaseName;
     }
 
     /**
@@ -65,7 +66,7 @@ final class State
      */
     public static function from(TestCase $test): self
     {
-        return new self(get_class($test));
+        return new self(self::getPrintableTestCaseName($test));
     }
 
     /**
@@ -155,7 +156,7 @@ final class State
      */
     public function testCaseHasChanged(TestCase $testCase): bool
     {
-        return get_class($testCase) !== $this->testCaseClass;
+        return self::getPrintableTestCaseName($testCase) !== $this->testCaseName;
     }
 
     /**
@@ -167,7 +168,7 @@ final class State
      */
     public function moveTo(TestCase $testCase): void
     {
-        $this->testCaseClass = get_class($testCase);
+        $this->testCaseName = self::getPrintableTestCaseName($testCase);
 
         $this->testCaseTests = [];
     }
@@ -214,5 +215,19 @@ final class State
         }
 
         return false;
+    }
+
+    /**
+     * Returns the printable test case name from the given `TestCase`.
+     */
+    private static function getPrintableTestCaseName(TestCase $test): string
+    {
+        if ($test instanceof HasPrintableTestCaseName) {
+            $name = $test->getPrintableTestCaseName();
+        } else {
+            $name = get_class($test);
+        }
+
+        return $name;
     }
 }
