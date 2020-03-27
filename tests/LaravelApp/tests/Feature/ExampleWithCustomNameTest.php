@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
+use Tests\TestCase;
 
 class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCaseName
 {

@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use PHPUnit\Framework\TestCase;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal

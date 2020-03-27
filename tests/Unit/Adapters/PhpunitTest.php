@@ -75,8 +75,8 @@ EOF,
             'custom-name',
         ]);
 
-        self::assertStringContainsString(<<<EOF
-   PASS  tests\\LaravelApp\\tests\\Feature\\ExampleWithCustomNameTest
+        self::assertStringContainsString(<<<'EOF'
+   PASS  tests\LaravelApp\tests\Feature\ExampleWithCustomNameTest
   ✓ pass example
 
   Tests:  1 passed
