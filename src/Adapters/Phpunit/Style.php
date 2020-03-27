@@ -217,21 +217,15 @@ final class Style
     {
         if (class_exists($testCaseName)) {
             $nameParts = explode('\\', $testCaseName);
-            // Removes `Tests` part
-            array_shift($nameParts);
             $highlightedPart = array_pop($nameParts);
             $nonHighlightedPart = implode('\\', $nameParts);
-
             $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
         } else if (file_exists($testCaseName)) {
-            $testCaseName = ltrim($testCaseName, (string) getcwd());
+            $testCaseName = substr($testCaseName, strlen((string) getcwd())+1);
             $nameParts = explode(DIRECTORY_SEPARATOR, $testCaseName);
-            // Removes `Tests` part
-            array_shift($nameParts);
             $highlightedPart = (string) array_pop($nameParts);
             $highlightedPart = substr($highlightedPart, 0, (int) strrpos($highlightedPart, "."));
             $nonHighlightedPart = implode('\\', $nameParts);
-
             $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
         }
 

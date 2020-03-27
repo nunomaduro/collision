@@ -53,7 +53,7 @@ class PhpunitTest extends TestCase
         ]);
 
         self::assertStringContainsString(<<<EOF
-   WARN  Feature\ExampleTest
+   WARN  Tests\Feature\ExampleTest
   s skipped example → This is a skip description
   i incomplete example
   r risky example → This test did not perform any assertions  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleTest.php:19
@@ -76,7 +76,7 @@ EOF,
         ]);
 
         self::assertStringContainsString(<<<EOF
-   PASS  LaravelApp\\tests\\Feature\\ExampleWithCustomNameTest
+   PASS  tests\\LaravelApp\\tests\\Feature\\ExampleWithCustomNameTest
   ✓ pass example
 
   Tests:  1 passed
