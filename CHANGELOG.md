@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Missing first folder of relative path ([9af85c2](https://github.com/nunomaduro/collision/commit/9af85c29de1e7c3d9d2d0442a8db31fdfa63cb50), [fa81cd2](https://github.com/nunomaduro/collision/commit/fa81cd2d0eb636da010545acc17fcaba3ee26789))
+
 ## [4.1.3] - 2020-03-07
 ### Fixed
 - Missing support for `.env.testing` ([#96](https://github.com/nunomaduro/collision/pull/96))
