@@ -49,7 +49,7 @@ trait PrinterContents
     /**
      * Creates a new instance of the listener.
      *
-     * @param  ConsoleOutput  $output
+     * @param ConsoleOutput $output
      *
      * @throws \ReflectionException
      */
@@ -65,7 +65,7 @@ trait PrinterContents
         ConfigureIO::of(new ArgvInput(), $output);
 
         $this->style = new Style($output);
-        $dummyTest = new class extends TestCase {
+        $dummyTest   = new class() extends TestCase {
         };
 
         $this->state = State::from($dummyTest);
@@ -105,7 +105,7 @@ trait PrinterContents
         $reflector = new ReflectionObject($error);
 
         if ($reflector->hasProperty('message')) {
-            $message = trim((string) preg_replace("/\r|\n/", ' ', $error->getMessage()));
+            $message  = trim((string) preg_replace("/\r|\n/", ' ', $error->getMessage()));
             $property = $reflector->getProperty('message');
             $property->setAccessible(true);
             $property->setValue($error, $message);
@@ -159,7 +159,7 @@ trait PrinterContents
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        if (! $this->ended && $this->state->suiteTotalTests === $this->state->testSuiteTestsCount()) {
+        if (!$this->ended && $this->state->suiteTotalTests === $this->state->testSuiteTestsCount()) {
             $this->ended = true;
 
             $this->style->writeCurrentRecap($this->state);
@@ -193,17 +193,13 @@ trait PrinterContents
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        if (! $this->state->existsInTestCase($testCase)) {
+        if (!$this->state->existsInTestCase($testCase)) {
             $this->state->add(TestResult::fromTestCase($testCase, TestResult::PASS));
         }
     }
 
     /**
      * Intentionally left blank as we output things on events of the listener.
-     *
-     * @param  string  $content
-     *
-     * @return  void
      */
     public function write(string $content): void
     {
@@ -216,14 +212,10 @@ trait PrinterContents
      * Note: This printer is do not work with normal Test classes - only
      * with Test Case classes. Please report an issue if you think
      * this should work any other way.
-     *
-     * @param  Test  $test
-     *
-     * @return TestCase
      */
     private function testCaseFromTest(Test $test): TestCase
     {
-        if (! $test instanceof TestCase) {
+        if (!$test instanceof TestCase) {
             throw new ShouldNotHappen();
         }
 

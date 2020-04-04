@@ -23,8 +23,6 @@ final class Timer
 
     /**
      * Timer constructor.
-     *
-     * @param  float  $start
      */
     private function __construct(float $start)
     {
@@ -33,8 +31,6 @@ final class Timer
 
     /**
      * Starts the timer.
-     *
-     * @return Timer
      */
     public static function start(): Timer
     {
@@ -43,8 +39,6 @@ final class Timer
 
     /**
      * Returns the elapsed time in microseconds.
-     *
-     * @return float
      */
     public function result(): float
     {

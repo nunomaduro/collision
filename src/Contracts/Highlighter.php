@@ -20,11 +20,6 @@ interface Highlighter
 {
     /**
      * Highlights the provided content.
-     *
-     * @param  string $content
-     * @param  int $line
-     *
-     * @return string
      */
     public function highlight(string $content, int $line): string;
 }

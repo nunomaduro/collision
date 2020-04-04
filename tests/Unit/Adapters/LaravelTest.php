@@ -68,8 +68,8 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_reports_to_the_original_exception_handler(): void
     {
-        $app = $this->createApplication();
-        $exception = new Exception();
+        $app                          = $this->createApplication();
+        $exception                    = new Exception();
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('report')->with($exception);
 
@@ -80,9 +80,9 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_renders_to_the_original_exception_handler(): void
     {
-        $app = $this->createApplication();
-        $exception = new Exception();
-        $request = new \stdClass();
+        $app                          = $this->createApplication();
+        $exception                    = new Exception();
+        $request                      = new \stdClass();
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('render')->with($request, $exception);
 
@@ -93,9 +93,9 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_renders_non_symfony_console_exceptions_with_collision(): void
     {
-        $app = $this->createApplication();
+        $app       = $this->createApplication();
         $exception = new Exception();
-        $output = new BufferedOutput();
+        $output    = new BufferedOutput();
 
         $handlerMock = $this->createMock(Handler::class);
         $handlerMock->expects($this->once())->method('setOutput')->with($output);
@@ -112,9 +112,9 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_renders_non_symfony_console_exceptions_with_symfony(): void
     {
-        $app = $this->createApplication();
+        $app       = $this->createApplication();
         $exception = new InvalidArgumentException();
-        $output = new BufferedOutput();
+        $output    = new BufferedOutput();
 
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('renderForConsole')->with($output, $exception);
@@ -137,7 +137,7 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_provides_only_the_provider_contract(): void
     {
-        $app = $this->createApplication();
+        $app      = $this->createApplication();
         $provides = (new CollisionServiceProvider($app))->provides();
         $this->assertEquals([ProviderContract::class], $provides);
     }

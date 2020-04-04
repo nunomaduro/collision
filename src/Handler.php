@@ -32,12 +32,10 @@ class Handler extends AbstractHandler implements HandlerContract
 
     /**
      * Creates an instance of the Handler.
-     *
-     * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
      */
     public function __construct(WriterContract $writer = null)
     {
-        $this->writer = $writer ?: new Writer;
+        $this->writer = $writer ?: new Writer();
     }
 
     /**

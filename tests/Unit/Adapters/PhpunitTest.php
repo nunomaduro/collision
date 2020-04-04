@@ -27,7 +27,7 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_do_not_handles_test_that_are_not_test_cases(): void
     {
-        $test = new class implements Test {
+        $test = new class() implements Test {
             public function count()
             {
                 return 0;
@@ -123,11 +123,6 @@ EOF
             , $output);
     }
 
-    /**
-     * @param  array  $arguments
-     *
-     * @return string
-     */
     private function runTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
@@ -136,7 +131,7 @@ EOF
             'tests/LaravelApp/phpunit.xml',
             '--printer',
             'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-        ], $arguments), __DIR__.'/../../..');
+        ], $arguments), __DIR__ . '/../../..');
 
         $process->setTty(false);
         $process->setPty(false);

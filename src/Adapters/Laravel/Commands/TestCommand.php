@@ -68,9 +68,9 @@ class TestCommand extends Command
         )))->setTimeout(null);
 
         try {
-            $process->setTty(! $this->option('without-tty'));
+            $process->setTty(!$this->option('without-tty'));
         } catch (RuntimeException $e) {
-            $this->output->writeln('Warning: '.$e->getMessage());
+            $this->output->writeln('Warning: ' . $e->getMessage());
         }
 
         try {
@@ -101,17 +101,17 @@ class TestCommand extends Command
     /**
      * Get the array of arguments for running PHPUnit.
      *
-     * @param  array  $options
+     * @param array $options
      *
      * @return array
      */
     protected function phpunitArguments($options)
     {
         $options = array_values(array_filter($options, function ($option) {
-            return ! Str::startsWith($option, '--env=');
+            return !Str::startsWith($option, '--env=');
         }));
 
-        if (! file_exists($file = base_path('phpunit.xml'))) {
+        if (!file_exists($file = base_path('phpunit.xml'))) {
             $file = base_path('phpunit.xml.dist');
         }
 
@@ -125,7 +125,7 @@ class TestCommand extends Command
      */
     protected function clearEnv()
     {
-        if (! $this->option('env')) {
+        if (!$this->option('env')) {
             $repositories = RepositoryBuilder::create()
                 ->make();
 

@@ -38,8 +38,6 @@ final class Style
 
     /**
      * Style constructor.
-     *
-     * @param  ConsoleOutput  $output
      */
     public function __construct(ConsoleOutput $output)
     {
@@ -55,14 +53,10 @@ final class Style
      *    PASS  Unit\ExampleTest
      *    ✓ basic test
      * ```
-     *
-     * @param  State  $state
-     *
-     * @return void
      */
     public function writeCurrentRecap(State $state): void
     {
-        if (! $state->testCaseTestsCount()) {
+        if (!$state->testCaseTestsCount()) {
             return;
         }
 
@@ -93,11 +87,6 @@ final class Style
      *    Runs  Unit\ExampleTest
      *    • basic test
      * ```
-     *
-     * @param  State  $state
-     * @param  TestCase|null  $testCase
-     *
-     * @return void
      */
     public function updateFooter(State $state, TestCase $testCase = null): void
     {
@@ -112,7 +101,7 @@ final class Style
             );
 
             $testResult = TestResult::fromTestCase($testCase, TestResult::RUNS);
-            $runs[] = $this->testLineFrom(
+            $runs[]     = $this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
                 $testResult->description
@@ -123,7 +112,7 @@ final class Style
 
         foreach ($types as $type) {
             if ($countTests = $state->countTestsInTestSuiteBy($type)) {
-                $color = TestResult::makeColor($type);
+                $color   = TestResult::makeColor($type);
                 $tests[] = "<fg=$color;options=bold>$countTests $type</>";
             }
         }
@@ -133,7 +122,7 @@ final class Style
             $tests[] = "\e[2m$pending pending\e[22m";
         }
 
-        if (! empty($tests)) {
+        if (!empty($tests)) {
             $this->footer->overwrite(array_merge($runs, [
                 '',
                 sprintf(
@@ -146,8 +135,6 @@ final class Style
 
     /**
      * Writes the final recap.
-     *
-     * @param  Timer  $timer
      */
     public function writeRecap(Timer $timer): void
     {
@@ -163,8 +150,6 @@ final class Style
     /**
      * Displays the error using Collision's writer
      * and terminates with exit code === 1.
-     *
-     * @param  Throwable  $throwable
      *
      * @return void
      */
@@ -205,28 +190,21 @@ final class Style
 
     /**
      * Returns the title contents.
-     *
-     * @param  string  $fg
-     * @param  string  $bg
-     * @param  string  $title
-     * @param  string  $testCaseName
-     *
-     * @return string
      */
     private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName): string
     {
         if (class_exists($testCaseName)) {
-            $nameParts = explode('\\', $testCaseName);
-            $highlightedPart = array_pop($nameParts);
+            $nameParts          = explode('\\', $testCaseName);
+            $highlightedPart    = array_pop($nameParts);
             $nonHighlightedPart = implode('\\', $nameParts);
-            $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+            $testCaseName       = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
         } elseif (file_exists($testCaseName)) {
-            $testCaseName = substr($testCaseName, strlen((string) getcwd()) + 1);
-            $nameParts = explode(DIRECTORY_SEPARATOR, $testCaseName);
-            $highlightedPart = (string) array_pop($nameParts);
-            $highlightedPart = substr($highlightedPart, 0, (int) strrpos($highlightedPart, '.'));
+            $testCaseName       = substr($testCaseName, strlen((string) getcwd()) + 1);
+            $nameParts          = explode(DIRECTORY_SEPARATOR, $testCaseName);
+            $highlightedPart    = (string) array_pop($nameParts);
+            $highlightedPart    = substr($highlightedPart, 0, (int) strrpos($highlightedPart, '.'));
             $nonHighlightedPart = implode('\\', $nameParts);
-            $testCaseName = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
+            $testCaseName       = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
         }
 
         return sprintf(
@@ -240,16 +218,10 @@ final class Style
 
     /**
      * Returns the test contents.
-     *
-     * @param  string  $fg
-     * @param  string  $icon
-     * @param  string  $description
-     *
-     * @return string
      */
     private function testLineFrom(string $fg, string $icon, string $description, string $warning = null): string
     {
-        if (! empty($warning)) {
+        if (!empty($warning)) {
             $warning = sprintf(
                 ' → %s',
                 $warning

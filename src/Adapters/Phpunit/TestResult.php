@@ -18,13 +18,13 @@ use PHPUnit\Framework\TestCase;
  */
 final class TestResult
 {
-    public const FAIL = 'failed';
-    public const SKIPPED = 'skipped';
+    public const FAIL       = 'failed';
+    public const SKIPPED    = 'skipped';
     public const INCOMPLETE = 'incompleted';
-    public const RISKY = 'risked';
-    public const WARN = 'warnings';
-    public const RUNS = 'pending';
-    public const PASS = 'passed';
+    public const RISKY      = 'risked';
+    public const WARN       = 'warnings';
+    public const RUNS       = 'pending';
+    public const PASS       = 'passed';
 
     /**
      * @readonly
@@ -57,34 +57,26 @@ final class TestResult
     /**
      * @readonly
      *
-     * @var null|string
+     * @var string|null
      */
     public $warning;
 
     /**
      * Test constructor.
      *
-     * @param  string  $description
-     * @param  string  $type
-     * @param  string  $icon
-     * @param  string  $color
-     * @param  string  $warning
+     * @param string $warning
      */
     private function __construct(string $description, string $type, string $icon, string $color, string $warning = null)
     {
         $this->description = $description;
-        $this->type = $type;
-        $this->icon = $icon;
-        $this->color = $color;
-        $this->warning = trim((string) preg_replace("/\r|\n/", ' ', (string) $warning));
+        $this->type        = $type;
+        $this->icon        = $icon;
+        $this->color       = $color;
+        $this->warning     = trim((string) preg_replace("/\r|\n/", ' ', (string) $warning));
     }
 
     /**
      * Creates a new test from the given test case.
-     *
-     * @param  TestCase  $testCase
-     *
-     * @return self
      */
     public static function fromTestCase(TestCase $testCase, string $type, string $warning = null): self
     {
@@ -99,8 +91,6 @@ final class TestResult
 
     /**
      * Get the test case description.
-     *
-     * @return string
      */
     public static function makeDescription(TestCase $testCase): string
     {
@@ -124,8 +114,6 @@ final class TestResult
 
     /**
      * Get the test case icon.
-     *
-     * @return string
      */
     public static function makeIcon(string $type): string
     {
@@ -149,8 +137,6 @@ final class TestResult
 
     /**
      * Get the test case color.
-     *
-     * @return string
      */
     public static function makeColor(string $type): string
     {

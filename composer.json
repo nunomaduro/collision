@@ -17,10 +17,10 @@
         "php": "^7.2.5",
         "facade/ignition-contracts": "^1.0",
         "filp/whoops": "^2.4",
-        "jakub-onderka/php-console-highlighter": "^0.4",
         "symfony/console": "^5.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
         "facade/ignition": "^2.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
@@ -58,9 +58,12 @@
         }
     },
     "scripts": {
+        "lint": "php-cs-fixer fix -v",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "phpunit --colors=always",
+        "test:lint": "php-cs-fixer fix -v --dry-run",
         "test": [
+            "@test:lint",
             "@test:unit",
             "@test:types"
         ]

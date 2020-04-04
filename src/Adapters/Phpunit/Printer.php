@@ -11,14 +11,13 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-/**
+/*
  * This `if` condition exists because phpunit
  * is not a direct dependency of Collision.
  *
  * This code bellow it's for phpunit@8
  */
 if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) === 8) {
-
     /**
      * This is an Collision Phpunit Adapter implementation.
      *
@@ -30,14 +29,13 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
     }
 }
 
-/**
+/*
  * This `if` condition exists because phpunit
  * is not a direct dependency of Collision.
  *
  * This code bellow it's for phpunit@9
  */
 if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) === 9) {
-
     /**
      * This is an Collision Phpunit Adapter implementation.
      *
@@ -49,10 +47,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
 
         /**
          * Intentionally left blank as we output things on events of the listener.
-         *
-         * @param  \PHPUnit\Framework\TestResult $result
-         *
-         * @return void
          */
         public function printResult(\PHPUnit\Framework\TestResult $result): void
         {

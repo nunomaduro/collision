@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
@@ -30,5 +29,4 @@ return [
     'max_age' => false,
 
     'supports_credentials' => false,
-
 ];

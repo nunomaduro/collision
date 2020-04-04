@@ -38,7 +38,7 @@ class ProviderTest extends TestCase
     /** @test */
     public function it_gets_the_handler(): void
     {
-        $handler = new Handler();
+        $handler  = new Handler();
         $provider = new Provider(new Run(), $handler);
 
         $this->assertEquals($provider->getHandler(), $handler);

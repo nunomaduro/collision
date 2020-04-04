@@ -39,14 +39,11 @@ class Provider implements ProviderContract
 
     /**
      * Creates a new instance of the Provider.
-     *
-     * @param \Whoops\RunInterface|null $run
-     * @param \NunoMaduro\Collision\Contracts\Handler|null $handler
      */
     public function __construct(RunInterface $run = null, HandlerContract $handler = null)
     {
-        $this->run = $run ?: new Run;
-        $this->handler = $handler ?: new Handler;
+        $this->run     = $run ?: new Run();
+        $this->handler = $handler ?: new Handler();
     }
 
     /**

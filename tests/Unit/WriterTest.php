@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use NunoMaduro\Collision\ConsoleColor;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Highlighter;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
