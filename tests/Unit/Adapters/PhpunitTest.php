@@ -52,11 +52,13 @@ class PhpunitTest extends TestCase
             'fail,custom-name',
         ]);
 
+        $testsDir = dirname(__DIR__, 2);
+
         self::assertStringContainsString(<<<EOF
    WARN  Tests\Feature\ExampleTest
   s skipped example → This is a skip description
   i incomplete example
-  r risky example → This test did not perform any assertions  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleTest.php:19
+  r risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:19
   w warn example → This is a warning description
   ✓ pass example
 
