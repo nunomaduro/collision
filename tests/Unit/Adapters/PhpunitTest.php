@@ -47,7 +47,7 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_was_tests(): void
     {
-        $output = $this->runTests([
+        $output = $this->runCollisionTests([
             '--exclude-group',
             'fail,custom-name',
         ]);
@@ -72,7 +72,7 @@ EOF,
     /** @test */
     public function it_was_custom_test_case_name(): void
     {
-        $output = $this->runTests([
+        $output = $this->runCollisionTests([
             '--group',
             'custom-name',
         ]);
@@ -91,7 +91,7 @@ EOF,
     /** @test */
     public function it_was_recap(): void
     {
-        $output = $this->runTests([
+        $output = $this->runCollisionTests([
             '--exclude-group',
             'fail',
         ]);
@@ -105,7 +105,7 @@ EOF,
     /** @test */
     public function it_was_failure(): void
     {
-        $output = $this->runTests([], 1);
+        $output = $this->runCollisionTests([], 1);
 
         $code = '$this->assertFalse(true);';
 
@@ -125,7 +125,7 @@ EOF
             , $output);
     }
 
-    private function runTests(array $arguments = [], int $exitCode = 0): string
+    private function runCollisionTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
             './vendor/bin/phpunit',
