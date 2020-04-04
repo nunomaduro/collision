@@ -16,7 +16,7 @@ use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 /**
  * This is an Collision Highlighter implementation.
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * Code originally from { JakubOnderka\\PhpConsoleColor }. But the package got deprecated.
  *
  * @internal
  *

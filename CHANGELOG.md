@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.2.0] - 2020-04-04
+### Changed
+- Removes the dependency JakubOnderka@PhpConsoleColor ([9b430e4](https://github.com/nunomaduro/collision/commit/9b430e44467e7186f5a7e48c8cdeac0571817286))
+
 ### Fixed
 - Missing first folder of relative path ([9af85c2](https://github.com/nunomaduro/collision/commit/9af85c29de1e7c3d9d2d0442a8db31fdfa63cb50), [fa81cd2](https://github.com/nunomaduro/collision/commit/fa81cd2d0eb636da010545acc17fcaba3ee26789))
 
