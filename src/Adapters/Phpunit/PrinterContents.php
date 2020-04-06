@@ -166,8 +166,8 @@ trait PrinterContents
 
             $this->style->writeCurrentRecap($this->state);
 
-            $this->style->updateFooter($this->state);
-            $this->style->writeRecap($this->timer);
+            // $this->style->updateFooter($this->state);
+            $this->style->writeRecap($this->state, $this->timer);
         }
     }
 
@@ -185,7 +185,7 @@ trait PrinterContents
             $this->state->moveTo($testCase);
         }
 
-        $this->style->updateFooter($this->state, $testCase);
+        // $this->style->updateFooter($this->state, $testCase);
     }
 
     /**
