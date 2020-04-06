@@ -15,9 +15,7 @@ use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Throwable;
 use Whoops\Exception\Inspector;
 
@@ -32,18 +30,11 @@ final class Style
     private $output;
 
     /**
-     * @var ConsoleSectionOutput
-     */
-    private $footer;
-
-    /**
      * Style constructor.
      */
     public function __construct(ConsoleOutput $output)
     {
         $this->output = $output;
-
-        $this->footer = $output->section();
     }
 
     /**
@@ -59,8 +50,6 @@ final class Style
         if (!$state->testCaseTestsCount()) {
             return;
         }
-
-        $this->footer->clear();
 
         $this->output->writeln($this->titleLineFrom(
             $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
@@ -80,34 +69,10 @@ final class Style
     }
 
     /**
-     * Prints the content similar too on the footer. Where
-     * we are updating the current test.
-     *
-     * ```
-     *    Runs  Unit\ExampleTest
-     *    • basic test
-     * ```
+     * Writes the final recap.
      */
-    public function updateFooter(State $state, TestCase $testCase = null): void
+    public function writeRecap(State $state, Timer $timer = null): void
     {
-        $runs = [];
-
-        if ($testCase) {
-            $runs[] = $this->titleLineFrom(
-                'black',
-                'yellow',
-                'RUNS',
-                get_class($testCase)
-            );
-
-            $testResult = TestResult::fromTestCase($testCase, TestResult::RUNS);
-            $runs[]     = $this->testLineFrom(
-                $testResult->color,
-                $testResult->icon,
-                $testResult->description
-            );
-        }
-
         $types = [TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
 
         foreach ($types as $type) {
@@ -123,28 +88,26 @@ final class Style
         }
 
         if (!empty($tests)) {
-            $this->footer->overwrite(array_merge($runs, [
-                '',
+            $this->output->write([
+                "\n",
                 sprintf(
                     '  <fg=white;options=bold>Tests:  </><fg=default>%s</>',
                     implode(', ', $tests)
                 ),
-            ]));
+            ]);
         }
-    }
 
-    /**
-     * Writes the final recap.
-     */
-    public function writeRecap(Timer $timer): void
-    {
-        $timeElapsed = number_format($timer->result(), 2, '.', '');
-        $this->footer->writeln(
-            sprintf(
-                '  <fg=white;options=bold>Time:   </><fg=default>%ss</>',
-                $timeElapsed
-            )
-        );
+        if ($timer) {
+            $timeElapsed = number_format($timer->result(), 2, '.', '');
+            $this->output->writeln([
+                    '',
+                    sprintf(
+                        '  <fg=white;options=bold>Time:   </><fg=default>%ss</>',
+                        $timeElapsed
+                    ),
+                ]
+            );
+        }
     }
 
     /**
@@ -157,7 +120,9 @@ final class Style
     {
         $this->writeCurrentRecap($state);
 
-        $this->updateFooter($state);
+        $this->writeRecap($state);
+
+        $this->output->writeln('');
 
         $writer = (new Writer())->setOutput($this->output);
 

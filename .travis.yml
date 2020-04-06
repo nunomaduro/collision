@@ -17,3 +17,4 @@ before_script:
 
 script:
     - composer test
+    - ./vendor/bin/phpunit

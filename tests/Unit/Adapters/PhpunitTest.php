@@ -97,7 +97,7 @@ EOF,
         ]);
 
         self::assertStringContainsString(
-            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed',
+            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 3 passed',
             $output
         );
     }
