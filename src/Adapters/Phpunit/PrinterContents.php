@@ -53,7 +53,7 @@ trait PrinterContents
      *
      * @throws \ReflectionException
      */
-    public function __construct(ConsoleOutput $output = null)
+    public function __construct(ConsoleOutput $output = null, bool $verbose = false, string $colors = 'always')
     {
         if (intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) === 8) {
             parent::__construct();
@@ -61,7 +61,9 @@ trait PrinterContents
 
         $this->timer = Timer::start();
 
-        $output = $output ?? new ConsoleOutput();
+        $decorated = $colors === 'always' || $colors === 'auto';
+
+        $output = $output ?? new ConsoleOutput($verbose ? ConsoleOutput::VERBOSITY_VERY_VERBOSE : ConsoleOutput::VERBOSITY_NORMAL, $decorated);
         ConfigureIO::of(new ArgvInput(), $output);
 
         $this->style = new Style($output);
