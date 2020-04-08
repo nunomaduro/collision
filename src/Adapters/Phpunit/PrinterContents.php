@@ -123,7 +123,7 @@ trait PrinterContents
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::INCOMPLETE));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::INCOMPLETE, $t->getMessage()));
     }
 
     /**
