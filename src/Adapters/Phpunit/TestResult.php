@@ -94,7 +94,7 @@ final class TestResult
      */
     public static function makeDescription(TestCase $testCase): string
     {
-        $name = $testCase->getName(true);
+        $name = $testCase->getName(false);
 
         // First, lets replace underscore by spaces.
         $name = str_replace('_', ' ', $name);
@@ -108,8 +108,19 @@ final class TestResult
         // Removes spaces
         $name = (string) trim($name);
 
-        // Finally, lower case everything
-        return (string) mb_strtolower($name);
+        // Lower case everything
+        $name = (string) mb_strtolower($name);
+
+        // Add the dataset name if it has one
+        if ($dataName = $testCase->dataName()) {
+            if (is_int($dataName)) {
+                $name .= sprintf(' with data set #%d', $dataName);
+            } else {
+                $name .= sprintf(' with data set "%s"', $dataName);
+            }
+        }
+
+        return $name;
     }
 
     /**
