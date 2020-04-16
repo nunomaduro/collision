@@ -48,9 +48,16 @@ final class State
     public $testCaseTests = [];
 
     /**
+     * The current (test case tests.
+     *
+     * @var array<int, TestResult>
+     */
+    public $toBePrintedCaseTests = [];
+
+    /**
      * Header printed.
      *
-     * @var  bool
+     * @var bool
      */
     public $headerPrinted = false;
 
@@ -75,8 +82,8 @@ final class State
      */
     public function add(TestResult $test): void
     {
-        $this->testCaseTests[] = $test;
-        $this->printedCaseTests[] = $test;
+        $this->testCaseTests[]        = $test;
+        $this->toBePrintedCaseTests[] = $test;
 
         $this->suiteTests[] = $test;
     }
@@ -162,11 +169,11 @@ final class State
      */
     public function eachTestCaseTests(callable $callback): void
     {
-        foreach ($this->printedCaseTests as $test) {
+        foreach ($this->toBePrintedCaseTests as $test) {
             $callback($test);
         }
 
-        $this->printedCaseTests = [];
+        $this->toBePrintedCaseTests = [];
     }
 
     public function countTestsInTestSuiteBy(string $type): int
