@@ -48,6 +48,13 @@ final class State
     public $testCaseTests = [];
 
     /**
+     * Header printed.
+     *
+     * @var  bool
+     */
+    public $headerPrinted = false;
+
+    /**
      * The state constructor.
      */
     private function __construct(string $testCaseName)
@@ -69,6 +76,7 @@ final class State
     public function add(TestResult $test): void
     {
         $this->testCaseTests[] = $test;
+        $this->printedCaseTests[] = $test;
 
         $this->suiteTests[] = $test;
     }
@@ -145,6 +153,8 @@ final class State
         $this->testCaseName = self::getPrintableTestCaseName($testCase);
 
         $this->testCaseTests = [];
+
+        $this->headerPrinted = false;
     }
 
     /**
@@ -152,9 +162,11 @@ final class State
      */
     public function eachTestCaseTests(callable $callback): void
     {
-        foreach ($this->testCaseTests as $test) {
+        foreach ($this->printedCaseTests as $test) {
             $callback($test);
         }
+
+        $this->printedCaseTests = [];
     }
 
     public function countTestsInTestSuiteBy(string $type): int

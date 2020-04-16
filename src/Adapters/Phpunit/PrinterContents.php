@@ -63,7 +63,7 @@ trait PrinterContents
 
         $decorated = $colors === 'always' || $colors === 'auto';
 
-        $output = $output ?? new ConsoleOutput($verbose ? ConsoleOutput::VERBOSITY_VERY_VERBOSE : ConsoleOutput::VERBOSITY_NORMAL, $decorated);
+        $output = $output ?? new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, $decorated);
         ConfigureIO::of(new ArgvInput(), $output);
 
         $this->style = new Style($output);

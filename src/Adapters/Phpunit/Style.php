@@ -51,14 +51,19 @@ final class Style
             return;
         }
 
-        $this->output->writeln($this->titleLineFrom(
-            $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
-            $state->getTestCaseTitleColor(),
-            $state->getTestCaseTitle(),
-            $state->testCaseName
-        ));
+        if ($state->headerPrinted === false) {
+            $this->output->writeln($this->titleLineFrom(
+                $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
+                $state->getTestCaseTitleColor(),
+                $state->getTestCaseTitle(),
+                $state->testCaseName
+            ));
+
+            $state->headerPrinted = true;
+        }
 
         $state->eachTestCaseTests(function (TestResult $testResult) {
+            usleep(20000);
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
@@ -120,10 +125,6 @@ final class Style
     {
         $this->writeCurrentRecap($state);
 
-        $this->writeRecap($state);
-
-        $this->output->writeln('');
-
         $writer = (new Writer())->setOutput($this->output);
 
         if ($throwable instanceof AssertionFailedError) {
@@ -150,7 +151,7 @@ final class Style
             $this->output->write($comparisionFailure->getDiff());
         }
 
-        exit(1);
+        $this->output->writeln('');
     }
 
     /**
