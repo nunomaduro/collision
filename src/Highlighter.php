@@ -51,8 +51,12 @@ class Highlighter implements HighlighterContract
     const ACTUAL_LINE_MARK = 'actual_line_mark';
     const LINE_NUMBER      = 'line_number';
 
-    const ARROW_SYMBOL = '>'; //'>'; //'➜'; // '▶';
-    const DELIMITER = '│';
+    const ARROW_SYMBOL = '>';
+    const DELIMITER = '|';
+
+    const ARROW_SYMBOL_UTF8 = '➜'; // '▶';
+    const DELIMITER_UTF8 = '│';
+
     const LINE_NUMBER_DIVIDER = 'line_divider';
     const MARKED_LINE_NUMBER = 'marked_line';
     const WIDTH = 3;
@@ -73,11 +77,17 @@ class Highlighter implements HighlighterContract
         self::MARKED_LINE_NUMBER  => 'dark_gray',
         self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
+    /** @var string */
+    private $delimiter = self::DELIMITER_UTF8;
+    /** @var string */
+    private $arrow = self::ARROW_SYMBOL_UTF8;
 
     /**
      * Creates an instance of the Highlighter.
+     * @param ConsoleColor|null $color
+     * @param bool $UTF8
      */
-    public function __construct(ConsoleColor $color = null)
+    public function __construct(ConsoleColor $color = null, bool $UTF8 = true)
     {
         $this->color = $color ?: new ConsoleColor();
 
@@ -89,6 +99,10 @@ class Highlighter implements HighlighterContract
 
         foreach ($this->theme as $name => $styles) {
             $this->color->addTheme((string) $name, $styles);
+        }
+        if(!$UTF8) {
+            $this->delimiter = self::DELIMITER;
+            $this->arrow = self::ARROW_SYMBOL;
         }
     }
 
@@ -283,7 +297,7 @@ class Highlighter implements HighlighterContract
             if (null !== $markLine) {
                 $snippet .=
                     ($markLine === $i + 1
-                        ? $this->color->apply(self::ACTUAL_LINE_MARK, '  ' . self::ARROW_SYMBOL . ' ')
+                        ? $this->color->apply(self::ACTUAL_LINE_MARK, '  ' . $this->arrow . ' ')
                         : '    '
                     );
 
@@ -296,7 +310,7 @@ class Highlighter implements HighlighterContract
             $snippet .= $coloredLineNumber;
 
             $snippet .=
-                $this->color->apply(self::LINE_NUMBER_DIVIDER, self::DELIMITER . ' ');
+                $this->color->apply(self::LINE_NUMBER_DIVIDER, $this->delimiter . ' ');
 
             $snippet .= $line . PHP_EOL;
         }
