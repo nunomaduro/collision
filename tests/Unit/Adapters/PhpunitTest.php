@@ -113,14 +113,14 @@ EOF,
   Failed asserting that true is false.
 
   at tests/LaravelApp/tests/Unit/ExampleTest.php:19
-    15|      * @group fail
-    16|      */
-    17|     public function testFailExample()
-    18|     {
-  > 19|         $code
-    20|     }
-    21| }
-    22|
+     15▕      * @group fail
+     16▕      */
+     17▕     public function testFailExample()
+     18▕     {
+  ➜  19▕         $code
+     20▕     }
+     21▕ }
+     22▕
 EOF
             , $output);
     }

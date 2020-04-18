@@ -52,14 +52,14 @@ class WriterTest extends TestCase
   Fail description
 
   at tests/FakeProgram/HelloWorldFile3.php:9
-     5| class HelloWorldFile3
-     6| {
-     7|     public static function say()
-     8|     {
-  >  9|         return new FakeException('Fail description');
-    10|     }
-    11| }
-    12|
+      5▕ class HelloWorldFile3
+      6▕ {
+      7▕     public static function say()
+      8▕     {
+  ➜   9▕         return new FakeException('Fail description');
+     10▕     }
+     11▕ }
+     12▕
 
   1   tests/FakeProgram/HelloWorldFile2.php:9
       Tests\FakeProgram\HelloWorldFile3::say()
@@ -93,14 +93,14 @@ EOF;
   Fail description
 
   at tests/FakeProgram/HelloWorldFile3.php:9
-     5| class HelloWorldFile3
-     6| {
-     7|     public static function say()
-     8|     {
-  >  9|         return new FakeException('Fail description');
-    10|     }
-    11| }
-    12|
+      5▕ class HelloWorldFile3
+      6▕ {
+      7▕     public static function say()
+      8▕     {
+  ➜   9▕         return new FakeException('Fail description');
+     10▕     }
+     11▕ }
+     12▕
 
   1   tests/FakeProgram/HelloWorldFile2.php:9
       Tests\FakeProgram\HelloWorldFile3::say()
@@ -182,14 +182,14 @@ EOF;
   Fail description
 
   at tests/FakeProgram/HelloWorldFile3.php:9
-     5| class HelloWorldFile3
-     6| {
-     7|     public static function say()
-     8|     {
-  >  9|         return new FakeException('Fail description');
-    10|     }
-    11| }
-    12|
+      5▕ class HelloWorldFile3
+      6▕ {
+      7▕     public static function say()
+      8▕     {
+  ➜   9▕         return new FakeException('Fail description');
+     10▕     }
+     11▕ }
+     12▕
 
 EOF;
 
