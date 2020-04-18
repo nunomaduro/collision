@@ -35,8 +35,11 @@ class Highlighter implements HighlighterContract
         self::TOKEN_KEYWORD    => ['magenta', 'bold'],
         self::TOKEN_DEFAULT    => ['default', 'bold'],
         self::TOKEN_HTML       => ['blue', 'bold'],
+
         self::ACTUAL_LINE_MARK => ['red', 'bold'],
         self::LINE_NUMBER      => ['dark_gray'],
+        self::MARKED_LINE_NUMBER => ['italic', 'bold', 'bg_black'],
+        self::LINE_NUMBER_DIVIDER => ['dark_gray'],
     ];
 
     const TOKEN_DEFAULT = 'token_default';
@@ -48,7 +51,7 @@ class Highlighter implements HighlighterContract
     const ACTUAL_LINE_MARK = 'actual_line_mark';
     const LINE_NUMBER      = 'line_number';
 
-    const ARROW_SYMBOL = '➜'; //'>'; //'➜'; // '▶';
+    const ARROW_SYMBOL = '>'; //'>'; //'➜'; // '▶';
     const DELIMITER = '│';
     const LINE_NUMBER_DIVIDER = 'line_divider';
     const MARKED_LINE_NUMBER = 'marked_line';
@@ -65,9 +68,9 @@ class Highlighter implements HighlighterContract
         self::TOKEN_DEFAULT => 'default',
         self::TOKEN_HTML    => 'cyan',
 
-        self::ACTUAL_LINE_MARK => 'red',
-        self::LINE_NUMBER      => 'dark_gray',
-        self::MARKED_LINE_NUMBER => ['italic', 'bold', 'bg_black'],
+        self::ACTUAL_LINE_MARK    => 'dark_gray',
+        self::LINE_NUMBER         => 'dark_gray',
+        self::MARKED_LINE_NUMBER  => 'dark_gray',
         self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
 
