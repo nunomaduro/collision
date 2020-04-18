@@ -55,7 +55,7 @@ class Highlighter implements HighlighterContract
     const DELIMITER = '|';
 
     const ARROW_SYMBOL_UTF8 = '➜'; // '▶';
-    const DELIMITER_UTF8 = '│';
+    const DELIMITER_UTF8 = '▕';
 
     const LINE_NUMBER_DIVIDER = 'line_divider';
     const MARKED_LINE_NUMBER = 'marked_line';
