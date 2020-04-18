@@ -11,6 +11,7 @@
 
 namespace NunoMaduro\Collision;
 
+use NunoMaduro\Collision\Exceptions\InvalidStyleException;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
