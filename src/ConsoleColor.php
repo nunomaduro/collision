@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision;
 
-use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\InvalidStyleException;
+use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
  * This is an Collision Console Color implementation.
