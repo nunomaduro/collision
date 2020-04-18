@@ -48,6 +48,12 @@ class Highlighter implements HighlighterContract
     const ACTUAL_LINE_MARK = 'actual_line_mark';
     const LINE_NUMBER      = 'line_number';
 
+    const ARROW_SYMBOL = '➜'; //'>'; //'➜'; // '▶';
+    const DELIMITER = '│';
+    const LINE_NUMBER_DIVIDER = 'line_divider';
+    const MARKED_LINE_NUMBER = 'marked_line';
+    const WIDTH = 3;
+
     /** @var ConsoleColor */
     private $color;
 
@@ -61,6 +67,8 @@ class Highlighter implements HighlighterContract
 
         self::ACTUAL_LINE_MARK => 'red',
         self::LINE_NUMBER      => 'dark_gray',
+        self::MARKED_LINE_NUMBER => ['italic', 'bold', 'bg_black'],
+        self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
 
     /**
@@ -263,17 +271,37 @@ class Highlighter implements HighlighterContract
     {
         end($lines);
         $lineStrlen = strlen(key($lines) + 1);
+        $lineStrlen = $lineStrlen < self::WIDTH ? self::WIDTH : $lineStrlen;
 
         $snippet = '';
         foreach ($lines as $i => $line) {
-            if ($markLine !== null) {
-                $snippet .= ($markLine === $i + 1 ? $this->color->apply(self::ACTUAL_LINE_MARK, '  > ') : '    ');
+            if (null !== $markLine) {
+                $snippet .=
+                    ($markLine === $i + 1
+                        ? $this->color->apply(self::ACTUAL_LINE_MARK, '  ' . self::ARROW_SYMBOL . ' ')
+                        : '    '
+                    );
+                $snippet .=
+                    ($markLine === $i + 1 ?
+                        $this->coloredLineNumber(self::MARKED_LINE_NUMBER, $i, $lineStrlen) :
+                        $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen)
+                    );
+            }  else {
+                $snippet .= $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
             }
 
-            $snippet .= $this->color->apply(self::LINE_NUMBER, str_pad($i + 1, $lineStrlen, ' ', STR_PAD_LEFT) . '│ ');
+            $snippet .=
+                $this->color->apply(self::LINE_NUMBER_DIVIDER, self::DELIMITER . ' ');
+
             $snippet .= $line . PHP_EOL;
         }
 
         return $snippet;
     }
+
+    private function coloredLineNumber($style, $i, $lineStrlen)
+    {
+        return $this->color->apply($style, str_pad($i + 1, $lineStrlen, ' ', STR_PAD_LEFT));
+    }
+
 }
