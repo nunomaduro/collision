@@ -275,20 +275,22 @@ class Highlighter implements HighlighterContract
 
         $snippet = '';
         foreach ($lines as $i => $line) {
+            $coloredLineNumber = $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
+
             if (null !== $markLine) {
                 $snippet .=
                     ($markLine === $i + 1
                         ? $this->color->apply(self::ACTUAL_LINE_MARK, '  ' . self::ARROW_SYMBOL . ' ')
                         : '    '
                     );
-                $snippet .=
+
+                $coloredLineNumber =
                     ($markLine === $i + 1 ?
                         $this->coloredLineNumber(self::MARKED_LINE_NUMBER, $i, $lineStrlen) :
-                        $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen)
+                        $coloredLineNumber
                     );
-            }  else {
-                $snippet .= $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
             }
+            $snippet .= $coloredLineNumber;
 
             $snippet .=
                 $this->color->apply(self::LINE_NUMBER_DIVIDER, self::DELIMITER . ' ');
