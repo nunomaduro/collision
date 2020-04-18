@@ -40,6 +40,13 @@ trait PrinterContents
     private $state;
 
     /**
+     * If the test suite has failed.
+     *
+     * @var bool
+     */
+    private $failed = false;
+
+    /**
      * If the test suite has ended before.
      *
      * @var bool
@@ -80,9 +87,11 @@ trait PrinterContents
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $throwable));
 
-        $this->style->writeError($this->state, $throwable);
+        $this->style->writeCurrentTestCaseSummary($this->state);
+
+        $this->style->writeError($throwable);
     }
 
     /**
@@ -92,7 +101,7 @@ trait PrinterContents
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::WARN, $warning->getMessage()));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::WARN, $warning));
     }
 
     /**
@@ -100,50 +109,47 @@ trait PrinterContents
      */
     public function addFailure(Test $testCase, AssertionFailedError $error, float $time): void
     {
+        $this->failed = true;
+
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $error));
 
         $reflector = new ReflectionObject($error);
 
-        if ($reflector->hasProperty('message')) {
-            $message  = trim((string) preg_replace("/\r|\n/", ' ', $error->getMessage()));
-            $property = $reflector->getProperty('message');
-            $property->setAccessible(true);
-            $property->setValue($error, $message);
-        }
+        $this->style->writeCurrentTestCaseSummary($this->state);
 
-        $this->style->writeError($this->state, $error);
+        $this->style->writeError($error);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addIncompleteTest(Test $testCase, Throwable $t, float $time): void
+    public function addIncompleteTest(Test $testCase, Throwable $throwable, float $time): void
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::INCOMPLETE));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::INCOMPLETE, $throwable));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addRiskyTest(Test $testCase, Throwable $t, float $time): void
+    public function addRiskyTest(Test $testCase, Throwable $throwable, float $time): void
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::RISKY, $t->getMessage()));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::RISKY, $throwable));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSkippedTest(Test $testCase, Throwable $t, float $time): void
+    public function addSkippedTest(Test $testCase, Throwable $throwable, float $time): void
     {
         $testCase = $this->testCaseFromTest($testCase);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::SKIPPED, $t->getMessage()));
+        $this->state->add(TestResult::fromTestCase($testCase, TestResult::SKIPPED, $throwable));
     }
 
     /**
@@ -164,7 +170,11 @@ trait PrinterContents
         if (!$this->ended && $this->state->suiteTotalTests === $this->state->testSuiteTestsCount()) {
             $this->ended = true;
 
-            $this->style->writeCurrentRecap($this->state);
+            $this->style->writeCurrentTestCaseSummary($this->state);
+
+            if ($this->failed) {
+                $this->style->writeErrorsSummary($this->state);
+            }
 
             $this->style->writeRecap($this->state, $this->timer);
         }
@@ -179,7 +189,7 @@ trait PrinterContents
 
         // Let's check first if the testCase is over.
         if ($this->state->testCaseHasChanged($testCase)) {
-            $this->style->writeCurrentRecap($this->state);
+            $this->style->writeCurrentTestCaseSummary($this->state);
 
             $this->state->moveTo($testCase);
         }

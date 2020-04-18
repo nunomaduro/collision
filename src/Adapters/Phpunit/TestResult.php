@@ -12,6 +12,7 @@
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 /**
  * @internal
@@ -25,6 +26,13 @@ final class TestResult
     public const WARN       = 'warnings';
     public const RUNS       = 'pending';
     public const PASS       = 'passed';
+
+    /**
+     * @readonly
+     *
+     * @var string
+     */
+    public $testCaseName;
 
     /**
      * @readonly
@@ -57,36 +65,53 @@ final class TestResult
     /**
      * @readonly
      *
-     * @var string|null
+     * @var Throwable|null
      */
-    public $warning;
+    public $throwable;
+
+    /**
+     * @readonly
+     *
+     * @var string
+     */
+    public $warning = '';
 
     /**
      * Test constructor.
-     *
-     * @param string $warning
      */
-    private function __construct(string $description, string $type, string $icon, string $color, string $warning = null)
+    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
     {
-        $this->description = $description;
-        $this->type        = $type;
-        $this->icon        = $icon;
-        $this->color       = $color;
-        $this->warning     = trim((string) preg_replace("/\r|\n/", ' ', (string) $warning));
+        $this->testCaseName = $testCaseName;
+        $this->description  = $description;
+        $this->type         = $type;
+        $this->icon         = $icon;
+        $this->color        = $color;
+        $this->throwable    = $throwable;
+
+        $asWarning = $this->type === TestResult::WARN
+             || $this->type === TestResult::RISKY
+             || $this->type === TestResult::SKIPPED
+             || $this->type === TestResult::INCOMPLETE;
+
+        if ($throwable instanceof Throwable && $asWarning) {
+            $this->warning     = trim((string) preg_replace("/\r|\n/", ' ', (string) $throwable->getMessage()));
+        }
     }
 
     /**
      * Creates a new test from the given test case.
      */
-    public static function fromTestCase(TestCase $testCase, string $type, string $warning = null): self
+    public static function fromTestCase(TestCase $testCase, string $type, Throwable $throwable = null): self
     {
+        $testCaseName = State::getPrintableTestCaseName($testCase);
+
         $description = self::makeDescription($testCase);
 
         $icon = self::makeIcon($type);
 
         $color = self::makeColor($type);
 
-        return new self($description, $type, $icon, $color, $warning);
+        return new self($testCaseName, $description, $type, $icon, $color, $throwable);
     }
 
     /**
@@ -130,7 +155,7 @@ final class TestResult
     {
         switch ($type) {
             case self::FAIL:
-                return '✕';
+                return '•';
             case self::SKIPPED:
                 return 's';
             case self::RISKY:

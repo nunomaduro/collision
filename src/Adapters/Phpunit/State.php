@@ -48,7 +48,7 @@ final class State
     public $testCaseTests = [];
 
     /**
-     * The current (test case tests.
+     * The current test case tests.
      *
      * @var array<int, TestResult>
      */
@@ -200,14 +200,10 @@ final class State
     /**
      * Returns the printable test case name from the given `TestCase`.
      */
-    private static function getPrintableTestCaseName(TestCase $test): string
+    public static function getPrintableTestCaseName(TestCase $test): string
     {
-        if ($test instanceof HasPrintableTestCaseName) {
-            $name = $test->getPrintableTestCaseName();
-        } else {
-            $name = get_class($test);
-        }
-
-        return $name;
+        return $test instanceof HasPrintableTestCaseName
+            ? $test->getPrintableTestCaseName()
+            : get_class($test);
     }
 }

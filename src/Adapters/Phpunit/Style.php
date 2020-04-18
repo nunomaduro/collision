@@ -11,6 +11,7 @@
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
@@ -45,7 +46,7 @@ final class Style
      *    ✓ basic test
      * ```
      */
-    public function writeCurrentRecap(State $state): void
+    public function writeCurrentTestCaseSummary(State $state): void
     {
         if (!$state->testCaseTestsCount()) {
             return;
@@ -74,12 +75,42 @@ final class Style
     }
 
     /**
+     * Prints the content similar too:.
+     *
+     * ```
+     *    PASS  Unit\ExampleTest
+     *    ✓ basic test
+     * ```
+     */
+    public function writeErrorsSummary(State $state): void
+    {
+        $errors = array_filter($state->suiteTests, function (TestResult $testResult) {
+            return $testResult->type === TestResult::FAIL;
+        });
+
+        $this->output->writeln(['', '<fg=white;options=bold>  Summary of all failing tests:</>', '']);
+
+        array_map(function (TestResult $testResult) {
+            $this->output->write(sprintf(
+                '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
+                $testResult->testCaseName,
+                $testResult->description
+            ));
+
+            if (!$testResult->throwable instanceof Throwable) {
+                throw new ShouldNotHappen();
+            }
+
+            $this->writeError($testResult->throwable);
+        }, $errors);
+    }
+
+    /**
      * Writes the final recap.
      */
     public function writeRecap(State $state, Timer $timer = null): void
     {
         $types = [TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
-
         foreach ($types as $type) {
             if ($countTests = $state->countTestsInTestSuiteBy($type)) {
                 $color   = TestResult::makeColor($type);
@@ -118,13 +149,9 @@ final class Style
     /**
      * Displays the error using Collision's writer
      * and terminates with exit code === 1.
-     *
-     * @return void
      */
-    public function writeError(State $state, Throwable $throwable)
+    public function writeError(Throwable $throwable): void
     {
-        $this->writeCurrentRecap($state);
-
         $writer = (new Writer())->setOutput($this->output);
 
         if ($throwable instanceof AssertionFailedError) {
@@ -133,6 +160,7 @@ final class Style
         }
 
         $writer->ignoreFilesIn([
+            '/vendor\/pestphp\/pest\/src/',
             '/vendor\/phpunit\/phpunit\/src/',
             '/vendor\/mockery\/mockery/',
             '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
