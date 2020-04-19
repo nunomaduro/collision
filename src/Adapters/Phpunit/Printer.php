@@ -10,6 +10,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
+use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
@@ -112,6 +113,15 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         $this->failed = true;
 
         $testCase = $this->testCaseFromTest($testCase);
+
+        $reflector = new ReflectionObject($error);
+
+        if ($reflector->hasProperty('message')) {
+            $message  = trim((string) preg_replace("/\r|\n/", "\n  ", $error->getMessage()));
+            $property = $reflector->getProperty('message');
+            $property->setAccessible(true);
+            $property->setValue($error, $message);
+        }
 
         $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $error));
 
