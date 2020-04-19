@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
@@ -22,11 +15,11 @@ use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
 /**
- * This is an Collision Writer implementation.
+ * @internal
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @see \Tests\Unit\WriterTest
  */
-class Writer implements WriterContract
+final class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.

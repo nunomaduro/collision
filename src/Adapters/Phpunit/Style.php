@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
@@ -17,6 +10,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Throwable;
 use Whoops\Exception\Inspector;
 
@@ -33,8 +27,12 @@ final class Style
     /**
      * Style constructor.
      */
-    public function __construct(ConsoleOutput $output)
+    public function __construct(ConsoleOutputInterface $output)
     {
+        if (!$output instanceof ConsoleOutput) {
+            throw new ShouldNotHappen();
+        }
+
         $this->output = $output;
     }
 
@@ -48,11 +46,11 @@ final class Style
      */
     public function writeCurrentTestCaseSummary(State $state): void
     {
-        if (!$state->testCaseTestsCount()) {
+        if ($state->testCaseTestsCount() === 0) {
             return;
         }
 
-        if ($state->headerPrinted === false) {
+        if (!$state->headerPrinted) {
             $this->output->writeln($this->titleLineFrom(
                 $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
                 $state->getTestCaseTitleColor(),
@@ -93,7 +91,7 @@ final class Style
         array_map(function (TestResult $testResult) {
             $this->output->write(sprintf(
                 '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
-                $testResult->testCaseName,
+                $this->truncateTestCaseName($testResult->testCaseName),
                 $testResult->description
             ));
 
@@ -112,14 +110,14 @@ final class Style
     {
         $types = [TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
         foreach ($types as $type) {
-            if ($countTests = $state->countTestsInTestSuiteBy($type)) {
+            if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
                 $color   = TestResult::makeColor($type);
                 $tests[] = "<fg=$color;options=bold>$countTests $type</>";
             }
         }
 
         $pending = $state->suiteTotalTests - $state->testSuiteTestsCount();
-        if ($pending) {
+        if ($pending !== 0) {
             $tests[] = "\e[2m$pending pending\e[22m";
         }
 
@@ -133,7 +131,7 @@ final class Style
             ]);
         }
 
-        if ($timer) {
+        if ($timer !== null) {
             $timeElapsed = number_format($timer->result(), 2, '.', '');
             $this->output->writeln([
                     '',
@@ -160,6 +158,7 @@ final class Style
         }
 
         $writer->ignoreFilesIn([
+            '/compiled\/globals.php/',
             '/vendor\/pestphp\/pest\/src/',
             '/vendor\/phpunit\/phpunit\/src/',
             '/vendor\/mockery\/mockery/',
@@ -187,19 +186,7 @@ final class Style
      */
     private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName): string
     {
-        if (class_exists($testCaseName)) {
-            $nameParts          = explode('\\', $testCaseName);
-            $highlightedPart    = array_pop($nameParts);
-            $nonHighlightedPart = implode('\\', $nameParts);
-            $testCaseName       = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
-        } elseif (file_exists($testCaseName)) {
-            $testCaseName       = substr($testCaseName, strlen((string) getcwd()) + 1);
-            $nameParts          = explode(DIRECTORY_SEPARATOR, $testCaseName);
-            $highlightedPart    = (string) array_pop($nameParts);
-            $highlightedPart    = substr($highlightedPart, 0, (int) strrpos($highlightedPart, '.'));
-            $nonHighlightedPart = implode('\\', $nameParts);
-            $testCaseName       = sprintf("\e[2m%s\e[22m<fg=white;options=bold>%s</>", "$nonHighlightedPart\\", $highlightedPart);
-        }
+        $testCaseName = $this->truncateTestCaseName($testCaseName);
 
         return sprintf(
             "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
@@ -208,6 +195,19 @@ final class Style
             $title,
             $testCaseName
         );
+    }
+
+    /**
+     * Truncates the given `$testCaseName`.
+     */
+    private function truncateTestCaseName(string $testCaseName): string
+    {
+        if (!class_exists($testCaseName) && file_exists($testCaseName)) {
+            $testCaseName = substr($testCaseName, strlen((string) getcwd()) + 1);
+            $testCaseName = substr($testCaseName, 0, (int) strrpos($testCaseName, '.'));
+        }
+
+        return $testCaseName;
     }
 
     /**

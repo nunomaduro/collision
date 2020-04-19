@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
@@ -15,20 +8,14 @@ use NunoMaduro\Collision\Exceptions\InvalidStyleException;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
- * This is an Collision Console Color implementation.
- *
- * Code originally from { JakubOnderka\\PhpConsoleColor }. But the package got deprecated.
- *
  * @internal
- *
- * @final
  */
-class ConsoleColor
+final class ConsoleColor
 {
     const FOREGROUND = 38;
     const BACKGROUND = 48;
 
-    const COLOR256_REGEXP = '~^(bg_)?color_([0-9]{1,3})$~';
+    const COLOR256_REGEXP = '~^(bg_)?color_(\d{1,3})$~';
 
     const RESET_STYLE = 0;
 
@@ -39,7 +26,7 @@ class ConsoleColor
     private $forceStyle = false;
 
     /** @var array */
-    private $styles = [
+    private const STYLES = [
         'none'      => null,
         'bold'      => '1',
         'dark'      => '2',
@@ -146,7 +133,7 @@ class ConsoleColor
      */
     public function setForceStyle($forceStyle)
     {
-        $this->forceStyle = (bool) $forceStyle;
+        $this->forceStyle = $forceStyle;
     }
 
     /**
@@ -219,16 +206,10 @@ class ConsoleColor
     public function isSupported()
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            if (function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT)) {
-                return true;
-            } elseif (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
-                return true;
-            }
-
-            return false;
-        } else {
-            return function_exists('posix_isatty') && @posix_isatty(STDOUT);
+            return getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON';
         }
+
+        return function_exists('posix_isatty') && @posix_isatty(STDOUT);
     }
 
     /**
@@ -238,9 +219,9 @@ class ConsoleColor
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
-        } else {
-            return strpos(getenv('TERM'), '256color') !== false;
         }
+
+        return strpos(getenv('TERM'), '256color') !== false;
     }
 
     /**
@@ -248,7 +229,7 @@ class ConsoleColor
      */
     public function getPossibleStyles()
     {
-        return array_keys($this->styles);
+        return array_keys(self::STYLES);
     }
 
     /**
@@ -273,8 +254,8 @@ class ConsoleColor
      */
     private function styleSequence($style)
     {
-        if (array_key_exists($style, $this->styles)) {
-            return $this->styles[$style];
+        if (array_key_exists($style, self::STYLES)) {
+            return self::STYLES[$style];
         }
 
         if (!$this->are256ColorsSupported()) {
@@ -296,7 +277,7 @@ class ConsoleColor
      */
     private function isValidStyle($style)
     {
-        return array_key_exists($style, $this->styles) || preg_match(self::COLOR256_REGEXP, $style);
+        return array_key_exists($style, self::STYLES) || preg_match(self::COLOR256_REGEXP, $style);
     }
 
     /**

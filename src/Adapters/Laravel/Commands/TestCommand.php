@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
 use Dotenv\Dotenv;
@@ -10,7 +12,7 @@ use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
-class TestCommand extends Command
+final class TestCommand extends Command
 {
     /**
      * The name and signature of the console command.

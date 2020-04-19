@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . DIRECTORY_SEPARATOR . 'tests')
     ->notPath(__DIR__ . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'laravel')
@@ -11,6 +13,7 @@ $rules = [
     'phpdoc_no_empty_return' => false,
     'array_syntax'           => ['syntax' => 'short'],
     'yoda_style'             => false,
+    'declare_strict_types'   => true,
     'binary_operator_spaces' => [
         'operators' => [
             '=>' => 'align',

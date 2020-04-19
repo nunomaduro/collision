@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printer;
@@ -45,7 +47,7 @@ class PhpunitTest extends TestCase
     }
 
     /** @test */
-    public function it_was_tests(): void
+    public function it_has_tests(): void
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
@@ -58,7 +60,7 @@ class PhpunitTest extends TestCase
    WARN  Tests\Feature\ExampleTest
   s skipped example → This is a skip description
   i incomplete example → This is a incomplete description
-  r risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:19
+  r risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:21
   w warn example → This is a warning description
   ✓ pass example
 
@@ -70,7 +72,7 @@ EOF,
     }
 
     /** @test */
-    public function it_was_custom_test_case_name(): void
+    public function it_has_custom_test_case_name(): void
     {
         $output = $this->runCollisionTests([
             '--group',
@@ -78,7 +80,7 @@ EOF,
         ]);
 
         self::assertStringContainsString(<<<'EOF'
-   PASS  tests\LaravelApp\tests\Feature\ExampleWithCustomNameTest
+   PASS  tests/LaravelApp/tests/Feature/ExampleWithCustomNameTest
   ✓ pass example
 
   Tests:  1 passed
@@ -89,7 +91,7 @@ EOF,
     }
 
     /** @test */
-    public function it_was_recap(): void
+    public function it_has_recap(): void
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
@@ -103,7 +105,7 @@ EOF,
     }
 
     /** @test */
-    public function it_was_failure(): void
+    public function it_has_failure(): void
     {
         $output = $this->runCollisionTests([], 1);
 
@@ -112,15 +114,15 @@ EOF,
         self::assertStringContainsString(<<<EOF
   Failed asserting that true is false.
 
-  at tests/LaravelApp/tests/Unit/ExampleTest.php:19
-     15▕      * @group fail
-     16▕      */
-     17▕     public function testFailExample()
-     18▕     {
-  ➜  19▕         $code
-     20▕     }
-     21▕ }
-     22▕
+  at tests/LaravelApp/tests/Unit/ExampleTest.php:21
+     17▕      * @group fail
+     18▕      */
+     19▕     public function testFailExample()
+     20▕     {
+  ➜  21▕         $code
+     22▕     }
+     23▕ }
+     24▕
 EOF
             , $output);
     }

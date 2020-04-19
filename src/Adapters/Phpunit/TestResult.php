@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
@@ -94,7 +87,7 @@ final class TestResult
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
-            $this->warning     = trim((string) preg_replace("/\r|\n/", ' ', (string) $throwable->getMessage()));
+            $this->warning     = trim((string) preg_replace("/\r|\n/", ' ', $throwable->getMessage()));
         }
     }
 
@@ -131,10 +124,10 @@ final class TestResult
         $name = (string) preg_replace('/^test/', '', $name);
 
         // Removes spaces
-        $name = (string) trim($name);
+        $name = trim($name);
 
         // Lower case everything
-        $name = (string) mb_strtolower($name);
+        $name = mb_strtolower($name);
 
         // Add the dataset name if it has one
         if ($dataName = $testCase->dataName()) {

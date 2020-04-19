@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of Collision.
  *
@@ -14,15 +16,9 @@ namespace NunoMaduro\Collision;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 
 /**
- * This is an Collision Highlighter implementation.
- *
- * Code originally from { JakubOnderka\\PhpConsoleColor }. But the package got deprecated.
- *
  * @internal
- *
- * @final
  */
-class Highlighter implements HighlighterContract
+final class Highlighter implements HighlighterContract
 {
     public const TOKEN_DEFAULT    = 'token_default';
     public const TOKEN_COMMENT    = 'token_comment';
@@ -44,7 +40,7 @@ class Highlighter implements HighlighterContract
      *
      * @var array
      */
-    private $theme = [
+    private const THEME = [
         self::TOKEN_STRING  => ['light_gray'],
         self::TOKEN_COMMENT => ['dark_gray', 'italic'],
         self::TOKEN_KEYWORD => ['magenta', 'bold'],
@@ -53,14 +49,14 @@ class Highlighter implements HighlighterContract
 
         self::ACTUAL_LINE_MARK    => ['red', 'bold'],
         self::LINE_NUMBER         => ['dark_gray'],
-        self::MARKED_LINE_NUMBER  => ['italic', 'bold', 'bg_black'],
+        self::MARKED_LINE_NUMBER  => ['italic', 'bold'],
         self::LINE_NUMBER_DIVIDER => ['dark_gray'],
     ];
     /** @var ConsoleColor */
     private $color;
 
     /** @var array */
-    private $defaultTheme = [
+    private const DEFAULT_THEME = [
         self::TOKEN_STRING  => 'red',
         self::TOKEN_COMMENT => 'yellow',
         self::TOKEN_KEYWORD => 'green',
@@ -76,6 +72,10 @@ class Highlighter implements HighlighterContract
     private $delimiter = self::DELIMITER_UTF8;
     /** @var string */
     private $arrow = self::ARROW_SYMBOL_UTF8;
+    /**
+     * @var string
+     */
+    private const NO_MARK = '    ';
 
     /**
      * Creates an instance of the Highlighter.
@@ -84,14 +84,14 @@ class Highlighter implements HighlighterContract
     {
         $this->color = $color ?: new ConsoleColor();
 
-        foreach ($this->defaultTheme as $name => $styles) {
+        foreach (self::DEFAULT_THEME as $name => $styles) {
             if (!$this->color->hasTheme($name)) {
                 $this->color->addTheme($name, $styles);
             }
         }
 
-        foreach ($this->theme as $name => $styles) {
-            $this->color->addTheme((string) $name, $styles);
+        foreach (self::THEME as $name => $styles) {
+            $this->color->addTheme($name, $styles);
         }
         if (!$UTF8) {
             $this->delimiter = self::DELIMITER;
@@ -266,14 +266,10 @@ class Highlighter implements HighlighterContract
      */
     private function lineNumbers(array $lines, $markLine = null): string
     {
-        end($lines);
-        $lineStrlen = strlen(key($lines) + 1);
+        $lineStrlen = strlen((string) (array_key_last($lines) + 1));
         $lineStrlen = $lineStrlen < self::WIDTH ? self::WIDTH : $lineStrlen;
-
-        $snippet = '';
-        $mark    = '  ' . $this->arrow . ' ';
-        $noMark  = '    ';
-
+        $snippet    = '';
+        $mark       = '  ' . $this->arrow . ' ';
         foreach ($lines as $i => $line) {
             $coloredLineNumber = $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
 
@@ -281,7 +277,7 @@ class Highlighter implements HighlighterContract
                 $snippet .=
                     ($markLine === $i + 1
                         ? $this->color->apply(self::ACTUAL_LINE_MARK, $mark)
-                        : $noMark
+                        : self::NO_MARK
                     );
 
                 $coloredLineNumber =
@@ -308,6 +304,6 @@ class Highlighter implements HighlighterContract
      */
     private function coloredLineNumber($style, $i, $lineStrlen): string
     {
-        return $this->color->apply($style, str_pad($i + 1, $lineStrlen, ' ', STR_PAD_LEFT));
+        return $this->color->apply($style, str_pad((string) ($i + 1), $lineStrlen, ' ', STR_PAD_LEFT));
     }
 }

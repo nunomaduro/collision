@@ -1,24 +1,17 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 
 /**
- * This is an Collision Argument Formatter implementation.
+ * @internal
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @see \Tests\Unit\ArgumentFormatterTest
  */
-class ArgumentFormatter implements ArgumentFormatterContract
+final class ArgumentFormatter implements ArgumentFormatterContract
 {
     /**
      * {@inheritdoc}

@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
@@ -21,13 +14,9 @@ use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
 
 /**
- * This is an Collision Laravel Adapter Service Provider implementation.
- *
- * Registers the Error Handler on Laravel.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
-class CollisionServiceProvider extends ServiceProvider
+final class CollisionServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}

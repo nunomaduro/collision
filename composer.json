@@ -14,9 +14,11 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.3",
         "facade/ignition-contracts": "^1.0",
         "filp/whoops": "^2.4",
+        "nunomaduro/mock-final-classes": "^1.0",
+        "rector/rector": "^0.7.16",
         "symfony/console": "^5.0"
     },
     "require-dev": {
@@ -58,10 +60,10 @@
         }
     },
     "scripts": {
-        "lint": "php-cs-fixer fix -v",
+        "lint": "rector process src && php-cs-fixer fix -v --allow-risky=yes",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "phpunit --colors=always",
-        "test:lint": "php-cs-fixer fix -v --dry-run",
+        "test:lint": "rector process src --dry-run && php-cs-fixer fix -v --dry-run --allow-risky=yes",
         "test": [
             "@test:lint",
             "@test:unit",

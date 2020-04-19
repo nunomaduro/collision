@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use NunoMaduro\Collision\ConsoleColor;
@@ -51,20 +53,20 @@ class WriterTest extends TestCase
 
   Fail description
 
-  at tests/FakeProgram/HelloWorldFile3.php:9
-      5▕ class HelloWorldFile3
-      6▕ {
-      7▕     public static function say()
-      8▕     {
-  ➜   9▕         return new FakeException('Fail description');
-     10▕     }
-     11▕ }
-     12▕
+  at tests/FakeProgram/HelloWorldFile3.php:11
+      7▕ class HelloWorldFile3
+      8▕ {
+      9▕     public static function say()
+     10▕     {
+  ➜  11▕         return new FakeException('Fail description');
+     12▕     }
+     13▕ }
+     14▕
 
-  1   tests/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:11
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   tests/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
 
 EOF;
@@ -92,23 +94,23 @@ EOF;
 
   Fail description
 
-  at tests/FakeProgram/HelloWorldFile3.php:9
-      5▕ class HelloWorldFile3
-      6▕ {
-      7▕     public static function say()
-      8▕     {
-  ➜   9▕         return new FakeException('Fail description');
-     10▕     }
-     11▕ }
-     12▕
+  at tests/FakeProgram/HelloWorldFile3.php:11
+      7▕ class HelloWorldFile3
+      8▕ {
+      9▕     public static function say()
+     10▕     {
+  ➜  11▕         return new FakeException('Fail description');
+     12▕     }
+     13▕ }
+     14▕
 
-  1   tests/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:11
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   tests/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
 
-  3   tests/Unit/WriterTest.php:82
+  3   tests/Unit/WriterTest.php:84
       Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
@@ -153,10 +155,10 @@ EOF;
 
   Fail description
 
-  1   tests/FakeProgram/HelloWorldFile2.php:9
+  1   tests/FakeProgram/HelloWorldFile2.php:11
       Tests\FakeProgram\HelloWorldFile3::say()
 
-  2   tests/FakeProgram/HelloWorldFile1.php:9
+  2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
 EOF;
 
@@ -181,15 +183,15 @@ EOF;
 
   Fail description
 
-  at tests/FakeProgram/HelloWorldFile3.php:9
-      5▕ class HelloWorldFile3
-      6▕ {
-      7▕     public static function say()
-      8▕     {
-  ➜   9▕         return new FakeException('Fail description');
-     10▕     }
-     11▕ }
-     12▕
+  at tests/FakeProgram/HelloWorldFile3.php:11
+      7▕ class HelloWorldFile3
+      8▕ {
+      9▕     public static function say()
+     10▕     {
+  ➜  11▕         return new FakeException('Fail description');
+     12▕     }
+     13▕ }
+     14▕
 
 EOF;
 
