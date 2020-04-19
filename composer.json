@@ -16,22 +16,22 @@
     "require": {
         "php": "^7.3",
         "facade/ignition-contracts": "^1.0",
-        "filp/whoops": "^2.4",
-        "nunomaduro/mock-final-classes": "^1.0",
-        "rector/rector": "^0.7.16",
+        "filp/whoops": "^2.7.1",
         "symfony/console": "^5.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "facade/ignition": "^2.0",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^1.0",
-        "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0",
-        "nunomaduro/larastan": "^0.5",
-        "orchestra/testbench": "^5.0",
-        "phpstan/phpstan": "^0.12.3",
-        "phpunit/phpunit": "^8.5.1 || ^9.0"
+        "rector/rector": "^0.7.16",
+        "nunomaduro/mock-final-classes": "^1.0",
+        "friendsofphp/php-cs-fixer": "^2.16.3",
+        "facade/ignition": "^2.0.2",
+        "fideloper/proxy": "^4.3",
+        "fruitcake/laravel-cors": "^1.0.5",
+        "laravel/framework": "^7.6.2",
+        "laravel/tinker": "^2.4",
+        "nunomaduro/larastan": "^0.5.5",
+        "orchestra/testbench": "^5.1",
+        "phpstan/phpstan": "^0.12.18",
+        "phpunit/phpunit": "^9.1.1"
     },
     "autoload-dev": {
         "psr-4": {
