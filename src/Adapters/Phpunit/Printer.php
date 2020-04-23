@@ -72,6 +72,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         $decorated = $colors === 'always' || $colors === 'auto';
 
         $output = $output ?? new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, $decorated);
+
         ConfigureIO::of(new ArgvInput(), $output);
 
         $this->style = new Style($output);

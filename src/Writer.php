@@ -310,15 +310,6 @@ final class Writer implements WriterContract
             $this->render("<fg=white>    $class$function($args)</>", false);
         }
 
-        /* Let's consider add this later...
-         * if ($vendorFrames > 0) {
-         * $this->output->write(
-         * sprintf("\n      \e[2m+%s vendor frames \e[22m\n", $vendorFrames)
-         * );
-         * $vendorFrames = 0;
-         * }.
-         */
-
         return $this;
     }
 

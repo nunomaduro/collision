@@ -57,7 +57,6 @@ final class Style
                 $state->getTestCaseTitle(),
                 $state->testCaseName
             ));
-
             $state->headerPrinted = true;
         }
 
@@ -70,6 +69,7 @@ final class Style
                 $testResult->warning
             ));
         });
+
     }
 
     /**
@@ -91,7 +91,7 @@ final class Style
         array_map(function (TestResult $testResult) {
             $this->output->write(sprintf(
                 '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
-                $this->truncateTestCaseName($testResult->testCaseName),
+                $testResult->testCaseName,
                 $testResult->description
             ));
 
@@ -158,10 +158,10 @@ final class Style
         }
 
         $writer->ignoreFilesIn([
-            '/compiled\/globals.php/',
-            '/vendor\/pestphp\/pest\/src/',
+            '/vendor\/pestphp\/pest/',
             '/vendor\/phpunit\/phpunit\/src/',
             '/vendor\/mockery\/mockery/',
+            '/vendor\/laravel\/dusk/',
             '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
             '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
         ]);
@@ -175,7 +175,9 @@ final class Style
         $writer->write($inspector);
 
         if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
-            $this->output->write($comparisionFailure->getDiff());
+            $diff = $comparisionFailure->getDiff();
+            $diff  = trim((string) preg_replace("/\r|\n/", "\n  ", $diff));
+            $this->output->write("  $diff");
         }
 
         $this->output->writeln('');
@@ -186,8 +188,6 @@ final class Style
      */
     private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName): string
     {
-        $testCaseName = $this->truncateTestCaseName($testCaseName);
-
         return sprintf(
             "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
             $fg,
@@ -195,19 +195,6 @@ final class Style
             $title,
             $testCaseName
         );
-    }
-
-    /**
-     * Truncates the given `$testCaseName`.
-     */
-    private function truncateTestCaseName(string $testCaseName): string
-    {
-        if (!class_exists($testCaseName) && file_exists($testCaseName)) {
-            $testCaseName = substr($testCaseName, strlen((string) getcwd()) + 1);
-            $testCaseName = substr($testCaseName, 0, (int) strrpos($testCaseName, '.'));
-        }
-
-        return $testCaseName;
     }
 
     /**
