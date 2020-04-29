@@ -15,8 +15,10 @@ use NunoMaduro\Collision\Writer;
 
 /**
  * @internal
+ *
+ * @final
  */
-final class CollisionServiceProvider extends ServiceProvider
+class CollisionServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}
