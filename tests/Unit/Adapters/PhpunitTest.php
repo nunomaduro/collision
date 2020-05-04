@@ -79,8 +79,8 @@ EOF,
             'custom-name',
         ]);
 
-        self::assertStringContainsString(<<<'EOF'
-   PASS  tests/LaravelApp/tests/Feature/ExampleWithCustomNameTest
+        self::assertStringContainsString(<<<EOF
+   PASS  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleWithCustomNameTest.php
   ✓ pass example
 
   Tests:  1 passed
@@ -114,15 +114,16 @@ EOF,
         self::assertStringContainsString(<<<EOF
   Failed asserting that true is false.
 
-  at tests/LaravelApp/tests/Unit/ExampleTest.php:21
-     17▕      * @group fail
-     18▕      */
-     19▕     public function testFailExample()
+  at tests/LaravelApp/tests/Unit/ExampleTest.php:16
+     12▕      * @group fail
+     13▕      */
+     14▕     public function testFailExample()
+     15▕     {
+  ➜  16▕         $code
+     17▕     }
+     18▕ 
+     19▕     public function testBasicTest()
      20▕     {
-  ➜  21▕         $code
-     22▕     }
-     23▕ }
-     24▕
 EOF
             , $output);
     }

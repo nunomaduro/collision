@@ -52,13 +52,6 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     private $failed = false;
 
     /**
-     * If the test suite has ended before.
-     *
-     * @var bool
-     */
-    private $ended = false;
-
-    /**
      * Creates a new instance of the listener.
      *
      * @param ConsoleOutput $output
@@ -87,13 +80,11 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      */
     public function addError(Test $testCase, Throwable $throwable, float $time): void
     {
+        $this->failed = true;
+
         $testCase = $this->testCaseFromTest($testCase);
 
         $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $throwable));
-
-        $this->style->writeCurrentTestCaseSummary($this->state);
-
-        $this->style->writeError($throwable);
     }
 
     /**
@@ -125,10 +116,6 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         }
 
         $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $error));
-
-        $this->style->writeCurrentTestCaseSummary($this->state);
-
-        $this->style->writeError($error);
     }
 
     /**
@@ -176,17 +163,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        if (!$this->ended && $this->state->suiteTotalTests === $this->state->testSuiteTestsCount()) {
-            $this->ended = true;
-
-            $this->style->writeCurrentTestCaseSummary($this->state);
-
-            if ($this->failed) {
-                $this->style->writeErrorsSummary($this->state);
-            }
-
-            $this->style->writeRecap($this->state, $this->timer);
-        }
+        // ..
     }
 
     /**
@@ -245,6 +222,13 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      */
     public function printResult(\PHPUnit\Framework\TestResult $result): void
     {
-        // ..
+        $this->style->writeCurrentTestCaseSummary($this->state);
+
+        if ($this->failed) {
+            $onFailure = $this->state->suiteTotalTests !== $this->state->testSuiteTestsCount();
+            $this->style->writeErrorsSummary($this->state, $onFailure);
+        }
+
+        $this->style->writeRecap($this->state, $this->timer);
     }
 }

@@ -69,7 +69,6 @@ final class Style
                 $testResult->warning
             ));
         });
-
     }
 
     /**
@@ -80,20 +79,24 @@ final class Style
      *    ✓ basic test
      * ```
      */
-    public function writeErrorsSummary(State $state): void
+    public function writeErrorsSummary(State $state, bool $onFailure): void
     {
         $errors = array_filter($state->suiteTests, function (TestResult $testResult) {
             return $testResult->type === TestResult::FAIL;
         });
 
-        $this->output->writeln(['', '<fg=white;options=bold>  Summary of all failing tests:</>', '']);
+        if (!$onFailure) {
+            $this->output->writeln(['', '<fg=white;options=bold>  Summary of all failing tests:</>', '']);
+        }
 
-        array_map(function (TestResult $testResult) {
-            $this->output->write(sprintf(
-                '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
-                $testResult->testCaseName,
-                $testResult->description
-            ));
+        array_map(function (TestResult $testResult) use ($onFailure) {
+            if (!$onFailure) {
+                $this->output->write(sprintf(
+                    '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
+                    $testResult->testCaseName,
+                    $testResult->description
+                ));
+            }
 
             if (!$testResult->throwable instanceof Throwable) {
                 throw new ShouldNotHappen();
@@ -175,7 +178,7 @@ final class Style
         $writer->write($inspector);
 
         if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
-            $diff = $comparisionFailure->getDiff();
+            $diff  = $comparisionFailure->getDiff();
             $diff  = trim((string) preg_replace("/\r|\n/", "\n  ", $diff));
             $this->output->write("  $diff");
         }

@@ -133,11 +133,13 @@ final class TestCommand extends Command
 
             $envs = Dotenv::create(
                 $repositories,
+                // @phpstan-ignore-next-line
                 $this->laravel->environmentPath(),
+                // @phpstan-ignore-next-line
                 $this->laravel->environmentFile()
             )->safeLoad();
 
-            foreach ($envs as $name => $value) {
+            foreach (array_keys($envs) as $name) {
                 $repositories->clear($name);
             }
         }
