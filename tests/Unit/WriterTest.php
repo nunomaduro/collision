@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
+use Tests\FakeProgram\HelloWorldFile4;
 use Whoops\Exception\Inspector;
 
 class WriterTest extends TestCase
@@ -110,7 +111,7 @@ EOF;
   2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
 
-  3   tests/Unit/WriterTest.php:84
+  3   tests/Unit/WriterTest.php:85
       Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
@@ -199,6 +200,26 @@ EOF;
             $result,
             $writer->getOutput()
                 ->fetch()
+        );
+    }
+
+    /** @test */
+    public function it_supports_renderless_contracts(): void
+    {
+        $inspector = new Inspector(HelloWorldFile4::say());
+
+        ($writer = $this->createWriter())->write($inspector);
+
+        $result = <<<EOF
+
+   Tests\FakeProgram\FakeRenderlessException \n
+  Fail renderless description\n
+EOF;
+
+        $this->assertEquals(
+            $writer->getOutput()
+                ->fetch(),
+            $result
         );
     }
 

@@ -6,6 +6,8 @@ namespace NunoMaduro\Collision;
 
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
+use NunoMaduro\Collision\Contracts\RenderlessEditor;
+use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
@@ -109,15 +111,20 @@ final class Writer implements WriterContract
 
         $editorFrame = array_shift($frames);
 
-        if ($this->showEditor && $editorFrame !== null) {
+        $exception = $inspector->getException();
+
+        if ($this->showEditor
+            && $editorFrame !== null
+            && !$exception instanceof RenderlessEditor
+        ) {
             $this->renderEditor($editorFrame);
         }
 
         $this->renderSolution($inspector);
 
-        if ($this->showTrace && !empty($frames)) {
+        if ($this->showTrace && !empty($frames) && !$exception instanceof RenderlessTrace) {
             $this->renderTrace($frames);
-        } else {
+        } elseif (!$exception instanceof RenderlessEditor) {
             $this->output->writeln('');
         }
     }
