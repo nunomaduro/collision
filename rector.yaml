@@ -7,7 +7,6 @@ parameters:
     - 'doctrine'
     - 'phpstan'
     - 'phpunit-code-quality'
-    - 'solid'
     - 'early-return'
     - 'doctrine-code-quality'
     - 'code-quality'

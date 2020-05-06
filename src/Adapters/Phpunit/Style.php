@@ -86,7 +86,7 @@ final class Style
         });
 
         if (!$onFailure) {
-            $this->output->writeln(['', '<fg=white;options=bold>  Summary of all failing tests:</>', '']);
+            $this->output->writeln(['', "  \e[2m---\e[22m", '']);
         }
 
         array_map(function (TestResult $testResult) use ($onFailure) {
