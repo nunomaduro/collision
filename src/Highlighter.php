@@ -91,7 +91,9 @@ final class Highlighter implements HighlighterContract
         }
 
         foreach (self::THEME as $name => $styles) {
-            $this->color->addTheme($name, $styles);
+            if (!$this->color->hasTheme($name)) {
+                $this->color->addTheme($name, $styles);
+            }
         }
         if (!$UTF8) {
             $this->delimiter = self::DELIMITER;
