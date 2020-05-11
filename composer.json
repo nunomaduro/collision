@@ -16,8 +16,8 @@
     "require": {
         "php": "^7.3",
         "facade/ignition-contracts": "^1.0",
-        "filp/whoops": "^2.7.2",
-        "symfony/console": "^5.1"
+        "filp/whoops": "^2.7.1",
+        "symfony/console": "^5.0"
     },
     "require-dev": {
         "rector/rector": "^0.7.16",

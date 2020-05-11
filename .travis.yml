@@ -1,0 +1,19 @@
+dist: bionic
+language: php
+
+php:
+  - 7.3
+  - 7.4
+
+env:
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS=""
+
+before_script:
+    - travis_retry composer self-update
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+
+script:
+    - composer test
+    - ./vendor/bin/phpunit
