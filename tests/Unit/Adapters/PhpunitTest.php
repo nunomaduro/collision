@@ -80,7 +80,7 @@ EOF,
         ]);
 
         self::assertStringContainsString(<<<EOF
-   PASS  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleWithCustomNameTest.php
+   PASS  my-custom-name
   ✓ pass example
 
   Tests:  1 passed

@@ -11,7 +11,7 @@ class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCase
 {
     public function getPrintableTestCaseName(): string
     {
-        return __FILE__;
+        return 'my-custom-name';
     }
 
     /**
