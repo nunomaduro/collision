@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.0-BETA1] - 2020-05-11
+### Added
+- Uses Pest as test runner on `TestCommand` in Laravel
+- Improvements on PHPUnit Printer Console UI
+- Adds support to `stop-on-failure` in printer and test command
+- Improvements on exception handler output
+
+### Changed
+- Makes some classes final & internal that will lead for a refactor in the `v6` version.
+
+### Removed
+- Support for PHP 7.2
+- Support for PHPUnit 8
+
 ## [4.2.0] - 2020-04-04
 ### Changed
 - Removes the dependency JakubOnderka@PhpConsoleColor ([9b430e4](https://github.com/nunomaduro/collision/commit/9b430e44467e7186f5a7e48c8cdeac0571817286))
