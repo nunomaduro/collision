@@ -43,7 +43,7 @@ $app->register(\NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider::
 
 ## Phpunit adapter
 
-Phpunit must be 8.5.1 or higher.
+Phpunit must be 9.0 or higher.
 
 Add the Collision `printerClass` to your `phpunit.xml` in the `phpunit` section:
 
