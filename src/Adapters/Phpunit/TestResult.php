@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
@@ -113,6 +114,10 @@ final class TestResult
     public static function makeDescription(TestCase $testCase): string
     {
         $name = $testCase->getName(false);
+
+        if ($testCase instanceof HasPrintableTestCaseName) {
+            return $name;
+        }
 
         // First, lets replace underscore by spaces.
         $name = str_replace('_', ' ', $name);

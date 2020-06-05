@@ -81,7 +81,7 @@ EOF,
 
         self::assertStringContainsString(<<<EOF
    PASS  my-custom-name
-  ✓ pass example
+  ✓ testPassExample
 
   Tests:  1 passed
   Time:
