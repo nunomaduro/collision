@@ -153,7 +153,7 @@ final class TestResult
     {
         switch ($type) {
             case self::FAIL:
-                return '•';
+                return '⨯';
             case self::SKIPPED:
                 return 's';
             case self::RISKY:
