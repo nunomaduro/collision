@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
-use Dotenv\Dotenv;
-use Dotenv\Repository\RepositoryBuilder;
+use Dotenv\Exception\InvalidPathException;
+use Dotenv\Loader\Lines;
+use Dotenv\Loader\Parser;
+use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
@@ -126,18 +131,36 @@ class TestCommand extends Command
     protected function clearEnv()
     {
         if (!$this->option('env')) {
-            $repositories = RepositoryBuilder::create()
-                ->make();
-
-            $envs = Dotenv::create(
-                $repositories,
+            $vars = self::getEnvironmentVariables(
+                // @phpstan-ignore-next-line
                 $this->laravel->environmentPath(),
+                // @phpstan-ignore-next-line
                 $this->laravel->environmentFile()
-            )->safeLoad();
+            );
 
-            foreach ($envs as $name => $value) {
-                $repositories->clear($name);
+            $repository = Env::getRepository();
+
+            foreach ($vars as $name) {
+                $repository->clear($name);
             }
         }
+    }
+
+    private function getEnvironmentVariables($path, $file)
+    {
+        try {
+            $content = StoreBuilder::create()
+                ->withPaths($path)->withNames($file)->make()->read();
+        } catch (InvalidPathException $e) {
+            return [];
+        }
+
+        $vars = [];
+
+        foreach (Lines::process(preg_split("/(\r\n|\n|\r)/", $content)) as $entry) {
+            $vars[] = Parser::parse($entry)[0];
+        }
+
+        return $vars;
     }
 }
