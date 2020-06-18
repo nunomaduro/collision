@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
 use Dotenv\Exception\InvalidPathException;
