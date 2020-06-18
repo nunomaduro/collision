@@ -19,6 +19,9 @@
         "filp/whoops": "^2.7.2",
         "symfony/console": "^5.0"
     },
+    "conflict": {
+        "laravel/framework": "<8.0"
+    },
     "require-dev": {
         "rector/rector": "^0.7.37",
         "nunomaduro/mock-final-classes": "^1.0",
