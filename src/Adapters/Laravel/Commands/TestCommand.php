@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
-use Dotenv\Dotenv;
-use Dotenv\Repository\RepositoryBuilder;
+use Dotenv\Exception\InvalidPathException;
+use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
@@ -132,20 +133,67 @@ final class TestCommand extends Command
     protected function clearEnv()
     {
         if (!$this->option('env')) {
-            $repositories = RepositoryBuilder::create()
-                ->make();
-
-            $envs = Dotenv::create(
-                $repositories,
+            $vars = self::getEnvironmentVariables(
                 // @phpstan-ignore-next-line
                 $this->laravel->environmentPath(),
                 // @phpstan-ignore-next-line
                 $this->laravel->environmentFile()
-            )->safeLoad();
+            );
 
-            foreach (array_keys($envs) as $name) {
-                $repositories->clear($name);
+            $repository = Env::getRepository();
+
+            foreach ($vars as $name) {
+                $repository->clear($name);
             }
         }
+    }
+
+    private function getEnvironmentVariables($path, $file)
+    {
+        if (class_exists(\Dotenv\Parser\Parser::class)) {
+            return self::getEnvironmentVariablesV5($path, $file);
+        }
+
+        if (class_exists(\Dotenv\Loader\Parser::class)) {
+            return self::getEnvironmentVariablesV4($path, $file);
+        }
+
+        throw new \RuntimeException('Please install vlucas/phpdotenv.');
+    }
+ 
+    private static function getEnvironmentVariablesV4($path, $file)
+    {
+        try {
+            $content = StoreBuilder::create()
+                ->withPaths($path)->withNames($file)->make()->read();
+        } catch (InvalidPathException $e) {
+            return [];
+        }
+
+        $vars = [];
+
+        foreach (\Dotenv\Loader\Lines::process(preg_split("/(\r\n|\n|\r)/", $content)) as $entry) {
+            $vars[] = \Dotenv\Loader\Parser::parse($entry)[0];
+        }
+
+        return $vars;
+    }
+
+    private static function getEnvironmentVariablesV5($path, $file)
+    {
+        try {
+            $content = StoreBuilder::create()
+                ->addPath($path)->addName($file)->make()->read();
+        } catch (InvalidPathException $e) {
+            return [];
+        }
+
+        $vars = [];
+
+        foreach ((new \Dotenv\Parser\Parser)->parse($content) as $entry) {
+            $vars[] = $entry->getName();
+        }
+
+        return $vars;
     }
 }
