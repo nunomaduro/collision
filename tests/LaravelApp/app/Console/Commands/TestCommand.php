@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand as BaseTestCommand;
+
 class TestCommand extends BaseTestCommand
 {
     /**
