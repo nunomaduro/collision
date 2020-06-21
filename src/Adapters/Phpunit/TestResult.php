@@ -155,13 +155,13 @@ final class TestResult
             case self::FAIL:
                 return '⨯';
             case self::SKIPPED:
-                return 's';
+                return '-';
             case self::RISKY:
-                return 'r';
+                return '!';
             case self::INCOMPLETE:
-                return 'i';
+                return '…';
             case self::WARN:
-                return 'w';
+                return '!';
             case self::RUNS:
                 return '•';
             default:
