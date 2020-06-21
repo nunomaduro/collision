@@ -51,7 +51,7 @@ class PhpunitTest extends TestCase
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail,custom-name',
+            'fail,environmentTesting,custom-name',
         ]);
 
         $testsDir = dirname(__DIR__, 2);
@@ -64,7 +64,7 @@ class PhpunitTest extends TestCase
   w warn example → This is a warning description
   ✓ pass example
 
-  Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed
+  Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 5 passed
   Time:
 EOF,
             $output
@@ -95,11 +95,11 @@ EOF,
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail',
+            'fail,environmentTesting',
         ]);
 
         self::assertStringContainsString(
-            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 3 passed',
+            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 6 passed',
             $output
         );
     }

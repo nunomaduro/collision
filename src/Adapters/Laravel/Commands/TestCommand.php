@@ -12,7 +12,10 @@ use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
-final class TestCommand extends Command
+/**
+ * @final
+ */
+class TestCommand extends Command
 {
     /**
      * The name and signature of the console command.

@@ -33,5 +33,8 @@
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <server name="VAR_IN_PHPUNIT" value="VAL_IN_PHPUNIT" />
+        <server name="VAR_OVERRIDDEN_IN_PHPUNIT" value="VAL_OVERRIDDEN_IN_PHPUNIT" />
+
     </php>
 </phpunit>
