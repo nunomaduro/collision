@@ -65,8 +65,8 @@
         "test:lint": "rector process src --dry-run && php-cs-fixer fix -v --dry-run --allow-risky=yes",
         "test": [
             "@test:lint",
-            "@test:unit",
-            "@test:types"
+            "@test:types",
+            "@test:unit"
         ]
     }
 }

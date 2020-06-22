@@ -58,10 +58,10 @@ class PhpunitTest extends TestCase
 
         self::assertStringContainsString(<<<EOF
    WARN  Tests\Feature\ExampleTest
-  s skipped example → This is a skip description
-  i incomplete example → This is a incomplete description
-  r risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:21
-  w warn example → This is a warning description
+  - skipped example → This is a skip description
+  … incomplete example → This is a incomplete description
+  ! risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:21
+  ! warn example → This is a warning description
   ✓ pass example
 
   Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 5 passed
