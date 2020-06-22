@@ -62,6 +62,10 @@ class TestCommand extends Command
      */
     public function handle()
     {
+        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
+            throw new RuntimeException("Running Collision ^5.0 artisan test command requires Laravel ^8.0.");
+        }
+
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
 
         $this->clearEnv();
