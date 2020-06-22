@@ -55,10 +55,16 @@ EOF
     private function runTests(array $arguments): void
     {
         $process = new Process($arguments, __DIR__ . '/../../..');
-
-        $process->disableOutput();
         $process->run();
 
-        $this->assertEquals(0, $process->getExitCode());
+        $output = $process->getOutput();
+
+        $failedOutput = <<<EOF
+--- ASSERTION FAIL RECAP ---
+$output
+----------------------------
+EOF;
+
+        $this->assertEquals(0, $process->getExitCode(), $failedOutput);
     }
 }

@@ -139,11 +139,18 @@ EOF
         ], $arguments), __DIR__ . '/../../..');
 
         $process->setTty(false);
-        $process->setPty(false);
+        $process->setPty(true);
         $process->run();
+        $output = $process->getOutput();
 
-        $this->assertEquals($exitCode, $process->getExitCode());
+        $failedOutput = <<<EOF
+--- ASSERTION FAIL RECAP ---
+$output
+----------------------------
+EOF;
 
-        return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $process->getOutput());
+        $this->assertEquals($exitCode, $process->getExitCode(), $failedOutput);
+
+        return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $output);
     }
 }
