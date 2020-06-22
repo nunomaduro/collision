@@ -191,6 +191,13 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         if (!$this->state->existsInTestCase($testCase)) {
             $this->state->add(TestResult::fromTestCase($testCase, TestResult::PASS));
         }
+
+        if ($testCase instanceof TestCase
+            && $testCase->getTestResultObject() instanceof \PHPUnit\Framework\TestResult
+            && !$testCase->getTestResultObject()->isStrictAboutOutputDuringTests()
+            && !$testCase->hasExpectationOnOutput()) {
+            $this->style->write($testCase->getActualOutput());
+        }
     }
 
     /**
