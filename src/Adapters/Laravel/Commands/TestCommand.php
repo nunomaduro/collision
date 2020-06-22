@@ -158,8 +158,9 @@ class TestCommand extends Command
     }
 
     /**
-     * @param  string $path [description]
-     * @param  string $file [description]
+     * @param string $path
+     * @param string $file
+     *
      * @return array
      */
     protected static function getEnvironmentVariables($path, $file)
