@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.0-BETA3] - 2020-06-22
+### Changed
+- Makes `artisan test` command Laravel 8 only ([ba26119](https://github.com/nunomaduro/collision/commit/ba26119149a7e42fbace9c09584596d313a535fd))
+- Icons on printer ([#122](https://github.com/nunomaduro/collision/pull/122))
+
 ## [5.0.0-BETA2] - 2020-06-05
 ### Fixed
 - Lowercasing names on Pest ([5e853c5](https://github.com/nunomaduro/collision/commit/5e853c54ceba7e6abf608957b944d20bb5d5ea6c))
