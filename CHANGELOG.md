@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.0-BETA4] - 2020-06-25
+### Changed
+- Makes `artisan test` command PHPUNit 9 only ([ac6032d](https://github.com/nunomaduro/collision/commit/ac6032dd5546104ce9ae4143f46f391729bfc2ef))
+
 ## [5.0.0-BETA3] - 2020-06-22
 ### Changed
 - Makes `artisan test` command Laravel 8 only ([ba26119](https://github.com/nunomaduro/collision/commit/ba26119149a7e42fbace9c09584596d313a535fd))
