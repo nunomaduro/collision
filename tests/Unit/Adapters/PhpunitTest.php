@@ -47,54 +47,48 @@ class PhpunitTest extends TestCase
     /** @test */
     public function it_was_tests(): void
     {
-        $output = $this->runTests([
+        $output = self::runTests([
             '--exclude-group',
             'fail,custom-name',
         ]);
 
-        self::assertStringContainsString(<<<EOF
-   WARN  Tests\Feature\ExampleTest
+        $expected = 'WARN  Tests\Feature\ExampleTest
   s skipped example → This is a skip description
   i incomplete example
-  r risky example → This test did not perform any assertions
-EOF,
-            $output
-        );
+  r risky example → This test did not perform any assertions';
 
-        self::assertStringContainsString(<<<EOF
-  w warn example → This is a warning description
+        self::assertStringContainsString($expected, $output);
+
+        $expected = '  w warn example → This is a warning description
   ✓ pass example
 
   Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 2 passed
-  Time:
-EOF,
-            $output
-        );
+  Time:';
+
+        self::assertStringContainsString($expected, $output);
     }
 
     /** @test */
     public function it_was_custom_test_case_name(): void
     {
-        $output = $this->runTests([
+        $output = self::runTests([
             '--group',
             'custom-name',
         ]);
 
-        self::assertStringContainsString(<<<'EOF'
-   PASS  tests\LaravelApp\tests\Feature\ExampleWithCustomNameTest
+        $expected = 'PASS  tests\LaravelApp\tests\Feature\ExampleWithCustomNameTest
   ✓ pass example
 
   Tests:  1 passed
-  Time:
-EOF,
-            $output
-        );
+  Time:';
+
+        self::assertStringContainsString($expected, $output);
     }
 
     /** @test */
     public function it_was_recap(): void
     {
-        $output = $this->runTests([
+        $output = self::runTests([
             '--exclude-group',
             'fail',
         ]);
@@ -108,7 +102,7 @@ EOF,
     /** @test */
     public function it_was_failure(): void
     {
-        $output = $this->runTests([], 1);
+        $output = self::runTests([], 1);
 
         $code = '$this->assertFalse(true);';
 
@@ -128,7 +122,7 @@ EOF
             , $output);
     }
 
-    private function runTests(array $arguments = [], int $exitCode = 0): string
+    private static function runTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
             './vendor/bin/phpunit',
@@ -142,7 +136,7 @@ EOF
         $process->setPty(false);
         $process->run();
 
-        $this->assertEquals($exitCode, $process->getExitCode());
+        self::assertEquals($exitCode, $process->getExitCode());
 
         return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $process->getOutput());
     }
