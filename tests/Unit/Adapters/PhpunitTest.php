@@ -56,7 +56,12 @@ class PhpunitTest extends TestCase
    WARN  Tests\Feature\ExampleTest
   s skipped example → This is a skip description
   i incomplete example
-  r risky example → This test did not perform any assertions  /Users/nunomaduro/Work/collision/tests/LaravelApp/tests/Feature/ExampleTest.php:19
+  r risky example → This test did not perform any assertions
+EOF,
+            $output
+        );
+
+        self::assertStringContainsString(<<<EOF
   w warn example → This is a warning description
   ✓ pass example
 
