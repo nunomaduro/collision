@@ -15,13 +15,14 @@ matrix:
   include:
     - php: 7.4.7
       name: Static Analysis
+      env: COMPOSER_FLAGS=""
       script:
         - composer test:lint
         - composer test:types
 
 before_script:
     - travis_retry composer self-update --2
-    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist
+    - travis_retry composer update ${COMPOSER_FLAGS}
 
 script:
     - composer test:unit
