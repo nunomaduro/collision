@@ -27,7 +27,7 @@ class Highlighter implements HighlighterContract
     /**
      * Holds the theme.
      *
-     * @var array
+     * @var array<string,string[]>
      */
     private $theme = [
         self::TOKEN_STRING     => ['light_gray'],
@@ -51,7 +51,7 @@ class Highlighter implements HighlighterContract
     /** @var ConsoleColor */
     private $color;
 
-    /** @var array */
+    /** @var array<string,string> */
     private $defaultTheme = [
         self::TOKEN_STRING  => 'red',
         self::TOKEN_COMMENT => 'yellow',
@@ -90,14 +90,9 @@ class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param string $source
-     * @param int    $lineNumber
-     * @param int    $linesBefore
-     * @param int    $linesAfter
-     *
      * @return string
      */
-    public function getCodeSnippet($source, $lineNumber, $linesBefore = 2, $linesAfter = 2)
+    public function getCodeSnippet(string $source, int $lineNumber, int $linesBefore = 2, int $linesAfter = 2)
     {
         $tokenLines = $this->getHighlightedLines($source);
 
@@ -112,29 +107,26 @@ class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param string $source
-     *
-     * @return array
+     * @return array<array<array{0:string|null,1:string}>>
      */
-    private function getHighlightedLines($source)
+    private function getHighlightedLines(string $source)
     {
         $source = str_replace(["\r\n", "\r"], "\n", $source);
         $tokens = $this->tokenize($source);
 
-        return $this->splitToLines($tokens);
+        return self::splitToLines($tokens);
     }
 
     /**
-     * @param string $source
-     *
-     * @return array
+     * @return array<array{0:string|null,1:string}>
      */
-    private function tokenize($source)
+    private function tokenize(string $source)
     {
         $tokens = token_get_all($source);
 
         $output      = [];
         $currentType = null;
+        $newType     = null;
         $buffer      = '';
 
         foreach ($tokens as $token) {
@@ -205,9 +197,11 @@ class Highlighter implements HighlighterContract
     }
 
     /**
-     * @return array
+     * @param array<array{0:string|null,1:string}> $tokens
+     *
+     * @return array<array<array{0:string|null,1:string}>>
      */
-    private function splitToLines(array $tokens)
+    private static function splitToLines(array $tokens)
     {
         $lines = [];
 
@@ -233,7 +227,7 @@ class Highlighter implements HighlighterContract
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     private function colorLines(array $tokenLines)
     {
@@ -255,17 +249,19 @@ class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param int|null $markLine
+     * @param string[] $lines
      *
      * @return string
      */
-    private function lineNumbers(array $lines, $markLine = null)
+    private function lineNumbers(array $lines, int $markLine = null)
     {
         end($lines);
+        /** @phpstan-ignore-next-line */
         $lineStrlen = strlen(key($lines) + 1);
 
         $snippet = '';
         foreach ($lines as $i => $line) {
+            /** @var int $i */
             if ($markLine !== null) {
                 $snippet .= ($markLine === $i + 1 ? $this->color->apply(self::ACTUAL_LINE_MARK, '  > ') : '    ');
             }

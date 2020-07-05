@@ -11,6 +11,7 @@
 
 namespace NunoMaduro\Collision;
 
+use NunoMaduro\Collision\Exceptions\InvalidStyleException;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
@@ -37,7 +38,7 @@ class ConsoleColor
     /** @var bool */
     private $forceStyle = false;
 
-    /** @var array */
+    /** @var array<string,string|null> */
     private $styles = [
         'none'      => null,
         'bold'      => '1',
@@ -87,7 +88,7 @@ class ConsoleColor
         'bg_white'         => '107',
     ];
 
-    /** @var array */
+    /** @var array<string,string[]> */
     private $themes = [];
 
     public function __construct()
@@ -96,15 +97,13 @@ class ConsoleColor
     }
 
     /**
-     * @param string|array $style
-     * @param string       $text
+     * @param string|string[] $style
      *
      * @return string
      *
      * @throws InvalidStyleException
-     * @throws \InvalidArgumentException
      */
-    public function apply($style, $text)
+    public function apply($style, string $text)
     {
         if (!$this->isStyleForced() && !$this->isSupported()) {
             return $text;
@@ -113,8 +112,9 @@ class ConsoleColor
         if (is_string($style)) {
             $style = [$style];
         }
+
         if (!is_array($style)) {
-            throw new \InvalidArgumentException('Style must be string or array.');
+            throw new \TypeError(sprintf('%s::apply(): Argument #1 ($style) must be of type string|array, %s given', self::class, get_debug_type($style)));
         }
 
         $sequences = [];
@@ -137,13 +137,13 @@ class ConsoleColor
             return $text;
         }
 
-        return $this->escSequence(implode(';', $sequences)) . $text . $this->escSequence(self::RESET_STYLE);
+        return self::escSequence(implode(';', $sequences)) . $text . self::escSequence(self::RESET_STYLE);
     }
 
     /**
-     * @param bool $forceStyle
+     * @return void
      */
-    public function setForceStyle($forceStyle)
+    public function setForceStyle(bool $forceStyle)
     {
         $this->forceStyle = (bool) $forceStyle;
     }
@@ -156,6 +156,11 @@ class ConsoleColor
         return $this->forceStyle;
     }
 
+    /**
+     * @param array<string,string[]> $themes
+     *
+     * @return void
+     */
     public function setThemes(array $themes)
     {
         $this->themes = [];
@@ -165,16 +170,19 @@ class ConsoleColor
     }
 
     /**
-     * @param string       $name
-     * @param array|string $styles
+     * @param string|string[] $styles
+     *
+     * @return void
+     *
+     * @throws InvalidStyleException
      */
-    public function addTheme($name, $styles)
+    public function addTheme(string $name, $styles)
     {
         if (is_string($styles)) {
             $styles = [$styles];
         }
         if (!is_array($styles)) {
-            throw new \InvalidArgumentException('Style must be string or array.');
+            throw new \TypeError(sprintf('%s::addTheme(): Argument #2 ($styles) must be of type string|array, %s given', self::class, get_debug_type($styles)));
         }
 
         foreach ($styles as $style) {
@@ -195,19 +203,17 @@ class ConsoleColor
     }
 
     /**
-     * @param string $name
-     *
      * @return bool
      */
-    public function hasTheme($name)
+    public function hasTheme(string $name)
     {
         return isset($this->themes[$name]);
     }
 
     /**
-     * @param string $name
+     * @return void
      */
-    public function removeTheme($name)
+    public function removeTheme(string $name)
     {
         unset($this->themes[$name]);
     }
@@ -220,14 +226,16 @@ class ConsoleColor
         if (DIRECTORY_SEPARATOR === '\\') {
             if (function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT)) {
                 return true;
-            } elseif (getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON') {
+            }
+
+            if (isset($_SERVER['ANSICON']) || ($_SERVER['ConEmuANSI'] ?? '') === 'ON') {
                 return true;
             }
 
             return false;
-        } else {
-            return function_exists('posix_isatty') && @posix_isatty(STDOUT);
         }
+
+        return function_exists('posix_isatty') && @posix_isatty(STDOUT);
     }
 
     /**
@@ -237,9 +245,9 @@ class ConsoleColor
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
-        } else {
-            return strpos(getenv('TERM'), '256color') !== false;
         }
+
+        return strpos((string) $_SERVER['TERM'] ?? '', '256color') !== false;
     }
 
     /**
@@ -251,11 +259,9 @@ class ConsoleColor
     }
 
     /**
-     * @param string $name
-     *
-     * @return string[]
+     * @return array<string|null>
      */
-    private function themeSequence($name)
+    private function themeSequence(string $name)
     {
         $sequences = [];
         foreach ($this->themes[$name] as $style) {
@@ -266,11 +272,9 @@ class ConsoleColor
     }
 
     /**
-     * @param string $style
-     *
-     * @return string
+     * @return string|null
      */
-    private function styleSequence($style)
+    private function styleSequence(string $style)
     {
         if (array_key_exists($style, $this->styles)) {
             return $this->styles[$style];
@@ -289,11 +293,9 @@ class ConsoleColor
     }
 
     /**
-     * @param string $style
-     *
      * @return bool
      */
-    private function isValidStyle($style)
+    private function isValidStyle(string $style)
     {
         return array_key_exists($style, $this->styles) || preg_match(self::COLOR256_REGEXP, $style);
     }
@@ -303,7 +305,7 @@ class ConsoleColor
      *
      * @return string
      */
-    private function escSequence($value)
+    private static function escSequence($value)
     {
         return "\033[{$value}m";
     }
