@@ -20,6 +20,7 @@ matrix:
         - composer test:types
 
 before_script:
+    - travis_retry composer self-update --2
     - travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist
 
 script:
