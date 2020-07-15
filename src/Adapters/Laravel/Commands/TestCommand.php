@@ -171,7 +171,8 @@ class TestCommand extends Command
             self::getVersionFourEnvironmentVariables($path, $file);
     }
 
-    private static function getVersionFiveEnvironmentVariables($path, $file)
+    /** @return array<int, string|null> */
+    private static function getVersionFiveEnvironmentVariables(string $path, string $file): array
     {
         try {
             $content = StoreBuilder::createWithNoNames()
@@ -192,9 +193,11 @@ class TestCommand extends Command
         return $vars;
     }
 
-    private static function getVersionFourEnvironmentVariables($path, $file)
+    /** @return array<string, string|null> */
+    private static function getVersionFourEnvironmentVariables(string $path, string $file): array
     {
         return Dotenv::create(
+            // @phpstan-ignore-next-line
             RepositoryBuilder::create()->make(),
             $path,
             $file
