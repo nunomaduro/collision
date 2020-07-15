@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
+use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Dotenv\Parser\Parser;
+use Dotenv\Repository\RepositoryBuilder;
 use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
@@ -64,11 +66,6 @@ class TestCommand extends Command
     {
         if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
             throw new RuntimeException('Running Collision ^5.0 artisan test command requires PHPUnit ^9.0.');
-        }
-
-        // @phpstan-ignore-next-line
-        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
-            throw new RuntimeException('Running Collision ^5.0 artisan test command requires Laravel ^8.0.');
         }
 
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
@@ -169,6 +166,13 @@ class TestCommand extends Command
      */
     protected static function getEnvironmentVariables($path, $file)
     {
+        return class_exists(Parser::class) ?
+            self::getVersionFiveEnvironmentVariables($path, $file) :
+            self::getVersionFourEnvironmentVariables($path, $file);
+    }
+
+    private static function getVersionFiveEnvironmentVariables($path, $file)
+    {
         try {
             $content = StoreBuilder::createWithNoNames()
                 ->addPath($path)
@@ -186,5 +190,14 @@ class TestCommand extends Command
         }
 
         return $vars;
+    }
+
+    private static function getVersionFourEnvironmentVariables($path, $file)
+    {
+        return Dotenv::create(
+            RepositoryBuilder::create()->make(),
+            $path,
+            $file
+        )->safeLoad();
     }
 }
