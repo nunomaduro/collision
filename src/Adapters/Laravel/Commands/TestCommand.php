@@ -6,6 +6,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use Dotenv\Loader\Lines;
 use Dotenv\Parser\Parser;
 use Dotenv\Repository\RepositoryBuilder;
 use Dotenv\Store\StoreBuilder;
@@ -196,11 +197,22 @@ class TestCommand extends Command
     /** @return array<string, string|null> */
     private static function getVersionFourEnvironmentVariables(string $path, string $file): array
     {
-        return Dotenv::create(
-            // @phpstan-ignore-next-line
-            RepositoryBuilder::create()->make(),
-            $path,
-            $file
-        )->safeLoad();
+        try {
+            $content = StoreBuilder::create()
+                ->withPaths($path)
+                ->withNames($file)
+                ->make()
+                ->read();
+        } catch (InvalidPathException $e) {
+            return [];
+        }
+
+        $vars = [];
+
+        foreach (Lines::process(preg_split("/(\r\n|\n|\r)/", $content)) as $entry) {
+            $vars[] = \Dotenv\Loader\Parser::parse($entry)[0];
+        }
+
+        return $vars;
     }
 }
