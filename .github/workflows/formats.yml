@@ -40,7 +40,7 @@ jobs:
     - name: Coding Style Checks
       run: |
            vendor/bin/rector process src --dry-run
-           vendor/bin/php-cs-fixer fix -v --dry-run
+           vendor/bin/php-cs-fixer fix -v --allow-risky=yes --dry-run
 
     - name: Type Checks
       run: vendor/bin/phpstan analyse --ansi
