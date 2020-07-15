@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
-use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Dotenv\Loader\Lines;
 use Dotenv\Parser\Parser;
-use Dotenv\Repository\RepositoryBuilder;
 use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
