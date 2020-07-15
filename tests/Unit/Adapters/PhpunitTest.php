@@ -138,8 +138,6 @@ EOF
             'NunoMaduro\Collision\Adapters\Phpunit\Printer',
         ], $arguments), __DIR__ . '/../../..');
 
-        $process->setTty(false);
-        $process->setPty(true);
         $process->run();
         $output = $process->getOutput();
 
