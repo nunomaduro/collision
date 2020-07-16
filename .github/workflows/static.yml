@@ -22,8 +22,9 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v2
+        coverage: none
 
-    - name: Install Composer dependencies
+    - name: Install Composer Dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
 
     - name: Run Reactor
@@ -52,8 +53,9 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v2
+        coverage: none
 
-    - name: Install Composer dependencies
+    - name: Install Composer Dependencies
       run: composer update --prefer-stable --no-interaction --prefer-dist --no-progress
 
     - name: Run PHPStan
