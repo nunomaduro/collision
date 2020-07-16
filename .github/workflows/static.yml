@@ -4,12 +4,7 @@ on: ['push', 'pull_request']
 
 jobs:
   cs:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        php: [7.4]
+    runs-on: ubuntu-latest
 
     name: Code Style
 
@@ -20,7 +15,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php }}
+        php-version: 7.4
         tools: composer:v2
         coverage: none
 
@@ -34,12 +29,9 @@ jobs:
       run: vendor/bin/php-cs-fixer fix -v --allow-risky=yes --dry-run
 
   phpstan:
-    runs-on: ${{ matrix.os }}
-
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        php: [7.4]
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHPStan ${{ matrix.dependency-version }}
@@ -51,7 +43,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php }}
+        php-version: 7.4
         tools: composer:v2
         coverage: none
 
