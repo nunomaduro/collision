@@ -12,7 +12,7 @@ jobs:
         php: [7.4]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: Formats P${{ matrix.php }} ${{ matrix.dependency-version }}
+    name: Static Analysis ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
