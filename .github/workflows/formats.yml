@@ -1,9 +1,38 @@
-name: Formats
+name: Static Analysis
 
 on: ['push', 'pull_request']
 
 jobs:
-  ci:
+  cs:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php: [7.4]
+
+    name: Code Style
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v2
+
+    - name: Install Composer dependencies
+      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
+
+    - name: Run Reactor
+      run: vendor/bin/rector process src --dry-run
+
+    - name: Run PHP-CS-Fixer
+      run: vendor/bin/php-cs-fixer fix -v --allow-risky=yes --dry-run
+
+  phpstan:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -22,16 +51,10 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        tools: composer:v2, prestissimo
-        coverage: pcov
+        tools: composer:v2
 
     - name: Install Composer dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
+      run: composer update --prefer-stable --no-interaction --prefer-dist --no-progress
 
-    - name: Coding Style Checks
-      run: |
-           vendor/bin/rector process src --dry-run
-           vendor/bin/php-cs-fixer fix -v --allow-risky=yes --dry-run
-
-    - name: Type Checks
+    - name: Run PHPStan
       run: vendor/bin/phpstan analyse
