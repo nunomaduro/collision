@@ -22,7 +22,7 @@ jobs:
     - name: Install Dependencies
       run: composer update --no-interaction --prefer-dist --no-progress
 
-    - name: Run Reactor
+    - name: Run Rector
       run: vendor/bin/rector process src --dry-run
 
     - name: Run PHP-CS-Fixer
