@@ -24,13 +24,13 @@ jobs:
         tools: composer:v2 
         coverage: none
 
+    - name: Setup Problem Matchers
+      run: |
+        echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
     - name: Install Dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
 
     - name: Run Unit Tests
       run: vendor/bin/phpunit
-
-    - name: Setup Problem Matchers
-      run: |
-        echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-        echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
