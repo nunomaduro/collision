@@ -25,7 +25,7 @@ jobs:
         coverage: none
 
     - name: Install Dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
+      run: composer update --no-interaction --prefer-dist --no-progress
 
     - name: Run Reactor
       run: vendor/bin/rector process src --dry-run
@@ -42,7 +42,7 @@ jobs:
         php: [7.4]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: Static Analysis ${{ matrix.dependency-version }}
+    name: PHPStan ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
