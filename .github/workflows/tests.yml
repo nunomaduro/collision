@@ -11,7 +11,7 @@ jobs:
         php: [7.3, 7.4]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: Tests PHP ${{ matrix.php }} ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
@@ -24,14 +24,13 @@ jobs:
         tools: composer:v2 
         coverage: none
 
-    - name: Install Composer dependencies
+    - name: Install Dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
 
-    - name: Unit Tests
+    - name: Run Unit Tests
       run: vendor/bin/phpunit
 
-    - name: Setup problem matchers for PHP
-      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-    - name: Setup problem matchers for Pest
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+    - name: Setup Problem Matchers
+      run: |
+        echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
