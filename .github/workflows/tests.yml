@@ -11,7 +11,7 @@ jobs:
         php: [7.3, 7.4]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: Tests P${{ matrix.php }} ${{ matrix.dependency-version }}
+    name: Tests PHP ${{ matrix.php }} ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
