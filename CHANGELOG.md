@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.0-BETA5] - 2020-08-09
+### Fixed
+- Frame filtering with windows paths ([#140](https://github.com/nunomaduro/collision/pull/140))
+- Emit output with `beStrictAboutOutputDuringTests` enabled ([#130](https://github.com/nunomaduro/collision/pull/130))
+
 ## [5.0.0-BETA4] - 2020-06-25
 ### Changed
 - Makes `artisan test` command PHPUNit 9 only ([ac6032d](https://github.com/nunomaduro/collision/commit/ac6032dd5546104ce9ae4143f46f391729bfc2ef))
