@@ -202,7 +202,9 @@ final class Writer implements WriterContract
                     }
 
                     foreach ($this->ignore as $ignore) {
-                        if (preg_match($ignore, $frame->getFile())) {
+                        // Ensure paths are linux-style (like the ones on $this->ignore)
+                        $sanitized_path = str_replace('\\', '/', $frame->getFile());
+                        if (preg_match($ignore, $sanitized_path)) {
                             return false;
                         }
                     }
