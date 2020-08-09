@@ -203,8 +203,9 @@ final class Writer implements WriterContract
 
                     foreach ($this->ignore as $ignore) {
                         // Ensure paths are linux-style (like the ones on $this->ignore)
-                        $sanitized_path = str_replace('\\', '/', $frame->getFile());
-                        if (preg_match($ignore, $sanitized_path)) {
+                        // @phpstan-ignore-next-line
+                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+                        if (preg_match($ignore, $sanitizedPath)) {
                             return false;
                         }
                     }
