@@ -46,6 +46,21 @@ class PhpunitTest extends TestCase
         (new Printer())->startTest($test);
     }
 
+    private function stripConsoleOutput(string $consoleOutput)
+    {
+        return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $consoleOutput);
+    }
+
+    private function assertConsoleOutputContainsString(string $needle, string $consoleOutput): void
+    {
+        self::assertStringContainsString($needle, $this->stripConsoleOutput($consoleOutput));
+    }
+
+    private function assertConsoleOutputNotContainsString(string $needle, string $consoleOutput): void
+    {
+        self::assertStringNotContainsString($needle, $this->stripConsoleOutput($consoleOutput));
+    }
+
     /** @test */
     public function it_has_tests(): void
     {
@@ -56,7 +71,7 @@ class PhpunitTest extends TestCase
 
         $testsDir = dirname(__DIR__, 2);
 
-        self::assertStringContainsString(<<<EOF
+        $this->assertConsoleOutputContainsString(<<<EOF
    WARN  Tests\Feature\ExampleTest
   - skipped example → This is a skip description
   … incomplete example → This is a incomplete description
@@ -79,7 +94,7 @@ EOF,
             'custom-name',
         ]);
 
-        self::assertStringContainsString(<<<EOF
+        $this->assertConsoleOutputContainsString(<<<EOF
    PASS  my-custom-name
   ✓ testPassExample
 
@@ -98,7 +113,7 @@ EOF,
             'fail,environmentTesting',
         ]);
 
-        self::assertStringContainsString(
+        $this->assertConsoleOutputContainsString(
             'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 6 passed',
             $output
         );
@@ -111,7 +126,7 @@ EOF,
 
         $code = '$this->assertFalse(true);';
 
-        self::assertStringContainsString(<<<EOF
+        $this->assertConsoleOutputContainsString(<<<EOF
   Failed asserting that true is false.
 
   at tests/LaravelApp/tests/Unit/ExampleTest.php:16
@@ -149,6 +164,39 @@ EOF;
 
         $this->assertEquals($exitCode, $process->getExitCode(), $failedOutput);
 
-        return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $output);
+        return $process->getOutput();
+    }
+
+    /** @test */
+    public function it_has_output_in_stdout_with_beStrictAboutOutputDuringTests_false(): void
+    {
+        $process = new Process([
+            './vendor/bin/phpunit',
+            '-c',
+            'tests/TestCaseWithStdoutOutput/phpunit.xml',
+            '--printer',
+            'NunoMaduro\Collision\Adapters\Phpunit\Printer',
+            'tests/TestCaseWithStdoutOutput',
+        ], __DIR__ . '/../../..');
+
+        $process->run();
+
+        $this->assertConsoleOutputContainsString(<<<OUTPUT
+string(3) "Foo"
+
+   PASS  TestCaseWithStdoutOutput\OutputTest
+  ✓ with output
+  ✓ nothing special
+  ✓ with no output
+
+  Tests:  3 passed
+OUTPUT
+            , $process->getOutput()
+        );
+
+        $this->assertConsoleOutputNotContainsString(
+            'Bar',
+            $process->getOutput()
+        );
     }
 }

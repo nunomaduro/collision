@@ -37,6 +37,14 @@ final class Style
     }
 
     /**
+     * Prints the content.
+     */
+    public function write(string $content): void
+    {
+        $this->output->write($content);
+    }
+
+    /**
      * Prints the content similar too:.
      *
      * ```
