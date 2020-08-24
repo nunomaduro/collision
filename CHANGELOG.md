@@ -153,11 +153,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adds first version
 
 [Unreleased]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA5...HEAD
-[v5.0.0-BETA5]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA4...v5.0.0-BETA5
-[v5.0.0-BETA4]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA3...v5.0.0-BETA4
-[v5.0.0-BETA3]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA2...v5.0.0-BETA3
-[v5.0.0-BETA2]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA1...v5.0.0-BETA2
-[v5.0.0-BETA1]: https://github.com/nunomaduro/collision/compare/v4.2.0...v5.0.0-BETA1
+[5.0.0-BETA5]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA4...v5.0.0-BETA5
+[5.0.0-BETA4]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA3...v5.0.0-BETA4
+[5.0.0-BETA3]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA2...v5.0.0-BETA3
+[5.0.0-BETA2]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA1...v5.0.0-BETA2
+[5.0.0-BETA1]: https://github.com/nunomaduro/collision/compare/v4.2.0...v5.0.0-BETA1
 [4.2.0]: https://github.com/nunomaduro/collision/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/nunomaduro/collision/compare/v4.1.2...v4.1.3
 [4.1.2]: https://github.com/nunomaduro/collision/compare/v4.1.1...v4.1.2
