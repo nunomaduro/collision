@@ -25,7 +25,7 @@ Collision was created by, and is maintained by **[Nuno Maduro](https://github.co
 
 ## Installation & Usage
 
-> **Requires [PHP 7.2.5+](https://php.net/releases/)**
+> **Requires [PHP 7.3+](https://php.net/releases/)**
 
 Require Collision using [Composer](https://getcomposer.org):
 
