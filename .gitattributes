@@ -1,3 +1,4 @@
+/.github           export-ignore
 /docs              export-ignore
 /playground        export-ignore
 /tests             export-ignore
