@@ -62,7 +62,7 @@ You need to register the handler in your code:
 
 ## Contributing
 
-Thank you for considering to contribute to Collision. All the contribution guidelines are mentioned [here](CONTRIBUTING.md).
+Thank you for considering to contribute to Collision. All the contribution guidelines are mentioned [here](.github/CONTRIBUTING.md).
 
 You can have a look at the [CHANGELOG](CHANGELOG.md) for constant updates & detailed information about the changes. You can also follow the twitter account for latest announcements or just come say hi!: [@enunomaduro](https://twitter.com/enunomaduro)
 
