@@ -9,4 +9,3 @@
 .styleci.yml       export-ignore
 phpunit.xml        export-ignore
 CHANGELOG.md       export-ignore
-CONTRIBUTING.md    export-ignore
