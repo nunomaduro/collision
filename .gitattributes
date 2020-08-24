@@ -8,5 +8,6 @@
 .scrutinizer.yml   export-ignore
 .styleci.yml       export-ignore
 phpunit.xml.dist   export-ignore
+phpstan.neon.dist  export-ignore
 CHANGELOG.md       export-ignore
 CONTRIBUTING.md    export-ignore
