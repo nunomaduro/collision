@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.0] - 2020-08-25
+
 ## [5.0.0-BETA5] - 2020-08-09
 ### Fixed
 - Frame filtering with windows paths ([#140](https://github.com/nunomaduro/collision/pull/140))
@@ -152,7 +154,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA5...HEAD
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/nunomaduro/collision/compare/v5.0.0...v5.0.0-BETA5
 [5.0.0-BETA5]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA4...v5.0.0-BETA5
 [5.0.0-BETA4]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA3...v5.0.0-BETA4
 [5.0.0-BETA3]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA2...v5.0.0-BETA3
