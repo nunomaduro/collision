@@ -1,6 +1,3 @@
-> The current branch `stable` points to the upcoming version of **Collision v5**. If you are looking for the v4 source code, please
-head over to: [v4.x](https://github.com/nunomaduro/collision/tree/v4.x).
-
 <p align="center">
     <img src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/logo.png" alt="Collision logo" width="480">
     <br>
