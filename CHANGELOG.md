@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.0.1] - 2020-08-27
+### Fixed
+- Prevents from being installation in Laravel < 8 versions
+
 ## [5.0.0] - 2020-08-25
 
 ## [5.0.0-BETA5] - 2020-08-09
