@@ -13,6 +13,9 @@
             "email": "enunomaduro@gmail.com"
         }
     ],
+    "conflict": {
+        "illuminate/support": "<8.0"
+    },
     "require": {
         "php": "^7.3",
         "facade/ignition-contracts": "^1.0",
