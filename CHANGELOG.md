@@ -162,8 +162,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.0.0...HEAD
-[5.0.0]: https://github.com/nunomaduro/collision/compare/v5.0.0...v5.0.0-BETA5
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.0.2...HEAD
+[5.0.2]: https://github.com/nunomaduro/collision/compare/v5.0.1...v5.0.2
+[5.0.1]: https://github.com/nunomaduro/collision/compare/v5.0.0...v5.0.1
+[5.0.0]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA5...v5.0.0
 [5.0.0-BETA5]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA4...v5.0.0-BETA5
 [5.0.0-BETA4]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA3...v5.0.0-BETA4
 [5.0.0-BETA3]: https://github.com/nunomaduro/collision/compare/v5.0.0-BETA2...v5.0.0-BETA3
