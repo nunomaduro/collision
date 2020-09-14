@@ -128,7 +128,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'No tests executed',
+            'No tests executed!',
             $output
         );
     }

@@ -230,7 +230,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     public function printResult(\PHPUnit\Framework\TestResult $result): void
     {
         if ($result->count() === 0) {
-            $this->style->writeWarning('No tests executed');
+            $this->style->writeWarning('No tests executed!');
         }
 
         $this->style->writeCurrentTestCaseSummary($this->state);
