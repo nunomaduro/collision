@@ -158,6 +158,13 @@ final class Style
     }
 
     /**
+     * Displays a warning message.
+     */
+    public function writeWarning(string $message) {
+        $this->output->writeln($this->testLineFrom('yellow', $message, ''));
+    }
+
+    /**
      * Displays the error using Collision's writer
      * and terminates with exit code === 1.
      */
