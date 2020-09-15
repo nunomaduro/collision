@@ -162,7 +162,7 @@ final class Style
      */
     public function writeWarning(string $message): void 
     {
-        $this->output->writeln($this->testLineFrom('yellow', $message, ''));
+        $this->output->writeln($this->testLineFrom('yellow', "$message\n", ''));
     }
 
     /**
