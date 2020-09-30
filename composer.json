@@ -31,6 +31,9 @@
         "phpstan/phpstan": "^0.12.36",
         "phpunit/phpunit": "^9.3.3"
     },
+    "conflict": {
+        "phpunit/phpunit": "<9.0"
+    },
     "autoload-dev": {
         "psr-4": {
             "Tests\\Unit\\": "tests/Unit",
