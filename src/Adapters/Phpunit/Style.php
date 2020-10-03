@@ -160,7 +160,7 @@ final class Style
     /**
      * Displays a warning message.
      */
-    public function writeWarning(string $message): void 
+    public function writeWarning(string $message): void
     {
         $this->output->writeln($this->testLineFrom('yellow', $message, ''));
     }

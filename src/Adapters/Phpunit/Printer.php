@@ -78,74 +78,74 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     /**
      * {@inheritdoc}
      */
-    public function addError(Test $testCase, Throwable $throwable, float $time): void
+    public function addError(Test $test, Throwable $t, float $time): void
     {
         $this->failed = true;
 
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $throwable));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::FAIL, $t));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addWarning(Test $testCase, Warning $warning, float $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::WARN, $warning));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::WARN, $e));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFailure(Test $testCase, AssertionFailedError $error, float $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $this->failed = true;
 
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $reflector = new ReflectionObject($error);
+        $reflector = new ReflectionObject($e);
 
         if ($reflector->hasProperty('message')) {
-            $message  = trim((string) preg_replace("/\r|\n/", "\n  ", $error->getMessage()));
+            $message  = trim((string) preg_replace("/\r|\n/", "\n  ", $e->getMessage()));
             $property = $reflector->getProperty('message');
             $property->setAccessible(true);
-            $property->setValue($error, $message);
+            $property->setValue($e, $message);
         }
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::FAIL, $error));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::FAIL, $e));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addIncompleteTest(Test $testCase, Throwable $throwable, float $time): void
+    public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::INCOMPLETE, $throwable));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::INCOMPLETE, $t));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addRiskyTest(Test $testCase, Throwable $throwable, float $time): void
+    public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::RISKY, $throwable));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::RISKY, $t));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSkippedTest(Test $testCase, Throwable $throwable, float $time): void
+    public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        $this->state->add(TestResult::fromTestCase($testCase, TestResult::SKIPPED, $throwable));
+        $this->state->add(TestResult::fromTestCase($test, TestResult::SKIPPED, $t));
     }
 
     /**
@@ -169,34 +169,34 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     /**
      * {@inheritdoc}
      */
-    public function startTest(Test $testCase): void
+    public function startTest(Test $test): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
         // Let's check first if the testCase is over.
-        if ($this->state->testCaseHasChanged($testCase)) {
+        if ($this->state->testCaseHasChanged($test)) {
             $this->style->writeCurrentTestCaseSummary($this->state);
 
-            $this->state->moveTo($testCase);
+            $this->state->moveTo($test);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function endTest(Test $testCase, float $time): void
+    public function endTest(Test $test, float $time): void
     {
-        $testCase = $this->testCaseFromTest($testCase);
+        $test = $this->testCaseFromTest($test);
 
-        if (!$this->state->existsInTestCase($testCase)) {
-            $this->state->add(TestResult::fromTestCase($testCase, TestResult::PASS));
+        if (!$this->state->existsInTestCase($test)) {
+            $this->state->add(TestResult::fromTestCase($test, TestResult::PASS));
         }
 
-        if ($testCase instanceof TestCase
-            && $testCase->getTestResultObject() instanceof \PHPUnit\Framework\TestResult
-            && !$testCase->getTestResultObject()->isStrictAboutOutputDuringTests()
-            && !$testCase->hasExpectationOnOutput()) {
-            $this->style->write($testCase->getActualOutput());
+        if ($test instanceof TestCase
+            && $test->getTestResultObject() instanceof \PHPUnit\Framework\TestResult
+            && !$test->getTestResultObject()->isStrictAboutOutputDuringTests()
+            && !$test->hasExpectationOnOutput()) {
+            $this->style->write($test->getActualOutput());
         }
     }
 
