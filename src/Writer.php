@@ -194,7 +194,7 @@ final class Writer implements WriterContract
     {
         return $inspector->getFrames()
             ->filter(
-                function ($frame): bool {
+                function (Frame $frame): bool {
                     // If we are in verbose mode, we always
                     // display the full stack trace.
                     if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {

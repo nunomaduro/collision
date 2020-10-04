@@ -105,7 +105,7 @@ final class Highlighter implements HighlighterContract
      * @param int    $linesBefore
      * @param int    $linesAfter
      */
-    public function getCodeSnippet($source, $lineNumber, $linesBefore = 2, $linesAfter = 2): string
+    public function getCodeSnippet(string $source, int $lineNumber, int $linesBefore = 2, int $linesAfter = 2): string
     {
         $tokenLines = $this->getHighlightedLines($source);
 
@@ -122,7 +122,7 @@ final class Highlighter implements HighlighterContract
     /**
      * @param string $source
      */
-    private function getHighlightedLines($source): array
+    private function getHighlightedLines(string $source): array
     {
         $source = str_replace(["\r\n", "\r"], "\n", $source);
         $tokens = $this->tokenize($source);
@@ -133,7 +133,7 @@ final class Highlighter implements HighlighterContract
     /**
      * @param string $source
      */
-    private function tokenize($source): array
+    private function tokenize(string $source): array
     {
         $tokens = token_get_all($source);
 
@@ -290,10 +290,11 @@ final class Highlighter implements HighlighterContract
 
     /**
      * @param string $style
-     * @param int    $i
-     * @param int    $lineStrlen
+     * @param int $i
+     * @param int $lineStrlen
+     * @return string
      */
-    private function coloredLineNumber($style, $i, $lineStrlen): string
+    private function coloredLineNumber(string $style, int $i, int $lineStrlen): string
     {
         return $this->color->apply($style, str_pad((string) ($i + 1), $lineStrlen, ' ', STR_PAD_LEFT));
     }

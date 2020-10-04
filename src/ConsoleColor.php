@@ -85,14 +85,14 @@ final class ConsoleColor
 
     /**
      * @param string|array $style
-     * @param string       $text
+     * @param string $text
      *
      * @return string
      *
      * @throws InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    public function apply($style, $text): string
+    public function apply($style, string $text): string
     {
         if (!$this->isStyleForced() && !$this->isSupported()) {
             return $text;
@@ -131,7 +131,7 @@ final class ConsoleColor
     /**
      * @param bool $forceStyle
      */
-    public function setForceStyle($forceStyle): void
+    public function setForceStyle(bool $forceStyle): void
     {
         $this->forceStyle = $forceStyle;
     }
@@ -153,10 +153,10 @@ final class ConsoleColor
     }
 
     /**
-     * @param string       $name
+     * @param string $name
      * @param array|string $styles
      */
-    public function addTheme($name, $styles): void
+    public function addTheme(string $name, $styles): void
     {
         if (is_string($styles)) {
             $styles = [$styles];
@@ -187,7 +187,7 @@ final class ConsoleColor
      *
      * @return bool
      */
-    public function hasTheme($name): bool
+    public function hasTheme(string $name): bool
     {
         return isset($this->themes[$name]);
     }
@@ -195,7 +195,7 @@ final class ConsoleColor
     /**
      * @param string $name
      */
-    public function removeTheme($name): void
+    public function removeTheme(string $name): void
     {
         unset($this->themes[$name]);
     }
@@ -237,7 +237,7 @@ final class ConsoleColor
      *
      * @return string[]
      */
-    private function themeSequence($name): array
+    private function themeSequence(string $name): array
     {
         $sequences = [];
         foreach ($this->themes[$name] as $style) {
@@ -252,7 +252,7 @@ final class ConsoleColor
      *
      * @return string
      */
-    private function styleSequence($style): ?string
+    private function styleSequence(string $style): ?string
     {
         if (array_key_exists($style, self::STYLES)) {
             return self::STYLES[$style];
@@ -275,7 +275,7 @@ final class ConsoleColor
      *
      * @return bool
      */
-    private function isValidStyle($style): bool
+    private function isValidStyle(string $style): bool
     {
         return array_key_exists($style, self::STYLES) || preg_match(self::COLOR256_REGEXP, $style);
     }

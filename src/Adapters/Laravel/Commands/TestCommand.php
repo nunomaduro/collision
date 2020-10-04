@@ -125,7 +125,7 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected function phpunitArguments($options): array
+    protected function phpunitArguments(array $options): array
     {
         $options = array_values(array_filter($options, function ($option): bool {
             return !Str::startsWith($option, '--env=');
@@ -167,7 +167,7 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected static function getEnvironmentVariables($path, $file): array
+    protected static function getEnvironmentVariables(string $path, string $file): array
     {
         try {
             $content = StoreBuilder::createWithNoNames()
