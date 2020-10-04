@@ -89,7 +89,7 @@ final class Style
      */
     public function writeErrorsSummary(State $state, bool $onFailure): void
     {
-        $errors = array_filter($state->suiteTests, function (TestResult $testResult) {
+        $errors = array_filter($state->suiteTests, function (TestResult $testResult): bool {
             return $testResult->type === TestResult::FAIL;
         });
 
@@ -160,7 +160,7 @@ final class Style
     /**
      * Displays a warning message.
      */
-    public function writeWarning(string $message): void 
+    public function writeWarning(string $message): void
     {
         $this->output->writeln($this->testLineFrom('yellow', $message, ''));
     }

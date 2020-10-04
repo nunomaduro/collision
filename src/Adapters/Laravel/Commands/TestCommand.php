@@ -105,7 +105,7 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected function binary()
+    protected function binary(): array
     {
         $command = class_exists(\Pest\Laravel\PestServiceProvider::class)
             ? 'vendor/pestphp/pest/bin/pest'
@@ -125,9 +125,9 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected function phpunitArguments($options)
+    protected function phpunitArguments($options): array
     {
-        $options = array_values(array_filter($options, function ($option) {
+        $options = array_values(array_filter($options, function ($option): bool {
             return !Str::startsWith($option, '--env=');
         }));
 
@@ -143,7 +143,7 @@ class TestCommand extends Command
      *
      * @return void
      */
-    protected function clearEnv()
+    protected function clearEnv(): void
     {
         if (!$this->option('env')) {
             $vars = self::getEnvironmentVariables(
@@ -167,7 +167,7 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected static function getEnvironmentVariables($path, $file)
+    protected static function getEnvironmentVariables($path, $file): array
     {
         try {
             $content = StoreBuilder::createWithNoNames()

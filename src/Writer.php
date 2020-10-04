@@ -194,7 +194,7 @@ final class Writer implements WriterContract
     {
         return $inspector->getFrames()
             ->filter(
-                function ($frame) {
+                function ($frame): bool {
                     // If we are in verbose mode, we always
                     // display the full stack trace.
                     if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
@@ -255,7 +255,7 @@ final class Writer implements WriterContract
                 '<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s',
                 rtrim($title, '.'),
                 $description,
-                implode(', ', array_map(function (string $link) {
+                implode(', ', array_map(function (string $link): string {
                     return sprintf("\n    <fg=blue>%s</>", $link);
                 }, $links))
             ));

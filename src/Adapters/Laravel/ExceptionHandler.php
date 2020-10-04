@@ -8,6 +8,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -49,7 +50,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     /**
      * {@inheritdoc}
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): Response
     {
         return $this->appExceptionHandler->render($request, $e);
     }
@@ -78,7 +79,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return bool
      */
-    public function shouldReport(Throwable $e)
+    public function shouldReport(Throwable $e): bool
     {
         return $this->appExceptionHandler->shouldReport($e);
     }

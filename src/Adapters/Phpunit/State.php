@@ -171,7 +171,7 @@ final class State
 
     public function countTestsInTestSuiteBy(string $type): int
     {
-        return count(array_filter($this->suiteTests, function (TestResult $testResult) use ($type) {
+        return count(array_filter($this->suiteTests, function (TestResult $testResult) use ($type): bool {
             return $testResult->type === $type;
         }));
     }

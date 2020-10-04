@@ -34,7 +34,7 @@ final class Handler extends AbstractHandler implements HandlerContract
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function handle(): int
     {
         $this->writer->write($this->getInspector());
 

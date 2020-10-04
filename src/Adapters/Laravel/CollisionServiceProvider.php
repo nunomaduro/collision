@@ -32,7 +32,7 @@ class CollisionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->commands([
             TestCommand::class,
@@ -45,7 +45,7 @@ class CollisionServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->runningInConsole() && !$this->app->runningUnitTests()) {
-            $this->app->bind(ProviderContract::class, function () {
+            $this->app->bind(ProviderContract::class, function (): Provider {
                 if ($this->app->has(\Facade\IgnitionContracts\SolutionProviderRepository::class)) {
                     $solutionsRepository = new IgnitionSolutionsRepository(
                         $this->app->get(\Facade\IgnitionContracts\SolutionProviderRepository::class)
@@ -64,7 +64,7 @@ class CollisionServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 ExceptionHandlerContract::class,
-                function ($app) use ($appExceptionHandler) {
+                function ($app) use ($appExceptionHandler): ExceptionHandler {
                     return new ExceptionHandler($app, $appExceptionHandler);
                 }
             );
@@ -74,7 +74,7 @@ class CollisionServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function provides()
+    public function provides(): array
     {
         return [ProviderContract::class];
     }

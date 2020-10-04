@@ -92,7 +92,7 @@ final class ConsoleColor
      * @throws InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    public function apply($style, $text)
+    public function apply($style, $text): string
     {
         if (!$this->isStyleForced() && !$this->isSupported()) {
             return $text;
@@ -117,7 +117,7 @@ final class ConsoleColor
             }
         }
 
-        $sequences = array_filter($sequences, function ($val) {
+        $sequences = array_filter($sequences, function ($val): bool {
             return $val !== null;
         });
 
@@ -131,7 +131,7 @@ final class ConsoleColor
     /**
      * @param bool $forceStyle
      */
-    public function setForceStyle($forceStyle)
+    public function setForceStyle($forceStyle): void
     {
         $this->forceStyle = $forceStyle;
     }
@@ -139,12 +139,12 @@ final class ConsoleColor
     /**
      * @return bool
      */
-    public function isStyleForced()
+    public function isStyleForced(): bool
     {
         return $this->forceStyle;
     }
 
-    public function setThemes(array $themes)
+    public function setThemes(array $themes): void
     {
         $this->themes = [];
         foreach ($themes as $name => $styles) {
@@ -156,7 +156,7 @@ final class ConsoleColor
      * @param string       $name
      * @param array|string $styles
      */
-    public function addTheme($name, $styles)
+    public function addTheme($name, $styles): void
     {
         if (is_string($styles)) {
             $styles = [$styles];
@@ -177,7 +177,7 @@ final class ConsoleColor
     /**
      * @return array
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         return $this->themes;
     }
@@ -187,7 +187,7 @@ final class ConsoleColor
      *
      * @return bool
      */
-    public function hasTheme($name)
+    public function hasTheme($name): bool
     {
         return isset($this->themes[$name]);
     }
@@ -195,7 +195,7 @@ final class ConsoleColor
     /**
      * @param string $name
      */
-    public function removeTheme($name)
+    public function removeTheme($name): void
     {
         unset($this->themes[$name]);
     }
@@ -203,7 +203,7 @@ final class ConsoleColor
     /**
      * @return bool
      */
-    public function isSupported()
+    public function isSupported(): bool
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON';
@@ -215,7 +215,7 @@ final class ConsoleColor
     /**
      * @return bool
      */
-    public function are256ColorsSupported()
+    public function are256ColorsSupported(): bool
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return function_exists('sapi_windows_vt100_support') && @sapi_windows_vt100_support(STDOUT);
@@ -227,7 +227,7 @@ final class ConsoleColor
     /**
      * @return array
      */
-    public function getPossibleStyles()
+    public function getPossibleStyles(): array
     {
         return array_keys(self::STYLES);
     }
@@ -237,7 +237,7 @@ final class ConsoleColor
      *
      * @return string[]
      */
-    private function themeSequence($name)
+    private function themeSequence($name): array
     {
         $sequences = [];
         foreach ($this->themes[$name] as $style) {
@@ -252,7 +252,7 @@ final class ConsoleColor
      *
      * @return string
      */
-    private function styleSequence($style)
+    private function styleSequence($style): ?string
     {
         if (array_key_exists($style, self::STYLES)) {
             return self::STYLES[$style];
@@ -275,7 +275,7 @@ final class ConsoleColor
      *
      * @return bool
      */
-    private function isValidStyle($style)
+    private function isValidStyle($style): bool
     {
         return array_key_exists($style, self::STYLES) || preg_match(self::COLOR256_REGEXP, $style);
     }
@@ -285,7 +285,7 @@ final class ConsoleColor
      *
      * @return string
      */
-    private function escSequence($value)
+    private function escSequence($value): string
     {
         return "\033[{$value}m";
     }

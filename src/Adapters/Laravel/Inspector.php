@@ -23,7 +23,7 @@ final class Inspector extends BaseInspector
     /**
      * {@inheritdoc}
      */
-    protected function getTrace($e)
+    protected function getTrace($e): array
     {
         return $e->getTrace();
     }
