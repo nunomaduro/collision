@@ -13,12 +13,13 @@ use PHPUnit\Framework\Warning;
 use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Throwable;
 
 /**
  * @internal
  */
-final class Printer implements \PHPUnit\TextUI\ResultPrinter
+class Printer implements \PHPUnit\TextUI\ResultPrinter
 {
     /**
      * Holds an instance of the style.
@@ -58,7 +59,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      *
      * @throws \ReflectionException
      */
-    public function __construct(\Symfony\Component\Console\Output\ConsoleOutputInterface $output = null, bool $verbose = false, string $colors = 'always')
+    public function __construct(ConsoleOutputInterface $output = null, bool $verbose = false, string $colors = 'always')
     {
         $this->timer = Timer::start();
 
@@ -68,11 +69,20 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
 
         ConfigureIO::of(new ArgvInput(), $output);
 
-        $this->style = new Style($output);
-        $dummyTest   = new class() extends TestCase {
+        $this->style = $this->newStyle($output);
+
+        $dummyTest = new class() extends TestCase {
         };
 
         $this->state = State::from($dummyTest);
+    }
+
+    /**
+     * Creates a new instance of the Style class.
+     */
+    protected function newStyle(ConsoleOutputInterface $output): Style
+    {
+        return new Style($output);
     }
 
     /**
