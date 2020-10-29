@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.2.5 || ^8.0",
         "facade/ignition-contracts": "^1.0",
         "filp/whoops": "^2.4",
         "symfony/console": "^5.0"

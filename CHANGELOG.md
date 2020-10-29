@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.3.0] - 2020-10-29
+### Added
+Support to PHP 8
+
 ## [4.2.0] - 2020-04-04
 ### Changed
 - Removes the dependency JakubOnderka@PhpConsoleColor ([9b430e4](https://github.com/nunomaduro/collision/commit/9b430e44467e7186f5a7e48c8cdeac0571817286))
