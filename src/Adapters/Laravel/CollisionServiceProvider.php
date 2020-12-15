@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
@@ -60,14 +61,9 @@ class CollisionServiceProvider extends ServiceProvider
                 return new Provider(null, $handler);
             });
 
-            $appExceptionHandler = $this->app->make(ExceptionHandlerContract::class);
-
-            $this->app->singleton(
-                ExceptionHandlerContract::class,
-                function ($app) use ($appExceptionHandler) {
-                    return new ExceptionHandler($app, $appExceptionHandler);
-                }
-            );
+            $this->app->extend(ExceptionHandlerContract::class, function (ExceptionHandlerContract $exceptionHandler, Container $container) {
+                return new ExceptionHandler($container, $exceptionHandler);
+            });
         }
     }
 
@@ -76,6 +72,6 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ProviderContract::class];
+        return [ProviderContract::class, ExceptionHandlerContract::class];
     }
 }

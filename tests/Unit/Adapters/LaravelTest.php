@@ -137,11 +137,11 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_provides_only_the_provider_contract(): void
+    public function it_provides_only_the_provider_contract_and_exception_handler_contract(): void
     {
         $app      = $this->createApplication();
         $provides = (new CollisionServiceProvider($app))->provides();
-        $this->assertEquals([ProviderContract::class], $provides);
+        $this->assertEquals([ProviderContract::class, ExceptionHandlerContract::class], $provides);
     }
 
     /**
