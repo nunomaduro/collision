@@ -62,12 +62,11 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
+        if (version_compare(\PHPUnit\Runner\Version::id(), '9', '<')) {
             throw new RuntimeException('Running Collision ^5.0 artisan test command requires PHPUnit ^9.0.');
         }
 
-        // @phpstan-ignore-next-line
-        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
+        if (version_compare($this->laravel->version(), '8', '<')) {
             throw new RuntimeException('Running Collision ^5.0 artisan test command requires Laravel ^8.0.');
         }
 
