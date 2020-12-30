@@ -24,7 +24,10 @@ class TestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'test {--without-tty : Disable output to TTY}';
+    protected $signature = 'test
+        {--without-tty : Disable output to TTY}
+        {--parallel : Whether the tests should be run in parallel}
+    ';
 
     /**
      * The console command description.
@@ -78,8 +81,8 @@ class TestCommand extends Command
         $process = (new Process(array_merge(
             $this->binary(),
             array_merge(
-                $this->arguments,
-                $this->phpunitArguments($options)
+                $this->option('parallel') ? [] : $this->arguments,
+                $this->option('parallel') ? $this->paratestArguments($options) : $this->phpunitArguments($options),
             )
         )))->setTimeout(null);
 
@@ -107,9 +110,17 @@ class TestCommand extends Command
      */
     protected function binary()
     {
-        $command = class_exists(\Pest\Laravel\PestServiceProvider::class)
-            ? 'vendor/pestphp/pest/bin/pest'
-            : 'vendor/phpunit/phpunit/phpunit';
+        switch (true) {
+            case $this->option('parallel'):
+                $command = 'vendor/brianium/paratest/bin/paratest';
+                break;
+            case class_exists(\Pest\Laravel\PestServiceProvider::class):
+                $command = 'vendor/pestphp/pest/bin/pest';
+                break;
+            default:
+                $command = 'vendor/phpunit/phpunit/phpunit';
+                break;
+        }
 
         if ('phpdbg' === PHP_SAPI) {
             return [PHP_BINARY, '-qrr', $command];
@@ -136,6 +147,24 @@ class TestCommand extends Command
         }
 
         return array_merge(['-c', $file], $options);
+    }
+
+    /**
+     * Get the array of arguments for running Paratest.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function paratestArguments($options)
+    {
+        $options = $this->phpunitArguments($options);
+
+        $options = array_values(array_filter($options, function ($option) {
+            return !Str::startsWith($option, '--parallel');
+        }));
+
+        return array_merge(['-f'], $options);
     }
 
     /**
