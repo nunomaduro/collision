@@ -164,7 +164,7 @@ class TestCommand extends Command
             return !Str::startsWith($option, '--parallel');
         }));
 
-        return array_merge(['-f'], $options);
+        return $options;
     }
 
     /**
