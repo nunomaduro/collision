@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
+use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 
 /**
  * @final
@@ -66,20 +67,26 @@ class TestCommand extends Command
     public function handle()
     {
         if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
-            throw new RuntimeException('Running Collision ^5.0 artisan test command requires PHPUnit ^9.0.');
+            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
         }
 
         // @phpstan-ignore-next-line
         if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
-            throw new RuntimeException('Running Collision ^5.0 artisan test command requires Laravel ^8.0.');
+            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.');
         }
 
-        if ($this->option('parallel') && !$this->isParallelDependenciesInstalled()) {
-            if (!$this->confirm('Running tests in parallel requires a few dependencies. Do you wish to install them?')) {
-                return 1;
+        if ($this->option('parallel')) {
+            if ((int) \Illuminate\Foundation\Application::VERSION[0] < 9) {
+                throw new RequirementsException('Running tests in parallel requires at least Laravel ^9.0.');
             }
 
-            $this->installParallelDependencies();
+            if (! $this->isParallelDependenciesInstalled()) {
+                if (!$this->confirm('Running tests in parallel requires a few dependencies. Do you wish to install them?')) {
+                    return 1;
+                }
+
+                $this->installParallelDependencies();
+            }
         }
 
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
