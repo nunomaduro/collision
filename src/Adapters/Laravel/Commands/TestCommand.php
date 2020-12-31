@@ -74,6 +74,14 @@ class TestCommand extends Command
             throw new RuntimeException('Running Collision ^5.0 artisan test command requires Laravel ^8.0.');
         }
 
+        if ($this->option('parallel') && !$this->isParallelDependenciesInstalled()) {
+            if (!$this->confirm('Running tests in parallel requires a few dependencies. Do you wish to install them?')) {
+                return 1;
+            }
+
+            $this->installParallelDependencies();
+        }
+
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
 
         $this->clearEnv();
@@ -215,5 +223,61 @@ class TestCommand extends Command
         }
 
         return $vars;
+    }
+
+    /**
+     * Check if the parallel dependencies are installed.
+     *
+     * @return bool
+     */
+    protected function isParallelDependenciesInstalled()
+    {
+        return class_exists(\ParaTest\Console\Commands\ParaTestCommand::class);
+    }
+
+    /**
+     * Install parallel testing needed dependencies.
+     *
+     * @return void
+     */
+    protected function installParallelDependencies()
+    {
+        $command = $this->findComposer() . ' require brianium/paratest --dev';
+
+        $process = Process::fromShellCommandline($command, null, null, null, null);
+
+        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
+            try {
+                $process->setTty(true);
+            } catch (RuntimeException $e) {
+                $this->output->writeln('Warning: ' . $e->getMessage());
+            }
+        }
+
+        try {
+            return $process->run(function ($type, $line) {
+                $this->output->write($line);
+            });
+        } catch (ProcessSignaledException $e) {
+            if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        $composerPath = getcwd() . '/composer.phar';
+
+        if (file_exists($composerPath)) {
+            return '"' . PHP_BINARY . '" ' . $composerPath;
+        }
+
+        return 'composer';
     }
 }
