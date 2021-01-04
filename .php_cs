@@ -14,6 +14,8 @@ $rules = [
     'array_syntax'           => ['syntax' => 'short'],
     'yoda_style'             => false,
     'declare_strict_types'   => true,
+    'braces'                 => false,
+    'phpdoc_indent'          => false,
     'binary_operator_spaces' => [
         'operators' => [
             '=>' => 'align',

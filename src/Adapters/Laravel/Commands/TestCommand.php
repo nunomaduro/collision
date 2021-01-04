@@ -10,12 +10,14 @@ use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
+use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
-use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 
 /**
+ * @internal
+ *
  * @final
  */
 class TestCommand extends Command
@@ -36,16 +38,6 @@ class TestCommand extends Command
      * @var string
      */
     protected $description = 'Run the application tests';
-
-    /**
-     * The arguments to be used while calling phpunit.
-     *
-     * @var array
-     */
-    protected $arguments = [
-        '--printer',
-        'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-    ];
 
     /**
      * Create a new command instance.
@@ -76,11 +68,12 @@ class TestCommand extends Command
         }
 
         if ($this->option('parallel')) {
+            // @phpstan-ignore-next-line
             if ((int) \Illuminate\Foundation\Application::VERSION[0] < 9) {
                 throw new RequirementsException('Running tests in parallel requires at least Laravel ^9.0.');
             }
 
-            if (! $this->isParallelDependenciesInstalled()) {
+            if (!$this->isParallelDependenciesInstalled()) {
                 if (!$this->confirm('Running tests in parallel requires a few dependencies. Do you wish to install them?')) {
                     return 1;
                 }
@@ -93,13 +86,18 @@ class TestCommand extends Command
 
         $this->clearEnv();
 
+        $parallel = $this->option('parallel');
+
         $process = (new Process(array_merge(
-            $this->binary(),
-            array_merge(
-                $this->option('parallel') ? [] : $this->arguments,
-                $this->option('parallel') ? $this->paratestArguments($options) : $this->phpunitArguments($options),
-            )
-        )))->setTimeout(null);
+                // Binary ...
+                $this->binary(),
+                // Arguments ...
+                $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
+            ),
+            null,
+            // Envs ...
+            $parallel ? ['LARAVEL_PARALLEL_TESTING' => 1] : [],
+        ))->setTimeout(null);
 
         try {
             $process->setTty(!$this->option('without-tty'));
@@ -153,6 +151,8 @@ class TestCommand extends Command
      */
     protected function phpunitArguments($options)
     {
+        $options = array_merge(['--printer=NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer'], $options);
+
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--env=');
         }));
@@ -174,6 +174,10 @@ class TestCommand extends Command
     protected function paratestArguments($options)
     {
         $options = $this->phpunitArguments($options);
+
+        $options = array_values(array_filter($options, function ($option) {
+            return !Str::startsWith($option, '--printer');
+        }));
 
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--parallel');
@@ -262,7 +266,7 @@ class TestCommand extends Command
         }
 
         try {
-            return $process->run(function ($type, $line) {
+            $process->run(function ($type, $line) {
                 $this->output->write($line);
             });
         } catch (ProcessSignaledException $e) {

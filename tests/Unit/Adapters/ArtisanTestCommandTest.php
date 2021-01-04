@@ -22,6 +22,7 @@ class ArtisanTestCommandTest extends TestCase
         ]);
 
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environment']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environment']);
     }
 
     /** @test */
@@ -42,6 +43,7 @@ EOF
         ]);
 
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environmentTesting']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environmentTesting']);
     }
 
     /**
