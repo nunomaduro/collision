@@ -15,19 +15,19 @@ use Symfony\Component\Process\Process;
 class PhpunitTest extends TestCase
 {
     /** @test */
-    public function it_respects_is_contract(): void
+    public function itRespectsIsContract(): void
     {
         $this->assertInstanceOf(TestListener::class, new Printer());
     }
 
     /** @test */
-    public function it_is_a_printer(): void
+    public function itIsAPrinter(): void
     {
         $this->assertInstanceOf(Printer::class, new Printer());
     }
 
     /** @test */
-    public function it_do_not_handles_test_that_are_not_test_cases(): void
+    public function itDoNotHandlesTestThatAreNotTestCases(): void
     {
         $test = new class() implements Test {
             public function count()
@@ -62,7 +62,7 @@ class PhpunitTest extends TestCase
     }
 
     /** @test */
-    public function it_has_tests(): void
+    public function itHasTests(): void
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
@@ -87,7 +87,7 @@ EOF,
     }
 
     /** @test */
-    public function it_has_custom_test_case_name(): void
+    public function itHasCustomTestCaseName(): void
     {
         $output = $this->runCollisionTests([
             '--group',
@@ -106,7 +106,7 @@ EOF,
     }
 
     /** @test */
-    public function it_has_recap(): void
+    public function itHasRecap(): void
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
@@ -120,7 +120,7 @@ EOF,
     }
 
     /** @test */
-    public function it_informs_the_user_when_no_tests_are_executed(): void
+    public function itInformsTheUserWhenNoTestsAreExecuted(): void
     {
         $output = $this->runCollisionTests([
             '--filter',
@@ -134,7 +134,7 @@ EOF,
     }
 
     /** @test */
-    public function it_has_failure(): void
+    public function itHasFailure(): void
     {
         $output = $this->runCollisionTests([], 1);
 
@@ -182,7 +182,7 @@ EOF;
     }
 
     /** @test */
-    public function it_has_output_in_stdout_with_beStrictAboutOutputDuringTests_false(): void
+    public function itHasOutputInStdoutWithBeStrictAboutOutputDuringTestsFalse(): void
     {
         $process = new Process([
             './vendor/bin/phpunit',

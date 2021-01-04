@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class LaravelTest extends TestCase
 {
     /** @test */
-    public function it_is_registered_on_artisan(): void
+    public function itIsRegisteredOnArtisan(): void
     {
         $app = $this->createApplication();
         $app->method('runningInConsole')->willReturn(true);
@@ -33,7 +33,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_is_not_registered_on_testing(): void
+    public function itIsNotRegisteredOnTesting(): void
     {
         $app = $this->createApplication();
         $app->method('runningInConsole')->willReturn(true);
@@ -45,7 +45,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_is_not_registered_on_http(): void
+    public function itIsNotRegisteredOnHttp(): void
     {
         $app = $this->createApplication();
         $app->method('runningInConsole')->willReturn(false);
@@ -57,7 +57,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function exception_handler_respects_is_contract(): void
+    public function exceptionHandlerRespectsIsContract(): void
     {
         $app = $this->createApplication();
 
@@ -68,7 +68,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_reports_to_the_original_exception_handler(): void
+    public function itReportsToTheOriginalExceptionHandler(): void
     {
         $app                          = $this->createApplication();
         $exception                    = new Exception();
@@ -80,7 +80,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_renders_to_the_original_exception_handler(): void
+    public function itRendersToTheOriginalExceptionHandler(): void
     {
         $app                          = $this->createApplication();
         $exception                    = new Exception();
@@ -93,7 +93,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_renders_non_symfony_console_exceptions_with_collision(): void
+    public function itRendersNonSymfonyConsoleExceptionsWithCollision(): void
     {
         $app       = $this->createApplication();
         $exception = new Exception();
@@ -112,7 +112,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_renders_non_symfony_console_exceptions_with_symfony(): void
+    public function itRendersNonSymfonyConsoleExceptionsWithSymfony(): void
     {
         $app       = $this->createApplication();
         $exception = new InvalidArgumentException();
@@ -126,7 +126,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function is_inspector_gets_trace(): void
+    public function isInspectorGetsTrace(): void
     {
         $method = new ReflectionMethod(Inspector::class, 'getTrace');
         $method->setAccessible(true);
@@ -137,7 +137,7 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function it_provides_only_the_provider_contract(): void
+    public function itProvidesOnlyTheProviderContract(): void
     {
         $app      = $this->createApplication();
         $provides = (new CollisionServiceProvider($app))->provides();
