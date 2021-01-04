@@ -161,7 +161,7 @@ class TestCommand extends Command
             $file = base_path('phpunit.xml.dist');
         }
 
-        return array_merge(['-c', $file], $options);
+        return array_merge(["--configuration=$file"], $options);
     }
 
     /**
@@ -173,17 +173,16 @@ class TestCommand extends Command
      */
     protected function paratestArguments($options)
     {
-        $options = $this->phpunitArguments($options);
-
         $options = array_values(array_filter($options, function ($option) {
-            return !Str::startsWith($option, '--printer');
+            return !Str::startsWith($option, '--env=')
+                && !Str::startsWith($option, '--parallel');
         }));
 
-        $options = array_values(array_filter($options, function ($option) {
-            return !Str::startsWith($option, '--parallel');
-        }));
+        if (!file_exists($file = base_path('phpunit.xml'))) {
+            $file = base_path('phpunit.xml.dist');
+        }
 
-        return $options;
+        return array_merge(["--configuration=$file"], $options);
     }
 
     /**
