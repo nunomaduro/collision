@@ -182,7 +182,10 @@ class TestCommand extends Command
             $file = base_path('phpunit.xml.dist');
         }
 
-        return array_merge(["--configuration=$file"], $options);
+        return array_merge([
+            "--configuration=$file",
+            "--runner=\Illuminate\Testing\ParallelRunner"
+        ], $options);
     }
 
     /**
