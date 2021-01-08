@@ -74,7 +74,7 @@ class TestCommand extends Command
             }
 
             if (!$this->isParallelDependenciesInstalled()) {
-                if (!$this->confirm('Running tests in parallel requires a few dependencies. Do you wish to install them?')) {
+                if (!$this->confirm('Running tests in parallel requires "brianium/paratest". Do you wish to install it as a dev dependency?')) {
                     return 1;
                 }
 
