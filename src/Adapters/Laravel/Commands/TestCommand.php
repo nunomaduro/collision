@@ -184,7 +184,7 @@ class TestCommand extends Command
 
         return array_merge([
             "--configuration=$file",
-            "--runner=\Illuminate\Testing\ParallelRunner"
+            "--runner=\Illuminate\Testing\ParallelRunner",
         ], $options);
     }
 
