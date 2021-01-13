@@ -28,9 +28,9 @@ class TestCommand extends BaseTestCommand
         }
 
         if ('phpdbg' === PHP_SAPI) {
-            return [PHP_BINARY, '-qrr', __DIR__ . '/../../../../../vendor/bin/phpunit'];
+            return [PHP_BINARY, '-qrr', __DIR__ . '/../../../../../' . $command];
         }
 
-        return [PHP_BINARY, __DIR__ . '/../../../../../vendor/bin/phpunit'];
+        return [PHP_BINARY, __DIR__ . '/../../../../../' . $command];
     }
 }
