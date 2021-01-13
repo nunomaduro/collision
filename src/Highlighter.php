@@ -152,7 +152,6 @@ final class Highlighter implements HighlighterContract
                     case T_CLOSE_TAG:
                     case T_STRING:
                     case T_VARIABLE:
-
                         // Constants
                     case T_DIR:
                     case T_FILE:

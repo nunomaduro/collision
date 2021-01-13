@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
 class ArgumentFormatterTest extends TestCase
 {
     /** @test */
-    public function it_respects_is_contract(): void
+    public function itRespectsIsContract(): void
     {
         $this->assertInstanceOf(ArgumentFormatterContract::class, new ArgumentFormatter());
     }
 
     /** @test */
-    public function it_formats_a_string(): void
+    public function itFormatsAString(): void
     {
         $argumentFormatter = new ArgumentFormatter();
 
@@ -29,7 +29,7 @@ class ArgumentFormatterTest extends TestCase
     }
 
     /** @test */
-    public function it_formats_a_array(): void
+    public function itFormatsAArray(): void
     {
         $argumentFormatter = new ArgumentFormatter();
 
@@ -41,7 +41,7 @@ class ArgumentFormatterTest extends TestCase
     }
 
     /** @test */
-    public function it_formats_a_object(): void
+    public function itFormatsAObject(): void
     {
         $argumentFormatter = new ArgumentFormatter();
 

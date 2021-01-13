@@ -14,13 +14,13 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class HandlerTest extends TestCase
 {
     /** @test */
-    public function it_respects_is_contract(): void
+    public function itRespectsIsContract(): void
     {
         $this->assertInstanceOf(HandlerContract::class, new Handler());
     }
 
     /** @test */
-    public function it_handles_an_exception(): void
+    public function itHandlesAnException(): void
     {
         $writerMock    = $this->createMock(WriterContract::class);
         $inspectorMock = $this->createMock(\Whoops\Exception\Inspector::class);
@@ -37,7 +37,7 @@ class HandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_sets_the_output(): void
+    public function itSetsTheOutput(): void
     {
         $writerMock = $this->createMock(WriterContract::class);
         $output     = new ConsoleOutput();
@@ -50,7 +50,7 @@ class HandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_writer(): void
+    public function itGetsTheWriter(): void
     {
         $writer  = new Writer();
         $handler = new Handler($writer);

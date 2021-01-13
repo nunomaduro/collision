@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 class ArtisanTestCommandTest extends TestCase
 {
     /** @test */
-    public function test_env(): void
+    public function testEnv(): void
     {
         $this->runTests([
             './vendor/bin/phpunit',
@@ -25,7 +25,7 @@ class ArtisanTestCommandTest extends TestCase
     }
 
     /** @test */
-    public function test_env_testing(): void
+    public function testEnvTesting(): void
     {
         file_put_contents(__DIR__ . '/../../../tests/LaravelApp/.env.testing', <<<EOF
 VAR_IN_DOT_ENV_TESTING=VAL_IN_DOT_ENV_TESTING

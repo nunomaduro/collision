@@ -14,13 +14,13 @@ use Whoops\RunInterface;
 class ProviderTest extends TestCase
 {
     /** @test */
-    public function it_respects_is_contract(): void
+    public function itRespectsIsContract(): void
     {
         $this->assertInstanceOf(ProviderContract::class, new Provider());
     }
 
     /** @test */
-    public function it_registers_the_error_handler(): void
+    public function itRegistersTheErrorHandler(): void
     {
         $handler = new Handler();
 
@@ -38,7 +38,7 @@ class ProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_handler(): void
+    public function itGetsTheHandler(): void
     {
         $handler  = new Handler();
         $provider = new Provider(new Run(), $handler);

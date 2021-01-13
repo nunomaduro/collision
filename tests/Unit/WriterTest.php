@@ -20,13 +20,13 @@ use Whoops\Exception\Inspector;
 class WriterTest extends TestCase
 {
     /** @test */
-    public function it_respects_is_contract(): void
+    public function itRespectsIsContract(): void
     {
         $this->assertInstanceOf(WriterContract::class, new Writer());
     }
 
     /** @test */
-    public function it_gets_the_output(): void
+    public function itGetsTheOutput(): void
     {
         $writer = new Writer(new NullSolutionsRepository(), $output = new ConsoleOutput());
 
@@ -34,7 +34,7 @@ class WriterTest extends TestCase
     }
 
     /** @test */
-    public function it_sets_the_output(): void
+    public function itSetsTheOutput(): void
     {
         $writer = (new Writer())->setOutput($output = new ConsoleOutput());
 
@@ -42,7 +42,7 @@ class WriterTest extends TestCase
     }
 
     /** @test */
-    public function it_writes_the_exception(): void
+    public function itWritesTheException(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
@@ -80,7 +80,7 @@ EOF;
     }
 
     /** @test */
-    public function it_writes_details(): void
+    public function itWritesDetails(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
@@ -119,7 +119,7 @@ EOF;
     }
 
     /** @test */
-    public function it_ignores_folders(): void
+    public function itIgnoresFolders(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
@@ -143,7 +143,7 @@ EOF;
     }
 
     /** @test */
-    public function it_hides_editor(): void
+    public function itHidesEditor(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
@@ -171,7 +171,7 @@ EOF;
     }
 
     /** @test */
-    public function it_hides_trace(): void
+    public function itHidesTrace(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
 
@@ -204,7 +204,7 @@ EOF;
     }
 
     /** @test */
-    public function it_supports_renderless_contracts(): void
+    public function itSupportsRenderlessContracts(): void
     {
         $inspector = new Inspector(HelloWorldFile4::say());
 

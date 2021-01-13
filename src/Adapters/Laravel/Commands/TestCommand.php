@@ -10,11 +10,14 @@ use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
+use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
 /**
+ * @internal
+ *
  * @final
  */
 class TestCommand extends Command
@@ -24,7 +27,11 @@ class TestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'test {--without-tty : Disable output to TTY}';
+    protected $signature = 'test
+        {--without-tty : Disable output to TTY}
+        {--parallel : Indicates if the tests should run in parallel}
+        {--recreate-databases : Indicates if the test databases should be re-created}
+    ';
 
     /**
      * The console command description.
@@ -32,16 +39,6 @@ class TestCommand extends Command
      * @var string
      */
     protected $description = 'Run the application tests';
-
-    /**
-     * The arguments to be used while calling phpunit.
-     *
-     * @var array
-     */
-    protected $arguments = [
-        '--printer',
-        'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-    ];
 
     /**
      * Create a new command instance.
@@ -63,25 +60,48 @@ class TestCommand extends Command
     public function handle()
     {
         if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
-            throw new RuntimeException('Running Collision ^5.0 artisan test command requires PHPUnit ^9.0.');
+            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
         }
 
         // @phpstan-ignore-next-line
         if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
-            throw new RuntimeException('Running Collision ^5.0 artisan test command requires Laravel ^8.0.');
+            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.');
+        }
+
+        if ($this->option('parallel')) {
+            // @phpstan-ignore-next-line
+            if ((int) \Illuminate\Foundation\Application::VERSION[0] < 9) {
+                throw new RequirementsException('Running tests in parallel requires at least Laravel ^9.0.');
+            }
+
+            if (!$this->isParallelDependenciesInstalled()) {
+                if (!$this->confirm('Running tests in parallel requires "brianium/paratest". Do you wish to install it as a dev dependency?')) {
+                    return 1;
+                }
+
+                $this->installParallelDependencies();
+            }
         }
 
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
 
         $this->clearEnv();
 
+        $parallel = $this->option('parallel');
+
         $process = (new Process(array_merge(
-            $this->binary(),
-            array_merge(
-                $this->arguments,
-                $this->phpunitArguments($options)
-            )
-        )))->setTimeout(null);
+                // Binary ...
+                $this->binary(),
+                // Arguments ...
+                $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
+            ),
+            null,
+            // Envs ...
+            $parallel ? [
+                'LARAVEL_PARALLEL_TESTING'                    => 1,
+                'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
+            ] : [],
+        ))->setTimeout(null);
 
         try {
             $process->setTty(!$this->option('without-tty'));
@@ -107,9 +127,17 @@ class TestCommand extends Command
      */
     protected function binary()
     {
-        $command = class_exists(\Pest\Laravel\PestServiceProvider::class)
-            ? 'vendor/pestphp/pest/bin/pest'
-            : 'vendor/phpunit/phpunit/phpunit';
+        switch (true) {
+            case $this->option('parallel'):
+                $command = 'vendor/brianium/paratest/bin/paratest';
+                break;
+            case class_exists(\Pest\Laravel\PestServiceProvider::class):
+                $command = 'vendor/pestphp/pest/bin/pest';
+                break;
+            default:
+                $command = 'vendor/phpunit/phpunit/phpunit';
+                break;
+        }
 
         if ('phpdbg' === PHP_SAPI) {
             return [PHP_BINARY, '-qrr', $command];
@@ -127,6 +155,8 @@ class TestCommand extends Command
      */
     protected function phpunitArguments($options)
     {
+        $options = array_merge(['--printer=NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer'], $options);
+
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--env=');
         }));
@@ -135,7 +165,32 @@ class TestCommand extends Command
             $file = base_path('phpunit.xml.dist');
         }
 
-        return array_merge(['-c', $file], $options);
+        return array_merge(["--configuration=$file"], $options);
+    }
+
+    /**
+     * Get the array of arguments for running Paratest.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function paratestArguments($options)
+    {
+        $options = array_values(array_filter($options, function ($option) {
+            return !Str::startsWith($option, '--env=')
+                && !Str::startsWith($option, '--parallel')
+                && !Str::startsWith($option, '--recreate-databases');
+        }));
+
+        if (!file_exists($file = base_path('phpunit.xml'))) {
+            $file = base_path('phpunit.xml.dist');
+        }
+
+        return array_merge([
+            "--configuration=$file",
+            "--runner=\Illuminate\Testing\ParallelRunner",
+        ], $options);
     }
 
     /**
@@ -186,5 +241,61 @@ class TestCommand extends Command
         }
 
         return $vars;
+    }
+
+    /**
+     * Check if the parallel dependencies are installed.
+     *
+     * @return bool
+     */
+    protected function isParallelDependenciesInstalled()
+    {
+        return class_exists(\ParaTest\Console\Commands\ParaTestCommand::class);
+    }
+
+    /**
+     * Install parallel testing needed dependencies.
+     *
+     * @return void
+     */
+    protected function installParallelDependencies()
+    {
+        $command = $this->findComposer() . ' require brianium/paratest --dev';
+
+        $process = Process::fromShellCommandline($command, null, null, null, null);
+
+        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
+            try {
+                $process->setTty(true);
+            } catch (RuntimeException $e) {
+                $this->output->writeln('Warning: ' . $e->getMessage());
+            }
+        }
+
+        try {
+            $process->run(function ($type, $line) {
+                $this->output->write($line);
+            });
+        } catch (ProcessSignaledException $e) {
+            if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        $composerPath = getcwd() . '/composer.phar';
+
+        if (file_exists($composerPath)) {
+            return '"' . PHP_BINARY . '" ' . $composerPath;
+        }
+
+        return 'composer';
     }
 }
