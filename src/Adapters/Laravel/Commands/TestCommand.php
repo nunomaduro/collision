@@ -30,7 +30,7 @@ class TestCommand extends Command
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
         {--parallel : Indicates if the tests should run in parallel}
-        {--refresh-databases : Indicates if the test databases should be re-created}
+        {--recreate-databases : Indicates if the test databases should be re-created}
     ';
 
     /**
@@ -99,7 +99,7 @@ class TestCommand extends Command
             // Envs ...
             $parallel ? [
                 'LARAVEL_PARALLEL_TESTING'                   => 1,
-                'LARAVEL_PARALLEL_TESTING_REFRESH_DATABASES' => $this->option('refresh-databases'),
+                'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
             ] : [],
         ))->setTimeout(null);
 
@@ -180,7 +180,7 @@ class TestCommand extends Command
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--env=')
                 && !Str::startsWith($option, '--parallel')
-                && !Str::startsWith($option, '--refresh-databases');
+                && !Str::startsWith($option, '--recreate-databases');
         }));
 
         if (!file_exists($file = base_path('phpunit.xml'))) {
