@@ -98,7 +98,7 @@ class TestCommand extends Command
             null,
             // Envs ...
             $parallel ? [
-                'LARAVEL_PARALLEL_TESTING'                   => 1,
+                'LARAVEL_PARALLEL_TESTING'                    => 1,
                 'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
             ] : [],
         ))->setTimeout(null);
