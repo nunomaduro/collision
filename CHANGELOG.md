@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.2.0] - 2021-01-13
+### Added
+- Support to Parallel Testing
+
 ## [5.1.0] - 2020-10-29
 ### Added
 - Support to PHP 8
@@ -166,7 +170,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.1.0...HEAD
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.2.0...HEAD
+[5.2.0]: https://github.com/nunomaduro/collision/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/nunomaduro/collision/compare/v5.0.2...v5.1.0
 [5.0.2]: https://github.com/nunomaduro/collision/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/nunomaduro/collision/compare/v5.0.0...v5.0.1
