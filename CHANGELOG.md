@@ -174,7 +174,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.3.0...HEAD
+[5.3.0]: https://github.com/nunomaduro/collision/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/nunomaduro/collision/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/nunomaduro/collision/compare/v5.0.2...v5.1.0
 [5.0.2]: https://github.com/nunomaduro/collision/compare/v5.0.1...v5.0.2
