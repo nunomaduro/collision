@@ -6,7 +6,7 @@ parameters:
         - src
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
-    excludes_analyse:
+    excludePaths:
         - src/Adapters/Phpunit/Printer
         - src/ConsoleColor
         - src/Highlighter
