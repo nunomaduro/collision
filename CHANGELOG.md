@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.3.0] - 2021-01-25
+### Added
+- Ports Parallel Testing to Laravel 8
+
 ## [5.2.0] - 2021-01-13
 ### Added
 - Support to Parallel Testing
