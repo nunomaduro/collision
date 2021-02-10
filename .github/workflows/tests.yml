@@ -1,4 +1,4 @@
-name: Tests (3.x)
+name: Tests
 
 on:
   push:
