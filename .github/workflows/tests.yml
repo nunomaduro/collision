@@ -32,7 +32,7 @@ jobs:
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress
+      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Unit Tests
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --colors=always
