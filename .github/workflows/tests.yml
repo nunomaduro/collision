@@ -1,0 +1,38 @@
+name: Tests (3.x)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.2, 7.3, 7.4, 8.0]
+        dependency-version: [prefer-stable]
+
+    name: PHP ${{ matrix.php }} ${{ matrix.dependency-version }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer
+        coverage: none
+
+    - name: Setup Problem Matchers
+      run: |
+        echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Install PHP dependencies
+      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+
+    - name: Run Unit Tests
+      run: vendor/bin/phpunit --colors=always
