@@ -30,14 +30,6 @@ Require Collision using [Composer](https://getcomposer.org):
 composer require nunomaduro/collision --dev
 ```
 
-## Lumen adapter
-
-Configure the Collision service provider:
-```php
-// bootstrap/app.php:
-$app->register(\NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider::class);
-```
-
 ## Phpunit adapter
 
 Phpunit must be 9.0 or higher.
