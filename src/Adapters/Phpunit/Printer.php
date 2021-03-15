@@ -197,6 +197,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
             && !$testCase->getTestResultObject()->isStrictAboutOutputDuringTests()
             && !$testCase->hasExpectationOnOutput()) {
             $this->style->write($testCase->getActualOutput());
+            $this->style->writeCurrentTestCaseSummary($this->state);
         }
     }
 
