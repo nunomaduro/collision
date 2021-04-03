@@ -270,15 +270,17 @@ final class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $file = $this->getFileRelativePath((string) $frame->getFile());
+        if ($frame->getFile() !== 'Unknown') {
+            $file = $this->getFileRelativePath((string) $frame->getFile());
 
-        // getLine() might return null so cast to int to get 0 instead
-        $line = (int) $frame->getLine();
-        $this->render('at <fg=green>' . $file . '</>' . ':<fg=green>' . $line . '</>');
+            // getLine() might return null so cast to int to get 0 instead
+            $line = (int) $frame->getLine();
+            $this->render('at <fg=green>' . $file . '</>' . ':<fg=green>' . $line . '</>');
 
-        $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
+            $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
-        $this->output->writeln($content);
+            $this->output->writeln($content);
+        }
 
         return $this;
     }
