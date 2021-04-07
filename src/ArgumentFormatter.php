@@ -23,7 +23,7 @@ final class ArgumentFormatter implements ArgumentFormatterContract
         foreach ($arguments as $argument) {
             switch (true) {
                 case is_string($argument):
-                    $result[] = '"' . $argument . '"';
+                    $result[] = '"' . substr($argument, 0, 1000) . '"';
                     break;
                 case is_array($argument):
                     $associative = array_keys($argument) !== range(0, count($argument) - 1);
