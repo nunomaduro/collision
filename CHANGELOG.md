@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.4.0] - 2021-04-09
+### Changed
+- Remove Lumen support ([8e003f0](https://github.com/nunomaduro/collision/commit/8e003f0a20adeff692c505beb6ea58e122b1d921))
+- Do not render editor when file is unknown ([501d25e](https://github.com/nunomaduro/collision/commit/501d25effafe1e26b26bd7e513a6df0cad5730d4))
+- Truncate strings to 1000 characters when formatting stacktraces ([#177](https://github.com/nunomaduro/collision/pull/177))
+
 ## [5.3.0] - 2021-01-25
 ### Added
 - Ports Parallel Testing to Laravel 8
@@ -174,7 +180,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.3.0...HEAD
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.4.0...HEAD
+[5.4.0]: https://github.com/nunomaduro/collision/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/nunomaduro/collision/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/nunomaduro/collision/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/nunomaduro/collision/compare/v5.0.2...v5.1.0
