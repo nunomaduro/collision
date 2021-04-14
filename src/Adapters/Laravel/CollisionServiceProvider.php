@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
@@ -18,15 +19,8 @@ use NunoMaduro\Collision\Writer;
  *
  * @final
  */
-class CollisionServiceProvider extends ServiceProvider
+class CollisionServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Boots application services.
      *
