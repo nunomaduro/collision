@@ -63,6 +63,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
+        // @phpstan-ignore-next-line
         if ((int) Version::id()[0] < 9) {
             throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
         }
@@ -86,12 +87,14 @@ class TestCommand extends Command
 
         $parallel = $this->option('parallel');
 
-        $process = (new Process(array_merge(
-        // Binary ...
-            $this->binary(),
-            // Arguments ...
-            $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
-        ),
+        // @phpstan-ignore-next-line
+        $process = (new Process(
+            array_merge(
+            // Binary ...
+                $this->binary(),
+                // Arguments ...
+                $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
+            ),
             null,
             // Envs ...
             $parallel ? [
