@@ -64,7 +64,7 @@ class TestCommand extends Command
         }
 
         // @phpstan-ignore-next-line
-        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
+        if (class_exists(\Illuminate\Foundation\Application::class) && (int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
             throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.');
         }
 
@@ -194,12 +194,14 @@ class TestCommand extends Command
     protected function clearEnv()
     {
         if (!$this->option('env')) {
-            $vars = self::getEnvironmentVariables(
-                // @phpstan-ignore-next-line
-                $this->laravel->environmentPath(),
-                // @phpstan-ignore-next-line
-                $this->laravel->environmentFile()
-            );
+
+            // @phpstan-ignore-next-line
+            $environmentPath = method_exists($this->laravel, 'environmentPath') ? $this->laravel->environmentPath() : '';
+
+            // @phpstan-ignore-next-line
+            $environmentFile = method_exists($this->laravel, 'environmentFile') ? $this->laravel->environmentFile() : '.env';
+
+            $vars = self::getEnvironmentVariables($environmentPath, $environmentFile);
 
             $repository = Env::getRepository();
 
