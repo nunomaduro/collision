@@ -8,9 +8,13 @@ use Dotenv\Exception\InvalidPathException;
 use Dotenv\Parser\Parser;
 use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
+use ParaTest\Console\Commands\ParaTestCommand;
+use Pest\Laravel\PestServiceProvider;
+use PHPUnit\Runner\Version;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
@@ -59,12 +63,12 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
+        if ((int) Version::id()[0] < 9) {
             throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
         }
 
         // @phpstan-ignore-next-line
-        if (class_exists(\Illuminate\Foundation\Application::class) && (int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
+        if (class_exists(Application::class) && (int) Application::VERSION[0] < 8) {
             throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.');
         }
 
@@ -83,15 +87,15 @@ class TestCommand extends Command
         $parallel = $this->option('parallel');
 
         $process = (new Process(array_merge(
-                // Binary ...
-                $this->binary(),
-                // Arguments ...
-                $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
-            ),
+        // Binary ...
+            $this->binary(),
+            // Arguments ...
+            $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
+        ),
             null,
             // Envs ...
             $parallel ? [
-                'LARAVEL_PARALLEL_TESTING'                    => 1,
+                'LARAVEL_PARALLEL_TESTING' => 1,
                 'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
             ] : [],
         ))->setTimeout(null);
@@ -124,7 +128,7 @@ class TestCommand extends Command
             case $this->option('parallel'):
                 $command = 'vendor/brianium/paratest/bin/paratest';
                 break;
-            case class_exists(\Pest\Laravel\PestServiceProvider::class):
+            case class_exists(PestServiceProvider::class):
                 $command = 'vendor/pestphp/pest/bin/pest';
                 break;
             default:
@@ -194,7 +198,6 @@ class TestCommand extends Command
     protected function clearEnv()
     {
         if (!$this->option('env')) {
-
             // @phpstan-ignore-next-line
             $environmentPath = method_exists($this->laravel, 'environmentPath') ? $this->laravel->environmentPath() : '';
 
@@ -245,7 +248,7 @@ class TestCommand extends Command
      */
     protected function isParallelDependenciesInstalled()
     {
-        return class_exists(\ParaTest\Console\Commands\ParaTestCommand::class);
+        return class_exists(ParaTestCommand::class);
     }
 
     /**
