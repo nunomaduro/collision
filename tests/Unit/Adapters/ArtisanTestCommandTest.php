@@ -48,6 +48,15 @@ EOF
         // $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environmentTesting']);
     }
 
+    protected function setUp(): void
+    {
+        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
+            $this->markTestSkipped(
+                'Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.'
+            );
+        }
+    }
+
     /**
      * @afterClass
      */
