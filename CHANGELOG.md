@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.5.0] - 2021-06-22
+### Changed
+- Ignores more paths on exceptions ([#180](https://github.com/nunomaduro/collision/pull/180))
+
 ## [5.4.0] - 2021-04-09
 ### Changed
 - Remove Lumen support ([8e003f0](https://github.com/nunomaduro/collision/commit/8e003f0a20adeff692c505beb6ea58e122b1d921))
