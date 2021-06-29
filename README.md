@@ -55,6 +55,18 @@ Add the Collision `printerClass` to your `phpunit.xml` in the `phpunit` section:
         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
 ```
 
+### Ignore files from Stacktrace
+
+If you have custom Assert methods which should be ignored by the Printer Stack trace the
+files or directories which should be ignored can be added the following way to the
+`phpunit.xml` file.
+
+```xml
+    <php>
+        <server name="COLLISION_PRINTER_IGNORE_FILES_IN" value="/tests\/Traits\/AssertSnapshotTrait.php/,/tests\/Traits\/OtherTrait.php/"/>
+    </php>
+```
+
 ## No adapter
 
 You need to register the handler in your code:

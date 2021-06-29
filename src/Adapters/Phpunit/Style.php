@@ -178,7 +178,7 @@ final class Style
             $this->output->write('', true);
         }
 
-        $writer->ignoreFilesIn([
+        $ignoreFilesIn = [
             '/vendor\/pestphp\/pest/',
             '/vendor\/phpunit\/phpunit\/src/',
             '/vendor\/mockery\/mockery/',
@@ -191,7 +191,14 @@ final class Style
             '/vendor\/bin\/simple-phpunit/',
             '/bin\/phpunit/',
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
-        ]);
+        ];
+
+        $customIgnoreFilesIn = $_SERVER['COLLISION_PRINTER_IGNORE_FILES_IN'] ?? $_ENV['COLLISION_PRINTER_IGNORE_FILES_IN'] ?? null;
+        if ($customIgnoreFilesIn) {
+            $ignoreFilesIn = \array_merge($ignoreFilesIn, array_filter(explode(',', $customIgnoreFilesIn)));
+        }
+
+        $writer->ignoreFilesIn($ignoreFilesIn);
 
         if ($throwable instanceof ExceptionWrapper && $throwable->getOriginalException() !== null) {
             $throwable = $throwable->getOriginalException();
