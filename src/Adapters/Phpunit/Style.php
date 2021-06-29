@@ -188,6 +188,8 @@ final class Style
             '/vendor\/symfony\/phpunit-bridge/',
             '/vendor\/bin\/.phpunit/',
             '/bin\/.phpunit/',
+            '/vendor\/bin\/simple-phpunit/',
+            '/bin\/phpunit/',
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
         ]);
 
