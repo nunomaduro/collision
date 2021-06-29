@@ -57,8 +57,9 @@ Add the Collision `printerClass` to your `phpunit.xml` in the `phpunit` section:
 
 ### Ignore files from Stacktrace
 
-If you want to ignore specific Files or whole directory from the Printer Stack trace
-you can add the following to your `phpunit.xml`.
+If you have custom Assert methods which should be ignored by the Printer Stack trace the
+files or directories which should be ignored can be added the following way to the
+`phpunit.xml` file.
 
 ```xml
     <php>
