@@ -180,7 +180,6 @@ final class Style
 
         $ignoreFilesIn = [
             '/vendor\/pestphp\/pest/',
-            '/vendor\/phpspec\/prophecy-phpunit/',
             '/vendor\/phpunit\/phpunit\/src/',
             '/vendor\/mockery\/mockery/',
             '/vendor\/laravel\/dusk/',
