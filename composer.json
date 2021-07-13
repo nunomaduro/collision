@@ -24,7 +24,7 @@
         "fideloper/proxy": "^4.4.1",
         "friendsofphp/php-cs-fixer": "^2.17.3",
         "fruitcake/laravel-cors": "^2.0.3",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^8.0 || ^9.0",
         "nunomaduro/larastan": "^0.6.2",
         "nunomaduro/mock-final-classes": "^1.0",
         "orchestra/testbench": "^7.0",
