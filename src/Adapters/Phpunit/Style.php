@@ -185,6 +185,7 @@ final class Style
             '/vendor\/laravel\/dusk/',
             '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
             '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
+            '/vendor\/symfony\/framework-bundle\/Test/',
             '/vendor\/symfony\/phpunit-bridge/',
             '/vendor\/bin\/.phpunit/',
             '/bin\/.phpunit/',
