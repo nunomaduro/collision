@@ -69,7 +69,6 @@ final class Style
         }
 
         $state->eachTestCaseTests(function (TestResult $testResult) {
-            usleep(20000);
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
