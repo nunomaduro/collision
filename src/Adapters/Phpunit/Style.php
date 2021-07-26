@@ -191,6 +191,7 @@ final class Style
             '/bin\/.phpunit/',
             '/vendor\/bin\/simple-phpunit/',
             '/bin\/phpunit/',
+            '/vendor\/coduo\/php-matcher\/src\/PHPUnit/',
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
         ]);
 
