@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.6.0] - 2021-06-26
+### Changed
+- Ignores more paths on exceptions ([#182](https://github.com/nunomaduro/collision/pull/182), [#184](https://github.com/nunomaduro/collision/pull/184), [#185](https://github.com/nunomaduro/collision/pull/185))
+
+### Fixed
+- Slow printer because of sleep ([2815a0b](https://github.com/nunomaduro/collision/commit/2815a0bc8021a67d48c5a1a0fd80bd852aa4da39))
+
 ## [5.5.0] - 2021-06-22
 ### Changed
 - Ignores more paths on exceptions ([#180](https://github.com/nunomaduro/collision/pull/180))
@@ -184,7 +191,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Adds first version
 
-[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.4.0...HEAD
+[Unreleased]: https://github.com/nunomaduro/collision/compare/v5.6.0...HEAD
+[5.6.0]: https://github.com/nunomaduro/collision/compare/v5.5.0...v5.6.0
+[5.5.0]: https://github.com/nunomaduro/collision/compare/v5.4.0...v5.5.0
 [5.4.0]: https://github.com/nunomaduro/collision/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/nunomaduro/collision/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/nunomaduro/collision/compare/v5.1.0...v5.2.0
