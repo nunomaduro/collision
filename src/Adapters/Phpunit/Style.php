@@ -59,20 +59,44 @@ final class Style
         }
 
         if (!$state->headerPrinted) {
+            $testCaseName = $state->testCaseName;
+
+            if (\class_exists($testCaseName) && $fileLinkFormat = ini_get('xdebug.file_link_format')) {
+                $reflectionClass = new \ReflectionClass($testCaseName);
+                $fileName        = $reflectionClass->getFileName();
+                $lineNumber      = $reflectionClass->getStartLine();
+                $link            = str_replace(['%f', '%l'], [$fileName, $lineNumber], $fileLinkFormat);
+
+                $testCaseName = \sprintf(
+                    '<href=%s>%s</>',
+                    $link,
+                    $testCaseName,
+                );
+            }
+
             $this->output->writeln($this->titleLineFrom(
                 $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
                 $state->getTestCaseTitleColor(),
                 $state->getTestCaseTitle(),
-                $state->testCaseName
+                $testCaseName
             ));
             $state->headerPrinted = true;
         }
 
         $state->eachTestCaseTests(function (TestResult $testResult) {
+            $description = $testResult->description;
+            if ($testResult->ideLink) {
+                $description = \sprintf(
+                    '<href=%s>%s</>',
+                    $testResult->ideLink,
+                    $description,
+                );
+            }
+
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
-                $testResult->description,
+                $description,
                 $testResult->warning
             ));
         });
@@ -98,10 +122,19 @@ final class Style
 
         array_map(function (TestResult $testResult) use ($onFailure) {
             if (!$onFailure) {
+                $description = $testResult->description;
+                if ($testResult->ideLink) {
+                    $description = \sprintf(
+                        '<href=%s>%s</>',
+                        $testResult->ideLink,
+                        $description,
+                    );
+                }
+
                 $this->output->write(sprintf(
                     '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
                     $testResult->testCaseName,
-                    $testResult->description
+                    $description
                 ));
             }
 

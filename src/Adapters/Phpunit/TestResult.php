@@ -66,6 +66,13 @@ final class TestResult
     /**
      * @readonly
      *
+     * @var string|null
+     */
+    public $ideLink;
+
+    /**
+     * @readonly
+     *
      * @var string
      */
     public $warning = '';
@@ -73,7 +80,7 @@ final class TestResult
     /**
      * Test constructor.
      */
-    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
+    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null, ?string $ideLink = null)
     {
         $this->testCaseName = $testCaseName;
         $this->description  = $description;
@@ -81,6 +88,7 @@ final class TestResult
         $this->icon         = $icon;
         $this->color        = $color;
         $this->throwable    = $throwable;
+        $this->ideLink      = $ideLink;
 
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY
@@ -105,7 +113,16 @@ final class TestResult
 
         $color = self::makeColor($type);
 
-        return new self($testCaseName, $description, $type, $icon, $color, $throwable);
+        $ideLink = null;
+
+        if (\class_exists($testCaseName) && $fileLinkFormat = ini_get('xdebug.file_link_format')) {
+            $reflectionClass  = new \ReflectionClass($testCaseName);
+            $fileName         = $reflectionClass->getFileName();
+            $methodReflection = $reflectionClass->getMethod($testCase->getName());
+            $ideLink          = str_replace(['%f', '%l'], [$fileName, $methodReflection->getStartLine()], $fileLinkFormat);
+        }
+
+        return new self($testCaseName, $description, $type, $icon, $color, $throwable, $ideLink);
     }
 
     /**
