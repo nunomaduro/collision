@@ -205,7 +205,20 @@ final class Style
 
         if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
             $diff  = $comparisionFailure->getDiff();
+            $lines = explode(PHP_EOL, $diff);
+            $diff  = '';
+            foreach ($lines as $line) {
+                if (0 === strpos($line, '-')) {
+                    $line = '<fg=red>' . $line . '</>';
+                } elseif (0 === strpos($line, '+')) {
+                    $line = '<fg=green>' . $line . '</>';
+                }
+
+                $diff .= $line . PHP_EOL;
+            }
+
             $diff  = trim((string) preg_replace("/\r|\n/", "\n  ", $diff));
+
             $this->output->write("  $diff");
         }
 
