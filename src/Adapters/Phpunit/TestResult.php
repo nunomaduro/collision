@@ -74,7 +74,7 @@ final class TestResult
     /**
      * @readonly
      *
-     * @var null|Iteration
+     * @var Iteration|null
      */
     public $iteration = null;
 
@@ -114,7 +114,7 @@ final class TestResult
 
         $color = self::makeColor($type);
 
-        $iteration = $testCase instanceOf HasIterations ? $testCase->getIteration() : null;
+        $iteration = $testCase instanceof HasIterations ? $testCase->getIteration() : null;
 
         return new self($testCaseName, $description, $type, $icon, $color, $throwable, $iteration);
     }

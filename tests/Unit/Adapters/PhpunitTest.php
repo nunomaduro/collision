@@ -106,6 +106,25 @@ EOF,
     }
 
     /** @test */
+    public function itHasIterations(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'iterations',
+        ]);
+
+        $this->assertConsoleOutputContainsString(<<<EOF
+   PASS  Tests\Feature\ExampleWithIterationTest
+  ✓ testPassExample ⟲ 1 of 10
+
+  Tests:  1 passed
+  Time:
+EOF,
+            $output
+        );
+    }
+
+    /** @test */
     public function itHasRecap(): void
     {
         $output = $this->runCollisionTests([
@@ -150,7 +169,7 @@ EOF,
      15▕     {
   ➜  16▕         $code
      17▕     }
-     18▕ 
+     18▕
      19▕     public function testBasicTest()
      20▕     {
 EOF

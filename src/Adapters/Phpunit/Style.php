@@ -252,11 +252,13 @@ final class Style
             );
         }
 
-        $iterationDescription = $iteration === null ? '' : sprintf(
-            '<fg=blue;options=bold> ⟲ %s of %s</>',
-            $iteration->iteration,
-            $iteration->totalIterations,
-        );
+        $iterationDescription = $iteration instanceof Iteration && $iteration->totalIterations !== null
+            ? sprintf(
+                '<fg=blue;options=bold> ⟲ %s of %s</>',
+                $iteration->iteration,
+                $iteration->totalIterations,
+            )
+            : '';
 
         return sprintf(
             "  <fg=%s;options=bold>%s</><fg=default> \e[2m%s\e[22m</><fg=yellow>%s</>%s",

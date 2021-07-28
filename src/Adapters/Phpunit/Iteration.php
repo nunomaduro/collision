@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 /**
@@ -27,7 +29,7 @@ class Iteration
 
     public function __construct(?int $iteration, ?int $totalIterations)
     {
-        $this->iteration = $iteration;
+        $this->iteration       = $iteration;
         $this->totalIterations = $totalIterations;
     }
 }
