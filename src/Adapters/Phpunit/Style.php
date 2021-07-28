@@ -73,7 +73,8 @@ final class Style
                 $testResult->color,
                 $testResult->icon,
                 $testResult->description,
-                $testResult->warning
+                $testResult->warning,
+                $testResult->iteration,
             ));
         });
     }
@@ -242,7 +243,7 @@ final class Style
     /**
      * Returns the test contents.
      */
-    private function testLineFrom(string $fg, string $icon, string $description, string $warning = null): string
+    private function testLineFrom(string $fg, string $icon, string $description, string $warning = null, ?Iteration $iteration = null): string
     {
         if (!empty($warning)) {
             $warning = sprintf(
@@ -251,12 +252,19 @@ final class Style
             );
         }
 
+        $iterationDescription = $iteration === null ? '' : sprintf(
+            '<fg=blue;options=bold> ⟲ %s of %s</>',
+            $iteration->iteration,
+            $iteration->totalIterations,
+        );
+
         return sprintf(
-            "  <fg=%s;options=bold>%s</><fg=default> \e[2m%s\e[22m</><fg=yellow>%s</>",
+            "  <fg=%s;options=bold>%s</><fg=default> \e[2m%s\e[22m</><fg=yellow>%s</>%s",
             $fg,
             $icon,
             $description,
-            $warning
+            $warning,
+            $iterationDescription
         );
     }
 }

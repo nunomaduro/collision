@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasIterations;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -71,9 +72,16 @@ final class TestResult
     public $warning = '';
 
     /**
+     * @readonly
+     *
+     * @var null|Iteration
+     */
+    public $iteration = null;
+
+    /**
      * Test constructor.
      */
-    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
+    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null, ?Iteration $iteration = null)
     {
         $this->testCaseName = $testCaseName;
         $this->description  = $description;
@@ -81,6 +89,7 @@ final class TestResult
         $this->icon         = $icon;
         $this->color        = $color;
         $this->throwable    = $throwable;
+        $this->iteration    = $iteration;
 
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY
@@ -105,7 +114,9 @@ final class TestResult
 
         $color = self::makeColor($type);
 
-        return new self($testCaseName, $description, $type, $icon, $color, $throwable);
+        $iteration = $testCase instanceOf HasIterations ? $testCase->getIteration() : null;
+
+        return new self($testCaseName, $description, $type, $icon, $color, $throwable, $iteration);
     }
 
     /**

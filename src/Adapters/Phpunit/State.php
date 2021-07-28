@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasIterations;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Framework\TestCase;
 
@@ -183,11 +184,24 @@ final class State
     {
         foreach ($this->testCaseTests as $testResult) {
             if (TestResult::makeDescription($test) === $testResult->description) {
-                return true;
+                return $this->iterationMatches($test, $testResult->iteration);
             }
         }
 
         return false;
+    }
+
+    private function iterationMatches(TestCase $test, ?Iteration $comparison): bool
+    {
+        if ($comparison === null) {
+            return true;
+        }
+
+        if (!$test instanceof HasIterations) {
+            return true;
+        }
+
+        return $test->getIteration()->iteration === $comparison->iteration;
     }
 
     /**
