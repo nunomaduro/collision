@@ -183,8 +183,12 @@ final class State
     public function existsInTestCase(TestCase $test): bool
     {
         foreach ($this->testCaseTests as $testResult) {
-            if (TestResult::makeDescription($test) === $testResult->description) {
-                return $this->iterationMatches($test, $testResult->iteration);
+            if (TestResult::makeDescription($test) !== $testResult->description) {
+                continue;
+            }
+
+            if ($this->iterationMatches($test, $testResult->iteration)) {
+                return true;
             }
         }
 
