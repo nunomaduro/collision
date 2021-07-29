@@ -107,7 +107,6 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         $testCase = $this->testCaseFromTest($testCase);
 
         $reflector = new ReflectionObject($error);
-
         if ($reflector->hasProperty('message')) {
             $message  = trim((string) preg_replace("/\r|\n/", "\n  ", $error->getMessage()));
             $property = $reflector->getProperty('message');

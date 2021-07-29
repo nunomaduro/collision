@@ -13,7 +13,7 @@ class ExampleWithIterationTest extends TestCase implements HasIterations
     /**
      * @group iterations
      */
-    public function testPassExample()
+    public function testIterationExample()
     {
         $this->assertTrue(true);
     }

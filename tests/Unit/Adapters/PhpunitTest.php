@@ -66,7 +66,7 @@ class PhpunitTest extends TestCase
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail,environmentTesting,custom-name',
+            'fail,environmentTesting,custom-name,iterations',
         ]);
 
         $testsDir = dirname(__DIR__, 2);
@@ -115,7 +115,7 @@ EOF,
 
         $this->assertConsoleOutputContainsString(<<<EOF
    PASS  Tests\Feature\ExampleWithIterationTest
-  ✓ testPassExample ⟲ 1 of 10
+  ✓ iteration example ⟲ 1 of 10
 
   Tests:  1 passed
   Time:
@@ -129,7 +129,7 @@ EOF,
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail,environmentTesting',
+            'fail,environmentTesting,iterations',
         ]);
 
         $this->assertConsoleOutputContainsString(
@@ -158,7 +158,6 @@ EOF,
         $output = $this->runCollisionTests([], 1);
 
         $code = '$this->assertFalse(true);';
-
         $this->assertConsoleOutputContainsString(<<<EOF
   Failed asserting that true is false.
 
@@ -169,7 +168,7 @@ EOF,
      15▕     {
   ➜  16▕         $code
      17▕     }
-     18▕
+     18▕ 
      19▕     public function testBasicTest()
      20▕     {
 EOF
