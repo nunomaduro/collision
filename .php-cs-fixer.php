@@ -29,7 +29,7 @@ $rules = [
 
 $rules['increment_style'] = ['style' => 'post'];
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setUsingCache(true)
     ->setRules($rules)
     ->setFinder($finder);
