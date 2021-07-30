@@ -22,7 +22,7 @@
     "require-dev": {
         "brianium/paratest": "^6.1",
         "fideloper/proxy": "^4.4.1",
-        "friendsofphp/php-cs-fixer": "^2.17.3",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "fruitcake/laravel-cors": "^2.0.3",
         "laravel/framework": "^8.0 || ^9.0",
         "nunomaduro/larastan": "^0.6.2",
