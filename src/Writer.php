@@ -26,7 +26,7 @@ final class Writer implements WriterContract
     /**
      * The number of frames if no verbosity is specified.
      */
-    const VERBOSITY_NORMAL_FRAMES = 1;
+    public const VERBOSITY_NORMAL_FRAMES = 1;
 
     /**
      * Holds an instance of the solutions repository.
