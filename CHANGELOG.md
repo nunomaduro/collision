@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.7.0] - 2021-08-12
+### Added
+- `-p` shortcut to run tests in parallel ([4463030](https://github.com/nunomaduro/collision/commit/44630308e3bce25435423f9c0292a6e15e740722))
+
 ## [5.6.0] - 2021-06-26
 ### Changed
 - Ignores more paths on exceptions ([#182](https://github.com/nunomaduro/collision/pull/182), [#184](https://github.com/nunomaduro/collision/pull/184), [#185](https://github.com/nunomaduro/collision/pull/185))
