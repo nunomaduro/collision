@@ -29,7 +29,7 @@ class TestCommand extends Command
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
-        {--parallel : Indicates if the tests should run in parallel}
+        {--p|parallel : Indicates if the tests should run in parallel}
         {--recreate-databases : Indicates if the test databases should be re-created}
     ';
 
@@ -172,6 +172,7 @@ class TestCommand extends Command
     {
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--env=')
+                && !Str::startsWith($option, '-p')
                 && !Str::startsWith($option, '--parallel')
                 && !Str::startsWith($option, '--recreate-databases');
         }));
