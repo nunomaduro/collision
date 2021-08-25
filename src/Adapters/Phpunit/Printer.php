@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Contracts\Writer;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TextUI\ResultPrinter;
+use ReflectionException;
 use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Throwable;
 
 /**
  * @internal
  */
-final class Printer implements \PHPUnit\TextUI\ResultPrinter
+final class Printer implements ResultPrinter
 {
     /**
      * Holds an instance of the style.
@@ -56,9 +60,9 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      *
      * @param ConsoleOutput $output
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    public function __construct(\Symfony\Component\Console\Output\ConsoleOutputInterface $output = null, bool $verbose = false, string $colors = 'always')
+    public function __construct(ConsoleOutputInterface $output = null, bool $verbose = false, string $colors = 'always')
     {
         $this->timer = Timer::start();
 
@@ -73,6 +77,11 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
         };
 
         $this->state = State::from($dummyTest);
+    }
+
+    public function setStyleWriter(Writer $writer): void
+    {
+        $this->style->setWriter($writer);
     }
 
     /**

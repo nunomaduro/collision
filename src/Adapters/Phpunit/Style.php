@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Contracts\Writer;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
-use NunoMaduro\Collision\Writer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -25,15 +25,29 @@ final class Style
     private $output;
 
     /**
+     * The Collision error writer.
+     *
+     * @var Writer
+     */
+    private $writer;
+
+    /**
      * Style constructor.
      */
-    public function __construct(ConsoleOutputInterface $output)
+    public function __construct(ConsoleOutputInterface $output, Writer $writer = null)
     {
         if (!$output instanceof ConsoleOutput) {
             throw new ShouldNotHappen();
         }
 
         $this->output = $output;
+        $this->setWriter($writer ?? new \NunoMaduro\Collision\Writer());
+    }
+
+    public function setWriter(Writer $writer): void
+    {
+        $this->writer = $writer;
+        $this->writer->setOutput($this->output);
     }
 
     /**
@@ -170,14 +184,12 @@ final class Style
      */
     public function writeError(Throwable $throwable): void
     {
-        $writer = (new Writer())->setOutput($this->output);
-
         if ($throwable instanceof AssertionFailedError) {
-            $writer->showTitle(false);
+            $this->writer->showTitle(false);
             $this->output->write('', true);
         }
 
-        $writer->ignoreFilesIn([
+        $this->writer->ignoreFilesIn([
             '/vendor\/pestphp\/pest/',
             '/vendor\/phpspec\/prophecy-phpunit/',
             '/vendor\/phpunit\/phpunit\/src/',
@@ -201,7 +213,7 @@ final class Style
 
         $inspector = new Inspector($throwable);
 
-        $writer->write($inspector);
+        $this->writer->write($inspector);
 
         if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
             $diff  = $comparisionFailure->getDiff();
