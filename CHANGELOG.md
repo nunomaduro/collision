@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.9.0] - 2021-08-26
+### Added
+- The capability to force console syntax highlighting in the env ([#193](https://github.com/nunomaduro/collision/pull/193))
+
 ## [5.8.0] - 2021-08-13
 ### Added
 - Support for Pest Parallel tests ([#190](https://github.com/nunomaduro/collision/pull/190))
