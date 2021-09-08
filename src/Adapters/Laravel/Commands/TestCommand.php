@@ -29,7 +29,7 @@ class TestCommand extends Command
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
-        {--parallel : Indicates if the tests should run in parallel}
+        {--p|parallel : Indicates if the tests should run in parallel}
         {--recreate-databases : Indicates if the test databases should be re-created}
     ';
 
@@ -120,23 +120,17 @@ class TestCommand extends Command
      */
     protected function binary()
     {
-        switch (true) {
-            case $this->option('parallel'):
-                $command = 'vendor/brianium/paratest/bin/paratest';
-                break;
-            case class_exists(\Pest\Laravel\PestServiceProvider::class):
-                $command = 'vendor/pestphp/pest/bin/pest';
-                break;
-            default:
-                $command = 'vendor/phpunit/phpunit/phpunit';
-                break;
+        if (class_exists(\Pest\Laravel\PestServiceProvider::class)) {
+            $command = $this->option('parallel') ? ['vendor/pestphp/pest/bin/pest', '--parallel'] : ['vendor/pestphp/pest/bin/pest'];
+        } else {
+            $command = $this->option('parallel') ? ['vendor/brianium/paratest/bin/paratest'] : ['vendor/phpunit/phpunit/phpunit'];
         }
 
         if ('phpdbg' === PHP_SAPI) {
-            return [PHP_BINARY, '-qrr', $command];
+            return array_merge([PHP_BINARY, '-qrr'], $command);
         }
 
-        return [PHP_BINARY, $command];
+        return array_merge([PHP_BINARY], $command);
     }
 
     /**
@@ -172,6 +166,7 @@ class TestCommand extends Command
     {
         $options = array_values(array_filter($options, function ($option) {
             return !Str::startsWith($option, '--env=')
+                && !Str::startsWith($option, '-p')
                 && !Str::startsWith($option, '--parallel')
                 && !Str::startsWith($option, '--recreate-databases');
         }));
