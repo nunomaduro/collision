@@ -72,9 +72,9 @@ final class Style
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
+                $testResult->iteration,
                 $testResult->description,
                 $testResult->warning,
-                $testResult->iteration,
             ));
         });
     }
@@ -162,7 +162,7 @@ final class Style
      */
     public function writeWarning(string $message): void
     {
-        $this->output->writeln($this->testLineFrom('yellow', $message, ''));
+        $this->output->writeln($this->testLineFrom('yellow', $message, new Iteration(), ''));
     }
 
     /**
@@ -243,7 +243,7 @@ final class Style
     /**
      * Returns the test contents.
      */
-    private function testLineFrom(string $fg, string $icon, string $description, string $warning = null, ?Iteration $iteration = null): string
+    private function testLineFrom(string $fg, string $icon, Iteration $iteration, string $description, string $warning = null): string
     {
         if (!empty($warning)) {
             $warning = sprintf(
@@ -252,12 +252,8 @@ final class Style
             );
         }
 
-        $iterationDescription = $iteration instanceof Iteration && $iteration->totalIterations !== null
-            ? sprintf(
-                '<fg=blue;options=bold> ⟲ %s of %s</>',
-                $iteration->iteration,
-                $iteration->totalIterations,
-            )
+        $iterationDescription = $iteration->isValid()
+            ? sprintf('<fg=blue;options=bold> ⟲ %s of %s</>', $iteration->iteration, $iteration->totalIterations)
             : '';
 
         return sprintf(

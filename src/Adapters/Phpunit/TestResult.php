@@ -74,9 +74,9 @@ final class TestResult
     /**
      * @readonly
      *
-     * @var Iteration|null
+     * @var Iteration
      */
-    public $iteration = null;
+    public $iteration;
 
     /**
      * Test constructor.
@@ -89,7 +89,7 @@ final class TestResult
         $this->icon         = $icon;
         $this->color        = $color;
         $this->throwable    = $throwable;
-        $this->iteration    = $iteration;
+        $this->iteration    = $iteration ?? new Iteration();
 
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY

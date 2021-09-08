@@ -27,9 +27,14 @@ class Iteration
      */
     public $totalIterations = null;
 
-    public function __construct(?int $iteration, ?int $totalIterations)
+    public function __construct(?int $iteration = null, ?int $totalIterations = null)
     {
         $this->iteration       = $iteration;
         $this->totalIterations = $totalIterations;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->totalIterations !== null && $this->iteration !== null;
     }
 }
