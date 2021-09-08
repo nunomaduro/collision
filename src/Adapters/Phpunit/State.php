@@ -197,15 +197,21 @@ final class State
 
     private function iterationMatches(TestCase $test, ?Iteration $comparison): bool
     {
-        if ($comparison === null) {
-            return true;
-        }
-
         if (!$test instanceof HasIterations) {
             return true;
         }
 
-        return $test->getIteration()->iteration === $comparison->iteration;
+        $iteration = $test->getIteration();
+
+        if ($comparison === null && $iteration === null) {
+            return true;
+        }
+
+        if ($comparison === null || $iteration === null) {
+            return false;
+        }
+
+        return $iteration->iteration === $comparison->iteration;
     }
 
     /**

@@ -162,7 +162,7 @@ final class Style
      */
     public function writeWarning(string $message): void
     {
-        $this->output->writeln($this->testLineFrom('yellow', $message, new Iteration(), ''));
+        $this->output->writeln($this->testLineFrom('yellow', $message, null, ''));
     }
 
     /**
@@ -243,7 +243,7 @@ final class Style
     /**
      * Returns the test contents.
      */
-    private function testLineFrom(string $fg, string $icon, Iteration $iteration, string $description, string $warning = null): string
+    private function testLineFrom(string $fg, string $icon, ?Iteration $iteration, string $description, string $warning = null): string
     {
         if (!empty($warning)) {
             $warning = sprintf(
@@ -252,8 +252,8 @@ final class Style
             );
         }
 
-        $iterationDescription = $iteration->isValid()
-            ? sprintf('<fg=blue;options=bold> ⟲ %s of %s</>', $iteration->iteration, $iteration->totalIterations)
+        $iterationDescription = $iteration !== null
+            ? sprintf('<fg=blue;options=bold> ⟲ %s of %s</>', $iteration->iteration, $iteration->total)
             : '';
 
         return sprintf(

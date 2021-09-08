@@ -11,5 +11,5 @@ use NunoMaduro\Collision\Adapters\Phpunit\Iteration;
  */
 interface HasIterations
 {
-    public function getIteration(): Iteration;
+    public function getIteration(): ?Iteration;
 }

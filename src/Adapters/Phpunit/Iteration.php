@@ -14,27 +14,22 @@ class Iteration
      *
      * @readonly
      *
-     * @var int|null
+     * @var int
      */
-    public $iteration = null;
+    public $iteration;
 
     /**
      * The total number of times the test will be run.
      *
      * @readonly
      *
-     * @var int|null
+     * @var int
      */
-    public $totalIterations = null;
+    public $total;
 
-    public function __construct(?int $iteration = null, ?int $totalIterations = null)
+    public function __construct(int $iteration, int $total)
     {
         $this->iteration       = $iteration;
-        $this->totalIterations = $totalIterations;
-    }
-
-    public function isValid(): bool
-    {
-        return $this->totalIterations !== null && $this->iteration !== null;
+        $this->total           = $total;
     }
 }
