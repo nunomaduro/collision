@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.10.0] - 2021-09-20
+### Added
+- PHP 8.1 support ([5594255](https://github.com/nunomaduro/collision/commit/559425531ddcc0acdf79e3759ad85fa808172934))
+
 ## [5.9.0] - 2021-08-26
 ### Added
 - The capability to force console syntax highlighting in the env ([#193](https://github.com/nunomaduro/collision/pull/193))
