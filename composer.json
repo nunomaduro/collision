@@ -16,18 +16,17 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "facade/ignition-contracts": "^1.0",
-        "filp/whoops": "^2.7.2",
+        "filp/whoops": "^2.14.3",
         "symfony/console": "^5.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.1",
         "fideloper/proxy": "^4.4.1",
-        "friendsofphp/php-cs-fixer": "^3.0",
         "fruitcake/laravel-cors": "^2.0.3",
-        "laravel/framework": "^8.0 || ^9.0",
+        "laravel/framework": "8.x-dev",
         "nunomaduro/larastan": "^0.6.2",
         "nunomaduro/mock-final-classes": "^1.0",
-        "orchestra/testbench": "^6.0 || ^7.0",
+        "orchestra/testbench": "^6.0",
         "phpstan/phpstan": "^0.12.64",
         "phpunit/phpunit": "^9.5.0"
     },
@@ -58,12 +57,9 @@
         }
     },
     "scripts": {
-        "lint": "php-cs-fixer fix -v --allow-risky=yes",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "phpunit --colors=always",
-        "test:lint": "php-cs-fixer fix -v --dry-run --allow-risky=yes",
         "test": [
-            "@test:lint",
             "@test:types",
             "@test:unit"
         ]

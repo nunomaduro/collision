@@ -30,6 +30,7 @@ class PhpunitTest extends TestCase
     public function itDoNotHandlesTestThatAreNotTestCases(): void
     {
         $test = new class() implements Test {
+            #[\ReturnTypeWillChange]
             public function count()
             {
                 return 0;

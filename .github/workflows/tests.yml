@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} ${{ matrix.dependency-version }}
@@ -27,6 +27,10 @@ jobs:
         php-version: ${{ matrix.php }}
         tools: composer
         coverage: none
+
+    - name: Mimic PHP 8.0
+      run: composer config platform.php 8.0.999
+      if: matrix.php > 8
 
     - name: Setup Problem Matchers
       run: |
