@@ -348,8 +348,7 @@ final class Writer implements WriterContract
      *
      * @return $this
      */
-    protected function
-    render(string $message, bool $break = true): WriterContract
+    protected function render(string $message, bool $break = true): WriterContract
     {
         if ($break) {
             $this->output->writeln('');
