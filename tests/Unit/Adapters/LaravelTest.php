@@ -11,6 +11,7 @@ use Illuminate\Foundation\Application;
 use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use NunoMaduro\Collision\Adapters\Laravel\Inspector;
+use NunoMaduro\Collision\Contracts\FurtherDetailWriter;
 use NunoMaduro\Collision\Contracts\Handler;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use PHPUnit\Framework\TestCase;
@@ -137,11 +138,11 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function itProvidesOnlyTheProviderContract(): void
+    public function itProvidesOnlyTheExpectedContracts(): void
     {
         $app      = $this->createApplication();
         $provides = (new CollisionServiceProvider($app))->provides();
-        $this->assertEquals([ProviderContract::class], $provides);
+        $this->assertEquals([ProviderContract::class, FurtherDetailWriter::class], $provides);
     }
 
     /**

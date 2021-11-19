@@ -7,6 +7,7 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
+use NunoMaduro\Collision\Contracts\FurtherDetailWriter;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
@@ -44,6 +45,8 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(FurtherDetailWriter::class, LaravelFurtherDetailWriter::class);
+
         if ($this->app->runningInConsole() && !$this->app->runningUnitTests()) {
             $this->app->bind(ProviderContract::class, function () {
                 if ($this->app->has(\Facade\IgnitionContracts\SolutionProviderRepository::class)) {
@@ -54,7 +57,13 @@ class CollisionServiceProvider extends ServiceProvider
                     $solutionsRepository = new NullSolutionsRepository();
                 }
 
-                $writer = new Writer($solutionsRepository);
+                $writer = new Writer(
+                    $solutionsRepository,
+                    null,
+                    null,
+                    null,
+                    $this->app->make(FurtherDetailWriter::class),
+                );
                 $handler = new Handler($writer);
 
                 return new Provider(null, $handler);
@@ -76,6 +85,9 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ProviderContract::class];
+        return [
+            ProviderContract::class,
+            FurtherDetailWriter::class,
+        ];
     }
 }

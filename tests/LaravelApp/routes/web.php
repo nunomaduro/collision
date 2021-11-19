@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/validation-exception', function () {
+    Validator::make(['foo' => 'bar', 'baz' => null], [
+        'foo' => ['integer'],
+        'baz' => ['required', 'string']
+    ])->validate();
 });

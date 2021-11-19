@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision;
 
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
+use NunoMaduro\Collision\Contracts\FurtherDetailWriter;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 use NunoMaduro\Collision\Contracts\RenderlessEditor;
 use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use NunoMaduro\Collision\FurtherDetailRepositories\NullFurtherDetailWriter;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,6 +59,13 @@ final class Writer implements WriterContract
     protected $highlighter;
 
     /**
+     * Provides further detail about certain exceptions.
+     *
+     * @var \NunoMaduro\Collision\Contracts\FurtherDetailWriter
+     */
+    protected $furtherDetailRepository;
+
+    /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
      *
@@ -92,12 +101,14 @@ final class Writer implements WriterContract
         SolutionsRepository $solutionsRepository = null,
         OutputInterface $output = null,
         ArgumentFormatterContract $argumentFormatter = null,
-        HighlighterContract $highlighter = null
+        HighlighterContract $highlighter = null,
+        FurtherDetailWriter $furtherDetailRepository = null
     ) {
         $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository();
         $this->output              = $output ?: new ConsoleOutput();
         $this->argumentFormatter   = $argumentFormatter ?: new ArgumentFormatter();
         $this->highlighter         = $highlighter ?: new Highlighter();
+        $this->furtherDetailRepository = $furtherDetailRepository ?: new NullFurtherDetailWriter();
     }
 
     /**
@@ -112,6 +123,8 @@ final class Writer implements WriterContract
         $editorFrame = array_shift($frames);
 
         $exception = $inspector->getException();
+
+        $this->renderFurtherDetails($inspector);
 
         if ($this->showEditor
             && $editorFrame !== null
@@ -264,6 +277,11 @@ final class Writer implements WriterContract
         return $this;
     }
 
+    protected function renderFurtherDetails(Inspector $inspector): void
+    {
+        $this->furtherDetailRepository->write($this->output, $inspector->getException());
+    }
+
     /**
      * Renders the editor containing the code that was the
      * origin of the exception.
@@ -330,7 +348,8 @@ final class Writer implements WriterContract
      *
      * @return $this
      */
-    protected function render(string $message, bool $break = true): WriterContract
+    protected function
+    render(string $message, bool $break = true): WriterContract
     {
         if ($break) {
             $this->output->writeln('');
