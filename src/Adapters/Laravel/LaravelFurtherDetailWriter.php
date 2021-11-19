@@ -11,7 +11,6 @@ use Throwable;
 
 final class LaravelFurtherDetailWriter implements FurtherDetailWriter
 {
-
     public function write(OutputInterface $output, Throwable $throwable): void
     {
         if ($throwable instanceof ValidationException) {
