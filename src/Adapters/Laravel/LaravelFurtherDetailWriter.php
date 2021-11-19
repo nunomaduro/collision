@@ -11,14 +11,6 @@ use Throwable;
 
 final class LaravelFurtherDetailWriter implements FurtherDetailWriter
 {
-    /**
-     * Exceptions that should be handled.
-     *
-     * @var array<class-string, string>
-     */
-    private $exceptionsWithFurtherDetail = [
-        ValidationException::class => 'handleValidationException',
-    ];
 
     public function write(OutputInterface $output, Throwable $throwable): void
     {
