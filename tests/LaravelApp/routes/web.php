@@ -19,10 +19,3 @@ use Illuminate\Support\Facades\Validator;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/validation-exception', function () {
-    Validator::make(['foo' => 'bar', 'baz' => null], [
-        'foo' => ['integer'],
-        'baz' => ['required', 'string']
-    ])->validate();
-});
