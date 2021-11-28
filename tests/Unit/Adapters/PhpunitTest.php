@@ -67,7 +67,7 @@ class PhpunitTest extends TestCase
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail,environmentTesting,custom-name',
+            'fail,environmentTesting,environmentCustomVariables,custom-name',
         ]);
 
         $testsDir = dirname(__DIR__, 2);
@@ -111,7 +111,7 @@ EOF,
     {
         $output = $this->runCollisionTests([
             '--exclude-group',
-            'fail,environmentTesting',
+            'fail,environmentTesting,environmentCustomVariables',
         ]);
 
         $this->assertConsoleOutputContainsString(
