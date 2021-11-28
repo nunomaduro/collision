@@ -18,7 +18,7 @@ class TestCommand extends BaseTestCommand
     {--without-tty : Disable output to TTY}
     {--p|parallel : Indicates if the tests should run in parallel}
     {--recreate-databases : Indicates if the test databases should be re-created}
-    {--c|custom-argument : Add custom env variable}
+    {--c|custom-argument : Add custom env variables}
 ';
 
     /**
