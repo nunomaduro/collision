@@ -56,6 +56,33 @@ EOF
         @unlink(__DIR__ . '/../../../tests/LaravelApp/.env.testing');
     }
 
+    /** @test */
+    public function testExtendableCustomVariables(): void
+    {
+        $this->runTests([
+            './vendor/bin/phpunit',
+            '-c',
+            'tests/LaravelApp/phpunit.xml',
+            '--group',
+            'environmentNoCVPhpunit',
+        ]);
+
+        // Without Custom Variables (-c|--custom-argument)
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environmentNoCVPhpunit']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environmentNoCVParallel']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environmentNoCVParallelRecreate']);
+
+        // With Custom Variables (-c)
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--group', 'environmentCVPhpunit']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--group', 'environmentCVParallel']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
+
+        // With Custom Variables (--custom-argument)
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--group', 'environmentCVPhpunit']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--group', 'environmentCVParallel']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
+    }
+
     private function runTests(array $arguments): void
     {
         $process = new Process($arguments, __DIR__ . '/../../..');
