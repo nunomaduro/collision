@@ -189,6 +189,7 @@ final class Style
             '/vendor\/symfony\/phpunit-bridge/',
             '/vendor\/symfony\/dom-crawler/',
             '/vendor\/symfony\/browser-kit/',
+            '/vendor\/symfony\/css-selector/',
             '/vendor\/bin\/.phpunit/',
             '/bin\/.phpunit/',
             '/vendor\/bin\/simple-phpunit/',
