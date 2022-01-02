@@ -80,7 +80,7 @@ class PhpunitTest extends TestCase
   ! warn example → This is a warning description
   ✓ pass example
 
-  Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 5 passed
+  Tests:  1 warnings, 1 risky, 1 incompleted, 1 skipped, 5 passed
   Time:
 EOF,
             $output
@@ -115,7 +115,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:  1 warnings, 1 risked, 1 incompleted, 1 skipped, 6 passed',
+            'Tests:  1 warnings, 1 risky, 1 incompleted, 1 skipped, 6 passed',
             $output
         );
     }

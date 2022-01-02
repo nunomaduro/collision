@@ -16,15 +16,14 @@
     "require": {
         "php": "^8.0.0",
         "facade/ignition-contracts": "^1.0.2",
-        "filp/whoops": "^2.14.3",
-        "symfony/console": "^6.0.0"
+        "filp/whoops": "^2.14.4",
+        "symfony/console": "^6.0.2"
     },
     "require-dev": {
-        "laravel/framework": "8.x-dev",
-        "nunomaduro/larastan": "^0.7.12",
+        "laravel/framework": "9.x-dev",
+        "nunomaduro/larastan": "^1.0.2",
         "nunomaduro/mock-final-classes": "^1.1.0",
         "orchestra/testbench": "^7.0.0",
-        "phpstan/phpstan": "^0.12.94",
         "phpunit/phpunit": "^9.5.8"
     },
     "autoload-dev": {

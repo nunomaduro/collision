@@ -16,7 +16,7 @@ final class TestResult
     public const FAIL       = 'failed';
     public const SKIPPED    = 'skipped';
     public const INCOMPLETE = 'incompleted';
-    public const RISKY      = 'risked';
+    public const RISKY      = 'risky';
     public const WARN       = 'warnings';
     public const RUNS       = 'pending';
     public const PASS       = 'passed';
