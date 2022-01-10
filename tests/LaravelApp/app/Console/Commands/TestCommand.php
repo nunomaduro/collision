@@ -15,10 +15,10 @@ class TestCommand extends BaseTestCommand
      * @var string
      */
     protected $signature = 'test
-    {--without-tty : Disable output to TTY}
-    {--p|parallel : Indicates if the tests should run in parallel}
-    {--recreate-databases : Indicates if the test databases should be re-created}
-    {--c|custom-argument : Add custom env variables}
+        {--without-tty : Disable output to TTY}
+        {--p|parallel : Indicates if the tests should run in parallel}
+        {--recreate-databases : Indicates if the test databases should be re-created}
+        {--c|custom-argument : Add custom env variables}
 ';
 
     /**
