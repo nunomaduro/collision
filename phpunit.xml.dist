@@ -4,6 +4,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          bootstrap="vendor/autoload.php"
+         cacheResult="false"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
