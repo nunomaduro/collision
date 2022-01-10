@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.11.0] - 2022-01-10
+### Added
+- Adds multiple symfony packages as `ignoreFiles` ([#196](https://github.com/nunomaduro/collision/pull/196), [#202](https://github.com/nunomaduro/collision/pull/202))
+- Allow to extend and customize test command envs ([#201](https://github.com/nunomaduro/collision/pull/201))
+
 ## [5.10.0] - 2021-09-20
 ### Added
 - PHP 8.1 support ([5594255](https://github.com/nunomaduro/collision/commit/559425531ddcc0acdf79e3759ad85fa808172934))
