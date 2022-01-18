@@ -30,8 +30,8 @@ class TestCommand extends Command
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
-        {--coverage : Indicates whether the coverage information should be collected}
-        {--min= : Indicates the minimum threshold enforcement for coverage}
+        {--coverage : Indicates whether code coverage information should be collected}
+        {--min= : Indicates the minimum threshold enforcement for code coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
         {--recreate-databases : Indicates if the test databases should be re-created}
     ';
