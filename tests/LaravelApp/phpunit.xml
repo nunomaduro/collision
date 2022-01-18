@@ -6,9 +6,9 @@
          cacheResult="false"
          colors="true"
          convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    processIsolation="false"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
          stopOnFailure="false">
     <testsuites>
         <testsuite name="Unit">

@@ -7,9 +7,46 @@ namespace Tests\Unit\Adapters;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
+use NunoMaduro\Collision\Coverage;
 
 class ArtisanTestCommandTest extends TestCase
 {
+    /** @test */
+    public function testCoverage(): void
+    {
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--group', 'coverage']);
+        $this->assertStringContainsString('Console/Kernel', $output);
+        $this->assertStringContainsString('0.0', $output);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('37.3', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--parallel', '--group', 'coverage']);
+        $this->assertStringContainsString('Console/Kernel', $output);
+        $this->assertStringContainsString('0.0', $output);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('37.3', $output);
+    }
+
+    /** @test */
+    public function testMinCoverage(): void
+    {
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--group', 'coverage']);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringNotContainsString('Code coverage below expected', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--parallel', '--group', 'coverage']);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringNotContainsString('Code coverage below expected', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Code coverage below expected', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--parallel', '--group', 'coverage'], 1);
+        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Code coverage below expected', $output);
+    }
+
     /** @test */
     public function testEnv(): void
     {
@@ -83,9 +120,12 @@ EOF
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
     }
 
-    private function runTests(array $arguments): void
+    private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
-        $process = new Process($arguments, __DIR__ . '/../../..');
+        $process = new Process($arguments, __DIR__ . '/../../..', [
+            'XDEBUG_MODE' => 'coverage',
+        ]);
+        $process->setPty(true);
         $process->run();
 
         $output = $process->getOutput();
@@ -96,6 +136,8 @@ $output
 ----------------------------
 EOF;
 
-        $this->assertEquals(0, $process->getExitCode(), $failedOutput);
+        $this->assertEquals($expectedExitCode, $process->getExitCode(), $failedOutput);
+
+        return $output;
     }
 }
