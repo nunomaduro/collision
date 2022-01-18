@@ -16,6 +16,8 @@ class TestCommand extends BaseTestCommand
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
+        {--coverage : Indicates whether the coverage information should be collected}
+        {--min= : Indicates the minimum threshold enforcement for coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
         {--recreate-databases : Indicates if the test databases should be re-created}
         {--c|custom-argument : Add custom env variables}
@@ -28,17 +30,7 @@ class TestCommand extends BaseTestCommand
      */
     protected function binary()
     {
-        switch (true) {
-            case $this->option('parallel'):
-                $command = 'vendor/brianium/paratest/bin/paratest';
-                break;
-            case class_exists(\Pest\Laravel\PestServiceProvider::class):
-                $command = 'vendor/pestphp/pest/bin/pest';
-                break;
-            default:
-                $command = 'vendor/phpunit/phpunit/phpunit';
-                break;
-        }
+        [$_, $command] = parent::binary();
 
         if ('phpdbg' === PHP_SAPI) {
             return [PHP_BINARY, '-qrr', __DIR__ . '/../../../../../' . $command];
