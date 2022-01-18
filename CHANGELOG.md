@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v6.1.0 (2022-01-18)](https://github.com/nunomaduro/collision/compare/v6.0.0...v6.1.0)
+### Added
+- Coverage support ([#206](https://github.com/nunomaduro/collision/pull/206))
+
 ## [v6.0.0 (2022-01-10)](https://github.com/nunomaduro/collision/compare/v5.11.0...v6.0.0)
 ### Added
 - Support for `symfony/console: ^6.0`
