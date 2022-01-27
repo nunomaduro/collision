@@ -1,10 +1,10 @@
-.idea/*
-.idea/codeStyleSettings.xml
-.twgit_features_subject
-composer.lock
+.idea/
+.vscode/
 /builds/
 /database/
 /vendor/
-coverage.xml
-.phpunit.result.cache
 .php-cs-fixer.cache
+.phpunit.result.cache
+.twgit_features_subject
+composer.lock
+coverage.xml
