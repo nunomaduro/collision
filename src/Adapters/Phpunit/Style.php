@@ -11,6 +11,7 @@ use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 use Whoops\Exception\Inspector;
 
@@ -69,6 +70,10 @@ final class Style
         }
 
         $state->eachTestCaseTests(function (TestResult $testResult) {
+            if ($testResult->type === 'passed' && $this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
+                return;
+            }
+
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
