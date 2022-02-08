@@ -14,11 +14,32 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Throwable;
 use Whoops\Exception\Inspector;
 
-/**
- * @internal
- */
 final class Style
 {
+    /**
+     * @var string[]
+     */
+    private static array $ignoredPaths = [
+        '/vendor\/pestphp\/pest/',
+        '/vendor\/phpspec\/prophecy-phpunit/',
+        '/vendor\/phpunit\/phpunit\/src/',
+        '/vendor\/mockery\/mockery/',
+        '/vendor\/laravel\/dusk/',
+        '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
+        '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
+        '/vendor\/symfony\/framework-bundle\/Test/',
+        '/vendor\/symfony\/phpunit-bridge/',
+        '/vendor\/symfony\/dom-crawler/',
+        '/vendor\/symfony\/browser-kit/',
+        '/vendor\/symfony\/css-selector/',
+        '/vendor\/bin\/.phpunit/',
+        '/bin\/.phpunit/',
+        '/vendor\/bin\/simple-phpunit/',
+        '/bin\/phpunit/',
+        '/vendor\/coduo\/php-matcher\/src\/PHPUnit/',
+        '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
+    ];
+
     /**
      * @var ConsoleOutput
      */
@@ -26,6 +47,8 @@ final class Style
 
     /**
      * Style constructor.
+     *
+     * @internal
      */
     public function __construct(ConsoleOutputInterface $output)
     {
@@ -37,7 +60,19 @@ final class Style
     }
 
     /**
+     * Add an additional path to be ignored when displaying failure context.
+     *
+     * @param string $regex the regex expression, {@see $ignoredPaths} for examples
+     */
+    public static function addIgnoredPath(string $regex): void
+    {
+        self::$ignoredPaths[] = $regex;
+    }
+
+    /**
      * Prints the content.
+     *
+     * @internal
      */
     public function write(string $content): void
     {
@@ -51,6 +86,8 @@ final class Style
      *    PASS  Unit\ExampleTest
      *    ✓ basic test
      * ```
+     *
+     * @internal
      */
     public function writeCurrentTestCaseSummary(State $state): void
     {
@@ -85,6 +122,8 @@ final class Style
      *    PASS  Unit\ExampleTest
      *    ✓ basic test
      * ```
+     *
+     * @internal
      */
     public function writeErrorsSummary(State $state, bool $onFailure): void
     {
@@ -115,6 +154,8 @@ final class Style
 
     /**
      * Writes the final recap.
+     *
+     * @internal
      */
     public function writeRecap(State $state, Timer $timer = null): void
     {
@@ -158,6 +199,8 @@ final class Style
 
     /**
      * Displays a warning message.
+     *
+     * @internal
      */
     public function writeWarning(string $message): void
     {
@@ -167,6 +210,8 @@ final class Style
     /**
      * Displays the error using Collision's writer
      * and terminates with exit code === 1.
+     *
+     * @internal
      */
     public function writeError(Throwable $throwable): void
     {
@@ -177,26 +222,7 @@ final class Style
             $this->output->write('', true);
         }
 
-        $writer->ignoreFilesIn([
-            '/vendor\/pestphp\/pest/',
-            '/vendor\/phpspec\/prophecy-phpunit/',
-            '/vendor\/phpunit\/phpunit\/src/',
-            '/vendor\/mockery\/mockery/',
-            '/vendor\/laravel\/dusk/',
-            '/vendor\/laravel\/framework\/src\/Illuminate\/Testing/',
-            '/vendor\/laravel\/framework\/src\/Illuminate\/Foundation\/Testing/',
-            '/vendor\/symfony\/framework-bundle\/Test/',
-            '/vendor\/symfony\/phpunit-bridge/',
-            '/vendor\/symfony\/dom-crawler/',
-            '/vendor\/symfony\/browser-kit/',
-            '/vendor\/symfony\/css-selector/',
-            '/vendor\/bin\/.phpunit/',
-            '/bin\/.phpunit/',
-            '/vendor\/bin\/simple-phpunit/',
-            '/bin\/phpunit/',
-            '/vendor\/coduo\/php-matcher\/src\/PHPUnit/',
-            '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
-        ]);
+        $writer->ignoreFilesIn(self::$ignoredPaths);
 
         if ($throwable instanceof ExceptionWrapper && $throwable->getOriginalException() !== null) {
             $throwable = $throwable->getOriginalException();
