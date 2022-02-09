@@ -196,6 +196,7 @@ final class Style
             '/bin\/phpunit/',
             '/vendor\/coduo\/php-matcher\/src\/PHPUnit/',
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
+            '/vendor\/webmozart\/assert/',
         ]);
 
         if ($throwable instanceof ExceptionWrapper && $throwable->getOriginalException() !== null) {
