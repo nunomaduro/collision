@@ -201,11 +201,13 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * Intentionally left blank as we output things on events of the listener.
+     * Output phpunit defaults outputs also.
      */
     public function write(string $content): void
     {
-        // ..
+        if (trim($content)) {
+            $this->style->write($content);
+        }
     }
 
     /**
