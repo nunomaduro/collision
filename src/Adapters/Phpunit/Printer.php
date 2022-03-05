@@ -205,6 +205,8 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
      */
     public function write(string $content): void
     {
+        return; // just a test commit
+
         if (trim($content)) {
             $this->style->write($content);
         }
