@@ -41,7 +41,7 @@ class EnvironmentCustomVariablesTest extends TestCase
     public function testEnvironmentNoCustomVariablesParallelWithRecreate()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
-        $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES'));
+        // $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES'));
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE'));
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PHPUNIT'));
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
