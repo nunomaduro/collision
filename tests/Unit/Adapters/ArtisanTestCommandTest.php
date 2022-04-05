@@ -18,13 +18,11 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Console/Kernel', $output);
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total Coverage', $output);
-        $this->assertStringContainsString('29.5', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--parallel', '--group', 'coverage']);
         $this->assertStringContainsString('Console/Kernel', $output);
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total Coverage', $output);
-        $this->assertStringContainsString('29.5', $output);
     }
 
     /** @test */
