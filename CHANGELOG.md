@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v6.2.0 (2022-04-05)](https://github.com/nunomaduro/collision/compare/v6.1.0...v6.2.0)
+### Added
+- Coverage support ([#224](https://github.com/nunomaduro/collision/pull/224))
+
 ## [v6.1.0 (2022-01-18)](https://github.com/nunomaduro/collision/compare/v6.0.0...v6.1.0)
 ### Added
 - Coverage support ([#206](https://github.com/nunomaduro/collision/pull/206))
