@@ -190,8 +190,8 @@ return [
     |
     */
 
-    'aliases' => array_merge(Facade::defaultAliases(), [
-        // ...
-    ]),
+    'aliases' => Facade::defaultAliases()->merge([
+        // 'ExampleClass' => App\Example\ExampleClass::class,
+    ])->toArray(),
 
 ];

@@ -21,10 +21,10 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.4.1",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.7",
         "nunomaduro/larastan": "^1.0.2",
         "nunomaduro/mock-final-classes": "^1.1.0",
-        "orchestra/testbench": "^7.0.0",
+        "orchestra/testbench": "^7.3.0",
         "phpunit/phpunit": "^9.5.11"
     },
     "autoload-dev": {
