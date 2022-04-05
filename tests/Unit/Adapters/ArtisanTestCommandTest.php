@@ -108,19 +108,19 @@ EOF
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environmentNoCVPhpunit']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environmentNoCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environmentNoCVParallelRecreate']);
-        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environmentNoCVParallelRecreate']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environmentNoCVParallelDrop']);
 
         // With Custom Variables (-c)
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--group', 'environmentCVPhpunit']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--group', 'environmentCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
-        $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--drop-databases', '--group', 'environmentCVParallelRecreate']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
 
         // With Custom Variables (--custom-argument)
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--group', 'environmentCVPhpunit']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--group', 'environmentCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
-        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--drop-databases', '--group', 'environmentCVParallelRecreate']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
     }
 
     private function runTests(array $arguments, int $expectedExitCode = 0): string
