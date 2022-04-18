@@ -23,7 +23,7 @@ jobs:
         coverage: none
 
     - name: Install Dependencies
-      run: composer update --prefer-stable --no-interaction --prefer-dist --no-progress --ansi
+      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run PHPStan
       run: vendor/bin/phpstan analyse --no-progress --ansi
