@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v6.2.1 (2022-06-27)](https://github.com/nunomaduro/collision/compare/v6.2.0...v6.2.1)
+### Fixed
+- Ignores Pest binary when displaying code ([630920d](https://github.com/nunomaduro/collision/commit/630920d20c6233c1f45d281d67a842b52dcd5f29))
+
 ## [v6.2.0 (2022-04-05)](https://github.com/nunomaduro/collision/compare/v6.1.0...v6.2.0)
 ### Added
 - Coverage support ([#224](https://github.com/nunomaduro/collision/pull/224))
