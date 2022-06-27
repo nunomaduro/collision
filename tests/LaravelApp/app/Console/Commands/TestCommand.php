@@ -34,10 +34,10 @@ class TestCommand extends BaseTestCommand
         [$_, $command] = parent::binary();
 
         if ('phpdbg' === PHP_SAPI) {
-            return [PHP_BINARY, '-qrr', __DIR__ . '/../../../../../' . $command];
+            return [PHP_BINARY, '-qrr', __DIR__.'/../../../../../'.$command];
         }
 
-        return [PHP_BINARY, __DIR__ . '/../../../../../' . $command];
+        return [PHP_BINARY, __DIR__.'/../../../../../'.$command];
     }
 
     /**
@@ -47,7 +47,7 @@ class TestCommand extends BaseTestCommand
      */
     protected function phpunitEnvironmentVariables()
     {
-        if ($this->option("custom-argument")) {
+        if ($this->option('custom-argument')) {
             return array_merge(
                 parent::phpunitEnvironmentVariables(),
                 [
@@ -67,7 +67,7 @@ class TestCommand extends BaseTestCommand
      */
     protected function paratestEnvironmentVariables()
     {
-        if ($this->option("custom-argument")) {
+        if ($this->option('custom-argument')) {
             return array_merge(
                 parent::paratestEnvironmentVariables(),
                 [
@@ -83,8 +83,7 @@ class TestCommand extends BaseTestCommand
     /**
      * Get the array of arguments for running PHPUnit.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function phpunitArguments($options)
@@ -95,8 +94,7 @@ class TestCommand extends BaseTestCommand
     /**
      * Get the array of arguments for running Paratest.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function paratestArguments($options)
@@ -107,15 +105,14 @@ class TestCommand extends BaseTestCommand
     /**
      * Filters my custom argument from options list.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function filterCustomOption($options)
     {
         return array_values(array_filter($options, function ($option) {
-            return !Str::startsWith($option, '-c')
-                && !Str::startsWith($option, '--custom-argument');
+            return ! Str::startsWith($option, '-c')
+                && ! Str::startsWith($option, '--custom-argument');
         }));
     }
 }

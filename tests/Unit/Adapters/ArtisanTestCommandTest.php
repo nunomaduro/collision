@@ -7,7 +7,6 @@ namespace Tests\Unit\Adapters;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
-use NunoMaduro\Collision\Coverage;
 
 class ArtisanTestCommandTest extends TestCase
 {
@@ -65,7 +64,7 @@ class ArtisanTestCommandTest extends TestCase
     /** @test */
     public function testEnvTesting(): void
     {
-        file_put_contents(__DIR__ . '/../../../tests/LaravelApp/.env.testing', <<<EOF
+        file_put_contents(__DIR__.'/../../../tests/LaravelApp/.env.testing', <<<'EOF'
 VAR_IN_DOT_ENV_TESTING=VAL_IN_DOT_ENV_TESTING
 VAR_OVERRIDDEN_IN_PHPUNIT=VAL_THAT_SHOULD_BE_OVERRIDDEN
 EOF
@@ -90,7 +89,7 @@ EOF
      */
     public static function cleanUp()
     {
-        @unlink(__DIR__ . '/../../../tests/LaravelApp/.env.testing');
+        @unlink(__DIR__.'/../../../tests/LaravelApp/.env.testing');
     }
 
     /** @test */
@@ -125,7 +124,7 @@ EOF
 
     private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
-        $process = new Process($arguments, __DIR__ . '/../../..', [
+        $process = new Process($arguments, __DIR__.'/../../..', [
             'XDEBUG_MODE' => 'coverage',
         ]);
         $process->setPty(true);

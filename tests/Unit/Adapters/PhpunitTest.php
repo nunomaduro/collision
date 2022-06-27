@@ -29,7 +29,8 @@ class PhpunitTest extends TestCase
     /** @test */
     public function itDoNotHandlesTestThatAreNotTestCases(): void
     {
-        $test = new class() implements Test {
+        $test = new class() implements Test
+        {
             #[\ReturnTypeWillChange]
             public function count()
             {
@@ -95,7 +96,7 @@ EOF,
             'custom-name',
         ]);
 
-        $this->assertConsoleOutputContainsString(<<<EOF
+        $this->assertConsoleOutputContainsString(<<<'EOF'
    PASS  my-custom-name
   ✓ testPassExample
 
@@ -166,7 +167,7 @@ EOF
             'tests/LaravelApp/phpunit.xml',
             '--printer',
             'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-        ], $arguments), __DIR__ . '/../../..');
+        ], $arguments), __DIR__.'/../../..');
 
         $process->run();
         $output = $process->getOutput();
@@ -192,7 +193,7 @@ EOF;
             '--printer',
             'NunoMaduro\Collision\Adapters\Phpunit\Printer',
             'tests/TestCaseWithStdoutOutput',
-        ], __DIR__ . '/../../..');
+        ], __DIR__.'/../../..');
 
         $process->run();
 

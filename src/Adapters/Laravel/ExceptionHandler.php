@@ -34,12 +34,12 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function __construct(Container $container, ExceptionHandlerContract $appExceptionHandler)
     {
-        $this->container           = $container;
+        $this->container = $container;
         $this->appExceptionHandler = $appExceptionHandler;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function report(Throwable $e)
     {
@@ -47,7 +47,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render($request, Throwable $e)
     {
@@ -55,7 +55,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function renderForConsole($output, Throwable $e)
     {

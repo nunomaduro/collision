@@ -22,7 +22,7 @@ class HandlerTest extends TestCase
     /** @test */
     public function itHandlesAnException(): void
     {
-        $writerMock    = $this->createMock(WriterContract::class);
+        $writerMock = $this->createMock(WriterContract::class);
         $inspectorMock = $this->createMock(\Whoops\Exception\Inspector::class);
 
         $writerMock->expects($this->once())
@@ -40,7 +40,7 @@ class HandlerTest extends TestCase
     public function itSetsTheOutput(): void
     {
         $writerMock = $this->createMock(WriterContract::class);
-        $output     = new ConsoleOutput();
+        $output = new ConsoleOutput();
 
         $writerMock->expects($this->once())
             ->method('setOutput')
@@ -52,7 +52,7 @@ class HandlerTest extends TestCase
     /** @test */
     public function itGetsTheWriter(): void
     {
-        $writer  = new Writer();
+        $writer = new Writer();
         $handler = new Handler($writer);
 
         $this->assertEquals($handler->getWriter(), $writer);

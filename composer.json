@@ -22,6 +22,7 @@
     "require-dev": {
         "brianium/paratest": "^6.4.1",
         "laravel/framework": "^9.7",
+        "laravel/pint": "^0.2.1",
         "nunomaduro/larastan": "^1.0.2",
         "nunomaduro/mock-final-classes": "^1.1.0",
         "orchestra/testbench": "^7.3.0",
@@ -57,9 +58,12 @@
         }
     },
     "scripts": {
+        "lint": "pint -v",
+        "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "phpunit --colors=always",
         "test": [
+            "@test:lint",
             "@test:types",
             "@test:unit"
         ]

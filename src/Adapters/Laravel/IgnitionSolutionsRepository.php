@@ -29,7 +29,7 @@ final class IgnitionSolutionsRepository implements SolutionsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getFromThrowable(Throwable $throwable): array
     {

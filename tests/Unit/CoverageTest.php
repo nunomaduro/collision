@@ -12,7 +12,7 @@ class CoverageTest extends TestCase
     /** @test */
     public function testGetPath(): void
     {
-        $this->assertSame(dirname(__DIR__, 2) . '/' . '.temp/coverage', Coverage::getPath());
+        $this->assertSame(dirname(__DIR__, 2).'/'.'.temp/coverage', Coverage::getPath());
     }
 
     /** @test */

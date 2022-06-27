@@ -13,6 +13,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 final class ConsoleColor
 {
     public const FOREGROUND = 38;
+
     public const BACKGROUND = 48;
 
     public const COLOR256_REGEXP = '~^(bg_)?color_(\d{1,3})$~';
@@ -84,9 +85,8 @@ final class ConsoleColor
     }
 
     /**
-     * @param string|array $style
-     * @param string       $text
-     *
+     * @param  string|array  $style
+     * @param  string  $text
      * @return string
      *
      * @throws InvalidStyleException
@@ -94,14 +94,14 @@ final class ConsoleColor
      */
     public function apply($style, $text)
     {
-        if (!$this->isStyleForced() && !$this->isSupported()) {
+        if (! $this->isStyleForced() && ! $this->isSupported()) {
             return $text;
         }
 
         if (is_string($style)) {
             $style = [$style];
         }
-        if (!is_array($style)) {
+        if (! is_array($style)) {
             throw new \InvalidArgumentException('Style must be string or array.');
         }
 
@@ -125,11 +125,11 @@ final class ConsoleColor
             return $text;
         }
 
-        return $this->escSequence(implode(';', $sequences)) . $text . $this->escSequence(self::RESET_STYLE);
+        return $this->escSequence(implode(';', $sequences)).$text.$this->escSequence(self::RESET_STYLE);
     }
 
     /**
-     * @param bool $forceStyle
+     * @param  bool  $forceStyle
      */
     public function setForceStyle($forceStyle)
     {
@@ -153,20 +153,20 @@ final class ConsoleColor
     }
 
     /**
-     * @param string       $name
-     * @param array|string $styles
+     * @param  string  $name
+     * @param  array|string  $styles
      */
     public function addTheme($name, $styles)
     {
         if (is_string($styles)) {
             $styles = [$styles];
         }
-        if (!is_array($styles)) {
+        if (! is_array($styles)) {
             throw new \InvalidArgumentException('Style must be string or array.');
         }
 
         foreach ($styles as $style) {
-            if (!$this->isValidStyle($style)) {
+            if (! $this->isValidStyle($style)) {
                 throw new InvalidStyleException($style);
             }
         }
@@ -183,8 +183,7 @@ final class ConsoleColor
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasTheme($name)
@@ -193,7 +192,7 @@ final class ConsoleColor
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function removeTheme($name)
     {
@@ -238,8 +237,7 @@ final class ConsoleColor
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string[]
      */
     private function themeSequence($name)
@@ -253,8 +251,7 @@ final class ConsoleColor
     }
 
     /**
-     * @param string $style
-     *
+     * @param  string  $style
      * @return string
      */
     private function styleSequence($style)
@@ -263,21 +260,20 @@ final class ConsoleColor
             return self::STYLES[$style];
         }
 
-        if (!$this->are256ColorsSupported()) {
+        if (! $this->are256ColorsSupported()) {
             return null;
         }
 
         preg_match(self::COLOR256_REGEXP, $style, $matches);
 
-        $type  = $matches[1] === 'bg_' ? self::BACKGROUND : self::FOREGROUND;
+        $type = $matches[1] === 'bg_' ? self::BACKGROUND : self::FOREGROUND;
         $value = $matches[2];
 
         return "$type;5;$value";
     }
 
     /**
-     * @param string $style
-     *
+     * @param  string  $style
      * @return bool
      */
     private function isValidStyle($style)
@@ -286,8 +282,7 @@ final class ConsoleColor
     }
 
     /**
-     * @param string|int $value
-     *
+     * @param  string|int  $value
      * @return string
      */
     private function escSequence($value)
