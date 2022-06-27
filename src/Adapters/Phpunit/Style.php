@@ -178,6 +178,8 @@ final class Style
         }
 
         $writer->ignoreFilesIn([
+            '/vendor\/bin\/pest/',
+            '/bin\/pest/',
             '/vendor\/pestphp\/pest/',
             '/vendor\/phpspec\/prophecy-phpunit/',
             '/vendor\/phpunit\/phpunit\/src/',
