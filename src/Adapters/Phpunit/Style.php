@@ -252,10 +252,25 @@ final class Style
     private function testLineFrom(string $fg, string $icon, string $description, string $warning = null): string
     {
         if (! empty($warning)) {
-            $warning = sprintf(
-                ' → %s',
-                $warning
-            );
+
+            if (! str_contains("warning", "\n")) {
+                $warning = sprintf(
+                    ' → %s',
+                    $warning
+                );
+            } else {
+                $warningLines = explode("\n", $warning);
+                $warning = '';
+
+                foreach($warningLines as $w) {
+                    $warning .= sprintf(
+                        "\n  → %s",
+                        $w
+                    );
+                }
+
+                $warning .= "\n";
+            }
         }
 
         return sprintf(
