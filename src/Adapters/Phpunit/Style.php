@@ -253,7 +253,7 @@ final class Style
     {
         if (! empty($warning)) {
 
-            if (! str_contains("warning", "\n")) {
+            if (! str_contains($warning, "\n")) {
                 $warning = sprintf(
                     ' → %s',
                     $warning
