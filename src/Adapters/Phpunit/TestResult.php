@@ -77,6 +77,13 @@ final class TestResult
     public $warning = '';
 
     /**
+     * Define how Warnings and Errors are printed with newline characters.
+     *
+     * @var bool
+     */
+    public static bool $allowMultiline = false;
+
+    /**
      * Test constructor.
      */
     private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
@@ -94,7 +101,12 @@ final class TestResult
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
-            $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->getMessage()));
+
+            if(static::$allowMultiline) {
+                $this->warning = trim((string) $throwable->getMessage());
+            } else {
+                $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->getMessage()));
+            }
         }
     }
 
