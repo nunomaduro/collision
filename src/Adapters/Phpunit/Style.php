@@ -264,11 +264,9 @@ final class Style
                 foreach($warningLines as $w) {
                     $warning .= sprintf(
                         "\n  → %s",
-                        $w
+                        trim($w)
                     );
                 }
-
-                $warning .= "\n";
             }
         }
 
