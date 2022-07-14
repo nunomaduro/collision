@@ -77,7 +77,7 @@ class TestCommand extends Command
                 "\n  <fg=white;bg=red;options=bold> ERROR </> Code coverage driver not available.%s</>",
                 Coverage::usingXdebug()
                     ? " Did you set <href=https://xdebug.org/docs/code_coverage#mode>Xdebug's coverage mode</>?"
-                    : " Did you install <href=https://xdebug.org/>Xdebug</> or <href=https://pecl.php.net/package/pcov>PCOV</>?"
+                    : " Did you install <href=https://xdebug.org/>Xdebug</> or <href=https://github.com/krakjoe/pcov>PCOV</>?"
             ));
 
             $this->newLine();
