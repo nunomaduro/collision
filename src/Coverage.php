@@ -70,7 +70,7 @@ final class Coverage
             }
 
             $output->writeln(
-                '  <fg=black;bg=yellow;options=bold> WARN </> No coverage driver detected.</>',
+                '  <fg=black;bg=yellow;options=bold> WARN </> No coverage driver detected.</> Did you install <href=https://xdebug.org/>Xdebug</> or <href=https://pecl.php.net/package/pcov>PCOV</>?',
             );
 
             return 0.0;
