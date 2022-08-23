@@ -21,7 +21,7 @@ use Whoops\Exception\Inspector as BaseInspector;
 final class Inspector extends BaseInspector
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getTrace($e)
     {

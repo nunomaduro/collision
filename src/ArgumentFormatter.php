@@ -16,7 +16,7 @@ final class ArgumentFormatter implements ArgumentFormatterContract
     private const MAX_STRING_LENGTH = 1000;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function format(array $arguments, bool $recursive = true): string
     {

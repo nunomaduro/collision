@@ -21,7 +21,7 @@ use NunoMaduro\Collision\Writer;
 class CollisionServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ class CollisionServiceProvider extends ServiceProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -75,7 +75,7 @@ class CollisionServiceProvider extends ServiceProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function provides()
     {

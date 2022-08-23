@@ -51,8 +51,8 @@ class TestCommand extends BaseTestCommand
             return array_merge(
                 parent::phpunitEnvironmentVariables(),
                 [
-                    'CUSTOM_ENV_VARIABLE'                => 1,
-                    'CUSTOM_ENV_VARIABLE_FOR_PHPUNIT'    => 1,
+                    'CUSTOM_ENV_VARIABLE' => 1,
+                    'CUSTOM_ENV_VARIABLE_FOR_PHPUNIT' => 1,
                 ],
             );
         }
@@ -71,8 +71,8 @@ class TestCommand extends BaseTestCommand
             return array_merge(
                 parent::paratestEnvironmentVariables(),
                 [
-                    'CUSTOM_ENV_VARIABLE'                => 1,
-                    'CUSTOM_ENV_VARIABLE_FOR_PARALLEL'   => 1,
+                    'CUSTOM_ENV_VARIABLE' => 1,
+                    'CUSTOM_ENV_VARIABLE_FOR_PARALLEL' => 1,
                 ],
             );
         }

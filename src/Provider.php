@@ -40,7 +40,7 @@ final class Provider implements ProviderContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register(): ProviderContract
     {
@@ -51,7 +51,7 @@ final class Provider implements ProviderContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHandler(): HandlerContract
     {

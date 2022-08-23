@@ -45,15 +45,15 @@ final class Highlighter implements HighlighterContract
      * @var array
      */
     private const THEME = [
-        self::TOKEN_STRING  => ['light_gray'],
+        self::TOKEN_STRING => ['light_gray'],
         self::TOKEN_COMMENT => ['dark_gray', 'italic'],
         self::TOKEN_KEYWORD => ['magenta', 'bold'],
         self::TOKEN_DEFAULT => ['default', 'bold'],
-        self::TOKEN_HTML    => ['blue', 'bold'],
+        self::TOKEN_HTML => ['blue', 'bold'],
 
-        self::ACTUAL_LINE_MARK    => ['red', 'bold'],
-        self::LINE_NUMBER         => ['dark_gray'],
-        self::MARKED_LINE_NUMBER  => ['italic', 'bold'],
+        self::ACTUAL_LINE_MARK => ['red', 'bold'],
+        self::LINE_NUMBER => ['dark_gray'],
+        self::MARKED_LINE_NUMBER => ['italic', 'bold'],
         self::LINE_NUMBER_DIVIDER => ['dark_gray'],
     ];
 
@@ -62,15 +62,15 @@ final class Highlighter implements HighlighterContract
 
     /** @var array */
     private const DEFAULT_THEME = [
-        self::TOKEN_STRING  => 'red',
+        self::TOKEN_STRING => 'red',
         self::TOKEN_COMMENT => 'yellow',
         self::TOKEN_KEYWORD => 'green',
         self::TOKEN_DEFAULT => 'default',
-        self::TOKEN_HTML    => 'cyan',
+        self::TOKEN_HTML => 'cyan',
 
-        self::ACTUAL_LINE_MARK    => 'dark_gray',
-        self::LINE_NUMBER         => 'dark_gray',
-        self::MARKED_LINE_NUMBER  => 'dark_gray',
+        self::ACTUAL_LINE_MARK => 'dark_gray',
+        self::LINE_NUMBER => 'dark_gray',
+        self::MARKED_LINE_NUMBER => 'dark_gray',
         self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
 
@@ -109,7 +109,7 @@ final class Highlighter implements HighlighterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function highlight(string $content, int $line): string
     {

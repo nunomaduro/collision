@@ -39,7 +39,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function report(Throwable $e)
     {
@@ -47,7 +47,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function render($request, Throwable $e)
     {
@@ -55,7 +55,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function renderForConsole($output, Throwable $e)
     {
