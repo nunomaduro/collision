@@ -32,7 +32,7 @@ final class Handler extends AbstractHandler implements HandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function handle()
     {
@@ -42,7 +42,7 @@ final class Handler extends AbstractHandler implements HandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setOutput(OutputInterface $output): HandlerContract
     {
@@ -52,7 +52,7 @@ final class Handler extends AbstractHandler implements HandlerContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getWriter(): WriterContract
     {

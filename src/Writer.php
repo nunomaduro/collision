@@ -101,7 +101,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write(Inspector $inspector): void
     {
@@ -130,7 +130,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function ignoreFilesIn(array $ignore): WriterContract
     {
@@ -140,7 +140,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function showTrace(bool $show): WriterContract
     {
@@ -150,7 +150,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function showTitle(bool $show): WriterContract
     {
@@ -160,7 +160,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function showEditor(bool $show): WriterContract
     {
@@ -170,7 +170,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setOutput(OutputInterface $output): WriterContract
     {
@@ -180,7 +180,7 @@ final class Writer implements WriterContract
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOutput(): OutputInterface
     {
@@ -295,6 +295,7 @@ final class Writer implements WriterContract
         foreach ($frames as $i => $frame) {
             if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
                 $vendorFrames++;
+
                 continue;
             }
 

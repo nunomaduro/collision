@@ -77,7 +77,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addError(Test $testCase, Throwable $throwable, float $time): void
     {
@@ -89,7 +89,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addWarning(Test $testCase, Warning $warning, float $time): void
     {
@@ -99,7 +99,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addFailure(Test $testCase, AssertionFailedError $error, float $time): void
     {
@@ -120,7 +120,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addIncompleteTest(Test $testCase, Throwable $throwable, float $time): void
     {
@@ -130,7 +130,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addRiskyTest(Test $testCase, Throwable $throwable, float $time): void
     {
@@ -140,7 +140,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSkippedTest(Test $testCase, Throwable $throwable, float $time): void
     {
@@ -150,7 +150,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function startTestSuite(TestSuite $suite): void
     {
@@ -160,7 +160,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function endTestSuite(TestSuite $suite): void
     {
@@ -168,7 +168,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function startTest(Test $testCase): void
     {
@@ -183,7 +183,7 @@ final class Printer implements \PHPUnit\TextUI\ResultPrinter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function endTest(Test $testCase, float $time): void
     {
