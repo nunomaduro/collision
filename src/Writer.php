@@ -244,7 +244,7 @@ final class Writer implements WriterContract
         $solutions = $this->solutionsRepository->getFromThrowable($throwable);
 
         foreach ($solutions as $solution) {
-            /** @var \Facade\IgnitionContracts\Solution $solution */
+            /** @var \Spatie\Ignition\Contracts\Solution $solution */
             $title = $solution->getSolutionTitle();
             $description = $solution->getSolutionDescription();
             $links = $solution->getDocumentationLinks();
@@ -252,11 +252,11 @@ final class Writer implements WriterContract
             $description = trim((string) preg_replace("/\n/", "\n    ", $description));
 
             $this->render(sprintf(
-                '<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s',
+                '<fg=cyan;options=bold>i</>   <fg=default;options=bold>%s</>: %s %s',
                 rtrim($title, '.'),
                 $description,
                 implode(', ', array_map(function (string $link) {
-                    return sprintf("\n    <fg=blue>%s</>", $link);
+                    return sprintf("\n      <fg=gray>%s</>", $link);
                 }, $links))
             ));
         }
@@ -320,7 +320,7 @@ final class Writer implements WriterContract
             }
 
             $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>");
-            $this->render("<fg=white>    $class$function($args)</>", false);
+            $this->render("<fg=gray>    $class$function($args)</>", false);
         }
 
         return $this;
