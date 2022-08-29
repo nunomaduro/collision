@@ -19,7 +19,7 @@
         "symfony/console": "^6.0.2"
     },
     "require-dev": {
-        "brianium/paratest": "^6.5.0",
+        "brianium/paratest": "^6.4.1",
         "laravel/framework": "^9.26.1",
         "laravel/pint": "^1.1.1",
         "nunomaduro/larastan": "^1.0.3",
