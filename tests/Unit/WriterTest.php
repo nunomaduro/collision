@@ -223,6 +223,13 @@ EOF;
         );
     }
 
+    /** @test */
+    public function itWritesWarningsOnNewLines(): void
+    {
+        $this->addWarning('line 1');
+        $this->addWarning('line 2');
+    }
+
     protected function createWriter()
     {
         $output = new BufferedOutput();

@@ -264,7 +264,7 @@ final class Style
 
                 foreach($warningLines as $w) {
                     $warning .= sprintf(
-                        "\n  → %s",
+                        "\n    <fg=yellow;options=bold>⇂ %s</>",
                         trim($w)
                     );
                 }

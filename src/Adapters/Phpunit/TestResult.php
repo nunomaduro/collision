@@ -94,7 +94,7 @@ final class TestResult
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
-            $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->getMessage()));
+            $this->warning = trim((string) $throwable->getMessage());
         }
     }
 
