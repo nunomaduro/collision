@@ -37,7 +37,7 @@ jobs:
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Style Tests
-      run: vendor/bin/pint --test -v
+      run: composer test:lint
 
     - name: Run Unit Tests
-      run: vendor/bin/phpunit --colors=always
+      run: composer test:unit
