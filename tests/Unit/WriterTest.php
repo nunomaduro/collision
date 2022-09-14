@@ -71,6 +71,7 @@ class WriterTest extends TestCase
   2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
 
+
 EOF;
 
         $this->assertEquals(
@@ -112,6 +113,8 @@ EOF;
 
   2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
+
+
 EOF;
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());

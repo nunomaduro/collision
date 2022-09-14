@@ -9,7 +9,6 @@ use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Whoops\Exception\Inspector;
