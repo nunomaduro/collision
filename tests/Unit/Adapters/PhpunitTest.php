@@ -64,8 +64,8 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(<<<'EOF'
-   PASS  my-custom-name
-  ✓ testPassExample
+   PASS  my-custom-test-case-name
+  ✓ my-custom-test-case-method-name
 
   Tests:  1 passed
   Time:

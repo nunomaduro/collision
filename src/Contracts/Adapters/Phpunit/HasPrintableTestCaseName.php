@@ -13,4 +13,9 @@ interface HasPrintableTestCaseName
      * Returns the test case name that should be used by the printer.
      */
     public function getPrintableTestCaseName(): string;
+
+    /**
+     * Returns the test case method name that should be used by the printer.
+     */
+    public function getPrintableTestCaseMethodName(): string;
 }

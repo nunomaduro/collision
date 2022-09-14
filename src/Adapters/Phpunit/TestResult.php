@@ -101,7 +101,7 @@ final class TestResult
     public static function makeDescription(TestMethod $test): string
     {
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            return (new ($test->className())($test->name()))->name(); // @phpstan-ignore-line
+            return (new ($test->className())($test->name()))->getPrintableTestCaseMethodName();
         }
 
         $name = $test->name();
