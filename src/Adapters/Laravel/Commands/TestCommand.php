@@ -10,6 +10,7 @@ use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
 use RuntimeException;
@@ -87,11 +88,14 @@ class TestCommand extends Command
             return 1;
         }
 
-        if ($this->option('parallel')) {
+        /** @var bool $usesParallel */
+        $usesParallel = $this->option('parallel');
+
+        if ($usesParallel) {
             throw new InvalidArgumentException('The --parallel option is not supported by Collision ^7.0.');
         }
 
-        if ($this->option('parallel') && ! $this->isParallelDependenciesInstalled()) {
+        if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
             if (! $this->confirm('Running tests in parallel requires "brianium/paratest". Do you wish to install it as a dev dependency?')) {
                 return 1;
             }
@@ -288,9 +292,7 @@ class TestCommand extends Command
     {
         if (! $this->option('env')) {
             $vars = self::getEnvironmentVariables(
-                // @phpstan-ignore-next-line
                 $this->laravel->environmentPath(),
-                // @phpstan-ignore-next-line
                 $this->laravel->environmentFile()
             );
 

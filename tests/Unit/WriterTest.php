@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use NunoMaduro\Collision\ConsoleColor;
-use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Highlighter;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
@@ -19,12 +18,6 @@ use Whoops\Exception\Inspector;
 
 class WriterTest extends TestCase
 {
-    /** @test */
-    public function itRespectsIsContract(): void
-    {
-        $this->assertInstanceOf(WriterContract::class, new Writer());
-    }
-
     /** @test */
     public function itGetsTheOutput(): void
     {

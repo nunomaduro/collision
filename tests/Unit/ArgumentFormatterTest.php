@@ -5,17 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use NunoMaduro\Collision\ArgumentFormatter;
-use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentFormatterTest extends TestCase
 {
-    /** @test */
-    public function itRespectsIsContract(): void
-    {
-        $this->assertInstanceOf(ArgumentFormatterContract::class, new ArgumentFormatter());
-    }
-
     /** @test */
     public function itFormatsAString(): void
     {

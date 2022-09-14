@@ -18,10 +18,12 @@ use Whoops\Exception\Inspector;
  */
 final class Style
 {
+    private readonly \Symfony\Component\Console\Output\ConsoleOutput $output;
+
     /**
-     * @var ConsoleOutput
+     * @var string[]
      */
-    private $output;
+    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
 
     /**
      * Style constructor.
@@ -67,7 +69,7 @@ final class Style
             $state->headerPrinted = true;
         }
 
-        $state->eachTestCaseTests(function (TestResult $testResult) {
+        $state->eachTestCaseTests(function (TestResult $testResult): void {
             $this->output->writeln($this->testLineFrom(
                 $testResult->color,
                 $testResult->icon,
@@ -87,15 +89,13 @@ final class Style
      */
     public function writeErrorsSummary(State $state, bool $onFailure): void
     {
-        $errors = array_filter($state->suiteTests, function (TestResult $testResult) {
-            return $testResult->type === TestResult::FAIL;
-        });
+        $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => $testResult->type === TestResult::FAIL);
 
         if (! $onFailure) {
             $this->output->writeln(['', "  \e[2m---\e[22m", '']);
         }
 
-        array_map(function (TestResult $testResult) use ($onFailure) {
+        array_map(function (TestResult $testResult) use ($onFailure): void {
             if (! $onFailure) {
                 $this->output->write(sprintf(
                     '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
@@ -117,8 +117,8 @@ final class Style
      */
     public function writeRecap(State $state, Timer $timer = null): void
     {
-        $types = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
-        foreach ($types as $type) {
+        $tests = [];
+        foreach (self::TYPES as $type) {
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
                 $color = TestResult::makeColor($type);
                 $tests[] = "<fg=$color;options=bold>$countTests $type</>";
@@ -203,6 +203,7 @@ final class Style
             '/vendor\/webmozart\/assert/',
         ]);
 
+        /** @var \Throwable $throwable */
         $inspector = new Inspector($throwable);
 
         $writer->write($inspector);

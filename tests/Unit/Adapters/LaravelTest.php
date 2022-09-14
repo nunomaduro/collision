@@ -11,8 +11,7 @@ use Illuminate\Foundation\Application;
 use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use NunoMaduro\Collision\Adapters\Laravel\Inspector;
-use NunoMaduro\Collision\Contracts\Handler;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use NunoMaduro\Collision\Provider;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -93,25 +92,6 @@ class LaravelTest extends TestCase
     }
 
     /** @test */
-    public function itRendersNonSymfonyConsoleExceptionsWithCollision(): void
-    {
-        $app = $this->createApplication();
-        $exception = new Exception();
-        $output = new BufferedOutput();
-
-        $handlerMock = $this->createMock(Handler::class);
-        $handlerMock->expects($this->once())->method('setOutput')->with($output);
-
-        $providerMock = $this->createMock(ProviderContract::class);
-        $providerMock->expects($this->once())->method('register')->willReturn($providerMock);
-        $providerMock->expects($this->once())->method('getHandler')->willReturn($handlerMock);
-        $app->instance(ProviderContract::class, $providerMock);
-
-        $exceptionHandler = new ExceptionHandler($app, $app->make(ExceptionHandlerContract::class));
-        $exceptionHandler->renderForConsole($output, $exception);
-    }
-
-    /** @test */
     public function itRendersNonSymfonyConsoleExceptionsWithSymfony(): void
     {
         $app = $this->createApplication();
@@ -141,7 +121,7 @@ class LaravelTest extends TestCase
     {
         $app = $this->createApplication();
         $provides = (new CollisionServiceProvider($app))->provides();
-        $this->assertEquals([ProviderContract::class], $provides);
+        $this->assertEquals([Provider::class], $provides);
     }
 
     /**

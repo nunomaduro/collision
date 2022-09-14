@@ -31,64 +31,24 @@ final class TestResult
 
     public const PASS = 'passed';
 
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $id;
+    public string $id;
+
+    public string $testCaseName;
+
+    public string $description;
+
+    public string $type;
+
+    public string $icon;
+
+    public string $color;
+
+    public ?Throwable $throwable;
+
+    public string $warning = '';
 
     /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $testCaseName;
-
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $description;
-
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $icon;
-
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $color;
-
-    /**
-     * @readonly
-     *
-     * @var Throwable|null
-     */
-    public $throwable;
-
-    /**
-     * @readonly
-     *
-     * @var string
-     */
-    public $warning = '';
-
-    /**
-     * Test constructor.
+     * Creates a new TestResult instance.
      */
     private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
     {
@@ -141,7 +101,7 @@ final class TestResult
     public static function makeDescription(TestMethod $test): string
     {
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            return (new ($test->className())($test->name()))->name();
+            return (new ($test->className())($test->name()))->name(); // @phpstan-ignore-line
         }
 
         $name = $test->name();
@@ -187,12 +147,11 @@ final class TestResult
                 return '⨯';
             case self::SKIPPED:
                 return '-';
+            case self::WARN:
             case self::RISKY:
                 return '!';
             case self::INCOMPLETE:
                 return '…';
-            case self::WARN:
-                return '!';
             case self::RUNS:
                 return '•';
             default:

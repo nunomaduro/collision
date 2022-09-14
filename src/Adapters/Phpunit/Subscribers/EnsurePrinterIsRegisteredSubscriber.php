@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit\Subscribers;
 
+use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestRunner\Configured;
 use PHPUnit\Event\TestRunner\ConfiguredSubscriber;
@@ -31,6 +32,7 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
         );
 
         if (class_exists($printerClass)) {
+            /** @var DefaultPrinter $printer */
             $printer = new $printerClass($configuration->colors());
 
             Facade::registerSubscribers(

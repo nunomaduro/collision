@@ -9,13 +9,10 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
  */
 final class Timer
 {
-    /**
-     * @var float
-     */
-    private $start;
+    private float $start;
 
     /**
-     * Timer constructor.
+     * Crates a new Timer instance.
      */
     private function __construct(float $start)
     {

@@ -22,9 +22,12 @@ final class TestException
         //
     }
 
+    /**
+     * @return class-string
+     */
     public function getClassName(): string
     {
-        return $this->throwable->className();
+        return $this->throwable->className(); // @phpstan-ignore-line
     }
 
     public function getMessage(): string
@@ -36,9 +39,9 @@ final class TestException
             $lines = explode(PHP_EOL, explode(self::DIFF_SEPARATOR, $message)[1]);
 
             foreach ($lines as $line) {
-                if (0 === strpos($line, '  -')) {
+                if (str_starts_with($line, '  -')) {
                     $line = '<fg=red>'.$line.'</>';
-                } elseif (0 === strpos($line, '  +')) {
+                } elseif (str_starts_with($line, '  +')) {
                     $line = '<fg=green>'.$line.'</>';
                 }
 
@@ -57,10 +60,13 @@ final class TestException
         return 0;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function getFile(): string
     {
         if (! isset($this->getTrace()[0])) {
-            return (new ReflectionClass($this->getClassName()))->getFileName();
+            return (string) (new ReflectionClass($this->getClassName()))->getFileName();
         }
 
         return $this->getTrace()[0]['file'];

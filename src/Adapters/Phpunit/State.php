@@ -6,7 +6,6 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Event\Code\Test;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -15,45 +14,39 @@ final class State
 {
     /**
      * The complete test suite number of tests.
-     *
-     * @var int|null
      */
-    public $suiteTotalTests;
+    public int $suiteTotalTests = 0;
 
     /**
      * The complete test suite tests.
      *
-     * @var array<int, TestResult>
+     * @var array<string, TestResult>
      */
-    public $suiteTests = [];
+    public array $suiteTests = [];
 
     /**
      * The current test case class.
-     *
-     * @var string
      */
-    public $testCaseName;
+    public string $testCaseName;
 
     /**
      * The current test case tests.
      *
      * @var array<string, TestResult>
      */
-    public $testCaseTests = [];
+    public array $testCaseTests = [];
 
     /**
      * The current test case tests.
      *
-     * @var array<int, TestResult>
+     * @var array<string, TestResult>
      */
-    public $toBePrintedCaseTests = [];
+    public array $toBePrintedCaseTests = [];
 
     /**
      * Header printed.
-     *
-     * @var bool
      */
-    public $headerPrinted = false;
+    public bool $headerPrinted = false;
 
     /**
      * The state constructor.

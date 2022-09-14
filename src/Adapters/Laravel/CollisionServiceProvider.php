@@ -7,11 +7,11 @@ namespace NunoMaduro\Collision\Adapters\Laravel;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
+use Spatie\Ignition\Contracts\SolutionProviderRepository;
 
 /**
  * @internal
@@ -22,17 +22,13 @@ class CollisionServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}
-     *
-     * @var bool
      */
-    protected $defer = true;
+    protected bool $defer = true;
 
     /**
      * Boots application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->commands([
             TestCommand::class,
@@ -42,14 +38,13 @@ class CollisionServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function register()
+    public function register(): void
     {
         if ($this->app->runningInConsole() && ! $this->app->runningUnitTests()) {
-            $this->app->bind(ProviderContract::class, function () {
-                // @phpstan-ignore-next-line
-                if ($this->app->has(\Spatie\Ignition\Contracts\SolutionProviderRepository::class)) {
-                    /** @var \Spatie\Ignition\Contracts\SolutionProviderRepository $solutionProviderRepository */
-                    $solutionProviderRepository = $this->app->get(\Spatie\Ignition\Contracts\SolutionProviderRepository::class);
+            $this->app->bind(Provider::class, function () {
+                if ($this->app->has(SolutionProviderRepository::class)) {
+                    /** @var SolutionProviderRepository $solutionProviderRepository */
+                    $solutionProviderRepository = $this->app->get(SolutionProviderRepository::class);
 
                     $solutionsRepository = new IgnitionSolutionsRepository($solutionProviderRepository);
                 } else {
@@ -79,6 +74,6 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ProviderContract::class];
+        return [Provider::class];
     }
 }

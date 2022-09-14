@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
 use PHPUnit\Framework\TestCase;
@@ -13,12 +12,6 @@ use Whoops\RunInterface;
 
 class ProviderTest extends TestCase
 {
-    /** @test */
-    public function itRespectsIsContract(): void
-    {
-        $this->assertInstanceOf(ProviderContract::class, new Provider());
-    }
-
     /** @test */
     public function itRegistersTheErrorHandler(): void
     {
