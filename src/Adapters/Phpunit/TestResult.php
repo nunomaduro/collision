@@ -121,17 +121,6 @@ final class TestResult
         // Lower case everything
         $name = mb_strtolower($name);
 
-        // Add the dataset name if it has one
-        if ($test->testData()->hasDataFromDataProvider()) {
-            if ($dataName = $test->testData()->dataFromDataProvider()->dataSetName()) {
-                if (is_int($dataName)) {
-                    $name .= sprintf(' with data set #%d', $dataName);
-                } else {
-                    $name .= sprintf(' with data set "%s"', $dataName);
-                }
-            }
-        }
-
         return $name;
     }
 
