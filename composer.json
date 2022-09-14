@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.1.0",
         "filp/whoops": "^2.14.5",
         "symfony/console": "^6.2.0"
     },
@@ -63,7 +63,11 @@
         "lint": "pint -v",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
-        "test:unit": "phpunit --colors=always",
+        "test:unit": [
+            "@putenv COLLISION_PRINTER=DefaultPrinter",
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --no-output --colors=always"
+        ],
         "test": [
             "@test:lint",
             "@test:types",
