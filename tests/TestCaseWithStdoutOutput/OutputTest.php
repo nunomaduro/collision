@@ -10,7 +10,7 @@ class OutputTest extends TestCase
 {
     public function testWithOutput()
     {
-        var_dump('Foo');
+        echo 'Foo';
 
         $this->assertTrue(true);
     }

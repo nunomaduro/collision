@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
-use PHPUnit\Framework\TestCase;
-use Throwable;
+use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 
 /**
  * @internal
@@ -21,11 +23,20 @@ final class TestResult
 
     public const RISKY = 'risky';
 
+    public const DEPRECATED = 'deprecated';
+
     public const WARN = 'warnings';
 
     public const RUNS = 'pending';
 
     public const PASS = 'passed';
+
+    /**
+     * @readonly
+     *
+     * @var string
+     */
+    public $id;
 
     /**
      * @readonly
@@ -79,8 +90,9 @@ final class TestResult
     /**
      * Test constructor.
      */
-    private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
+    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
     {
+        $this->id = $id;
         $this->testCaseName = $testCaseName;
         $this->description = $description;
         $this->type = $type;
@@ -91,39 +103,48 @@ final class TestResult
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY
              || $this->type === TestResult::SKIPPED
+             || $this->type === TestResult::DEPRECATED
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
-            $this->warning = trim((string) $throwable->getMessage());
+            $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->message()));
         }
     }
 
     /**
      * Creates a new test from the given test case.
      */
-    public static function fromTestCase(TestCase $testCase, string $type, Throwable $throwable = null): self
+    public static function fromTestCase(Test $test, string $type, Throwable $throwable = null): self
     {
-        $testCaseName = State::getPrintableTestCaseName($testCase);
+        if (! $test instanceof TestMethod) {
+            throw new ShouldNotHappen();
+        }
 
-        $description = self::makeDescription($testCase);
+        if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+            $testCaseName = (new ($test->className())($test->name()))->getPrintableTestCaseName();
+        } else {
+            $testCaseName = $test->className();
+        }
+
+        $description = self::makeDescription($test);
 
         $icon = self::makeIcon($type);
 
         $color = self::makeColor($type);
 
-        return new self($testCaseName, $description, $type, $icon, $color, $throwable);
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $color, $throwable);
     }
 
     /**
      * Get the test case description.
      */
-    public static function makeDescription(TestCase $testCase): string
+    public static function makeDescription(TestMethod $test): string
     {
-        $name = $testCase->getName(false);
-
-        if ($testCase instanceof HasPrintableTestCaseName) {
-            return $name;
+        if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+            return (new ($test->className())($test->name()))->name();
         }
+
+        $name = $test->name();
 
         // First, lets replace underscore by spaces.
         $name = str_replace('_', ' ', $name);
@@ -141,11 +162,13 @@ final class TestResult
         $name = mb_strtolower($name);
 
         // Add the dataset name if it has one
-        if ($dataName = $testCase->dataName()) {
-            if (is_int($dataName)) {
-                $name .= sprintf(' with data set #%d', $dataName);
-            } else {
-                $name .= sprintf(' with data set "%s"', $dataName);
+        if ($test->testData()->hasDataFromDataProvider()) {
+            if ($dataName = $test->testData()->dataFromDataProvider()->dataSetName()) {
+                if (is_int($dataName)) {
+                    $name .= sprintf(' with data set #%d', $dataName);
+                } else {
+                    $name .= sprintf(' with data set "%s"', $dataName);
+                }
             }
         }
 
@@ -158,6 +181,8 @@ final class TestResult
     public static function makeIcon(string $type): string
     {
         switch ($type) {
+            case self::DEPRECATED:
+                return 'd';
             case self::FAIL:
                 return '⨯';
             case self::SKIPPED:
@@ -183,6 +208,7 @@ final class TestResult
         switch ($type) {
             case self::FAIL:
                 return 'red';
+            case self::DEPRECATED:
             case self::SKIPPED:
             case self::INCOMPLETE:
             case self::RISKY:

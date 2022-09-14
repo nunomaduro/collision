@@ -20,12 +20,14 @@ class ExampleTest extends TestCase
 
     public function testRiskyExample()
     {
-        $this->markAsRisky();
+        // ..
     }
 
-    public function testWarnExample()
+    public function testDeprecationExample()
     {
-        $this->addWarning('This is a warning description');
+        trigger_deprecation('foo', '1.0', 'This is a deprecation description');
+
+        $this->assertTrue(true);
     }
 
     public function testPassExample()

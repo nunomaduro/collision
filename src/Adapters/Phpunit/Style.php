@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-use Throwable;
 use Whoops\Exception\Inspector;
 
 /**
@@ -118,7 +118,7 @@ final class Style
      */
     public function writeRecap(State $state, Timer $timer = null): void
     {
-        $types = [TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
+        $types = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
         foreach ($types as $type) {
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
                 $color = TestResult::makeColor($type);
@@ -133,7 +133,6 @@ final class Style
 
         if (! empty($tests)) {
             $this->output->write([
-                "\n",
                 sprintf(
                     '  <fg=white;options=bold>Tests:  </><fg=default>%s</>',
                     implode(', ', $tests)
@@ -172,8 +171,11 @@ final class Style
     {
         $writer = (new Writer())->setOutput($this->output);
 
-        if ($throwable instanceof AssertionFailedError) {
+        $throwable = new TestException($throwable);
+
+        if ($throwable->getClassName() === AssertionFailedError::class) {
             $writer->showTitle(false);
+
             $this->output->write('', true);
         }
 
@@ -202,32 +204,9 @@ final class Style
             '/vendor\/webmozart\/assert/',
         ]);
 
-        if ($throwable instanceof ExceptionWrapper && $throwable->getOriginalException() !== null) {
-            $throwable = $throwable->getOriginalException();
-        }
-
         $inspector = new Inspector($throwable);
 
         $writer->write($inspector);
-
-        if ($throwable instanceof ExpectationFailedException && $comparisionFailure = $throwable->getComparisonFailure()) {
-            $diff = $comparisionFailure->getDiff();
-            $lines = explode(PHP_EOL, $diff);
-            $diff = '';
-            foreach ($lines as $line) {
-                if (0 === strpos($line, '-')) {
-                    $line = '<fg=red>'.$line.'</>';
-                } elseif (0 === strpos($line, '+')) {
-                    $line = '<fg=green>'.$line.'</>';
-                }
-
-                $diff .= $line.PHP_EOL;
-            }
-
-            $diff = trim((string) preg_replace("/\r|\n/", "\n  ", $diff));
-
-            $this->output->write("  $diff");
-        }
 
         $this->output->writeln('');
     }
@@ -252,7 +231,6 @@ final class Style
     private function testLineFrom(string $fg, string $icon, string $description, string $warning = null): string
     {
         if (! empty($warning)) {
-
             if (! str_contains($warning, "\n")) {
                 $warning = sprintf(
                     ' → %s',
@@ -262,7 +240,7 @@ final class Style
                 $warningLines = explode("\n", $warning);
                 $warning = '';
 
-                foreach($warningLines as $w) {
+                foreach ($warningLines as $w) {
                     $warning .= sprintf(
                         "\n    <fg=yellow;options=bold>⇂ %s</>",
                         trim($w)

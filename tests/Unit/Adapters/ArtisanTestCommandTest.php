@@ -18,10 +18,12 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total Coverage', $output);
 
+        /**
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--parallel', '--group', 'coverage']);
         $this->assertStringContainsString('Console/Kernel', $output);
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total Coverage', $output);
+         */
     }
 
     /** @test */
@@ -31,17 +33,20 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
 
+        /**
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--parallel', '--group', 'coverage']);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
-
+         */
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
 
+        /**
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--parallel', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
+         */
     }
 
     /** @test */
@@ -56,9 +61,12 @@ class ArtisanTestCommandTest extends TestCase
         ]);
 
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environment']);
+
+        /**
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environment']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environment']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environment']);
+         */
     }
 
     /** @test */
@@ -79,9 +87,12 @@ EOF
         ]);
 
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environmentTesting']);
+
+        /**
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environmentTesting']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environmentTesting']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environmentTesting']);
+         */
     }
 
     /**
@@ -105,21 +116,30 @@ EOF
 
         // Without Custom Variables (-c|--custom-argument)
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--group', 'environmentNoCVPhpunit']);
+
+        /**
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--group', 'environmentNoCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--recreate-databases', '--group', 'environmentNoCVParallelRecreate']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environmentNoCVParallelDrop']);
+         */
 
         // With Custom Variables (-c)
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--group', 'environmentCVPhpunit']);
+
+        /**
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--group', 'environmentCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '-c', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
+         */
 
         // With Custom Variables (--custom-argument)
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--group', 'environmentCVPhpunit']);
+
+        /**
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--group', 'environmentCVParallel']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--recreate-databases', '--group', 'environmentCVParallelRecreate']);
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
+         */
     }
 
     private function runTests(array $arguments, int $expectedExitCode = 0): string

@@ -4,6 +4,7 @@
 /database/
 /vendor/
 .php-cs-fixer.cache
+.phpunit.cache
 .phpunit.result.cache
 .twgit_features_subject
 composer.lock

@@ -63,13 +63,15 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
-            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
+        $id = \PHPUnit\Runner\Version::id();
+
+        if ($id[0].$id[1] !== '10') {
+            throw new RequirementsException('Running Collision ^7.0 artisan test command requires at least PHPUnit ^10.0.');
         }
 
         // @phpstan-ignore-next-line
-        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 8) {
-            throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least Laravel ^8.0.');
+        if ((int) \Illuminate\Foundation\Application::VERSION[0] < 9) {
+            throw new RequirementsException('Running Collision ^7.0 artisan test command requires at least Laravel ^9.0.');
         }
 
         if ($this->option('coverage') && ! Coverage::isAvailable()) {
@@ -77,12 +79,16 @@ class TestCommand extends Command
                 "\n  <fg=white;bg=red;options=bold> ERROR </> Code coverage driver not available.%s</>",
                 Coverage::usingXdebug()
                     ? " Did you set <href=https://xdebug.org/docs/code_coverage#mode>Xdebug's coverage mode</>?"
-                    : " Did you install <href=https://xdebug.org/>Xdebug</> or <href=https://github.com/krakjoe/pcov>PCOV</>?"
+                    : ' Did you install <href=https://xdebug.org/>Xdebug</> or <href=https://github.com/krakjoe/pcov>PCOV</>?'
             ));
 
             $this->newLine();
 
             return 1;
+        }
+
+        if ($this->option('parallel')) {
+            throw new InvalidArgumentException('The --parallel option is not supported by Collision ^7.0.');
         }
 
         if ($this->option('parallel') && ! $this->isParallelDependenciesInstalled()) {
@@ -146,8 +152,6 @@ class TestCommand extends Command
             }
         }
 
-        $this->newLine();
-
         return $exitCode;
     }
 
@@ -206,7 +210,7 @@ class TestCommand extends Command
      */
     protected function phpunitArguments($options)
     {
-        $options = array_merge(['--printer=NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer'], $options);
+        $options = array_merge(['--no-output'], $options);
 
         $options = array_values(array_filter($options, function ($option) {
             return ! Str::startsWith($option, '--env=')
@@ -256,7 +260,9 @@ class TestCommand extends Command
      */
     protected function phpunitEnvironmentVariables()
     {
-        return [];
+        return [
+            'COLLISION_PRINTER' => 'DefaultPrinter',
+        ];
     }
 
     /**

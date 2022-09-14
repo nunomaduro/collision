@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,7 +37,7 @@ final class State
     /**
      * The current test case tests.
      *
-     * @var array<int, TestResult>
+     * @var array<string, TestResult>
      */
     public $testCaseTests = [];
 
@@ -57,17 +58,17 @@ final class State
     /**
      * The state constructor.
      */
-    private function __construct(string $testCaseName)
+    public function __construct()
     {
-        $this->testCaseName = $testCaseName;
+        $this->testCaseName = '';
     }
 
     /**
-     * Creates a new State starting from the given test case.
+     * Checks if the given test already contains a result.
      */
-    public static function from(TestCase $test): self
+    public function existsInTestCase(Test $test): bool
     {
-        return new self(self::getPrintableTestCaseName($test));
+        return isset($this->testCaseTests[$test->id()]);
     }
 
     /**
@@ -75,10 +76,10 @@ final class State
      */
     public function add(TestResult $test): void
     {
-        $this->testCaseTests[] = $test;
-        $this->toBePrintedCaseTests[] = $test;
+        $this->testCaseTests[$test->id] = $test;
+        $this->toBePrintedCaseTests[$test->id] = $test;
 
-        $this->suiteTests[] = $test;
+        $this->suiteTests[$test->id] = $test;
     }
 
     /**
@@ -140,17 +141,17 @@ final class State
     /**
      * Checks if the given test case is different from the current one.
      */
-    public function testCaseHasChanged(TestCase $testCase): bool
+    public function testCaseHasChanged(Test $test): bool
     {
-        return self::getPrintableTestCaseName($testCase) !== $this->testCaseName;
+        return self::getPrintableTestCaseName($test) !== $this->testCaseName;
     }
 
     /**
      * Moves the a new test case.
      */
-    public function moveTo(TestCase $testCase): void
+    public function moveTo(Test $test): void
     {
-        $this->testCaseName = self::getPrintableTestCaseName($testCase);
+        $this->testCaseName = self::getPrintableTestCaseName($test);
 
         $this->testCaseTests = [];
 
@@ -177,26 +178,16 @@ final class State
     }
 
     /**
-     * Checks if the given test already contains a result.
-     */
-    public function existsInTestCase(TestCase $test): bool
-    {
-        foreach ($this->testCaseTests as $testResult) {
-            if (TestResult::makeDescription($test) === $testResult->description) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the printable test case name from the given `TestCase`.
      */
-    public static function getPrintableTestCaseName(TestCase $test): string
+    public static function getPrintableTestCaseName(Test $test): string
     {
-        return $test instanceof HasPrintableTestCaseName
-            ? $test->getPrintableTestCaseName()
-            : get_class($test);
+        $className = explode('::', $test->id())[0];
+
+        if (is_subclass_of($className, HasPrintableTestCaseName::class)) {
+            return (new $className($test->name()))->getPrintableTestCaseName();
+        }
+
+        return $className;
     }
 }

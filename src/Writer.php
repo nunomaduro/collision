@@ -10,6 +10,7 @@ use NunoMaduro\Collision\Contracts\RenderlessEditor;
 use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
+use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -120,7 +121,7 @@ final class Writer implements WriterContract
             $this->renderEditor($editorFrame);
         }
 
-        $this->renderSolution($inspector);
+        // $this->renderSolution($inspector);
 
         if ($this->showTrace && ! empty($frames) && ! $exception instanceof RenderlessTrace) {
             $this->renderTrace($frames);
@@ -223,7 +224,9 @@ final class Writer implements WriterContract
     {
         $exception = $inspector->getException();
         $message = rtrim($exception->getMessage());
-        $class = $inspector->getExceptionName();
+        $class = $inspector->getException() instanceof TestException
+            ? $inspector->getException()->getClassName()
+            : $inspector->getExceptionName();
 
         if ($this->showTitle) {
             $this->render("<bg=red;options=bold> $class </>");
@@ -292,6 +295,11 @@ final class Writer implements WriterContract
     {
         $vendorFrames = 0;
         $userFrames = 0;
+
+        if (! empty($frames)) {
+            $this->output->writeln(['']);
+        }
+
         foreach ($frames as $i => $frame) {
             if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
                 $vendorFrames++;
@@ -313,14 +321,20 @@ final class Writer implements WriterContract
             $pos = str_pad((string) ((int) $i + 1), 4, ' ');
 
             if ($vendorFrames > 0) {
-                $this->output->write(
-                    sprintf("\n      \e[2m+%s vendor frames \e[22m", $vendorFrames)
+                $this->output->writeln(
+                    sprintf("      \e[2m+%s vendor frames \e[22m", $vendorFrames)
                 );
                 $vendorFrames = 0;
             }
 
-            $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>");
-            $this->render("<fg=gray>    $class$function($args)</>", false);
+            $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>", (bool) $class && $i > 0);
+            if ($class) {
+                $this->render("<fg=gray>    $class$function($args)</>", false);
+            }
+        }
+
+        if (! empty($frames)) {
+            $this->output->writeln(['']);
         }
 
         return $this;

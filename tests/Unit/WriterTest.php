@@ -47,10 +47,11 @@ class WriterTest extends TestCase
         $inspector = new Inspector(HelloWorldFile1::say());
 
         ($writer = $this->createWriter())->write($inspector);
+        $space = ' ';
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException 
+   Tests\FakeProgram\FakeException$space
 
   Fail description
 
@@ -88,10 +89,11 @@ EOF;
         $writer->getOutput()->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
         $writer->write($inspector);
+        $space = ' ';
 
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException 
+   Tests\FakeProgram\FakeException$space
 
   Fail description
 
@@ -110,9 +112,6 @@ EOF;
 
   2   tests/FakeProgram/HelloWorldFile1.php:11
       Tests\FakeProgram\HelloWorldFile2::say()
-
-  3   tests/Unit/WriterTest.php:85
-      Tests\FakeProgram\HelloWorldFile1::say()
 EOF;
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
@@ -126,9 +125,11 @@ EOF;
         ($writer = $this->createWriter())->ignoreFilesIn(['*/FakeProgram/*'])
             ->write($inspector);
 
+        $space = ' ';
+
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException 
+   Tests\FakeProgram\FakeException$space
 
   Fail description
 
@@ -150,9 +151,11 @@ EOF;
         ($writer = $this->createWriter())->showEditor(false)
             ->write($inspector);
 
+        $space = ' ';
+
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException 
+   Tests\FakeProgram\FakeException$space
 
   Fail description
 
@@ -178,9 +181,11 @@ EOF;
         ($writer = $this->createWriter())->showTrace(false)
             ->write($inspector);
 
+        $space = ' ';
+
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeException 
+   Tests\FakeProgram\FakeException$space
 
   Fail description
 
@@ -221,13 +226,6 @@ EOF;
                 ->fetch(),
             $result
         );
-    }
-
-    /** @test */
-    public function itWritesWarningsOnNewLines(): void
-    {
-        $this->addWarning('line 1');
-        $this->addWarning('line 2');
     }
 
     protected function createWriter()

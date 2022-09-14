@@ -4,48 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Adapters;
 
-use NunoMaduro\Collision\Adapters\Phpunit\Printer;
-use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestResult;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
 {
     /** @test */
-    public function itRespectsIsContract(): void
-    {
-        $this->assertInstanceOf(TestListener::class, new Printer());
-    }
-
-    /** @test */
     public function itIsAPrinter(): void
     {
-        $this->assertInstanceOf(Printer::class, new Printer());
-    }
-
-    /** @test */
-    public function itDoNotHandlesTestThatAreNotTestCases(): void
-    {
-        $test = new class() implements Test
-        {
-            #[\ReturnTypeWillChange]
-            public function count()
-            {
-                return 0;
-            }
-
-            public function run(TestResult $result = null): TestResult
-            {
-                // ..
-            }
-        };
-
-        $this->expectException(ShouldNotHappen::class);
-
-        (new Printer())->startTest($test);
+        $this->assertInstanceOf(DefaultPrinter::class, new DefaultPrinter(true));
     }
 
     private function stripConsoleOutput(string $consoleOutput)
@@ -71,17 +40,15 @@ class PhpunitTest extends TestCase
             'fail,environmentTesting,environmentCustomVariables,custom-name',
         ]);
 
-        $testsDir = dirname(__DIR__, 2);
-
         $this->assertConsoleOutputContainsString(<<<EOF
    WARN  Tests\Feature\ExampleTest
   - skipped example → This is a skip description
   … incomplete example → This is a incomplete description
-  ! risky example → This test did not perform any assertions  $testsDir/LaravelApp/tests/Feature/ExampleTest.php:21
-  ! warn example → This is a warning description
+  ! risky example → This test did not perform any assertions
+  ✓ deprecation example
   ✓ pass example
 
-  Tests:  1 warnings, 1 risky, 1 incompleted, 1 skipped, 6 passed
+  Tests:  1 risky, 1 incompleted, 1 skipped, 7 passed
   Time:
 EOF,
             $output
@@ -116,7 +83,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:  1 warnings, 1 risky, 1 incompleted, 1 skipped, 7 passed',
+            'Tests:  1 risky, 1 incompleted, 1 skipped, 8 passed',
             $output
         );
     }
@@ -130,7 +97,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'No tests executed!',
+            'No tests found.',
             $output
         );
     }
@@ -141,8 +108,11 @@ EOF,
         $output = $this->runCollisionTests([], 1);
 
         $code = '$this->assertFalse(true);';
+        $space = ' ';
 
         $this->assertConsoleOutputContainsString(<<<EOF
+   PHPUnit\Framework\ExpectationFailedException$space
+
   Failed asserting that true is false.
 
   at tests/LaravelApp/tests/Unit/ExampleTest.php:16
@@ -152,9 +122,12 @@ EOF,
      15▕     {
   ➜  16▕         $code
      17▕     }
-     18▕ 
+     18▕$space
      19▕     public function testBasicTest()
      20▕     {
+
+  1   tests/LaravelApp/tests/Unit/ExampleTest.php:16
+
 EOF
             , $output);
     }
@@ -165,9 +138,10 @@ EOF
             './vendor/bin/phpunit',
             '-c',
             'tests/LaravelApp/phpunit.xml',
-            '--printer',
-            'NunoMaduro\Collision\Adapters\Phpunit\Printer',
-        ], $arguments), __DIR__.'/../../..');
+            '--no-output',
+        ], $arguments), __DIR__.'/../../..', [
+            'COLLISION_PRINTER' => 'DefaultPrinter',
+        ]);
 
         $process->run();
         $output = $process->getOutput();
@@ -189,23 +163,25 @@ EOF;
         $process = new Process([
             './vendor/bin/phpunit',
             '-c',
-            'tests/TestCaseWithStdoutOutput/phpunit.xml',
-            '--printer',
-            'NunoMaduro\Collision\Adapters\Phpunit\Printer',
+            'tests/LaravelApp/phpunit.xml',
+            '--no-output',
             'tests/TestCaseWithStdoutOutput',
-        ], __DIR__.'/../../..');
+        ], __DIR__.'/../../..', [
+            'COLLISION_PRINTER' => 'DefaultPrinter',
+        ]);
 
         $process->run();
 
-        $this->assertConsoleOutputContainsString(<<<OUTPUT
-string(3) "Foo"
+        $basePath = getcwd();
 
-   PASS  TestCaseWithStdoutOutput\OutputTest
-  ✓ with output
+        $this->assertConsoleOutputContainsString(<<<OUTPUT
+
+   WARN  TestCaseWithStdoutOutput\OutputTest
+  ! with output → This test printed output: Foo
   ✓ nothing special
   ✓ with no output
 
-  Tests:  3 passed
+  Tests:  1 risky, 2 passed
 OUTPUT
             , $process->getOutput()
         );
