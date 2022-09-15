@@ -206,6 +206,8 @@ final class DefaultPrinter
                 '  <fg=white;options=bold;bg=blue> INFO </> No tests found.',
                 '',
             ]);
+
+            return;
         }
 
         $this->style->writeCurrentTestCaseSummary($this->state);
