@@ -55,7 +55,7 @@ final class Style
      */
     public function writeCurrentTestCaseSummary(State $state): void
     {
-        if ($state->testCaseTestsCount() === 0) {
+        if ($state->testCaseTestsCount() === 0 || is_null($state->testCaseName)) {
             return;
         }
 

@@ -20,6 +20,8 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\Passed;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
@@ -88,7 +90,7 @@ final class DefaultPrinter
     /**
      * Listen to the test prepared event.
      */
-    public function testPrepared(Prepared $event): void
+    public function testPreparationStarted(PreparationStarted $event): void
     {
         $test = $event->test();
 
@@ -186,7 +188,7 @@ final class DefaultPrinter
     /**
      * Listen to the test finished event.
      */
-    public function testFinished(Finished $event): void
+    public function testPassed(Passed $event): void
     {
         if (! $this->state->existsInTestCase($event->test())) {
             $this->state->add(TestResult::fromTestCase($event->test(), TestResult::PASS));
@@ -204,8 +206,6 @@ final class DefaultPrinter
                 '  <fg=white;options=bold;bg=blue> INFO </> No tests found.',
                 '',
             ]);
-
-            return;
         }
 
         $this->style->writeCurrentTestCaseSummary($this->state);
