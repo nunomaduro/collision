@@ -166,7 +166,7 @@ final class Style
         if (! empty($tests)) {
             $this->output->writeln([
                 sprintf(
-                    '  <fg=gray;options=bold>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
+                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
                     implode('<fg=gray>,</> ', $tests),
                     Facade::result()->numberOfAssertions()
                 ),
@@ -175,7 +175,7 @@ final class Style
 
         $this->output->writeln([
             sprintf(
-                '  <fg=gray;options=bold>Duration:</> <fg=default>%ss</>',
+                '  <fg=gray>Duration:</> <fg=default>%ss</>',
                 $timeElapsed
             ),
         ]
@@ -272,7 +272,7 @@ final class Style
         $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
 
         $seconds = number_format($duration, 2, '.', '');
-        $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray-600 mr-2">%ss</span>', $seconds) : '';
+        $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray mr-2">%ss</span>', $seconds) : '';
 
         // Pest specific
         if (isset($_SERVER['REBUILD_SNAPSHOTS']) || (isset($_SERVER['COLLISION_IGNORE_DURATION']) && $_SERVER['COLLISION_IGNORE_DURATION'] === 'true')) {
@@ -288,8 +288,8 @@ final class Style
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
             <div class="%s ml-2">
-                <span class="%s text-gray-500">
-                    <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span>%s
+                <span class="%s text-gray">
+                    <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray">%s</span>%s
                 </span>%s
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));

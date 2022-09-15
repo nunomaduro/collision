@@ -7,7 +7,6 @@ namespace NunoMaduro\Collision\Adapters\Phpunit\Printers;
 use NunoMaduro\Collision\Adapters\Phpunit\ConfigureIO;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 use NunoMaduro\Collision\Adapters\Phpunit\Style;
-use NunoMaduro\Collision\Adapters\Phpunit\Test;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\TestMethod;

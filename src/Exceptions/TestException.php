@@ -13,7 +13,7 @@ use ReflectionClass;
  */
 final class TestException
 {
-    private const DIFF_SEPARATOR = '  --- Expected'.PHP_EOL.'  +++ Actual'.PHP_EOL.'  @@ @@'.PHP_EOL;
+    private const DIFF_SEPARATOR = '--- Expected'.PHP_EOL.'+++ Actual'.PHP_EOL.'@@ @@'.PHP_EOL;
 
     /**
      * Creates a new Exception instance.
@@ -78,9 +78,9 @@ final class TestException
             }
 
             $message = implode(PHP_EOL, [
-                'Expected:'.$actualAsString,
+                'Expected: '.ltrim($actualAsString, PHP_EOL.'  '),
                 '',
-                '  to contain:'.$expectedAsString,
+                '  To contain: '.ltrim($expectedAsString, PHP_EOL.'  '),
                 '',
             ]);
         }
@@ -91,7 +91,7 @@ final class TestException
             $lines = explode(PHP_EOL, explode(self::DIFF_SEPARATOR, $message)[1]);
 
             foreach ($lines as $line) {
-                $diff = $this->colorizeLine($line, str_starts_with($line, '  -') ? 'red' : 'green').PHP_EOL;
+                $diff .= $this->colorizeLine($line, str_starts_with($line, '-') ? 'red' : 'green').PHP_EOL;
             }
 
             $message = str_replace(explode(self::DIFF_SEPARATOR, $message)[1], $diff, $message);
