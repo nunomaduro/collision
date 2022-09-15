@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit\Subscribers;
 
-use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;
 
@@ -15,6 +14,6 @@ final class BeforeTestClassMethodErroredSubscriber extends Subscriber implements
 {
     public function notify(BeforeFirstTestMethodErrored $event): void
     {
-        throw new ShouldNotHappen();
+        $this->printer()->testBeforeFirstTestMethodErrored($event);
     }
 }

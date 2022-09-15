@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TestCaseWithStdoutOutput;
+namespace Tests\Printer;
 
 use PHPUnit\Framework\TestCase;
 

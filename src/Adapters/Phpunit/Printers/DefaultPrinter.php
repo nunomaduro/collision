@@ -10,7 +10,10 @@ use NunoMaduro\Collision\Adapters\Phpunit\Style;
 use NunoMaduro\Collision\Adapters\Phpunit\Test;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Adapters\Phpunit\Timer;
+use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
@@ -24,7 +27,6 @@ use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
-use PHPUnit\TestRunner\TestResult\Facade;
 use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -88,11 +90,27 @@ final class DefaultPrinter
      */
     public function testPrepared(Prepared $event): void
     {
-        if ($this->state->testCaseHasChanged($event->test())) {
+        $test = $event->test();
+
+        if (! $test instanceof TestMethod) {
+            throw new ShouldNotHappen();
+        }
+
+        if ($this->state->testCaseHasChanged($test)) {
             $this->style->writeCurrentTestCaseSummary($this->state);
 
-            $this->state->moveTo($event->test());
+            $this->state->moveTo($test);
         }
+    }
+
+    /**
+     * Listen to the test errored event.
+     */
+    public function testBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
+    {
+        $this->failed = true;
+
+        $this->state->add(TestResult::fromBeforeFirstTestMethodErrored($event));
     }
 
     /**
@@ -180,9 +198,7 @@ final class DefaultPrinter
      */
     public function testRunnerExecutionFinished(ExecutionFinished $event): void
     {
-        $result = Facade::result();
-
-        if ($result->numberOfTests() === 0) {
+        if ($this->state->suiteTotalTests === 0) {
             $this->output->writeln([
                 '',
                 '  <fg=white;options=bold;bg=blue> INFO </> No tests found.',

@@ -6,6 +6,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
 
 /**
  * @internal
@@ -69,6 +70,8 @@ final class State
      */
     public function add(TestResult $test): void
     {
+        $this->testCaseName = $test->testCaseName;
+
         $this->testCaseTests[$test->id] = $test;
         $this->toBePrintedCaseTests[$test->id] = $test;
 
@@ -134,15 +137,15 @@ final class State
     /**
      * Checks if the given test case is different from the current one.
      */
-    public function testCaseHasChanged(Test $test): bool
+    public function testCaseHasChanged(TestMethod $test): bool
     {
         return self::getPrintableTestCaseName($test) !== $this->testCaseName;
     }
 
     /**
-     * Moves the a new test case.
+     * Moves the an new test case.
      */
-    public function moveTo(Test $test): void
+    public function moveTo(TestMethod $test): void
     {
         $this->testCaseName = self::getPrintableTestCaseName($test);
 
@@ -173,12 +176,12 @@ final class State
     /**
      * Returns the printable test case name from the given `TestCase`.
      */
-    public static function getPrintableTestCaseName(Test $test): string
+    public static function getPrintableTestCaseName(TestMethod $test): string
     {
         $className = explode('::', $test->id())[0];
 
         if (is_subclass_of($className, HasPrintableTestCaseName::class)) {
-            return (new $className($test->name()))->getPrintableTestCaseName();
+            return $className::getPrintableTestCaseName();
         }
 
         return $className;

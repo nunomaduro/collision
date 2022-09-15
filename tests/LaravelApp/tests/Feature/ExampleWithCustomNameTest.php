@@ -9,12 +9,12 @@ use Tests\TestCase;
 
 class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCaseName
 {
-    public function getPrintableTestCaseName(): string
+    public static function getPrintableTestCaseName(): string
     {
         return 'my-custom-test-case-name';
     }
 
-    public function getPrintableTestCaseMethodName(): string
+    public static function getPrintableTestCaseMethodName(): string
     {
         return 'my-custom-test-case-method-name';
     }

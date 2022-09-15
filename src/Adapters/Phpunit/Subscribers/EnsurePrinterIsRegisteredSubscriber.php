@@ -60,6 +60,8 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
             && isset($_SERVER['COLLISION_PRINTER']);
 
         if ($shouldRegister) {
+            self::$registered = true;
+
             Facade::registerSubscriber(new self());
         }
     }

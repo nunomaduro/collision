@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 
 /**
  * @internal
@@ -81,7 +82,7 @@ final class TestResult
         }
 
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            $testCaseName = (new ($test->className())($test->name()))->getPrintableTestCaseName();
+            $testCaseName = $test->className()::getPrintableTestCaseName();
         } else {
             $testCaseName = $test->className();
         }
@@ -96,12 +97,32 @@ final class TestResult
     }
 
     /**
+     * Creates a new test from the given test case.
+     */
+    public static function fromBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): self
+    {
+        if (is_subclass_of($event->testClassName(), HasPrintableTestCaseName::class)) {
+            $testCaseName = $event->testClassName()::getPrintableTestCaseName();
+        } else {
+            $testCaseName = $event->testClassName();
+        }
+
+        $description = '';
+
+        $icon = self::makeIcon(self::FAIL);
+
+        $color = self::makeColor(self::FAIL);
+
+        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $color, $event->throwable());
+    }
+
+    /**
      * Get the test case description.
      */
     public static function makeDescription(TestMethod $test): string
     {
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            return (new ($test->className())($test->name()))->getPrintableTestCaseMethodName();
+            return $test->className()::getPrintableTestCaseMethodName();
         }
 
         $name = $test->name();

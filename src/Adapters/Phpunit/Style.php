@@ -61,7 +61,7 @@ final class Style
 
         if (! $state->headerPrinted) {
             $this->output->writeln($this->titleLineFrom(
-                $state->getTestCaseTitle() === 'FAIL' ? 'white' : 'black',
+                $state->getTestCaseTitle() === 'FAIL' ? 'default' : 'black',
                 $state->getTestCaseTitleColor(),
                 $state->getTestCaseTitle(),
                 $state->testCaseName
@@ -70,12 +70,14 @@ final class Style
         }
 
         $state->eachTestCaseTests(function (TestResult $testResult): void {
-            $this->output->writeln($this->testLineFrom(
-                $testResult->color,
-                $testResult->icon,
-                $testResult->description,
-                $testResult->warning
-            ));
+            if ($testResult->description) {
+                $this->output->writeln($this->testLineFrom(
+                    $testResult->color,
+                    $testResult->icon,
+                    $testResult->description,
+                    $testResult->warning
+                ));
+            }
         });
     }
 
