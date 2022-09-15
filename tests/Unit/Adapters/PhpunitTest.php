@@ -133,10 +133,9 @@ EOF
     private function runCollisionTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
-            './vendor/bin/phpunit',
+            './vendor/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
-            '--no-output',
         ], $arguments), __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
             'COLLISION_IGNORE_DURATION' => 'true',
@@ -160,10 +159,9 @@ EOF;
     public function itHasOutputInStdoutWithBeStrictAboutOutputDuringTestsFalse(): void
     {
         $process = new Process([
-            './vendor/bin/phpunit',
+            './vendor/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
-            '--no-output',
             'tests/TestCaseWithStdoutOutput',
         ], __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',

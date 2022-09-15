@@ -53,7 +53,7 @@ class ArtisanTestCommandTest extends TestCase
     public function testEnv(): void
     {
         $this->runTests([
-            './vendor/bin/phpunit',
+            './vendor/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
             '--group',
@@ -79,7 +79,7 @@ EOF
         );
 
         $this->runTests([
-            './vendor/bin/phpunit',
+            './vendor/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
             '--group',
@@ -107,7 +107,7 @@ EOF
     public function testExtendableCustomVariables(): void
     {
         $this->runTests([
-            './vendor/bin/phpunit',
+            './vendor/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
             '--group',

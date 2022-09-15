@@ -10,8 +10,10 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
  * @internal
+ *
+ * @final
  */
-final class ConsoleColor
+class ConsoleColor
 {
     public const FOREGROUND = 38;
 
