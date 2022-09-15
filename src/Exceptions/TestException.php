@@ -32,7 +32,7 @@ final class TestException
 
     public function getMessage(): string
     {
-        $message = rtrim(trim(str_replace(rtrim($this->getTraceAsString(), PHP_EOL), '', $this->throwable->message())), PHP_EOL);
+        $message = $this->throwable->description();
 
         if (str_contains($message, self::DIFF_SEPARATOR)) {
             $diff = '';
