@@ -279,7 +279,6 @@ final class Style
 
         $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
 
-
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
             <div class="flex %s mx-2">
@@ -288,7 +287,7 @@ final class Style
                 </span>
                 %s
             </div>
-        HTML,  $seconds === '' ? '' : 'space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
+        HTML, $seconds === '' ? '' : 'space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
 
         $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
     }
