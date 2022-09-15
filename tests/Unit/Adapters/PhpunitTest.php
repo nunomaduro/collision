@@ -141,6 +141,7 @@ EOF
             '--no-output',
         ], $arguments), __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
+            'COLLISION_SHOW_DURATION' => 'false',
         ]);
 
         $process->run();
@@ -168,6 +169,7 @@ EOF;
             'tests/TestCaseWithStdoutOutput',
         ], __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
+            'COLLISION_SHOW_DURATION' => 'false',
         ]);
 
         $process->run();

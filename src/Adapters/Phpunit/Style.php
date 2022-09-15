@@ -11,6 +11,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestRunner\TestResult\Facade;
+use ReflectionClass;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use function Termwind\render;
@@ -114,10 +115,11 @@ final class Style
             $testCaseName = $testResult->testCaseName;
             $description = $testResult->description;
 
+            /** @var class-string $throwableClassName */
             $throwableClassName = $testResult->throwable->className();
 
             $throwableClassName = $throwableClassName !== ExpectationFailedException::class
-                ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', $throwableClassName)
+                ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
                 : '';
 
             render(sprintf(<<<'HTML'
@@ -269,7 +271,7 @@ final class Style
         $seconds = $seconds !== '0.00' ? sprintf('%ss', $seconds) : '';
 
         // Pest specific
-        if (isset($_ENV['REBUILD_SNAPSHOTS'])) {
+        if (isset($_ENV['REBUILD_SNAPSHOTS']) || (isset($_ENV['COLLISION_SHOW_DURATION']) && $_ENV['COLLISION_SHOW_DURATION'] === 'false')) {
             $seconds = '';
         }
 
