@@ -196,6 +196,12 @@ final class DefaultPrinter
      */
     public function testSkipped(Skipped $event): void
     {
+        if ($event->message() === '__TODO__') {
+            $this->state->add(TestResult::fromTestCase($event->test(), TestResult::TODO));
+
+            return;
+        }
+
         $throwable = Throwable::from(new SkippedWithMessageException($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::SKIPPED, $throwable));

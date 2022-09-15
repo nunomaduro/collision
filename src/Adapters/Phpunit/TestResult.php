@@ -23,6 +23,8 @@ final class TestResult
 
     public const INCOMPLETE = 'incompleted';
 
+    public const TODO = 'todo';
+
     public const RISKY = 'risky';
 
     public const DEPRECATED = 'deprecated';
@@ -173,6 +175,8 @@ final class TestResult
                 return '!';
             case self::INCOMPLETE:
                 return '…';
+            case self::TODO:
+                return '↓';
             case self::RUNS:
                 return '•';
             default:
@@ -186,6 +190,8 @@ final class TestResult
     public static function makeColor(string $type): string
     {
         switch ($type) {
+            case self::TODO:
+                return 'gray';
             case self::FAIL:
                 return 'red';
             case self::DEPRECATED:

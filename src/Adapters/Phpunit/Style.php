@@ -30,7 +30,7 @@ final class Style
     /**
      * @var string[]
      */
-    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::SKIPPED, TestResult::PASS];
+    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE,TestResult::TODO,  TestResult::SKIPPED, TestResult::PASS];
 
     /**
      * Style constructor.
@@ -42,14 +42,6 @@ final class Style
         }
 
         $this->output = $output;
-    }
-
-    /**
-     * Prints the content.
-     */
-    public function write(string $content): void
-    {
-        $this->output->write($content);
     }
 
     /**
@@ -150,6 +142,11 @@ final class Style
         foreach (self::TYPES as $type) {
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
                 $color = TestResult::makeColor($type);
+
+                if ($type === TestResult::TODO && $countTests > 1) {
+                    $type = 'todos';
+                }
+
                 $tests[] = "<fg=$color;options=bold>$countTests $type</>";
             }
         }

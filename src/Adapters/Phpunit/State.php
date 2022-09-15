@@ -94,7 +94,7 @@ final class State
         }
 
         foreach ($this->testCaseTests as $test) {
-            if ($test->type !== TestResult::PASS) {
+            if ($test->type !== TestResult::PASS && $test->type !== TestResult::TODO) {
                 return 'WARN';
             }
         }
@@ -114,7 +114,7 @@ final class State
         }
 
         foreach ($this->testCaseTests as $test) {
-            if ($test->type !== TestResult::PASS) {
+            if ($test->type !== TestResult::PASS && $test->type !== TestResult::TODO) {
                 return 'yellow';
             }
         }
