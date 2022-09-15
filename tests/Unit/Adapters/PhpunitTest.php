@@ -169,7 +169,7 @@ EOF;
             'tests/TestCaseWithStdoutOutput',
         ], __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
-            'COLLISION_SHOW_DURATION' => 'false',
+            'COLLISION_IGNORE_DURATION' => 'true',
         ]);
 
         $process->run();

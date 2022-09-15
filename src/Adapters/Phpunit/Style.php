@@ -124,10 +124,10 @@ final class Style
 
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
-                    <span>
+                    <span class="truncate">
                         <span class="px-1 bg-red font-bold">FAIL</span> <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
                     </span>
-                    <span>
+                    <span class="ml-1">
                         %s
                     </span>
                 </div>
@@ -271,7 +271,7 @@ final class Style
         $seconds = $seconds !== '0.00' ? sprintf('%ss', $seconds) : '';
 
         // Pest specific
-        if (isset($_ENV['REBUILD_SNAPSHOTS']) || (isset($_ENV['COLLISION_SHOW_DURATION']) && $_ENV['COLLISION_SHOW_DURATION'] === 'false')) {
+        if (isset($_SERVER['REBUILD_SNAPSHOTS']) || (isset($_SERVER['COLLISION_IGNORE_DURATION']) && $_SERVER['COLLISION_IGNORE_DURATION'] === 'true')) {
             $seconds = '';
         }
 
