@@ -134,7 +134,7 @@ final class TestException
         $frames = array_filter($frames, fn ($trace) => $trace !== '');
 
         return array_map(function ($trace) {
-            if (empty($trace)) {
+            if (trim($trace) === '') {
                 return null;
             }
             [$file, $line] = explode(':', $trace);
