@@ -26,9 +26,11 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
+use PHPUnit\TestRunner\TestResult\Facade;
 use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -84,7 +86,7 @@ final class DefaultPrinter
      */
     public function testRunnerExecutionStarted(ExecutionStarted $executionStarted): void
     {
-        $this->state->suiteTotalTests = $executionStarted->testSuite()->count();
+        // ..
     }
 
     /**
@@ -166,6 +168,14 @@ final class DefaultPrinter
     }
 
     /**
+     * Listen to the test runner warning triggered.
+     */
+    public function testRunnerWarningTriggered(WarningTriggered $event): void
+    {
+        // ..
+    }
+
+    /**
      * Listen to the test deprecation triggered event.
      */
     public function testDeprecationTriggered(DeprecationTriggered $event): void
@@ -200,7 +210,9 @@ final class DefaultPrinter
      */
     public function testRunnerExecutionFinished(ExecutionFinished $event): void
     {
-        if ($this->state->suiteTotalTests === 0) {
+        $result = Facade::result();
+
+        if (Facade::result()->numberOfTests() === 0) {
             $this->output->writeln([
                 '',
                 '  <fg=white;options=bold;bg=blue> INFO </> No tests found.',
@@ -213,7 +225,7 @@ final class DefaultPrinter
         $this->style->writeCurrentTestCaseSummary($this->state);
 
         if ($this->failed) {
-            $onFailure = $this->state->suiteTotalTests !== $this->state->testSuiteTestsCount();
+            $onFailure = $result->numberOfTests() !== $result->numberOfTestsRun();
             $this->style->writeErrorsSummary($this->state, $onFailure);
         } else {
             $this->output->write(PHP_EOL);

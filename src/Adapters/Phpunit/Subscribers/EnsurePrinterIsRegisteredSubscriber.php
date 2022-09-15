@@ -28,6 +28,8 @@ use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
+use PHPUnit\Event\TestRunner\WarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
 
 /**
  * @internal
@@ -100,6 +102,14 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
                     public function notify(ConsideredRisky $event): void
                     {
                         $this->printer()->testConsideredRisky($event);
+                    }
+                },
+
+                new class($printer) extends Subscriber implements WarningTriggeredSubscriber
+                {
+                    public function notify(WarningTriggered $event): void
+                    {
+                        $this->printer()->testRunnerWarningTriggered($event);
                     }
                 },
 

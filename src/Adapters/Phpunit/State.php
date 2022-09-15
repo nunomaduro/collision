@@ -14,11 +14,6 @@ use PHPUnit\Event\Code\TestMethod;
 final class State
 {
     /**
-     * The complete test suite number of tests.
-     */
-    public int $suiteTotalTests = 0;
-
-    /**
      * The complete test suite tests.
      *
      * @var array<string, TestResult>

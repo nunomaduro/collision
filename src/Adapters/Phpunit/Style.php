@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\TestRunner\TestResult\Facade;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Whoops\Exception\Inspector;
@@ -119,6 +120,8 @@ final class Style
      */
     public function writeRecap(State $state, Timer $timer = null): void
     {
+        $result = Facade::result();
+
         $tests = [];
         foreach (self::TYPES as $type) {
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
@@ -127,7 +130,7 @@ final class Style
             }
         }
 
-        $pending = $state->suiteTotalTests - $state->testSuiteTestsCount();
+        $pending = $result->numberOfTests() - $result->numberOfTestsRun();
         if ($pending !== 0) {
             $tests[] = "\e[2m$pending pending\e[22m";
         }
