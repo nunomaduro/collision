@@ -281,13 +281,12 @@ final class Style
 
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
-            <div class="flex %s mx-2">
+            <div class="%s mx-2">
                 <span class="%s text-gray-500">
                     <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span><span class="ml-1 text-yellow">%s</span>
-                </span>
-                %s
+                </span>%s
             </div>
-        HTML, $seconds === '' ? '' : 'space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
+        HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
 
         $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
     }
