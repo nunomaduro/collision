@@ -29,6 +29,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Tests\\Printer\\": "tests/Printer",
             "Tests\\Unit\\": "tests/Unit",
             "Tests\\FakeProgram\\": "tests/FakeProgram",
             "Tests\\": "tests/LaravelApp/tests",
