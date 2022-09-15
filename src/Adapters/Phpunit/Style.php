@@ -122,16 +122,18 @@ final class Style
                 ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
                 : '';
 
+            $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
+
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
-                    <span class="truncate">
+                    <span class="%s">
                         <span class="px-1 bg-red font-bold">FAIL</span> <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
                     </span>
                     <span class="ml-1">
                         %s
                     </span>
                 </div>
-            HTML, $testCaseName, $description, $throwableClassName));
+            HTML, $truncateClasses, $testCaseName, $description, $throwableClassName));
 
             $this->writeError($testResult->throwable);
         }, $errors);
@@ -268,24 +270,25 @@ final class Style
         $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
 
         $seconds = number_format($duration, 2, '.', '');
-        $seconds = $seconds !== '0.00' ? sprintf('%ss', $seconds) : '';
+        $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray-600">%ss</span>', $seconds) : '';
 
         // Pest specific
         if (isset($_SERVER['REBUILD_SNAPSHOTS']) || (isset($_SERVER['COLLISION_IGNORE_DURATION']) && $_SERVER['COLLISION_IGNORE_DURATION'] === 'true')) {
             $seconds = '';
         }
 
+        $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
+
+
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
-            <div class="flex justify-between mx-2">
-                <span>
+            <div class="flex %s mx-2">
+                <span class="%s text-gray-500">
                     <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span><span class="ml-1 text-yellow">%s</span>
                 </span>
-                <span class="text-gray-600">
-                    %s
-                </span>
+                %s
             </div>
-        HTML, $result->color, $result->icon, $result->description, $warning, $seconds));
+        HTML,  $seconds === '' ? '' : 'space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
 
         $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
     }
