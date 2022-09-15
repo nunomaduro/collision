@@ -48,8 +48,8 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:  1 risky, 1 incompleted, 1 skipped, 7 passed
-  Time:
+  Tests:    1 risky, 1 incompleted, 1 skipped, 7 passed (8 assertions)
+  Duration:
 EOF,
             $output
         );
@@ -67,8 +67,8 @@ EOF,
    PASS  my-custom-test-case-name
   ✓ my-custom-test-case-method-name
 
-  Tests:  1 passed
-  Time:
+  Tests:    1 passed (1 assertions)
+  Duration:
 EOF,
             $output
         );
@@ -83,7 +83,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:  1 risky, 1 incompleted, 1 skipped, 8 passed',
+            'Tests:    1 risky, 1 incompleted, 1 skipped, 8 passed (9 assertions)',
             $output
         );
     }
@@ -111,8 +111,6 @@ EOF,
         $space = ' ';
 
         $this->assertConsoleOutputContainsString(<<<EOF
-   PHPUnit\Framework\ExpectationFailedException$space
-
   Failed asserting that true is false.
 
   at tests/LaravelApp/tests/Unit/ExampleTest.php:16
@@ -183,7 +181,7 @@ EOF;
   ✓ nothing special
   ✓ with no output
 
-  Tests:  1 risky, 2 passed
+  Tests:    1 risky, 2 passed (3 assertions)
 OUTPUT
             , $process->getOutput()
         );

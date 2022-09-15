@@ -18,7 +18,7 @@ final class TestException
     /**
      * Creates a new Exception instance.
      */
-    public function __construct(private readonly Throwable $throwable)
+    public function __construct(private readonly Throwable $throwable, private readonly bool $isVerbose)
     {
         //
     }
@@ -51,11 +51,11 @@ final class TestException
             $actualExploded = explode(PHP_EOL, $actual);
             $expectedExploded = explode(PHP_EOL, $expected);
 
-            if (($countActual = count($actualExploded)) > 4) {
+            if (($countActual = count($actualExploded)) > 4 && ! $this->isVerbose) {
                 $actualExploded = array_slice($actualExploded, 0, 3);
             }
 
-            if (($countExpected = count($expectedExploded)) > 4) {
+            if (($countExpected = count($expectedExploded)) > 4 && ! $this->isVerbose) {
                 $expectedExploded = array_slice($expectedExploded, 0, 3);
             }
 
@@ -69,11 +69,11 @@ final class TestException
                 $expectedAsString .= PHP_EOL.$this->colorizeLine($line, 'green');
             }
 
-            if ($countActual > 4) {
+            if ($countActual > 4 && ! $this->isVerbose) {
                 $actualAsString .= PHP_EOL.$this->colorizeLine(sprintf('... (%s more lines)', $countActual), 'gray');
             }
 
-            if ($countExpected > 4) {
+            if ($countExpected > 4 && ! $this->isVerbose) {
                 $expectedAsString .= PHP_EOL.$this->colorizeLine(sprintf('... (%s more lines)', $countExpected), 'gray');
             }
 
@@ -154,7 +154,7 @@ final class TestException
     public function getPrevious(): ?self
     {
         if ($this->throwable->hasPrevious()) {
-            return new self($this->throwable->previous());
+            return new self($this->throwable->previous(), $this->isVerbose);
         }
 
         return null;

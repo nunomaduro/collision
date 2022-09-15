@@ -160,14 +160,8 @@ final class Style
         }
 
         $timeElapsed = number_format($telemetry->durationSinceStart()->asFloat(), 2, '.', '');
-        $this->output->writeln([
-            '',
-            sprintf(
-                '  <fg=gray;options=bold>Duration:</> <fg=default>%ss</>',
-                $timeElapsed
-            ),
-        ]
-        );
+
+        $this->output->writeln(['']);
 
         if (! empty($tests)) {
             $this->output->writeln([
@@ -178,6 +172,14 @@ final class Style
                 ),
             ]);
         }
+
+        $this->output->writeln([
+            sprintf(
+                '  <fg=gray;options=bold>Duration:</> <fg=default>%ss</>',
+                $timeElapsed
+            ),
+        ]
+        );
 
         $this->output->writeln('');
     }
@@ -190,7 +192,7 @@ final class Style
     {
         $writer = (new Writer())->setOutput($this->output);
 
-        $throwable = new TestException($throwable);
+        $throwable = new TestException($throwable, $this->output->isVerbose());
 
         $writer->showTitle(false);
 
@@ -279,11 +281,15 @@ final class Style
 
         $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
 
+        if ($warning !== '') {
+            $warning = sprintf('<span class="ml-1 text-yellow">%s</span>', $warning);
+        }
+
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
             <div class="%s ml-2">
                 <span class="%s text-gray-500">
-                    <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span><span class="ml-1 text-yellow">%s</span>
+                    <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span>%s
                 </span>%s
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
