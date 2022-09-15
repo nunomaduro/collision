@@ -7,6 +7,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Telemetry\Info;
 
 /**
  * @internal
@@ -71,6 +72,14 @@ final class State
         $this->toBePrintedCaseTests[$test->id] = $test;
 
         $this->suiteTests[$test->id] = $test;
+    }
+
+    /**
+     * Sets the telemetry for the given test.
+     */
+    public function setTelemetry(Test $test, Info $telemetry): void
+    {
+        $this->testCaseTests[$test->id()]->setTelemetry($telemetry);
     }
 
     /**

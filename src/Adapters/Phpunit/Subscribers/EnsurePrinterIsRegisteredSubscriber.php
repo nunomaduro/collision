@@ -14,6 +14,8 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\FailedSubscriber;
+use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\FinishedSubscriber;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 use PHPUnit\Event\Test\Passed;
@@ -86,6 +88,14 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
                 },
 
                 // Test > Lifecycle ...
+
+                new class($printer) extends Subscriber implements FinishedSubscriber
+                {
+                    public function notify(Finished $event): void
+                    {
+                        $this->printer()->testFinished($event);
+                    }
+                },
 
                 new class($printer) extends Subscriber implements PreparationStartedSubscriber
                 {

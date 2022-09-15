@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 
 /**
@@ -44,6 +45,8 @@ final class TestResult
 
     public string $color;
 
+    public ?Info $telemetry;
+
     public ?Throwable $throwable;
 
     public string $warning = '';
@@ -70,6 +73,14 @@ final class TestResult
         if ($throwable instanceof Throwable && $asWarning) {
             $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->message()));
         }
+    }
+
+    /**
+     * Sets the telemetry information.
+     */
+    public function setTelemetry(Info $telemetry): void
+    {
+        $this->telemetry = $telemetry;
     }
 
     /**

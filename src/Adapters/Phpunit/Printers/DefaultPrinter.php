@@ -9,7 +9,6 @@ use NunoMaduro\Collision\Adapters\Phpunit\State;
 use NunoMaduro\Collision\Adapters\Phpunit\Style;
 use NunoMaduro\Collision\Adapters\Phpunit\Test;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
-use NunoMaduro\Collision\Adapters\Phpunit\Timer;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -47,11 +46,6 @@ final class DefaultPrinter
     private ConsoleOutput $output;
 
     /**
-     * The timer instance.
-     */
-    private Timer $timer;
-
-    /**
      * The state instance.
      */
     private State $state;
@@ -72,7 +66,6 @@ final class DefaultPrinter
     public function __construct(bool $colors)
     {
         $this->output = new ConsoleOutput(OutputInterface::VERBOSITY_NORMAL, $colors);
-        $this->timer = Timer::start();
 
         ConfigureIO::of(new ArgvInput(), $this->output);
 
@@ -87,6 +80,20 @@ final class DefaultPrinter
     public function testRunnerExecutionStarted(ExecutionStarted $executionStarted): void
     {
         // ..
+    }
+
+    /**
+     * Listen to the test finished event.
+     */
+    public function testFinished(Finished $event): void
+    {
+        $test = $event->test();
+
+        if (! $test instanceof TestMethod) {
+            throw new ShouldNotHappen();
+        }
+
+        $this->state->setTelemetry($test, $event->telemetryInfo());
     }
 
     /**
@@ -227,10 +234,8 @@ final class DefaultPrinter
         if ($this->failed) {
             $onFailure = $result->numberOfTests() !== $result->numberOfTestsRun();
             $this->style->writeErrorsSummary($this->state, $onFailure);
-        } else {
-            $this->output->write(PHP_EOL);
         }
 
-        $this->style->writeRecap($this->state, $this->timer);
+        $this->style->writeRecap($this->state, $event->telemetryInfo());
     }
 }

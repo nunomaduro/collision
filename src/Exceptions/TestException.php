@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Exceptions;
 
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Framework\ExpectationFailedException;
 use ReflectionClass;
 
 /**
@@ -32,20 +33,65 @@ final class TestException
 
     public function getMessage(): string
     {
-        $message = $this->throwable->description();
+        if ($this->throwable->className() === ExpectationFailedException::class) {
+            $message = $this->throwable->description();
+        } else {
+            $message = $this->throwable->message();
+        }
 
+        // Contains...
+        $re = '/Failed asserting that \'(.*)\' contains "(.*)"\./s';
+
+        preg_match($re, $message, $matches, PREG_OFFSET_CAPTURE, 0);
+
+        if (count($matches) === 3) {
+            $actual = $matches[1][0];
+            $expected = $matches[2][0];
+
+            $actualExploded = explode(PHP_EOL, $actual);
+            $expectedExploded = explode(PHP_EOL, $expected);
+
+            if (($countActual = count($actualExploded)) > 4) {
+                $actualExploded = array_slice($actualExploded, 0, 3);
+            }
+
+            if (($countExpected = count($expectedExploded)) > 4) {
+                $expectedExploded = array_slice($expectedExploded, 0, 3);
+            }
+
+            $actualAsString = '';
+            $expectedAsString = '';
+            foreach ($actualExploded as $line) {
+                $actualAsString .= PHP_EOL.$this->colorizeLine($line, 'red');
+            }
+
+            foreach ($expectedExploded as $line) {
+                $expectedAsString .= PHP_EOL.$this->colorizeLine($line, 'green');
+            }
+
+            if ($countActual > 4) {
+                $actualAsString .= PHP_EOL.$this->colorizeLine(sprintf('... (%s more lines)', $countActual), 'gray');
+            }
+
+            if ($countExpected > 4) {
+                $expectedAsString .= PHP_EOL.$this->colorizeLine(sprintf('... (%s more lines)', $countExpected), 'gray');
+            }
+
+            $message = implode(PHP_EOL, [
+                'Expected:'.$actualAsString,
+                '',
+                '  to contain:'.$expectedAsString,
+                '',
+            ]);
+        }
+
+        // Diffs...
         if (str_contains($message, self::DIFF_SEPARATOR)) {
             $diff = '';
             $lines = explode(PHP_EOL, explode(self::DIFF_SEPARATOR, $message)[1]);
 
             foreach ($lines as $line) {
-                if (str_starts_with($line, '  -')) {
-                    $line = '<fg=red>'.$line.'</>';
-                } elseif (str_starts_with($line, '  +')) {
-                    $line = '<fg=green>'.$line.'</>';
-                }
-
-                $diff .= $line.PHP_EOL;
+                $diff = $this->colorizeLine($line, str_starts_with($line, '  -') ? 'red' : 'green').PHP_EOL;
             }
 
             $message = str_replace(explode(self::DIFF_SEPARATOR, $message)[1], $diff, $message);
@@ -117,5 +163,10 @@ final class TestException
     public function __toString()
     {
         return $this->getMessage();
+    }
+
+    private function colorizeLine(string $line, string $color): string
+    {
+        return sprintf('  <fg=%s>%s</>', $color, $line);
     }
 }

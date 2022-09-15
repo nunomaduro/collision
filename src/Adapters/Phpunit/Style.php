@@ -8,10 +8,13 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestRunner\TestResult\Facade;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use function Termwind\render;
+use function Termwind\renderUsing;
 use Whoops\Exception\Inspector;
 
 /**
@@ -20,6 +23,8 @@ use Whoops\Exception\Inspector;
 final class Style
 {
     private readonly \Symfony\Component\Console\Output\ConsoleOutput $output;
+
+    private float $previousDurationSinceStart = 0.0;
 
     /**
      * @var string[]
@@ -72,12 +77,7 @@ final class Style
 
         $state->eachTestCaseTests(function (TestResult $testResult): void {
             if ($testResult->description) {
-                $this->output->writeln($this->testLineFrom(
-                    $testResult->color,
-                    $testResult->icon,
-                    $testResult->description,
-                    $testResult->warning
-                ));
+                $this->writeDescriptionLine($testResult);
             }
         });
     }
@@ -95,21 +95,41 @@ final class Style
         $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => $testResult->type === TestResult::FAIL);
 
         if (! $onFailure) {
-            $this->output->writeln(['', "  \e[2m---\e[22m", '']);
+            $this->output->writeln(['']);
         }
 
-        array_map(function (TestResult $testResult) use ($onFailure): void {
-            if (! $onFailure) {
-                $this->output->write(sprintf(
-                    '  <fg=red;options=bold>• %s </>> <fg=red;options=bold>%s</>',
-                    $testResult->testCaseName,
-                    $testResult->description
-                ));
-            }
-
+        array_map(function (TestResult $testResult): void {
             if (! $testResult->throwable instanceof Throwable) {
                 throw new ShouldNotHappen();
             }
+
+            renderUsing($this->output);
+
+            render(<<<'HTML'
+                <div class="mx-2 text-red text-right">
+                    <hr/>
+                </div>
+            HTML);
+
+            $testCaseName = $testResult->testCaseName;
+            $description = $testResult->description;
+
+            $throwableClassName = $testResult->throwable->className();
+
+            $throwableClassName = $throwableClassName !== ExpectationFailedException::class
+                ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', $throwableClassName)
+                : '';
+
+            render(sprintf(<<<'HTML'
+                <div class="flex justify-between mx-2">
+                    <span>
+                        <span class="px-1 bg-red font-bold">FAIL</span> <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
+                    </span>
+                    <span>
+                        %s
+                    </span>
+                </div>
+            HTML, $testCaseName, $description, $throwableClassName));
 
             $this->writeError($testResult->throwable);
         }, $errors);
@@ -118,7 +138,7 @@ final class Style
     /**
      * Writes the final recap.
      */
-    public function writeRecap(State $state, Timer $timer = null): void
+    public function writeRecap(State $state, Info $telemetry): void
     {
         $result = Facade::result();
 
@@ -135,36 +155,27 @@ final class Style
             $tests[] = "\e[2m$pending pending\e[22m";
         }
 
+        $timeElapsed = number_format($telemetry->durationSinceStart()->asFloat(), 2, '.', '');
+        $this->output->writeln([
+            '',
+            sprintf(
+                '  <fg=gray;options=bold>Duration:</> <fg=default>%ss</>',
+                $timeElapsed
+            ),
+        ]
+        );
+
         if (! empty($tests)) {
-            $this->output->write([
+            $this->output->writeln([
                 sprintf(
-                    '  <fg=white;options=bold>Tests:  </><fg=default>%s</>',
-                    implode(', ', $tests)
+                    '  <fg=gray;options=bold>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
+                    implode('<fg=gray>,</> ', $tests),
+                    Facade::result()->numberOfAssertions()
                 ),
             ]);
         }
 
-        if ($timer !== null) {
-            $timeElapsed = number_format($timer->result(), 2, '.', '');
-            $this->output->writeln([
-                '',
-                sprintf(
-                    '  <fg=white;options=bold>Time:   </><fg=default>%ss</>',
-                    $timeElapsed
-                ),
-            ]
-            );
-        }
-
         $this->output->writeln('');
-    }
-
-    /**
-     * Displays a warning message.
-     */
-    public function writeWarning(string $message): void
-    {
-        $this->output->writeln($this->testLineFrom('yellow', $message, ''));
     }
 
     /**
@@ -177,11 +188,7 @@ final class Style
 
         $throwable = new TestException($throwable);
 
-        if ($throwable->getClassName() === AssertionFailedError::class) {
-            $writer->showTitle(false);
-
-            $this->output->write('', true);
-        }
+        $writer->showTitle(false);
 
         $writer->ignoreFilesIn([
             '/vendor\/bin\/pest/',
@@ -212,8 +219,6 @@ final class Style
         $inspector = new Inspector($throwable);
 
         $writer->write($inspector);
-
-        $this->output->writeln('');
     }
 
     /**
@@ -231,11 +236,11 @@ final class Style
     }
 
     /**
-     * Returns the test contents.
+     * Writes a description line.
      */
-    private function testLineFrom(string $fg, string $icon, string $description, string $warning = null): string
+    private function writeDescriptionLine(TestResult $result): void
     {
-        if (! empty($warning)) {
+        if (! empty($warning = $result->warning)) {
             if (! str_contains($warning, "\n")) {
                 $warning = sprintf(
                     ' → %s',
@@ -254,12 +259,32 @@ final class Style
             }
         }
 
-        return sprintf(
-            "  <fg=%s;options=bold>%s</><fg=default> \e[2m%s\e[22m</><fg=yellow>%s</>",
-            $fg,
-            $icon,
-            $description,
-            $warning
-        );
+        if (is_null($result->telemetry)) {
+            throw new ShouldNotHappen();
+        }
+
+        $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
+
+        $seconds = number_format($duration, 2, '.', '');
+        $seconds = $seconds !== '0.00' ? sprintf('%ss', $seconds) : '';
+
+        // Pest specific
+        if (isset($_ENV['REBUILD_SNAPSHOTS'])) {
+            $seconds = '';
+        }
+
+        renderUsing($this->output);
+        render(sprintf(<<<'HTML'
+            <div class="flex justify-between mx-2">
+                <span>
+                    <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray-500">%s</span><span class="ml-1 text-yellow">%s</span>
+                </span>
+                <span class="text-gray-600">
+                    %s
+                </span>
+            </div>
+        HTML, $result->color, $result->icon, $result->description, $warning, $seconds));
+
+        $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
     }
 }
