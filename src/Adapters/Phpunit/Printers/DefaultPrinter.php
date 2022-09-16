@@ -19,6 +19,7 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
@@ -179,6 +180,16 @@ final class DefaultPrinter
     public function testRunnerWarningTriggered(WarningTriggered $event): void
     {
         // ..
+    }
+
+    /**
+     * Listen to the test runner warning triggered.
+     */
+    public function testPhpunitWarningTriggered(PhpunitWarningTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
     /**

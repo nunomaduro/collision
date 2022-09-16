@@ -20,6 +20,8 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PassedSubscriber;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggeredSubscriber;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\PreparationStartedSubscriber;
 use PHPUnit\Event\Test\Skipped;
@@ -120,6 +122,14 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
                     public function notify(WarningTriggered $event): void
                     {
                         $this->printer()->testRunnerWarningTriggered($event);
+                    }
+                },
+
+                new class($printer) extends Subscriber implements PhpunitWarningTriggeredSubscriber
+                {
+                    public function notify(PhpunitWarningTriggered $event): void
+                    {
+                        $this->printer()->testPhpunitWarningTriggered($event);
                     }
                 },
 
