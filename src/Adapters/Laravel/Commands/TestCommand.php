@@ -36,6 +36,7 @@ class TestCommand extends Command
         {--coverage : Indicates whether code coverage information should be collected}
         {--min= : Indicates the minimum threshold enforcement for code coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
+        {--profile : Lists top 10 slowest tests}
         {--recreate-databases : Indicates if the test databases should be re-created}
         {--drop-databases : Indicates if the test databases should be dropped}
     ';
@@ -222,6 +223,7 @@ class TestCommand extends Command
             return ! Str::startsWith($option, '--env=')
                 && $option != '--coverage'
                 && $option != '--compact'
+                && $option != '--profile'
                 && ! Str::startsWith($option, '--min');
         }));
 
@@ -273,6 +275,10 @@ class TestCommand extends Command
 
         if ($this->option('compact')) {
             $variables['COLLISION_PRINTER_COMPACT'] = 'true';
+        }
+
+        if ($this->option('profile')) {
+            $variables['COLLISION_PRINTER_PROFILE'] = 'true';
         }
 
         return $variables;

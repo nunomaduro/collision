@@ -243,7 +243,7 @@ final class Style
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
                     <span class="%s">
-                        <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
+                        <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span class="text-gray">%s</span>
                     </span>
                     <span class="ml-1 font-bold text-%s">
                         %ss
