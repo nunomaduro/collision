@@ -16,8 +16,9 @@ class TestCommand extends BaseTestCommand
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
-        {--coverage : Indicates whether the coverage information should be collected}
-        {--min= : Indicates the minimum threshold enforcement for coverage}
+        {--compact : Indicates whether the compact printer should be used}
+        {--coverage : Indicates whether code coverage information should be collected}
+        {--min= : Indicates the minimum threshold enforcement for code coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
         {--recreate-databases : Indicates if the test databases should be re-created}
         {--drop-databases : Indicates if the test databases should be dropped}

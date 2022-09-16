@@ -57,11 +57,6 @@ final class DefaultPrinter
     private Style $style;
 
     /**
-     * If the test suite has failed.
-     */
-    private bool $failed = false;
-
-    /**
      * If the printer should be compact.
      */
     private static bool $compact = false;
@@ -144,8 +139,6 @@ final class DefaultPrinter
      */
     public function testBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
-        $this->failed = true;
-
         $this->state->add(TestResult::fromBeforeFirstTestMethodErrored($event));
     }
 
@@ -154,8 +147,6 @@ final class DefaultPrinter
      */
     public function testErrored(Errored $event): void
     {
-        $this->failed = true;
-
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::FAIL, $event->throwable()));
     }
 
@@ -164,8 +155,6 @@ final class DefaultPrinter
      */
     public function testFailed(Failed $event): void
     {
-        $this->failed = true;
-
         $throwable = $event->throwable();
 
         $reflector = new ReflectionObject($throwable);

@@ -112,11 +112,11 @@ final class TestResult
 
         $icon = self::makeIcon($type);
 
-        $compactIcon = self::makeCompactlIcon($type);
+        $compactIcon = self::makeCompactIcon($type);
 
         $color = self::makeColor($type);
 
-        $compactColor = self::makeCompactlColor($type);
+        $compactColor = self::makeCompactColor($type);
 
         return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $throwable);
     }
@@ -136,9 +136,13 @@ final class TestResult
 
         $icon = self::makeIcon(self::FAIL);
 
+        $compactIcon = self::makeCompactIcon(self::FAIL);
+
         $color = self::makeColor(self::FAIL);
 
-        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $color, $event->throwable());
+        $compactColor = self::makeCompactColor(self::FAIL);
+
+        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, $event->throwable());
     }
 
     /**
@@ -199,7 +203,7 @@ final class TestResult
     /**
      * Get the test case compact icon.
      */
-    public static function makeCompactlIcon(string $type): string
+    public static function makeCompactIcon(string $type): string
     {
         switch ($type) {
             case self::DEPRECATED:
@@ -225,7 +229,7 @@ final class TestResult
     /**
      * Get the test case compact color.
      */
-    public static function makeCompactlColor(string $type): string
+    public static function makeCompactColor(string $type): string
     {
         switch ($type) {
             case self::FAIL:
