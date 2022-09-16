@@ -17,7 +17,7 @@ final class TestResult
 
     public const SKIPPED = 'skipped';
 
-    public const INCOMPLETE = 'incompleted';
+    public const INCOMPLETE = 'incomplete';
 
     public const RISKY = 'risky';
 
