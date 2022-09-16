@@ -9,7 +9,6 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 
 /**
@@ -51,7 +50,7 @@ final class TestResult
 
     public string $color;
 
-    public ?Info $telemetry;
+    public float $duration;
 
     public ?Throwable $throwable;
 
@@ -72,7 +71,7 @@ final class TestResult
         $this->compactColor = $compactColor;
         $this->throwable = $throwable;
 
-        $this->telemetry = null;
+        $this->duration = 0.0;
 
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY
@@ -88,9 +87,9 @@ final class TestResult
     /**
      * Sets the telemetry information.
      */
-    public function setTelemetry(Info $telemetry): void
+    public function setDuration(float $duration): void
     {
-        $this->telemetry = $telemetry;
+        $this->duration = $duration;
     }
 
     /**

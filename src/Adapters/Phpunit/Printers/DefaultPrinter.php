@@ -62,6 +62,21 @@ final class DefaultPrinter
     private static bool $compact = false;
 
     /**
+     * If the printer should profile.
+     */
+    private static bool $profile = false;
+
+    /**
+     * When profiling, holds a list of slow tests.
+     */
+    private array $profileSlowTests = [];
+
+    /**
+     * The test started at in microseconds.
+     */
+    private float $testStartedAt = 0.0;
+
+    /**
      * If the printer should be verbose.
      */
     private static bool $verbose = false;
@@ -95,6 +110,18 @@ final class DefaultPrinter
     }
 
     /**
+     * If the printer instances should profile.
+     */
+    public static function profile(bool $value = null): bool
+    {
+        if (! is_null($value)) {
+            self::$profile = $value;
+        }
+
+        return self::$profile;
+    }
+
+    /**
      * Listen to the runner execution started event.
      */
     public function testRunnerExecutionStarted(ExecutionStarted $executionStarted): void
@@ -107,13 +134,26 @@ final class DefaultPrinter
      */
     public function testFinished(Finished $event): void
     {
+        $duration = microtime(true) - $this->testStartedAt;
+
         $test = $event->test();
 
         if (! $test instanceof TestMethod) {
             throw new ShouldNotHappen();
         }
 
-        $this->state->setTelemetry($test, $event->telemetryInfo());
+        $result = $this->state->setDuration($test, $duration);
+
+        if (self::$profile) {
+            $this->profileSlowTests[$event->test()->id()] = $result;
+
+            // Sort the slow tests by time, and keep only 10 of them.
+            uasort($this->profileSlowTests, static function (TestResult $a, TestResult $b) {
+                return $b->duration <=> $a->duration;
+            });
+
+            $this->profileSlowTests = array_slice($this->profileSlowTests, 0, 10);
+        }
     }
 
     /**
@@ -121,6 +161,8 @@ final class DefaultPrinter
      */
     public function testPreparationStarted(PreparationStarted $event): void
     {
+        $this->testStartedAt = microtime(true);
+
         $test = $event->test();
 
         if (! $test instanceof TestMethod) {
@@ -274,5 +316,9 @@ final class DefaultPrinter
         }
 
         $this->style->writeRecap($this->state, $event->telemetryInfo());
+
+        if (! $failed && count($this->profileSlowTests) > 0) {
+            $this->style->writeSlowTests($this->profileSlowTests, $event->telemetryInfo());
+        }
     }
 }

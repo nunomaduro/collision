@@ -36,8 +36,6 @@ final class Style
 
     private readonly ConsoleOutput $output;
 
-    private float $previousDurationSinceStart = 0.0;
-
     /**
      * @var string[]
      */
@@ -139,7 +137,7 @@ final class Style
             renderUsing($this->output);
 
             render(<<<'HTML'
-                <div class="mx-2 text-red text-right">
+                <div class="mx-2 text-red">
                     <hr/>
                 </div>
             HTML);
@@ -221,6 +219,60 @@ final class Style
         );
 
         $this->output->writeln('');
+    }
+
+    /**
+     * @param  array<int, TestResult>  $slowTests
+     */
+    public function writeSlowTests(array $slowTests, Info $telemetry): void
+    {
+        $this->output->writeln('  <fg=gray>Top 10 slowest tests:</>');
+
+        $timeElapsed = $telemetry->durationSinceStart()->asFloat();
+
+        foreach ($slowTests as $testResult) {
+            $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
+
+            $seconds = number_format($testResult->duration, 2, '.', '');
+
+            // If duration is more than 25% of the total time elapsed, set the color as red
+            // If duration is more than 10% of the total time elapsed, set the color as yellow
+            // Otherwise, set the color as default
+            $color = $testResult->duration > $timeElapsed * 0.25 ? 'red' : ($testResult->duration > $timeElapsed * 0.1 ? 'yellow' : 'gray');
+
+            render(sprintf(<<<'HTML'
+                <div class="flex justify-between mx-2">
+                    <span class="%s">
+                        <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
+                    </span>
+                    <span class="ml-1 font-bold text-%s">
+                        %ss
+                    </span>
+                </div>
+            HTML, $truncateClasses, $testResult->testCaseName, $testResult->description, $color, $seconds));
+        }
+
+        $timeElapsedInSlowTests = array_sum(array_map(fn (TestResult $testResult) => $testResult->duration, $slowTests));
+
+        $timeElapsedAsString = number_format($timeElapsed, 2, '.', '');
+        $percentageInSlowTestsAsString = number_format($timeElapsedInSlowTests * 100 / $timeElapsed, 2, '.', '');
+        $timeElapsedInSlowTestsAsString = number_format($timeElapsedInSlowTests, 2, '.', '');
+
+        render(sprintf(<<<'HTML'
+            <div class="mx-2 mb-1 flex">
+                <div class="text-gray">
+                    <hr/>
+                </div>
+                <div class="flex space-x-1 justify-between">
+                    <span>
+                    </span>
+                    <span>
+                        <span class="text-gray">(%s%% of %ss)</span>
+                        <span class="ml-1 font-bold">%ss</span>
+                    </span>
+                </div>
+            </div>
+        HTML, $percentageInSlowTestsAsString, $timeElapsedAsString, $timeElapsedInSlowTestsAsString));
     }
 
     /**
@@ -327,13 +379,9 @@ final class Style
 
         $seconds = '';
 
-        if (! is_null($result->telemetry)) {
-            $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
-
-            $seconds = number_format($duration, 2, '.', '');
+        if ($result->duration > 0.0) {
+            $seconds = number_format($result->duration, 2, '.', '');
             $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray mr-2">%ss</span>', $seconds) : '';
-
-            $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
         }
 
         // Pest specific

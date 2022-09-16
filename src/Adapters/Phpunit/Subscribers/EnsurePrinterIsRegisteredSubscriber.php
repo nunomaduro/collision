@@ -65,6 +65,10 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
                 DefaultPrinter::compact(true);
             }
 
+            if (isset($_SERVER['COLLISION_PRINTER_PROFILE'])) {
+                DefaultPrinter::profile(true);
+            }
+
             Facade::registerSubscribers(
                 // Test Runner
                 new class($printer) extends Subscriber implements ExecutionStartedSubscriber

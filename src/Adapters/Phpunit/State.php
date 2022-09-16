@@ -7,7 +7,6 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Telemetry\Info;
 
 /**
  * @internal
@@ -75,11 +74,15 @@ final class State
     }
 
     /**
-     * Sets the telemetry for the given test.
+     * Sets the duration of the given test, and returns the test result.
      */
-    public function setTelemetry(Test $test, Info $telemetry): void
+    public function setDuration(Test $test, float $duration): TestResult
     {
-        $this->testCaseTests[$test->id()]->setTelemetry($telemetry);
+        $result = $this->testCaseTests[$test->id()];
+
+        $result->setDuration($duration);
+
+        return $result;
     }
 
     /**
