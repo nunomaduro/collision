@@ -221,6 +221,7 @@ class TestCommand extends Command
         $options = array_values(array_filter($options, function ($option) {
             return ! Str::startsWith($option, '--env=')
                 && $option != '--coverage'
+                && $option != '--compact'
                 && ! Str::startsWith($option, '--min');
         }));
 
