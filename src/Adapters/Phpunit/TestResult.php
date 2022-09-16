@@ -66,6 +66,8 @@ final class TestResult
         $this->color = $color;
         $this->throwable = $throwable;
 
+        $this->telemetry = null;
+
         $asWarning = $this->type === TestResult::WARN
              || $this->type === TestResult::RISKY
              || $this->type === TestResult::SKIPPED

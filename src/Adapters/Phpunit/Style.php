@@ -262,14 +262,16 @@ final class Style
             }
         }
 
-        if (is_null($result->telemetry)) {
-            throw new ShouldNotHappen();
+        $seconds = '';
+
+        if (! is_null($result->telemetry)) {
+            $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
+
+            $seconds = number_format($duration, 2, '.', '');
+            $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray mr-2">%ss</span>', $seconds) : '';
+
+            $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
         }
-
-        $duration = $result->telemetry->durationSinceStart()->asFloat() - $this->previousDurationSinceStart;
-
-        $seconds = number_format($duration, 2, '.', '');
-        $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray mr-2">%ss</span>', $seconds) : '';
 
         // Pest specific
         if (isset($_SERVER['REBUILD_SNAPSHOTS']) || (isset($_SERVER['COLLISION_IGNORE_DURATION']) && $_SERVER['COLLISION_IGNORE_DURATION'] === 'true')) {
@@ -290,7 +292,5 @@ final class Style
                 </span>%s
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
-
-        $this->previousDurationSinceStart = $result->telemetry->durationSinceStart()->asFloat();
     }
 }
