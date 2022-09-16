@@ -242,15 +242,15 @@ final class Style
 
             renderUsing($this->output);
             render(sprintf(<<<'HTML'
-                <div class="flex justify-between mx-2">
-                    <span class="%s">
+                <div class="flex justify-between space-x-1 mx-2">
+                    <span class="flex-1">
                         <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span class="text-gray">%s</span>
                     </span>
                     <span class="ml-1 font-bold text-%s">
                         %ss
                     </span>
                 </div>
-            HTML, $truncateClasses, $testResult->testCaseName, $testResult->description, $color, $seconds));
+            HTML, $testResult->testCaseName, $testResult->description, $color, $seconds));
         }
 
         $timeElapsedInSlowTests = array_sum(array_map(fn (TestResult $testResult) => $testResult->duration, $slowTests));
