@@ -135,7 +135,6 @@ final class Style
             }
 
             renderUsing($this->output);
-
             render(<<<'HTML'
                 <div class="mx-2 text-red">
                     <hr/>
@@ -156,6 +155,7 @@ final class Style
 
             $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
 
+            renderUsing($this->output);
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
                     <span class="%s">
@@ -240,6 +240,7 @@ final class Style
             // Otherwise, set the color as default
             $color = $testResult->duration > $timeElapsed * 0.25 ? 'red' : ($testResult->duration > $timeElapsed * 0.1 ? 'yellow' : 'gray');
 
+            renderUsing($this->output);
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
                     <span class="%s">
@@ -258,6 +259,7 @@ final class Style
         $percentageInSlowTestsAsString = number_format($timeElapsedInSlowTests * 100 / $timeElapsed, 2, '.', '');
         $timeElapsedInSlowTestsAsString = number_format($timeElapsedInSlowTests, 2, '.', '');
 
+        renderUsing($this->output);
         render(sprintf(<<<'HTML'
             <div class="mx-2 mb-1 flex">
                 <div class="text-gray">
