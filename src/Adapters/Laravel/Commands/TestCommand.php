@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
+use PHPUnit\Runner\Version;
 use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
@@ -31,6 +32,7 @@ class TestCommand extends Command
      */
     protected $signature = 'test
         {--without-tty : Disable output to TTY}
+        {--compact : Indicates whether the compact printer should be used }
         {--coverage : Indicates whether code coverage information should be collected}
         {--min= : Indicates the minimum threshold enforcement for code coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
@@ -64,7 +66,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $id = \PHPUnit\Runner\Version::id();
+        $id = Version::id();
 
         if ($id[0].$id[1] !== '10') {
             throw new RequirementsException('Running Collision ^7.0 artisan test command requires at least PHPUnit ^10.0.');
@@ -264,9 +266,15 @@ class TestCommand extends Command
      */
     protected function phpunitEnvironmentVariables()
     {
-        return [
+        $variables = [
             'COLLISION_PRINTER' => 'DefaultPrinter',
         ];
+
+        if ($this->option('compact')) {
+            $variables['COLLISION_PRINTER_COMPACT'] = 'true';
+        }
+
+        return $variables;
     }
 
     /**
