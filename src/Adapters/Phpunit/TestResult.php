@@ -21,7 +21,7 @@ final class TestResult
 
     public const SKIPPED = 'skipped';
 
-    public const INCOMPLETE = 'incompleted';
+    public const INCOMPLETE = 'incomplete';
 
     public const TODO = 'todo';
 
@@ -43,7 +43,11 @@ final class TestResult
 
     public string $type;
 
+    public string $compactIcon;
+
     public string $icon;
+
+    public string $compactColor;
 
     public string $color;
 
@@ -56,14 +60,16 @@ final class TestResult
     /**
      * Creates a new TestResult instance.
      */
-    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
+    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, Throwable $throwable = null)
     {
         $this->id = $id;
         $this->testCaseName = $testCaseName;
         $this->description = $description;
         $this->type = $type;
         $this->icon = $icon;
+        $this->compactIcon = $compactIcon;
         $this->color = $color;
+        $this->compactColor = $compactColor;
         $this->throwable = $throwable;
 
         $this->telemetry = null;
@@ -106,9 +112,13 @@ final class TestResult
 
         $icon = self::makeIcon($type);
 
+        $compactIcon = self::makeCompactlIcon($type);
+
         $color = self::makeColor($type);
 
-        return new self($test->id(), $testCaseName, $description, $type, $icon, $color, $throwable);
+        $compactColor = self::makeCompactlColor($type);
+
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $throwable);
     }
 
     /**
@@ -187,13 +197,61 @@ final class TestResult
     }
 
     /**
+     * Get the test case compact icon.
+     */
+    public static function makeCompactlIcon(string $type): string
+    {
+        switch ($type) {
+            case self::DEPRECATED:
+                return 'd';
+            case self::FAIL:
+                return '⨯';
+            case self::SKIPPED:
+                return 's';
+            case self::WARN:
+            case self::RISKY:
+                return '!';
+            case self::INCOMPLETE:
+                return 'i';
+            case self::TODO:
+                return 't';
+            case self::RUNS:
+                return '•';
+            default:
+                return '.';
+        }
+    }
+
+    /**
+     * Get the test case compact color.
+     */
+    public static function makeCompactlColor(string $type): string
+    {
+        switch ($type) {
+            case self::FAIL:
+                return 'red';
+            case self::DEPRECATED:
+            case self::SKIPPED:
+            case self::INCOMPLETE:
+            case self::RISKY:
+            case self::WARN:
+            case self::RUNS:
+                return 'yellow';
+            case self::TODO:
+                return 'cyan';
+            default:
+                return 'gray';
+        }
+    }
+
+    /**
      * Get the test case color.
      */
     public static function makeColor(string $type): string
     {
         switch ($type) {
             case self::TODO:
-                return 'gray';
+                return 'cyan';
             case self::FAIL:
                 return 'red';
             case self::DEPRECATED:

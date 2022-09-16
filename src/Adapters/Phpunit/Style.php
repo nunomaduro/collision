@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TextUI\Configuration\Registry;
 use ReflectionClass;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use function Termwind\render;
 use function Termwind\renderUsing;
+use Termwind\Terminal;
+use function Termwind\terminal;
 use Whoops\Exception\Inspector;
 
 /**
@@ -23,14 +28,20 @@ use Whoops\Exception\Inspector;
  */
 final class Style
 {
-    private readonly \Symfony\Component\Console\Output\ConsoleOutput $output;
+    private int $compactProcessed = 0;
+
+    private int $compactSymbolsPerLine = 0;
+
+    private readonly Terminal $terminal;
+
+    private readonly ConsoleOutput $output;
 
     private float $previousDurationSinceStart = 0.0;
 
     /**
      * @var string[]
      */
-    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE,TestResult::TODO,  TestResult::SKIPPED, TestResult::PASS];
+    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::TODO,  TestResult::SKIPPED, TestResult::PASS];
 
     /**
      * Style constructor.
@@ -41,7 +52,10 @@ final class Style
             throw new ShouldNotHappen();
         }
 
+        $this->terminal = terminal();
         $this->output = $output;
+
+        $this->compactSymbolsPerLine = $this->terminal->width() - 4;
     }
 
     /**
@@ -58,7 +72,7 @@ final class Style
             return;
         }
 
-        if (! $state->headerPrinted) {
+        if (! $state->headerPrinted && ! DefaultPrinter::compact()) {
             $this->output->writeln($this->titleLineFrom(
                 $state->getTestCaseTitle() === 'FAIL' ? 'default' : 'black',
                 $state->getTestCaseTitleColor(),
@@ -69,8 +83,12 @@ final class Style
         }
 
         $state->eachTestCaseTests(function (TestResult $testResult): void {
-            if ($testResult->description) {
-                $this->writeDescriptionLine($testResult);
+            if ($testResult->description !== '') {
+                if (DefaultPrinter::compact()) {
+                    $this->writeCompactDescriptionLine($testResult);
+                } else {
+                    $this->writeDescriptionLine($testResult);
+                }
             }
         });
     }
@@ -85,7 +103,29 @@ final class Style
      */
     public function writeErrorsSummary(State $state, bool $onFailure): void
     {
-        $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => $testResult->type === TestResult::FAIL);
+        $configuration = Registry::get();
+        $failTypes = [
+            TestResult::FAIL,
+        ];
+
+        if ($configuration->failOnWarning()) {
+            $failTypes[] = TestResult::WARN;
+            $failTypes[] = TestResult::RISKY;
+        }
+
+        if ($configuration->failOnIncomplete()) {
+            $failTypes[] = TestResult::INCOMPLETE;
+        }
+
+        if ($configuration->failOnSkipped()) {
+            $failTypes[] = TestResult::SKIPPED;
+        }
+
+        $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => in_array(
+            $testResult->type,
+            $failTypes,
+            true
+        ));
 
         if (! $onFailure) {
             $this->output->writeln(['']);
@@ -110,8 +150,10 @@ final class Style
             /** @var class-string $throwableClassName */
             $throwableClassName = $testResult->throwable->className();
 
-            $throwableClassName = $throwableClassName !== ExpectationFailedException::class
-                ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
+            $throwableClassName = ! in_array($throwableClassName, [
+                ExpectationFailedException::class,
+                IncompleteTestError::class,
+            ], true) ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
                 : '';
 
             $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
@@ -119,13 +161,13 @@ final class Style
             render(sprintf(<<<'HTML'
                 <div class="flex justify-between mx-2">
                     <span class="%s">
-                        <span class="px-1 bg-red font-bold">FAIL</span> <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
+                        <span class="px-1 bg-%s font-bold uppercase">%s</span> <span class="font-bold">%s</span><span class="text-gray mx-1">></span><span>%s</span>
                     </span>
                     <span class="ml-1">
                         %s
                     </span>
                 </div>
-            HTML, $truncateClasses, $testCaseName, $description, $throwableClassName));
+            HTML, $truncateClasses, $testResult->color, $testResult->type, $testCaseName, $description, $throwableClassName));
 
             $this->writeError($testResult->throwable);
         }, $errors);
@@ -236,6 +278,27 @@ final class Style
             $title,
             $testCaseName
         );
+    }
+
+    /**
+     * Writes a description line.
+     */
+    private function writeCompactDescriptionLine(TestResult $result): void
+    {
+        $symbolsOnCurrentLine = $this->compactProcessed % $this->compactSymbolsPerLine;
+
+        if ($symbolsOnCurrentLine >= $this->terminal->width() - 4) {
+            $symbolsOnCurrentLine = 0;
+        }
+
+        if ($symbolsOnCurrentLine === 0) {
+            $this->output->writeln('');
+            $this->output->write('  ');
+        }
+
+        $this->output->write(sprintf('<fg=%s;options=bold>%s</>', $result->compactColor, $result->compactIcon));
+
+        $this->compactProcessed++;
     }
 
     /**

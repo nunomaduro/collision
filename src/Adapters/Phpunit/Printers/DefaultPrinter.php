@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Adapters\Phpunit\State;
 use NunoMaduro\Collision\Adapters\Phpunit\Style;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use Pest\Result;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
@@ -61,6 +62,16 @@ final class DefaultPrinter
     private bool $failed = false;
 
     /**
+     * If the printer should be compact.
+     */
+    private static bool $compact = false;
+
+    /**
+     * If the printer should be verbose.
+     */
+    private static bool $verbose = false;
+
+    /**
      * Creates a new Printer instance.
      */
     public function __construct(bool $colors)
@@ -69,9 +80,23 @@ final class DefaultPrinter
 
         ConfigureIO::of(new ArgvInput(), $this->output);
 
+        self::$verbose = $this->output->isVerbose();
+
         $this->style = new Style($this->output);
 
         $this->state = new State();
+    }
+
+    /**
+     * If the printer instances should be compact.
+     */
+    public static function compact(bool $value = null): bool
+    {
+        if (! is_null($value)) {
+            self::$compact = $value;
+        }
+
+        return ! self::$verbose && self::$compact;
     }
 
     /**
@@ -247,7 +272,14 @@ final class DefaultPrinter
 
         $this->style->writeCurrentTestCaseSummary($this->state);
 
-        if ($this->failed) {
+        if (self::$compact) {
+            $this->output->writeln(['']);
+        }
+
+        $failed = class_exists(Result::class) ?
+            Result::failed() : (! Facade::result()->wasSuccessful());
+
+        if ($failed) {
             $onFailure = $result->numberOfTests() !== $result->numberOfTestsRun();
             $this->style->writeErrorsSummary($this->state, $onFailure);
         }
