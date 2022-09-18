@@ -23,9 +23,8 @@
         "laravel/framework": "^9.30.1",
         "laravel/pint": "^1.2",
         "nunomaduro/larastan": "^2.2.0",
-        "orchestra/testbench": "^7.7",
-        "pestphp/pest": "dev-master",
-        "phpunit/phpunit": "dev-main as 9.5.24",
+        "orchestra/testbench": "^7.7.0",
+        "pestphp/pest": "^2.0.0",
         "spatie/ignition": "^1.4.1"
     },
     "autoload-dev": {
