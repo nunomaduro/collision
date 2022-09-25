@@ -13,21 +13,30 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit\Subscribers;
 
-use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use NunoMaduro\Collision\Adapters\Phpunit\Printers\ReportablePrinter;
 
 /**
  * @internal
  */
 abstract class Subscriber
 {
-    private DefaultPrinter $printer;
+    /**
+     * The printer instance.
+     */
+    private ReportablePrinter $printer;
 
-    public function __construct(DefaultPrinter $printer)
+    /**
+     * Creates a new subscriber.
+     */
+    public function __construct(ReportablePrinter $printer)
     {
         $this->printer = $printer;
     }
 
-    protected function printer(): DefaultPrinter
+    /**
+     * Returns the printer instance.
+     */
+    protected function printer(): ReportablePrinter
     {
         return $this->printer;
     }

@@ -206,7 +206,7 @@ class TestCommand extends Command
      */
     protected function usingPest()
     {
-        return class_exists(\Pest\Laravel\PestServiceProvider::class);
+        return function_exists('\Pest\\version');
     }
 
     /**

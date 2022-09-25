@@ -60,6 +60,30 @@ final class Style
      * Prints the content similar too:.
      *
      * ```
+     *    WARN  Your XML configuration validates against a deprecated schema...
+     * ```
+     */
+    public function writeWarning(string $message): void
+    {
+        $this->output->writeln(['', '  <fg=black;bg=yellow;options=bold> WARN </> '.$message]);
+    }
+
+    /**
+     * Prints the content similar too:.
+     *
+     * ```
+     *    WARN  Your XML configuration validates against a deprecated schema...
+     * ```
+     */
+    public function writeThrowable(\Throwable $throwable): void
+    {
+        $this->output->writeln(['', '  <fg=white;bg=red;options=bold> ERROR </> '.$throwable->getMessage()]);
+    }
+
+    /**
+     * Prints the content similar too:.
+     *
+     * ```
      *    PASS  Unit\ExampleTest
      *    ✓ basic test
      * ```
@@ -231,8 +255,6 @@ final class Style
         $timeElapsed = $telemetry->durationSinceStart()->asFloat();
 
         foreach ($slowTests as $testResult) {
-            $truncateClasses = $this->output->isVerbose() ? '' : 'flex-1 truncate';
-
             $seconds = number_format($testResult->duration, 2, '.', '');
 
             // If duration is more than 25% of the total time elapsed, set the color as red
@@ -278,8 +300,7 @@ final class Style
     }
 
     /**
-     * Displays the error using Collision's writer
-     * and terminates with exit code === 1.
+     * Displays the error using Collision's writer and terminates with exit code === 1.
      */
     public function writeError(Throwable $throwable): void
     {

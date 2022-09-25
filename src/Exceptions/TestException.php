@@ -18,8 +18,10 @@ final class TestException
     /**
      * Creates a new Exception instance.
      */
-    public function __construct(private readonly Throwable $throwable, private readonly bool $isVerbose)
-    {
+    public function __construct(
+        private readonly Throwable $throwable,
+        private readonly bool $isVerbose
+    ) {
         //
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision\Adapters\Phpunit\Subscribers;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use NunoMaduro\Collision\Adapters\Phpunit\Printers\ReportablePrinter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;
@@ -52,134 +53,126 @@ final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
     {
         $configuration = $event->configuration();
 
-        $printerClass = \sprintf(
-            '\NunoMaduro\Collision\Adapters\Phpunit\Printers\%s',
-            $_SERVER['COLLISION_PRINTER']
-        );
+        $printer = new ReportablePrinter(new DefaultPrinter($configuration->colors()));
 
-        if (class_exists($printerClass)) {
-            /** @var DefaultPrinter $printer */
-            $printer = new $printerClass($configuration->colors());
-
-            if (isset($_SERVER['COLLISION_PRINTER_COMPACT'])) {
-                DefaultPrinter::compact(true);
-            }
-
-            if (isset($_SERVER['COLLISION_PRINTER_PROFILE'])) {
-                DefaultPrinter::profile(true);
-            }
-
-            Facade::registerSubscribers(
-                // Test Runner
-                new class($printer) extends Subscriber implements ExecutionStartedSubscriber
-                {
-                    public function notify(ExecutionStarted $event): void
-                    {
-                        $this->printer()->testRunnerExecutionStarted($event);
-                    }
-                },
-
-                new class($printer) extends Subscriber implements ExecutionFinishedSubscriber
-                {
-                    public function notify(ExecutionFinished $event): void
-                    {
-                        $this->printer()->testRunnerExecutionFinished($event);
-                    }
-                },
-
-                // Test > Hook Methods
-
-                new class($printer) extends Subscriber implements BeforeFirstTestMethodErroredSubscriber
-                {
-                    public function notify(BeforeFirstTestMethodErrored $event): void
-                    {
-                        $this->printer()->testBeforeFirstTestMethodErrored($event);
-                    }
-                },
-
-                // Test > Lifecycle ...
-
-                new class($printer) extends Subscriber implements FinishedSubscriber
-                {
-                    public function notify(Finished $event): void
-                    {
-                        $this->printer()->testFinished($event);
-                    }
-                },
-
-                new class($printer) extends Subscriber implements PreparationStartedSubscriber
-                {
-                    public function notify(PreparationStarted $event): void
-                    {
-                        $this->printer()->testPreparationStarted($event);
-                    }
-                },
-
-                // Test > Issues ...
-
-                new class($printer) extends Subscriber implements ConsideredRiskySubscriber
-                {
-                    public function notify(ConsideredRisky $event): void
-                    {
-                        $this->printer()->testConsideredRisky($event);
-                    }
-                },
-
-                new class($printer) extends Subscriber implements WarningTriggeredSubscriber
-                {
-                    public function notify(WarningTriggered $event): void
-                    {
-                        $this->printer()->testRunnerWarningTriggered($event);
-                    }
-                },
-
-                new class($printer) extends Subscriber implements PhpunitWarningTriggeredSubscriber
-                {
-                    public function notify(PhpunitWarningTriggered $event): void
-                    {
-                        $this->printer()->testPhpunitWarningTriggered($event);
-                    }
-                },
-
-                // Test > Outcome ...
-
-                new class($printer) extends Subscriber implements ErroredSubscriber
-                {
-                    public function notify(Errored $event): void
-                    {
-                        $this->printer()->testErrored($event);
-                    }
-                },
-                new class($printer) extends Subscriber implements FailedSubscriber
-                {
-                    public function notify(Failed $event): void
-                    {
-                        $this->printer()->testFailed($event);
-                    }
-                },
-                new class($printer) extends Subscriber implements MarkedIncompleteSubscriber
-                {
-                    public function notify(MarkedIncomplete $event): void
-                    {
-                        $this->printer()->testMarkedIncomplete($event);
-                    }
-                },
-                new class($printer) extends Subscriber implements PassedSubscriber
-                {
-                    public function notify(Passed $event): void
-                    {
-                        $this->printer()->testPassed($event);
-                    }
-                },
-                new class($printer) extends Subscriber implements SkippedSubscriber
-                {
-                    public function notify(Skipped $event): void
-                    {
-                        $this->printer()->testSkipped($event);
-                    }
-                },
-            );
+        if (isset($_SERVER['COLLISION_PRINTER_COMPACT'])) {
+            DefaultPrinter::compact(true);
         }
+
+        if (isset($_SERVER['COLLISION_PRINTER_PROFILE'])) {
+            DefaultPrinter::profile(true);
+        }
+
+        Facade::registerSubscribers(
+            // Test Runner
+            new class($printer) extends Subscriber implements ExecutionStartedSubscriber
+            {
+                public function notify(ExecutionStarted $event): void
+                {
+                    $this->printer()->testRunnerExecutionStarted($event);
+                }
+            },
+
+            new class($printer) extends Subscriber implements ExecutionFinishedSubscriber
+            {
+                public function notify(ExecutionFinished $event): void
+                {
+                    $this->printer()->testRunnerExecutionFinished($event);
+                }
+            },
+
+            // Test > Hook Methods
+
+            new class($printer) extends Subscriber implements BeforeFirstTestMethodErroredSubscriber
+            {
+                public function notify(BeforeFirstTestMethodErrored $event): void
+                {
+                    $this->printer()->testBeforeFirstTestMethodErrored($event);
+                }
+            },
+
+            // Test > Lifecycle ...
+
+            new class($printer) extends Subscriber implements FinishedSubscriber
+            {
+                public function notify(Finished $event): void
+                {
+                    $this->printer()->testFinished($event);
+                }
+            },
+
+            new class($printer) extends Subscriber implements PreparationStartedSubscriber
+            {
+                public function notify(PreparationStarted $event): void
+                {
+                    $this->printer()->testPreparationStarted($event);
+                }
+            },
+
+            // Test > Issues ...
+
+            new class($printer) extends Subscriber implements ConsideredRiskySubscriber
+            {
+                public function notify(ConsideredRisky $event): void
+                {
+                    $this->printer()->testConsideredRisky($event);
+                }
+            },
+
+            new class($printer) extends Subscriber implements WarningTriggeredSubscriber
+            {
+                public function notify(WarningTriggered $event): void
+                {
+                    $this->printer()->testRunnerWarningTriggered($event);
+                }
+            },
+
+            new class($printer) extends Subscriber implements PhpunitWarningTriggeredSubscriber
+            {
+                public function notify(PhpunitWarningTriggered $event): void
+                {
+                    $this->printer()->testPhpunitWarningTriggered($event);
+                }
+            },
+
+            // Test > Outcome ...
+
+            new class($printer) extends Subscriber implements ErroredSubscriber
+            {
+                public function notify(Errored $event): void
+                {
+                    $this->printer()->testErrored($event);
+                }
+            },
+            new class($printer) extends Subscriber implements FailedSubscriber
+            {
+                public function notify(Failed $event): void
+                {
+                    $this->printer()->testFailed($event);
+                }
+            },
+            new class($printer) extends Subscriber implements MarkedIncompleteSubscriber
+            {
+                public function notify(MarkedIncomplete $event): void
+                {
+                    $this->printer()->testMarkedIncomplete($event);
+                }
+            },
+            new class($printer) extends Subscriber implements PassedSubscriber
+            {
+                public function notify(Passed $event): void
+                {
+                    $this->printer()->testPassed($event);
+                }
+            },
+            new class($printer) extends Subscriber implements SkippedSubscriber
+            {
+                public function notify(Skipped $event): void
+                {
+                    $this->printer()->testSkipped($event);
+                }
+            },
+        );
     }
 
     /**

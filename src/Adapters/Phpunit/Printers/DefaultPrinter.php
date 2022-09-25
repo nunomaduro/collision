@@ -31,7 +31,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\TestRunner\TestResult\Facade;
-use ReflectionObject;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -134,12 +133,16 @@ final class DefaultPrinter
      */
     public function testFinished(Finished $event): void
     {
-        $duration = microtime(true) - $this->testStartedAt;
+        $duration = (hrtime(true) - $this->testStartedAt) / 1_000_000;
 
         $test = $event->test();
 
         if (! $test instanceof TestMethod) {
             throw new ShouldNotHappen();
+        }
+
+        if (! $this->state->existsInTestCase($event->test())) {
+            $this->state->add(TestResult::fromTestCase($event->test(), TestResult::PASS));
         }
 
         $result = $this->state->setDuration($test, $duration);
@@ -161,7 +164,7 @@ final class DefaultPrinter
      */
     public function testPreparationStarted(PreparationStarted $event): void
     {
-        $this->testStartedAt = microtime(true);
+        $this->testStartedAt = hrtime(true);
 
         $test = $event->test();
 
@@ -199,16 +202,6 @@ final class DefaultPrinter
     {
         $throwable = $event->throwable();
 
-        $reflector = new ReflectionObject($throwable);
-
-        if ($reflector->hasProperty('message')) {
-            $message = trim((string) preg_replace("/\r|\n/", "\n  ", $throwable->asString()));
-
-            $property = $reflector->getProperty('message');
-            $property->setAccessible(true);
-            $property->setValue($throwable, $message);
-        }
-
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::FAIL, $throwable));
     }
 
@@ -235,7 +228,7 @@ final class DefaultPrinter
      */
     public function testRunnerWarningTriggered(WarningTriggered $event): void
     {
-        // ..
+        $this->style->writeWarning($event->message());
     }
 
     /**
@@ -320,5 +313,13 @@ final class DefaultPrinter
         if (! $failed && count($this->profileSlowTests) > 0) {
             $this->style->writeSlowTests($this->profileSlowTests, $event->telemetryInfo());
         }
+    }
+
+    /**
+     * Reports the given throwable.
+     */
+    public function report(\Throwable $throwable): void
+    {
+        $this->style->writeError(Throwable::from($throwable));
     }
 }
