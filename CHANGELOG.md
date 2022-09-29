@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v6.3.1 (2022-09-29)](https://github.com/nunomaduro/collision/compare/v6.3.0...v6.3.1)
+### Fixed
+- Usage of `--quiet` ([66c1b4c](https://github.com/nunomaduro/collision/commit/66c1b4c025c5fd9f1b41d5e72861a4ca2f238a20))
+
 ## [v6.3.0 (2022-08-29)](https://github.com/nunomaduro/collision/compare/v6.2.1...v6.3.0)
 ### Added
 - Prophecy as ignored stack trace ([#209](https://github.com/nunomaduro/collision/pull/209))
