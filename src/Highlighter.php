@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace NunoMaduro\Collision;
 
 use Felix\Tin\Line;
-use Felix\Tin\Outputs\AnsiOutput;
 use Felix\Tin\Themes\OneDark;
 use Felix\Tin\Tin;
 
@@ -64,7 +63,7 @@ final class Highlighter
         $this->tin = Tin::from(OneDark::class, $this->color->isSupported());
 
         foreach (self::DEFAULT_THEME as $name => $styles) {
-            if (!$this->color->hasTheme($name)) {
+            if (! $this->color->hasTheme($name)) {
                 $this->color->addTheme($name, $styles);
             }
         }
@@ -72,7 +71,7 @@ final class Highlighter
         foreach (self::THEME as $name => $styles) {
             $this->color->addTheme($name, $styles);
         }
-        if (!$UTF8) {
+        if (! $UTF8) {
             $this->delimiter = self::DELIMITER;
             $this->arrow = self::ARROW_SYMBOL;
         }
@@ -94,7 +93,7 @@ final class Highlighter
                 return $this->processHighlightedLine($line);
             }
 
-            if ($line->number === $line->totalCount  -1 && $line->toString() === '') {
+            if ($line->number === $line->totalCount - 1 && $line->toString() === '') {
                 return null;
             }
 
@@ -107,23 +106,23 @@ final class Highlighter
 
     private function processHighlightedLine(Line $line): string
     {
-        return '' .
-            $this->lineMark() .
-            $this->coloredLineNumber(self::MARKED_LINE_NUMBER, $line->number, $line->totalCount) .
-            $this->lineDelimiter() .
-            $line->toString() . $line->output->newLine();
+        return ''.
+            $this->lineMark().
+            $this->coloredLineNumber(self::MARKED_LINE_NUMBER, $line->number, $line->totalCount).
+            $this->lineDelimiter().
+            $line->toString().$line->output->newLine();
     }
 
     public function lineMark(): string
     {
-        return $this->color->apply(self::ACTUAL_LINE_MARK, '  ' . $this->arrow . '  ');
+        return $this->color->apply(self::ACTUAL_LINE_MARK, '  '.$this->arrow.'  ');
     }
 
     private function coloredLineNumber(string $style, int $i, int $length): string
     {
         return $this->color->apply(
             $style,
-            str_pad((string)$i, strlen((string)$length), ' ', STR_PAD_LEFT)
+            str_pad((string) $i, strlen((string) $length), ' ', STR_PAD_LEFT)
         );
     }
 
@@ -134,9 +133,9 @@ final class Highlighter
 
     private function processLine(Line $line): string
     {
-        return '     ' .
-            $this->coloredLineNumber(self::LINE_NUMBER, $line->number, $line->totalCount) .
-            $this->lineDelimiter() .
-            $line->toString() . $line->output->newLine();
+        return '     '.
+            $this->coloredLineNumber(self::LINE_NUMBER, $line->number, $line->totalCount).
+            $this->lineDelimiter().
+            $line->toString().$line->output->newLine();
     }
 }
