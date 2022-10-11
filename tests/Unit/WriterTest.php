@@ -108,8 +108,6 @@ EOF;
 
 EOF;
 
-//        dump($result);
-//        die();
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
     }
 
@@ -193,6 +191,7 @@ EOF;
   ➜  11▕         return new FakeException('Fail description');
      12▕     }
      13▕ }
+
 EOF;
 
         $this->assertStringContainsString(
