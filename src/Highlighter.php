@@ -83,7 +83,6 @@ final class Highlighter
      */
     public function highlight(string $content, ?int $highlightedLine): string
     {
-        // handle case where $hlLine is null
         $hl = $this->tin->process($content, function (Line $line) use ($highlightedLine) {
             if ($highlightedLine - $line->number > 4 || $line->number - $highlightedLine > 4) {
                 return null;
@@ -91,10 +90,6 @@ final class Highlighter
 
             if ($line->number === $highlightedLine) {
                 return $this->processHighlightedLine($line);
-            }
-
-            if ($line->number === $line->totalCount - 1 && $line->toString() === '') {
-                return null;
             }
 
             return $this->processLine($line);
