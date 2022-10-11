@@ -56,7 +56,6 @@ class WriterTest extends TestCase
   ➜  11▕         return new FakeException('Fail description');
      12▕     }
      13▕ }
-     14▕
 
   1   tests/FakeProgram/HelloWorldFile2.php:11
       Tests\FakeProgram\HelloWorldFile3::say()
@@ -99,7 +98,6 @@ EOF;
   ➜  11▕         return new FakeException('Fail description');
      12▕     }
      13▕ }
-     14▕
 
   1   tests/FakeProgram/HelloWorldFile2.php:11
       Tests\FakeProgram\HelloWorldFile3::say()
@@ -110,6 +108,8 @@ EOF;
 
 EOF;
 
+//        dump($result);
+//        die();
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
     }
 
@@ -193,8 +193,6 @@ EOF;
   ➜  11▕         return new FakeException('Fail description');
      12▕     }
      13▕ }
-     14▕
-
 EOF;
 
         $this->assertStringContainsString(
