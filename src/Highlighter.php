@@ -13,10 +13,6 @@ use Felix\Tin\Tin;
  */
 final class Highlighter
 {
-    public const ACTUAL_LINE_MARK = 'actual_line_mark';
-
-    public const LINE_NUMBER = 'line_number';
-
     private const ARROW_SYMBOL = '>';
 
     private const DELIMITER = '|';
@@ -24,6 +20,10 @@ final class Highlighter
     private const ARROW_SYMBOL_UTF8 = '➜';
 
     private const DELIMITER_UTF8 = '▕'; // '▶';
+
+    public const ACTUAL_LINE_MARK = 'actual_line_mark';
+
+    public const LINE_NUMBER = 'line_number';
 
     private const LINE_NUMBER_DIVIDER = 'line_divider';
 
@@ -46,17 +46,14 @@ final class Highlighter
         self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
 
-    private ConsoleColor $color;
-
-    private Tin $tin;
-
     private string $delimiter = self::DELIMITER_UTF8;
 
     private string $arrow = self::ARROW_SYMBOL_UTF8;
 
-    /**
-     * Creates an instance of the Highlighter.
-     */
+    private ConsoleColor $color;
+
+    private Tin $tin;
+
     public function __construct(ConsoleColor $color = null, bool $UTF8 = true)
     {
         $this->color = $color ?: new ConsoleColor();
@@ -102,15 +99,16 @@ final class Highlighter
     private function processHighlightedLine(Line $line): string
     {
         return ''.
-            $this->lineMark().
+            // "  ➜  "
+            $this->color->apply(self::ACTUAL_LINE_MARK, '  '.$this->arrow.'  ').
+            // "  ➜ x"
             $this->coloredLineNumber(self::MARKED_LINE_NUMBER, $line->number, $line->totalCount).
+            // "  ➜ x▕"
             $this->lineDelimiter().
-            $line->toString().$line->output->newLine();
-    }
-
-    public function lineMark(): string
-    {
-        return $this->color->apply(self::ACTUAL_LINE_MARK, '  '.$this->arrow.'  ');
+            // "  ➜ x▕ <tokens>"
+            $line->toString().
+            // "  ➜ x▕ <tokens>\n"
+            $line->output->newLine();
     }
 
     private function coloredLineNumber(string $style, int $i, int $length): string
@@ -129,8 +127,13 @@ final class Highlighter
     private function processLine(Line $line): string
     {
         return '     '.
+            // "     x"
             $this->coloredLineNumber(self::LINE_NUMBER, $line->number, $line->totalCount).
+            // "     x▕"
             $this->lineDelimiter().
-            $line->toString().$line->output->newLine();
+            // "     x▕ <tokens>"
+            $line->toString().
+            // "     x▕ <tokens>\n"
+            $line->output->newLine();
     }
 }
