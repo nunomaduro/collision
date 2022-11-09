@@ -255,12 +255,12 @@ final class Style
         $timeElapsed = $telemetry->durationSinceStart()->asFloat();
 
         foreach ($slowTests as $testResult) {
-            $seconds = number_format($testResult->duration, 2, '.', '');
+            $seconds = number_format($testResult->duration / 1000, 2, '.', '');
 
             // If duration is more than 25% of the total time elapsed, set the color as red
             // If duration is more than 10% of the total time elapsed, set the color as yellow
             // Otherwise, set the color as default
-            $color = $testResult->duration > $timeElapsed * 0.25 ? 'red' : ($testResult->duration > $timeElapsed * 0.1 ? 'yellow' : 'gray');
+            $color = ($testResult->duration / 1000) > $timeElapsed * 0.25 ? 'red' : ($testResult->duration > $timeElapsed * 0.1 ? 'yellow' : 'gray');
 
             renderUsing($this->output);
             render(sprintf(<<<'HTML'
@@ -275,7 +275,7 @@ final class Style
             HTML, $testResult->testCaseName, $testResult->description, $color, $seconds));
         }
 
-        $timeElapsedInSlowTests = array_sum(array_map(fn (TestResult $testResult) => $testResult->duration, $slowTests));
+        $timeElapsedInSlowTests = array_sum(array_map(fn (TestResult $testResult) => $testResult->duration / 1000, $slowTests));
 
         $timeElapsedAsString = number_format($timeElapsed, 2, '.', '');
         $percentageInSlowTestsAsString = number_format($timeElapsedInSlowTests * 100 / $timeElapsed, 2, '.', '');
@@ -402,8 +402,8 @@ final class Style
 
         $seconds = '';
 
-        if ($result->duration > 0.0) {
-            $seconds = number_format($result->duration, 2, '.', '');
+        if (($result->duration / 1000) > 0.0) {
+            $seconds = number_format($result->duration / 1000, 2, '.', '');
             $seconds = $seconds !== '0.00' ? sprintf('<span class="text-gray mr-2">%ss</span>', $seconds) : '';
         }
 
