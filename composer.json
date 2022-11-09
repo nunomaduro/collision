@@ -15,15 +15,15 @@
     ],
     "require": {
         "php": "^8.1.0",
-        "filp/whoops": "^2.14.5",
-        "nunomaduro/termwind": "^1.14",
+        "filp/whoops": "^2.14.6",
+        "nunomaduro/termwind": "^1.14.2",
         "symfony/console": "^6.2.0"
     },
     "require-dev": {
-        "laravel/framework": "^9.31.0",
+        "laravel/framework": "^9.39",
         "laravel/pint": "^1.2.0",
-        "nunomaduro/larastan": "^2.2.0",
-        "orchestra/testbench": "^7.7.0",
+        "nunomaduro/larastan": "^2.2.9",
+        "orchestra/testbench": "^7.11",
         "pestphp/pest": "^2.0.0",
         "phpunit/phpunit": "dev-main as 9.5.24",
         "spatie/ignition": "^1.4.1"
