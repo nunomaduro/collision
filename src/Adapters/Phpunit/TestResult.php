@@ -150,7 +150,7 @@ final class TestResult
     public static function makeDescription(TestMethod $test): string
     {
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            return $test->className()::getPrintableTestCaseMethodName();
+            return $test->className()::getLatestPrintableTestCaseMethodName();
         }
 
         $name = $test->name();
