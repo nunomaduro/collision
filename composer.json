@@ -20,10 +20,10 @@
         "symfony/console": "^6.2.0"
     },
     "require-dev": {
-        "laravel/framework": "^9.39",
+        "laravel/framework": "^9.40.1",
         "laravel/pint": "^1.2.0",
         "nunomaduro/larastan": "^2.2.9",
-        "orchestra/testbench": "^7.11",
+        "orchestra/testbench": "^7.13",
         "pestphp/pest": "^2.0.0",
         "phpunit/phpunit": "dev-main as 9.5.24",
         "spatie/ignition": "^1.4.1"
