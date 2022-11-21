@@ -30,7 +30,7 @@ final class TestException
      */
     public function getClassName(): string
     {
-        return $this->throwable->className(); // @phpstan-ignore-line
+        return $this->throwable->className();
     }
 
     public function getMessage(): string
