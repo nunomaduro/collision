@@ -208,9 +208,10 @@ class TestCommand extends Command
     {
         $options = array_merge(['--printer=NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer'], $options);
 
-	// convert artisan color option to what phpunit expects
+        // convert artisan color option to what phpunit expects
         $options = array_map(function ($option) {
             $option = $option == '--no-ansi' ? '--color=never' : $option;
+
             return $option;
         }, $options);
 
