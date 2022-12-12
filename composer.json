@@ -17,13 +17,13 @@
         "php": "^8.1.0",
         "filp/whoops": "^2.14.6",
         "nunomaduro/termwind": "^1.14.2",
-        "symfony/console": "^6.2.0"
+        "symfony/console": "^6.2.1"
     },
     "require-dev": {
-        "laravel/framework": "^9.40.1",
-        "laravel/pint": "^1.2.0",
+        "laravel/framework": "^9.43",
+        "laravel/pint": "^1.2.1",
         "nunomaduro/larastan": "^2.2.9",
-        "orchestra/testbench": "^7.13",
+        "orchestra/testbench": "^7.15",
         "pestphp/pest": "^2.0.0",
         "phpunit/phpunit": "dev-main as 9.5.24",
         "spatie/ignition": "^1.4.1"
