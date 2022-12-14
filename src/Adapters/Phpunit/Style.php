@@ -314,6 +314,7 @@ final class Style
             '/vendor\/bin\/pest/',
             '/bin\/pest/',
             '/vendor\/pestphp\/pest/',
+            '/vendor\/pestphp\/pest-plugin-arch/',
             '/vendor\/phpspec\/prophecy-phpunit/',
             '/vendor\/phpspec\/prophecy/',
             '/vendor\/phpunit\/phpunit\/src/',
