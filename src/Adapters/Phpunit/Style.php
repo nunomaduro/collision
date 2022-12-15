@@ -241,8 +241,6 @@ final class Style
             ),
         ]
         );
-
-        $this->output->writeln('');
     }
 
     /**
