@@ -95,7 +95,7 @@ class TestCommand extends Command
         $usesParallel = $this->option('parallel');
 
         if ($usesParallel) {
-            throw new InvalidArgumentException('The [--parallel] option is not yet supported by Collision ^7.x.');
+            throw new InvalidArgumentException('The --parallel option is not supported by Collision ^7.0.');
         }
 
         if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
@@ -141,11 +141,11 @@ class TestCommand extends Command
             }
         }
 
-        if (! $this->usingPest()) {
-            $this->newLine();
-        }
-
         if ($exitCode === 0 && $this->option('coverage')) {
+            if (! $this->usingPest() && $this->option('parallel')) {
+                $this->newLine();
+            }
+
             $coverage = Coverage::report($this->output);
 
             $exitCode = (int) ($coverage < $this->option('min'));
