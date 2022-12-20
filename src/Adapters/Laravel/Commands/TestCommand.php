@@ -196,6 +196,16 @@ class TestCommand extends Command
             $arguments[] = Coverage::getPath();
         }
 
+        if ($this->option('ansi')) {
+            $arguments[] = '--colors';
+            $arguments[] = 'always';
+        }
+
+        if ($this->option('no-ansi')) {
+            $arguments[] = '--colors';
+            $arguments[] = 'never';
+        }
+
         return $arguments;
     }
 
@@ -226,6 +236,8 @@ class TestCommand extends Command
                 && $option != '--coverage'
                 && $option != '--compact'
                 && $option != '--profile'
+                && $option != '--ansi'
+                && $option != '--no-ansi'
                 && ! Str::startsWith($option, '--min');
         }));
 
@@ -249,6 +261,8 @@ class TestCommand extends Command
                 && $option != '--coverage'
                 && $option != '-q'
                 && $option != '--quiet'
+                && $option != '--ansi'
+                && $option != '--no-ansi'
                 && ! Str::startsWith($option, '--min')
                 && ! Str::startsWith($option, '-p')
                 && ! Str::startsWith($option, '--parallel')
