@@ -50,6 +50,13 @@ class ArtisanTestCommandTest extends TestCase
     }
 
     /** @test */
+    public function testAnsi(): void
+    {
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--ansi']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--no-ansi']);
+    }
+
+    /** @test */
     public function testEnv(): void
     {
         $this->runTests([
