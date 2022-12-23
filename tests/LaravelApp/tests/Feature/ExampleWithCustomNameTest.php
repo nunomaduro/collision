@@ -19,6 +19,11 @@ class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCase
         return 'my-custom-test-case-method-name';
     }
 
+    public function getLatestPrintableTestCaseMethodName(): string
+    {
+        return 'my-custom-test-case-name';
+    }
+
     /**
      * @group custom-name
      */
