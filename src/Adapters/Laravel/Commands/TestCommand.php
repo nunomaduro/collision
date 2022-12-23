@@ -75,12 +75,11 @@ class TestCommand extends Command
 
         $laravelVersion = \Illuminate\Foundation\Application::VERSION;
 
-        // @phpstan-ignore-next-line
         if ($laravelVersion[0].$laravelVersion[1] !== '10') {
             throw new RequirementsException('Running Collision ^7.0 artisan test command requires at least Laravel ^10.0.');
         }
 
-        if ($this->option('coverage') && ! Coverage::isAvailable()) {
+        if ($this->option('coverage') && ! Coverage::isAvailable()) { // @phpstan-ignore-line
             $this->output->writeln(sprintf(
                 "\n  <fg=white;bg=red;options=bold> ERROR </> Code coverage driver not available.%s</>",
                 Coverage::usingXdebug()
@@ -100,7 +99,7 @@ class TestCommand extends Command
             throw new InvalidArgumentException('The --parallel option is not supported by Collision ^7.0.');
         }
 
-        if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
+        if ($usesParallel && ! $this->isParallelDependenciesInstalled()) {
             if (! $this->confirm('Running tests in parallel requires "brianium/paratest". Do you wish to install it as a dev dependency?')) {
                 return 1;
             }
