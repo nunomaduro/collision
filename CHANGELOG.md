@@ -6,6 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [v7.0.0 (2023-XX-XX)](https://github.com/nunomaduro/collision/compare/v6.3.1...v7.x)
+## [v7.0.0 (2023-XX-XX)](https://github.com/nunomaduro/collision/compare/v6.3.2...v7.x)
 ### Added
-- Support for `phpunit/phpunit: ^10.0`
+- Support for PHPUnit `^10.0` and Pest `^2.0`
