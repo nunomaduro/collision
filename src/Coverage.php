@@ -33,8 +33,14 @@ final class Coverage
      */
     public static function isAvailable(): bool
     {
-        if (! (new Runtime())->canCollectCodeCoverage()) {
+        $runtime = new Runtime();
+
+        if (! $runtime->canCollectCodeCoverage()) {
             return false;
+        }
+
+        if ($runtime->hasPCOV() || $runtime->hasPHPDBGCodeCoverage()) {
+            return true;
         }
 
         if (static::usingXdebug()) {
