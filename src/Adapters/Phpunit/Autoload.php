@@ -6,4 +6,6 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\EnsurePrinterIsRegisteredSubscriber;
 
-EnsurePrinterIsRegisteredSubscriber::register();
+if (class_exists(EnsurePrinterIsRegisteredSubscriber::class)) {
+    EnsurePrinterIsRegisteredSubscriber::register();
+}
