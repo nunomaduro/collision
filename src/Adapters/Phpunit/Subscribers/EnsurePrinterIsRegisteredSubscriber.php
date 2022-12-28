@@ -35,8 +35,9 @@ use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
 use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
+use PHPUnit\Runner\Version;
 
-if (class_exists(ConfiguredSubscriber::class)) {
+if (class_exists(Version::class) && (int) Version::series() >= 10) {
     /**
      * @internal
      */
