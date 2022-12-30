@@ -153,6 +153,9 @@ EOF;
 
         $this->assertEquals($exitCode, $process->getExitCode(), $failedOutput);
 
+        gc_collect_cycles();
+        sleep(1);
+
         return $process->getOutput();
     }
 
