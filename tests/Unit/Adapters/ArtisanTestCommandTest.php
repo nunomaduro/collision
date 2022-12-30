@@ -38,7 +38,6 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
          */
-
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);

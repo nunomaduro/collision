@@ -164,7 +164,7 @@ EOF;
             '-c',
             'tests/LaravelApp/phpunit.xml',
             'tests/TestCaseWithStdoutOutput',
-            '--disallow-test-output'
+            '--disallow-test-output',
         ], __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
             'COLLISION_IGNORE_DURATION' => 'true',
