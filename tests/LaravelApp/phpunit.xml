@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         backupGlobals="false"
-         beStrictAboutTestsThatDoNotTestAnything="true"
-         beStrictAboutOutputDuringTests="true"
-         bootstrap="vendor/autoload.php"
-         cacheResult="false"
-         colors="true"
-         failOnWarning="true"
-         processIsolation="false"
-         stopOnError="false"
-         stopOnFailure="false"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+
+         colors="true"
          cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false"
-         displayDetailsOnIncompleteTests="true"
-         displayDetailsOnSkippedTests="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true"
-         displayDetailsOnTestsThatTriggerErrors="true"
-         displayDetailsOnTestsThatTriggerNotices="true"
-         displayDetailsOnTestsThatTriggerWarnings="true"
 >
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
-
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
@@ -35,16 +19,16 @@
         </include>
     </coverage>
     <php>
-        <server name="APP_ENV" value="testing"/>
-        <server name="BCRYPT_ROUNDS" value="4"/>
-        <server name="CACHE_DRIVER" value="array"/>
-        <server name="DB_CONNECTION" value="sqlite"/>
-        <server name="DB_DATABASE" value=":memory:"/>
-        <server name="MAIL_DRIVER" value="array"/>
-        <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="SESSION_DRIVER" value="array"/>
+        <env name="APP_ENV" value="testing"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
+        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
         <server name="VAR_IN_PHPUNIT" value="VAL_IN_PHPUNIT" />
         <server name="VAR_OVERRIDDEN_IN_PHPUNIT" value="VAL_OVERRIDDEN_IN_PHPUNIT" />
-
     </php>
 </phpunit>

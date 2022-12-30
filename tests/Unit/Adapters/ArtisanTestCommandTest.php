@@ -29,7 +29,7 @@ class ArtisanTestCommandTest extends TestCase
     /** @test */
     public function testMinCoverage(): void
     {
-        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--group', 'coverage']);
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=0', '--group', 'coverage'], 0);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
 
@@ -38,6 +38,7 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
          */
+
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total Coverage', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
@@ -52,8 +53,8 @@ class ArtisanTestCommandTest extends TestCase
     /** @test */
     public function testAnsi(): void
     {
-        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--ansi']);
-        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--no-ansi']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--ansi'], 1);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--no-ansi'], 1);
     }
 
     /** @test */
@@ -151,9 +152,12 @@ EOF
 
     private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
+        $arguments = array_merge($arguments, ['--colors=never']);
+
         $process = new Process($arguments, __DIR__.'/../../..', [
             'XDEBUG_MODE' => 'coverage',
         ]);
+
         $process->setPty(true);
         $process->run();
 

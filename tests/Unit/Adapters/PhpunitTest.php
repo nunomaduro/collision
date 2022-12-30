@@ -48,7 +48,7 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:    1 risky, 1 incomplete, 1 skipped, 7 passed (8 assertions)
+  Tests:    1 risky, 1 incomplete, 1 skipped, 6 passed (7 assertions)
   Duration:
 EOF,
             $output
@@ -65,7 +65,7 @@ EOF,
 
         $this->assertConsoleOutputContainsString(<<<'EOF'
    PASS  my-custom-test-case-name
-  ✓ my-custom-test-case-method-name
+  ✓ my-custom-test-case-name
 
   Tests:    1 passed (1 assertions)
   Duration:
@@ -83,7 +83,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    1 risky, 1 incomplete, 1 skipped, 8 passed (9 assertions)',
+            'Tests:    1 risky, 1 incomplete, 1 skipped, 7 passed (8 assertions)',
             $output
         );
     }
@@ -133,9 +133,10 @@ EOF
     private function runCollisionTests(array $arguments = [], int $exitCode = 0): string
     {
         $process = new Process(array_merge([
-            './vendor/bin/pest',
+            './vendor/pestphp/pest/bin/pest',
             '-c',
             'tests/LaravelApp/phpunit.xml',
+            '--colors=never',
         ], $arguments), __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
             'COLLISION_IGNORE_DURATION' => 'true',
@@ -163,6 +164,7 @@ EOF;
             '-c',
             'tests/LaravelApp/phpunit.xml',
             'tests/TestCaseWithStdoutOutput',
+            '--disallow-test-output'
         ], __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
             'COLLISION_IGNORE_DURATION' => 'true',
