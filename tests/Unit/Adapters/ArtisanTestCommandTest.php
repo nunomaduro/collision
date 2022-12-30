@@ -157,7 +157,7 @@ EOF
             'XDEBUG_MODE' => 'coverage',
         ]);
 
-        $process->setPty(true);
+        $process->setPty(false);
         $process->run();
 
         $output = $process->getOutput();
@@ -169,9 +169,6 @@ $output
 EOF;
 
         $this->assertEquals($expectedExitCode, $process->getExitCode(), $failedOutput);
-
-        gc_collect_cycles();
-        sleep(1);
 
         return $output;
     }
