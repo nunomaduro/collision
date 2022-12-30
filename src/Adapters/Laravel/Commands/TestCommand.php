@@ -198,13 +198,11 @@ class TestCommand extends Command
         }
 
         if ($this->option('ansi')) {
-            $arguments[] = '--colors';
-            $arguments[] = 'always';
+            $arguments[] = '--colors=always';
         }
 
         if ($this->option('no-ansi')) {
-            $arguments[] = '--colors';
-            $arguments[] = 'never';
+            $arguments[] = '--colors=never';
         }
 
         return $arguments;
