@@ -51,17 +51,6 @@ As an example, here is how to require Collision on Laravel 8.x:
 composer require nunomaduro/collision:^5.0 --dev
 ```
 
-## Phpunit adapter
-
-Phpunit must be 9.0 or higher.
-
-Add the Collision `printerClass` to your `phpunit.xml` in the `phpunit` section:
-
-```xml
-<phpunit
-        printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
-```
-
 ## No adapter
 
 You need to register the handler in your code:
