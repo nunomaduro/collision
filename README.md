@@ -34,16 +34,16 @@ Require Collision using [Composer](https://getcomposer.org):
 composer require nunomaduro/collision --dev
 ```
 
-## Laravel Version Compatibility
+## Version Compatibility
 
- Laravel  | Collision
-:---------|:----------
- 6.x      | 3.x
- 7.x      | 4.x
- 8.x      | 5.x
- 9.x      | 6.x
- 10.x     | 6.x (PHPUnit 9.x  or Pest v1.x)
- 10.x     | 7.x (PHPUnit 10.x or Pest v2.x)
+ Laravel  | Collision | PHPUnit   |: Pest
+:---------|:----------|:----------|:----------
+ 6.x      | 3.x       |           |
+ 7.x      | 4.x       |           |
+ 8.x      | 5.x       |           | 
+ 9.x      | 6.x       |           |
+ 10.x     | 6.x       | 9.x       | 1.x
+ 10.x     | 7.x       | 10.x      | 2.x
 
 As an example, here is how to require Collision on Laravel 8.x:
 
