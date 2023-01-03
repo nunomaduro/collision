@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v6.4.0 (2023-01-03)](https://github.com/nunomaduro/collision/compare/v6.3.2...v6.4.0)
+### Added
+- PHPUnit 10.x support ([f7df764](https://github.com/nunomaduro/collision/commit/f7df7640a23932b176590d1dab71cacdbb868157))
+
 ## [v6.3.2 (2022-12-23)](https://github.com/nunomaduro/collision/compare/v6.3.1...v6.3.2)
 ### Fixed
 - Explains that PHPUnit v10 requires Collision v7 ([c224019](https://github.com/nunomaduro/collision/commit/c2240194dd3380a868c38b72dc537138abe72abf))
