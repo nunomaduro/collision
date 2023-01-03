@@ -36,7 +36,7 @@ composer require nunomaduro/collision --dev
 
 ## Version Compatibility
 
- Laravel  | Collision | PHPUnit   |: Pest
+ Laravel  | Collision | PHPUnit   | Pest
 :---------|:----------|:----------|:----------
  6.x      | 3.x       |           |
  7.x      | 4.x       |           |
