@@ -419,6 +419,8 @@ final class Style
             $warning = sprintf('<span class="ml-1 text-yellow">%s</span>', $warning);
         }
 
+        $description = preg_replace('/`([^`]+)`/', '<span class="text-white">$1</span>', $result->description);
+
         renderUsing($this->output);
         render(sprintf(<<<'HTML'
             <div class="%s ml-2">
@@ -426,6 +428,6 @@ final class Style
                     <span class="text-%s font-bold">%s</span><span class="ml-1 text-gray">%s</span>%s
                 </span>%s
             </div>
-        HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $result->description, $warning, $seconds));
+        HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $description, $warning, $seconds));
     }
 }
