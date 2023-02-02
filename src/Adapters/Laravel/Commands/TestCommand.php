@@ -10,7 +10,7 @@ use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
+use NunoMaduro\Collision\Adapters\Laravel\Exceptions\NotSupportedYetException;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
 use PHPUnit\Runner\Version;
@@ -96,7 +96,7 @@ class TestCommand extends Command
         $usesParallel = $this->option('parallel');
 
         if ($usesParallel) {
-            throw new InvalidArgumentException('The [--parallel] option is not yet supported by Collision ^7.0.');
+            throw new NotSupportedYetException('The [--parallel] option is not yet supported by Collision ^7.0.');
         }
 
         if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
