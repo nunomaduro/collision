@@ -20,13 +20,13 @@
         "symfony/console": "^6.2.5"
     },
     "require-dev": {
-        "laravel/framework": "dev-feat/phpunit10 as 10",
+        "laravel/framework": "^10.0.0",
         "laravel/pint": "^1.4.1",
         "nunomaduro/larastan": "^2.4.0",
-        "orchestra/testbench-core": "dev-phpunit10",
+        "orchestra/testbench-core": "^8.0.0",
         "pestphp/pest": "^2.0.0",
-        "phpunit/phpunit": "^10.0",
-        "spatie/laravel-ignition": "^2.0"
+        "phpunit/phpunit": "^10.0.1",
+        "spatie/laravel-ignition": "^2.0.0"
     },
     "autoload-dev": {
         "psr-4": {
