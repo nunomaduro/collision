@@ -51,20 +51,11 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
         private static bool $registered = false;
 
         /**
-         * The printer in use, if any.
-         */
-        private static DefaultPrinter|null $defaultPrinter;
-
-        /**
          * Runs the subscriber.
          */
         public function notify(Started $event): void
         {
-            $colors = $event instanceof Configured
-                ? $event->configuration()->colors()
-                : true;
-
-            $printer = new ReportablePrinter(new DefaultPrinter($colors));
+            $printer = new ReportablePrinter(new DefaultPrinter(true));
 
             if (isset($_SERVER['COLLISION_PRINTER_COMPACT'])) {
                 DefaultPrinter::compact(true);

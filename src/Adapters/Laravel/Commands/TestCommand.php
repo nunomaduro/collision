@@ -10,7 +10,6 @@ use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
-use NunoMaduro\Collision\Adapters\Laravel\Exceptions\NotSupportedYetException;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
 use PHPUnit\Runner\Version;
@@ -95,12 +94,10 @@ class TestCommand extends Command
         /** @var bool $usesParallel */
         $usesParallel = $this->option('parallel');
 
-        if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
-            if (! $this->confirm('Running Collision ^7.0 artisan test command in parallel requires at least ParaTest (brianium/paratest) ^7.0.')) {
-                return 1;
-            }
+        if ($usesParallel && ! $this->isParallelDependenciesInstalled()) {
+            $this->error('Running Collision ^7.0 artisan test command in parallel requires at least ParaTest (brianium/paratest) ^7.0.');
 
-            $this->installParallelDependencies();
+            return 1;
         }
 
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
