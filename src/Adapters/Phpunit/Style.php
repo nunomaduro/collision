@@ -222,8 +222,6 @@ final class Style
 
         $timeElapsed = number_format($telemetry->durationSinceStart()->asFloat(), 2, '.', '');
 
-        $this->output->writeln(['']);
-
         if (! empty($tests)) {
             $this->output->writeln([
                 sprintf(
@@ -239,8 +237,7 @@ final class Style
                 '  <fg=gray>Duration:</> <fg=default>%ss</>',
                 $timeElapsed
             ),
-        ]
-        );
+        ]);
 
         $this->output->writeln('');
     }
