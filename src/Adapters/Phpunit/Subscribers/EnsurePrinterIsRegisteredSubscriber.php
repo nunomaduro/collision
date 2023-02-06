@@ -6,6 +6,8 @@ namespace NunoMaduro\Collision\Adapters\Phpunit\Subscribers;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\ReportablePrinter;
+use PHPUnit\Event\Application\Started;
+use PHPUnit\Event\Application\StartedSubscriber;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;
@@ -41,7 +43,7 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
     /**
      * @internal
      */
-    final class EnsurePrinterIsRegisteredSubscriber implements ConfiguredSubscriber
+    final class EnsurePrinterIsRegisteredSubscriber implements StartedSubscriber
     {
         /**
          * If this subscriber has been registered on PHPUnit's facade.
@@ -49,13 +51,20 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
         private static bool $registered = false;
 
         /**
+         * The printer in use, if any.
+         */
+        private static DefaultPrinter|null $defaultPrinter;
+
+        /**
          * Runs the subscriber.
          */
-        public function notify(Configured $event): void
+        public function notify(Started $event): void
         {
-            $configuration = $event->configuration();
+            $colors = $event instanceof Configured
+                ? $event->configuration()->colors()
+                : true;
 
-            $printer = new ReportablePrinter(new DefaultPrinter($configuration->colors()));
+            $printer = new ReportablePrinter(new DefaultPrinter($colors));
 
             if (isset($_SERVER['COLLISION_PRINTER_COMPACT'])) {
                 DefaultPrinter::compact(true);
@@ -66,6 +75,17 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
             }
 
             Facade::registerSubscribers(
+                // Configured
+                new class($printer) extends Subscriber implements ConfiguredSubscriber
+                {
+                    public function notify(Configured $event): void
+                    {
+                        $this->printer()->setDecorated(
+                            $event->configuration()->colors()
+                        );
+                    }
+                },
+
                 // Test Runner
                 new class($printer) extends Subscriber implements ExecutionStartedSubscriber
                 {

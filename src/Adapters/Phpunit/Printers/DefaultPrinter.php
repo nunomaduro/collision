@@ -121,6 +121,14 @@ final class DefaultPrinter
     }
 
     /**
+     * Defines if the output should be decorated or not.
+     */
+    public function setDecorated(bool $decorated): void
+    {
+        $this->output->setDecorated($decorated);
+    }
+
+    /**
      * Listen to the runner execution started event.
      */
     public function testRunnerExecutionStarted(ExecutionStarted $executionStarted): void
