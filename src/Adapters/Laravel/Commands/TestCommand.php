@@ -95,12 +95,8 @@ class TestCommand extends Command
         /** @var bool $usesParallel */
         $usesParallel = $this->option('parallel');
 
-        if ($usesParallel) {
-            throw new NotSupportedYetException('The [--parallel] option is not yet supported by Collision ^7.0.');
-        }
-
         if ($usesParallel && ! $this->isParallelDependenciesInstalled()) { // @phpstan-ignore-line
-            if (! $this->confirm('Running tests in parallel requires "brianium/paratest". Do you wish to install it as a dev dependency?')) {
+            if (! $this->confirm('Running Collision ^7.0 artisan test command in parallel requires at least ParaTest (brianium/paratest) ^7.0.')) {
                 return 1;
             }
 
@@ -369,37 +365,7 @@ class TestCommand extends Command
      */
     protected function isParallelDependenciesInstalled()
     {
-        return class_exists(\ParaTest\Console\Commands\ParaTestCommand::class);
-    }
-
-    /**
-     * Install parallel testing needed dependencies.
-     *
-     * @return void
-     */
-    protected function installParallelDependencies()
-    {
-        $command = $this->findComposer().' require brianium/paratest --dev';
-
-        $process = Process::fromShellCommandline($command, null, null, null, null);
-
-        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
-            try {
-                $process->setTty(true);
-            } catch (RuntimeException $e) {
-                $this->output->writeln('Warning: '.$e->getMessage());
-            }
-        }
-
-        try {
-            $process->run(function ($type, $line) {
-                $this->output->write($line);
-            });
-        } catch (ProcessSignaledException $e) {
-            if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {
-                throw $e;
-            }
-        }
+        return class_exists(\ParaTest\ParaTestCommand::class);
     }
 
     /**
