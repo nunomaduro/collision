@@ -22,6 +22,9 @@
     "require-dev": {
         "laravel/framework": "^10.0.0",
         "laravel/pint": "^1.4.1",
+        "laravel/sail": "^1.19.0",
+        "laravel/sanctum": "^3.2.1",
+        "laravel/tinker": "^2.8.0",
         "nunomaduro/larastan": "^2.4.0",
         "orchestra/testbench-core": "^8.0.0",
         "pestphp/pest": "^2.0.0",
