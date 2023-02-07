@@ -102,7 +102,7 @@ final class Writer
             $this->renderEditor($editorFrame);
         }
 
-        // $this->renderSolution($inspector);
+        $this->renderSolution($inspector);
 
         if ($this->showTrace && ! empty($frames) && ! $exception instanceof RenderlessTrace) {
             $this->renderTrace($frames);
@@ -209,7 +209,10 @@ final class Writer
     private function renderSolution(Inspector $inspector): self // @phpstan-ignore-line
     {
         $throwable = $inspector->getException();
-        $solutions = $this->solutionsRepository->getFromThrowable($throwable);
+
+        $solutions = $throwable instanceof Throwable
+            ? $this->solutionsRepository->getFromThrowable($throwable)
+            : [];
 
         foreach ($solutions as $solution) {
             /** @var \Spatie\Ignition\Contracts\Solution $solution */
