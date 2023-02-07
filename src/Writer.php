@@ -206,13 +206,13 @@ final class Writer
     /**
      * Renders the solution of the exception, if any.
      */
-    private function renderSolution(Inspector $inspector): self // @phpstan-ignore-line
+    private function renderSolution(Inspector $inspector): self
     {
         $throwable = $inspector->getException();
 
         $solutions = $throwable instanceof Throwable
             ? $this->solutionsRepository->getFromThrowable($throwable)
-            : [];
+            : []; // @phpstan-ignore-line
 
         foreach ($solutions as $solution) {
             /** @var \Spatie\Ignition\Contracts\Solution $solution */
