@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v7.0.0 (2023-02-07)](https://github.com/nunomaduro/collision/compare/v6.4.0...v7.x)
 ### Added
-- Support for PHPUnit 10.x and Pest 2.x
+- PHPUnit 10.x and Pest 2.x support
+- `--compact` printer
+- `--profile` option to display top ten slow tests
 
 ### Removed
-- Support for PHPUnit 9.x and Pest 1.x
+- PHPUnit 9.x and Pest 1.x support
