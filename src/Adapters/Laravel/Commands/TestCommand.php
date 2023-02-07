@@ -96,8 +96,6 @@ class TestCommand extends Command
 
         if ($usesParallel && ! $this->isParallelDependenciesInstalled()) {
             throw new RequirementsException('Running Collision 7.x artisan test command in parallel requires at least ParaTest (brianium/paratest) 7.x.');
-
-            return 1;
         }
 
         $options = array_slice($_SERVER['argv'], $this->option('without-tty') ? 3 : 2);
