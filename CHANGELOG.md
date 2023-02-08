@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.0.1 (2023-02-08)](https://github.com/nunomaduro/collision/compare/v7.0.0...v7.0.1)
+### Changed
+- Bumps dependencies
+
 ## [v7.0.0 (2023-02-07)](https://github.com/nunomaduro/collision/compare/v6.4.0...v7.x)
 ### Added
 - PHPUnit 10.x and Pest 2.x support
