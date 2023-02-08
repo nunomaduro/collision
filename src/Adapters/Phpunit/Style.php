@@ -13,6 +13,7 @@ use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use ReflectionClass;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -198,10 +199,8 @@ final class Style
     /**
      * Writes the final recap.
      */
-    public function writeRecap(State $state, Info $telemetry): void
+    public function writeRecap(State $state, Info $telemetry, PHPUnitTestResult $result): void
     {
-        $result = Facade::result();
-
         $tests = [];
         foreach (self::TYPES as $type) {
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
@@ -216,7 +215,7 @@ final class Style
         }
 
         $pending = $result->numberOfTests() - $result->numberOfTestsRun();
-        if ($pending !== 0) {
+        if ($pending > 0) {
             $tests[] = "\e[2m$pending pending\e[22m";
         }
 
@@ -229,7 +228,7 @@ final class Style
                 sprintf(
                     '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
                     implode('<fg=gray>,</> ', $tests),
-                    Facade::result()->numberOfAssertions()
+                    $result->numberOfAssertions()
                 ),
             ]);
         }
