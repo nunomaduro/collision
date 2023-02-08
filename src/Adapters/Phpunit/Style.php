@@ -12,7 +12,6 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
-use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use ReflectionClass;
