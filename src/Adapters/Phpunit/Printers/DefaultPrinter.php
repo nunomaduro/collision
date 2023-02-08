@@ -318,7 +318,7 @@ final class DefaultPrinter
             $this->style->writeErrorsSummary($this->state, $onFailure);
         }
 
-        $this->style->writeRecap($this->state, $event->telemetryInfo());
+        $this->style->writeRecap($this->state, $event->telemetryInfo(), $result);
 
         if (! $failed && count($this->profileSlowTests) > 0) {
             $this->style->writeSlowTests($this->profileSlowTests, $event->telemetryInfo());
