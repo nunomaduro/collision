@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.0.2 (2023-02-11)](https://github.com/nunomaduro/collision/compare/v7.0.1...v7.0.2)
+### Added
+- Better `todo` output
+
 ## [v7.0.1 (2023-02-08)](https://github.com/nunomaduro/collision/compare/v7.0.0...v7.0.1)
 ### Changed
 - Bumps dependencies
