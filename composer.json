@@ -28,7 +28,7 @@
         "nunomaduro/larastan": "^2.4.0",
         "orchestra/testbench-core": "^8.0.0",
         "pestphp/pest": "^2.0.0",
-        "phpunit/phpunit": "^10.0.6",
+        "phpunit/phpunit": "^10.0.7",
         "spatie/laravel-ignition": "^2.0.0"
     },
     "autoload-dev": {
