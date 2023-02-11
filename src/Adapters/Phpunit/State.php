@@ -102,7 +102,33 @@ final class State
             }
         }
 
+        if ($this->todosCount() > 0 && (count($this->testCaseTests) === $this->todosCount())) {
+            return 'TODO';
+        }
+
         return 'PASS';
+    }
+
+    /**
+     * Gets the number of tests that are todos.
+     */
+    public function todosCount(): int
+    {
+        return count(array_values(array_filter($this->testCaseTests, function (TestResult $test): bool {
+            return $test->type === TestResult::TODO;
+        })));
+    }
+
+    /**
+     * Gets the test case title color.
+     */
+    public function getTestCaseFontColor(): string
+    {
+        if ($this->getTestCaseTitleColor() === 'blue') {
+            return 'white';
+        }
+
+        return $this->getTestCaseTitle() === 'FAIL' ? 'default' : 'black';
     }
 
     /**
@@ -119,6 +145,12 @@ final class State
         foreach ($this->testCaseTests as $test) {
             if ($test->type !== TestResult::PASS && $test->type !== TestResult::TODO) {
                 return 'yellow';
+            }
+        }
+
+        foreach ($this->testCaseTests as $test) {
+            if ($test->type === TestResult::TODO) {
+                return 'blue';
             }
         }
 

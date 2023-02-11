@@ -16,6 +16,14 @@ class ExampleTest extends TestCase
         $this->assertFalse(true);
     }
 
+    /**
+     * @group todo
+     */
+    public function testTodoExample()
+    {
+        $this->markTestSkipped('__TODO__');
+    }
+
     public function testBasicTest()
     {
         $this->assertTrue(true);

@@ -48,7 +48,7 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:    1 risky, 1 incomplete, 1 skipped, 6 passed (7 assertions)
+  Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 6 passed (7 assertions)
   Duration:
 EOF,
             $output
@@ -75,6 +75,25 @@ EOF,
     }
 
     /** @test */
+    public function itHasATodo(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'todo',
+        ]);
+
+        $this->assertConsoleOutputContainsString(<<<'EOF'
+   TODO  Tests\Unit\ExampleTest - 1 todo
+  ↓ todo example
+
+  Tests:    1 todo (0 assertions)
+  Duration:
+EOF,
+            $output
+        );
+    }
+
+    /** @test */
     public function itHasRecap(): void
     {
         $output = $this->runCollisionTests([
@@ -83,7 +102,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    1 risky, 1 incomplete, 1 skipped, 7 passed (8 assertions)',
+            'Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (8 assertions)',
             $output
         );
     }
@@ -121,8 +140,8 @@ EOF,
   ➜  16▕         $code
      17▕     }
      18▕$space
-     19▕     public function testBasicTest()
-     20▕     {
+     19▕     /**
+     20▕      * @group todo
 
   1   tests/LaravelApp/tests/Unit/ExampleTest.php:16
 

@@ -96,10 +96,11 @@ final class Style
 
         if (! $state->headerPrinted && ! DefaultPrinter::compact()) {
             $this->output->writeln($this->titleLineFrom(
-                $state->getTestCaseTitle() === 'FAIL' ? 'default' : 'black',
+                $state->getTestCaseFontColor(),
                 $state->getTestCaseTitleColor(),
                 $state->getTestCaseTitle(),
-                $state->testCaseName
+                $state->testCaseName,
+                $state->todosCount(),
             ));
             $state->headerPrinted = true;
         }
@@ -342,14 +343,15 @@ final class Style
     /**
      * Returns the title contents.
      */
-    private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName): string
+    private function titleLineFrom(string $fg, string $bg, string $title, string $testCaseName, int $todos): string
     {
         return sprintf(
-            "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>",
+            "\n  <fg=%s;bg=%s;options=bold> %s </><fg=default> %s</>%s",
             $fg,
             $bg,
             $title,
-            $testCaseName
+            $testCaseName,
+            $todos > 0 ? sprintf('<fg=gray> - %s todo%s</>', $todos, $todos > 1 ? 's' : '') : '',
         );
     }
 
