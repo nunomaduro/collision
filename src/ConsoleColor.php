@@ -23,7 +23,6 @@ class ConsoleColor
 
     public const RESET_STYLE = 0;
 
-    /** @var bool */
     private bool $forceStyle = false;
 
     /** @var array */
