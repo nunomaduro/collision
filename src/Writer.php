@@ -330,7 +330,7 @@ final class Writer
         $cwd = (string) getcwd();
 
         if (! empty($cwd)) {
-            return str_replace("$cwd/", '', $filePath);
+            return str_replace("$cwd" . DIRECTORY_SEPARATOR, '', $filePath);
         }
 
         return $filePath;
