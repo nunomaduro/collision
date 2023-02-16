@@ -186,7 +186,7 @@ EOF;
             '-c',
             'tests/LaravelApp/phpunit.xml',
             '--filter=ExampleTest',
-            '--exclude-group=fail'
+            '--exclude-group=fail',
         ]);
 
         expect($output)
