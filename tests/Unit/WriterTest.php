@@ -232,9 +232,9 @@ EOF;
   Fail renderless description\n
 EOF;
 
-        if (PHP_OS_FAMILY === 'Windows') {
-            $result = str_replace('\\', '/', $result);
-        }
+        // if (PHP_OS_FAMILY === 'Windows') {
+        //    $result = str_replace('\\', '/', $result);
+        // }
 
         $this->assertEquals(
             $writer->getOutput()
