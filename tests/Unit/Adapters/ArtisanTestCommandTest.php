@@ -176,4 +176,23 @@ EOF;
 
         return $output;
     }
+
+    /** @test */
+    public function testProfile(): void
+    {
+        $output = $this->runTests([
+            './vendor/bin/pest',
+            '--profile',
+            '-c',
+            'tests/LaravelApp/phpunit.xml',
+            '--filter=ExampleTest',
+            '--exclude-group=fail'
+        ]);
+
+        expect($output)
+            ->toContain('Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 3 passed (3 assertions)')
+            ->toContain('Top 10 slowest tests:')
+            ->toContain('Tests\Feature\ExampleTest > pass example')
+            ->toContain('% of ');
+    }
 }
