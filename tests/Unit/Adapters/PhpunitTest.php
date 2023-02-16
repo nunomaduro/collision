@@ -164,7 +164,7 @@ EOF
         $process->run();
         $output = $process->getOutput();
 
-        $output = str_replace('\r\n', '', $output);
+        $output = str_replace(["\r\n", "\r"], "\n", $output);
 
         $failedOutput = <<<EOF
 --- ASSERTION FAIL RECAP ---
