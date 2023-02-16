@@ -66,9 +66,6 @@ class WriterTest extends TestCase
 
 
 EOF;
-        if (PHP_OS_FAMILY === 'Windows') {
-            $result = str_replace('\\', '/', $result);
-        }
 
         $this->assertEquals(
             $writer->getOutput()
