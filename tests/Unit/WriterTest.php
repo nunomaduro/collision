@@ -66,6 +66,9 @@ class WriterTest extends TestCase
 
 
 EOF;
+        if (PHP_OS_FAMILY === 'Windows') {
+            $result = str_replace('\\', '/', $result);
+        }
 
         $this->assertEquals(
             $writer->getOutput()
@@ -109,6 +112,10 @@ EOF;
 
 
 EOF;
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $result = str_replace('\\', '/', $result);
+        }
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
     }
@@ -162,6 +169,10 @@ EOF;
       Tests\FakeProgram\HelloWorldFile2::say()
 EOF;
 
+        if (PHP_OS_FAMILY === 'Windows') {
+            $result = str_replace('\\', '/', $result);
+        }
+
         $this->assertStringContainsString(
             $result,
             $writer->getOutput()
@@ -197,6 +208,10 @@ EOF;
 
 EOF;
 
+        if (PHP_OS_FAMILY === 'Windows') {
+            $result = str_replace('\\', '/', $result);
+        }
+
         $this->assertStringContainsString(
             $result,
             $writer->getOutput()
@@ -216,6 +231,10 @@ EOF;
    Tests\FakeProgram\FakeRenderlessException \n
   Fail renderless description\n
 EOF;
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $result = str_replace('\\', '/', $result);
+        }
 
         $this->assertEquals(
             $writer->getOutput()
