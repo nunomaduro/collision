@@ -9,7 +9,6 @@ on:
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
-    fail-fast: true
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
