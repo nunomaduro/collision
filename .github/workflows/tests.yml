@@ -27,7 +27,6 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, fileinfo, ftp, redis, memcached, gmp
         tools: composer:v2
-        coverage: none
 
     - name: Setup Problem Matchers
       run: |
