@@ -70,7 +70,7 @@
         "test:types": "phpstan analyse --ansi",
         "test:unit": [
             "@putenv XDEBUG_MODE=coverage",
-            "pest --colors=always"
+            "pest --colors=always -v"
         ],
         "test": [
             "@test:lint",
