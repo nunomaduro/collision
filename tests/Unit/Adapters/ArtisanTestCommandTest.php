@@ -151,7 +151,10 @@ EOF
 
     private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
-        $arguments = array_merge($arguments, ['--colors=never']);
+        $arguments = array_merge($arguments, [
+            '--colors=never',
+            '--no-ansi',
+        ]);
 
         $process = new Process($arguments, __DIR__.'/../../..', [
             'XDEBUG_MODE' => 'coverage',
@@ -169,6 +172,8 @@ $output
 EOF;
 
         $this->assertEquals($expectedExitCode, $process->getExitCode(), $failedOutput);
+
+        $output = str_replace("\r\n", '', $output)
 
         return $output;
     }
