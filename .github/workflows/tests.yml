@@ -25,8 +25,9 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        tools: composer
-        coverage: xdebug
+        extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, fileinfo, ftp, redis, memcached, gmp
+        tools: composer:v2
+        coverage: none
 
     - name: Setup Problem Matchers
       run: |
