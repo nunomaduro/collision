@@ -172,7 +172,7 @@ EOF;
 
         $this->assertEquals($expectedExitCode, $process->getExitCode(), $failedOutput);
 
-        $output = str_replace("\r\n", '', $output);
+        $output = str_replace('\r\n', '', $output);
 
         return $output;
     }
