@@ -155,7 +155,7 @@ EOF
             '--colors=never',
         ]);
 
-        $process = new Process($arguments, __DIR__.'/../../..', [
+        $process = new Process($arguments, (string) getcwd(), [
             'XDEBUG_MODE' => 'coverage',
         ]);
 
