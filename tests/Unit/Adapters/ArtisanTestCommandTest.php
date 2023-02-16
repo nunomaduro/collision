@@ -153,7 +153,6 @@ EOF
     {
         $arguments = array_merge($arguments, [
             '--colors=never',
-            '--no-ansi',
         ]);
 
         $process = new Process($arguments, __DIR__.'/../../..', [
