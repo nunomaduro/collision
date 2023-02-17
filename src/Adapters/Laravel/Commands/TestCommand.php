@@ -191,9 +191,9 @@ class TestCommand extends Command
 
         if ($this->option('ansi')) {
             $arguments[] = '--colors=always';
-        } else if ($this->option('no-ansi')) {
+        } elseif ($this->option('no-ansi')) {
             $arguments[] = '--colors=never';
-        } else if ((new Console)->hasColorSupport()) {
+        } elseif ((new Console)->hasColorSupport()) {
             $arguments[] = '--colors=always';
         }
 
