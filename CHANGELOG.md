@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.0.4 (2023-02-17)](https://github.com/nunomaduro/collision/compare/v7.0.3...v7.0.4)
+### Fixed
+- Colors not being displayed on Windows
+
 ## [v7.0.3 (2023-02-16)](https://github.com/nunomaduro/collision/compare/v7.0.2...v7.0.3)
 ### Fixed
 - Source of file on Windows
