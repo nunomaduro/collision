@@ -14,6 +14,7 @@ use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
 use PHPUnit\Runner\Version;
 use RuntimeException;
+use SebastianBergmann\Environment\Console;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
@@ -118,7 +119,7 @@ class TestCommand extends Command
         try {
             $process->setTty(! $this->option('without-tty'));
         } catch (RuntimeException $e) {
-            $this->output->writeln('Warning: '.$e->getMessage());
+            // $this->output->writeln('Warning: '.$e->getMessage());
         }
 
         $exitCode = 1;
@@ -190,10 +191,10 @@ class TestCommand extends Command
 
         if ($this->option('ansi')) {
             $arguments[] = '--colors=always';
-        }
-
-        if ($this->option('no-ansi')) {
+        } else if ($this->option('no-ansi')) {
             $arguments[] = '--colors=never';
+        } else if ((new Console)->hasColorSupport()) {
+            $arguments[] = '--colors=always';
         }
 
         return $arguments;
