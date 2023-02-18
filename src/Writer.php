@@ -10,7 +10,6 @@ use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
-use ReflectionFunction;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
@@ -53,16 +52,9 @@ final class Writer
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
      *
-     * @var array<int, string>
+     * @var array<int, string|Closure>
      */
     private array $ignore = [];
-
-    /**
-     * Ignores traces where the file and line matches one of the provided closures
-     *
-     * @var array<int, Closure>
-     */
-    private array $ignoreClosures = [];
 
     /**
      * Declares whether or not the trace should appear.
@@ -127,13 +119,6 @@ final class Writer
         return $this;
     }
 
-    public function ignoreClosuresIn(array $ignore): self
-    {
-        $this->ignoreClosures = $ignore;
-
-        return $this;
-    }
-
     public function showTrace(bool $show): self
     {
         $this->showTrace = $show;
@@ -184,23 +169,16 @@ final class Writer
                     }
 
                     foreach ($this->ignore as $ignore) {
-                        // Ensure paths are linux-style (like the ones on $this->ignore)
-                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
-                        if (preg_match($ignore, $sanitizedPath)) {
-                            return false;
+                        if (is_string($ignore)) {
+                            // Ensure paths are linux-style (like the ones on $this->ignore)
+                            $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+                            if (preg_match($ignore, $sanitizedPath)) {
+                                return false;
+                            }
                         }
-                    }
 
-                    foreach ($this->ignoreClosures as $ignoreClosure) {
-                        $reflection = new ReflectionFunction($ignoreClosure);
-
-                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
-
-                        /** @phpstan-ignore-next-line */
-                        $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
-
-                        if ($sanitizedPath === $sanitizedClosurePath) {
-                            if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                        if ($ignore instanceof Closure) {
+                            if ($ignore($frame)) {
                                 return false;
                             }
                         }
