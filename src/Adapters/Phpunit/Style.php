@@ -24,6 +24,7 @@ use function Termwind\render;
 use function Termwind\renderUsing;
 use Termwind\Terminal;
 use function Termwind\terminal;
+use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
 /**
@@ -336,32 +337,8 @@ final class Style
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
             '/vendor\/webmozart\/assert/',
 
-            //Ignores frames in PestPHP custom expectations
-            function ($frame) {
-                if (class_exists(Expectation::class)) {
-                    $reflection = new ReflectionClass(Expectation::class);
-
-                    /** @var array<int, Closure> $extends */
-                    $extends = $reflection->getStaticPropertyValue('extends', []);
-
-                    foreach ($extends as $extendClosure) {
-                        $reflection = new ReflectionFunction($extendClosure);
-
-                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
-
-                        /** @phpstan-ignore-next-line */
-                        $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
-
-                        if ($sanitizedPath === $sanitizedClosurePath) {
-                            if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-
-                return false;
-            },
+            $this->ignorePestExtends(...),
+            $this->ignorePestPipes(...),
         ]);
 
         /** @var \Throwable $throwable */
@@ -458,5 +435,67 @@ final class Style
                 </span>%s
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $description, $warning, $seconds));
+    }
+
+    /**
+     * @param  Frame  $frame
+     */
+    private function ignorePestPipes($frame): bool
+    {
+        if (class_exists(Expectation::class)) {
+            $reflection = new ReflectionClass(Expectation::class);
+
+            /** @var array<string, array<int, Closure>> $expectationPipes */
+            $expectationPipes = $reflection->getStaticPropertyValue('pipes', []);
+
+            foreach ($expectationPipes as $pipes) {
+                foreach ($pipes as $pipeClosure) {
+                    $reflection = new ReflectionFunction($pipeClosure);
+
+                    $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile() ?? '');
+
+                    /** @phpstan-ignore-next-line */
+                    $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
+
+                    if ($sanitizedPath === $sanitizedClosurePath) {
+                        if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  Frame  $frame
+     */
+    private function ignorePestExtends($frame): bool
+    {
+        if (class_exists(Expectation::class)) {
+            $reflection = new ReflectionClass(Expectation::class);
+
+            /** @var array<int, Closure> $extends */
+            $extends = $reflection->getStaticPropertyValue('extends', []);
+
+            foreach ($extends as $extendClosure) {
+                $reflection = new ReflectionFunction($extendClosure);
+
+                $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile() ?? '');
+
+                /** @phpstan-ignore-next-line */
+                $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
+
+                if ($sanitizedPath === $sanitizedClosurePath) {
+                    if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
