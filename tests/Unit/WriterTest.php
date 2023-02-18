@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
 use Tests\FakeProgram\HelloWorldFile4;
+use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
 class WriterTest extends TestCase
@@ -111,6 +112,33 @@ EOF;
 EOF;
 
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
+    }
+
+    /** @test */
+    public function itIgnoresClosures(): void
+    {
+        $inspector = new Inspector(HelloWorldFile1::say());
+
+        ($writer = $this->createWriter())->ignoreFilesIn([function (Frame $frame) {
+            return str_contains($frame->getFile(), 'FakeProgram');
+        }])
+            ->write($inspector);
+
+        $space = ' ';
+
+        $result = <<<EOF
+
+   Tests\FakeProgram\FakeException$space
+
+  Fail description
+
+  at tests/Unit/WriterTest.php
+EOF;
+
+        $this->assertStringContainsString(
+            $result,
+            $writer->getOutput()->fetch()
+        );
     }
 
     /** @test */
