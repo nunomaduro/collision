@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
+use Closure;
 use NunoMaduro\Collision\Contracts\RenderlessEditor;
 use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
@@ -51,7 +52,7 @@ final class Writer
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
      *
-     * @var array<int, string>
+     * @var array<int, string|Closure>
      */
     private array $ignore = [];
 
@@ -168,10 +169,18 @@ final class Writer
                     }
 
                     foreach ($this->ignore as $ignore) {
-                        // Ensure paths are linux-style (like the ones on $this->ignore)
-                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
-                        if (preg_match($ignore, $sanitizedPath)) {
-                            return false;
+                        if (is_string($ignore)) {
+                            // Ensure paths are linux-style (like the ones on $this->ignore)
+                            $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+                            if (preg_match($ignore, $sanitizedPath)) {
+                                return false;
+                            }
+                        }
+
+                        if ($ignore instanceof Closure) {
+                            if ($ignore($frame)) {
+                                return false;
+                            }
                         }
                     }
 

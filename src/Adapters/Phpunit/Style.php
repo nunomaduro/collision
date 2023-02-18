@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use Closure;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
+use Pest\Expectation;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -15,6 +17,7 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use ReflectionClass;
+use ReflectionFunction;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use function Termwind\render;
@@ -332,6 +335,33 @@ final class Style
             '/vendor\/coduo\/php-matcher\/src\/PHPUnit/',
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
             '/vendor\/webmozart\/assert/',
+
+            //Ignores frames in PestPHP custom expectations
+            function ($frame) {
+                if (class_exists(Expectation::class)) {
+                    $reflection = new ReflectionClass(Expectation::class);
+
+                    /** @var array<int, Closure> $extends */
+                    $extends = $reflection->getStaticPropertyValue('extends', []);
+
+                    foreach ($extends as $extendClosure) {
+                        $reflection = new ReflectionFunction($extendClosure);
+
+                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+
+                        /** @phpstan-ignore-next-line */
+                        $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
+
+                        if ($sanitizedPath === $sanitizedClosurePath) {
+                            if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                return false;
+            },
         ]);
 
         /** @var \Throwable $throwable */
