@@ -8,6 +8,7 @@ use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Writer;
+use Pest\Expectation;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -333,6 +334,13 @@ final class Style
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
             '/vendor\/webmozart\/assert/',
         ]);
+
+        if (class_exists(Expectation::class)) {
+            $reflection = new ReflectionClass(Expectation::class);
+
+            /** @phpstan-ignore-next-line  */
+            $writer->ignoreClosuresIn($reflection->getStaticPropertyValue('extends', []));
+        }
 
         /** @var \Throwable $throwable */
         $inspector = new Inspector($throwable);

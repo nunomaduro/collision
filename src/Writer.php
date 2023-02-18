@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
+use Closure;
 use NunoMaduro\Collision\Contracts\RenderlessEditor;
 use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
+use ReflectionFunction;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
@@ -54,6 +56,13 @@ final class Writer
      * @var array<int, string>
      */
     private array $ignore = [];
+
+    /**
+     * Ignores traces where the file and line matches one of the provided closures
+     *
+     * @var array<int, Closure>
+     */
+    private array $ignoreClosures = [];
 
     /**
      * Declares whether or not the trace should appear.
@@ -118,6 +127,13 @@ final class Writer
         return $this;
     }
 
+    public function ignoreClosuresIn(array $ignore): self
+    {
+        $this->ignoreClosures = $ignore;
+
+        return $this;
+    }
+
     public function showTrace(bool $show): self
     {
         $this->showTrace = $show;
@@ -172,6 +188,21 @@ final class Writer
                         $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
                         if (preg_match($ignore, $sanitizedPath)) {
                             return false;
+                        }
+                    }
+
+                    foreach ($this->ignoreClosures as $ignoreClosure) {
+                        $reflection = new ReflectionFunction($ignoreClosure);
+
+                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+
+                        /** @phpstan-ignore-next-line */
+                        $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
+
+                        if ($sanitizedPath === $sanitizedClosurePath) {
+                            if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                                return false;
+                            }
                         }
                     }
 
