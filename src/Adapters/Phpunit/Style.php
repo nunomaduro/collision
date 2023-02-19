@@ -445,6 +445,8 @@ final class Style
     {
         if (class_exists(Expectation::class)) {
             $reflection = new ReflectionClass(Expectation::class);
+
+            /** @var array<string, array<Closure(Closure, mixed ...$arguments): void>> $expectationPipes */
             $expectationPipes = $reflection->getStaticPropertyValue('pipes', []);
 
             foreach ($expectationPipes as $pipes) {
@@ -466,6 +468,8 @@ final class Style
     {
         if (class_exists(Expectation::class)) {
             $reflection = new ReflectionClass(Expectation::class);
+
+            /** @var array<string, Closure> $extends */
             $extends = $reflection->getStaticPropertyValue('extends', []);
 
             foreach ($extends as $extendClosure) {
@@ -485,7 +489,7 @@ final class Style
     {
         $reflection = new ReflectionFunction($closure);
 
-        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+        $sanitizedPath = (string) str_replace('\\', '/', (string) $frame->getFile());
 
         /** @phpstan-ignore-next-line */
         $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
