@@ -340,6 +340,7 @@ final class Style
 
             $this->ignorePestPipes(...),
             $this->ignorePestExtends(...),
+            $this->ignorePestInterceptors(...),
         ]);
 
         /** @var \Throwable $throwable */
@@ -475,6 +476,29 @@ final class Style
             foreach ($extends as $extendClosure) {
                 if ($this->isFrameInClosure($frame, $extendClosure)) {
                     return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  Frame  $frame
+     */
+    private function ignorePestInterceptors($frame): bool
+    {
+        if (class_exists(Expectation::class)) {
+            $reflection = new ReflectionClass(Expectation::class);
+
+            /** @var array<string, array<Closure(Closure, mixed ...$arguments): void>> $expectationInterceptors */
+            $expectationInterceptors = $reflection->getStaticPropertyValue('interceptors', []);
+
+            foreach ($expectationInterceptors as $pipes) {
+                foreach ($pipes as $pipeClosure) {
+                    if ($this->isFrameInClosure($frame, $pipeClosure)) {
+                        return true;
+                    }
                 }
             }
         }
