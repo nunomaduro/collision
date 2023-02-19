@@ -102,7 +102,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (8 assertions)',
+            'Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 8 passed (9 assertions)',
             $output
         );
     }
