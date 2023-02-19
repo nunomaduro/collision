@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
+use Closure;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
@@ -480,7 +481,7 @@ final class Style
     /**
      * @param  Frame  $frame
      */
-    private function isFrameInClosure($frame, \Closure $closure): bool
+    private function isFrameInClosure($frame, Closure $closure): bool
     {
         $reflection = new ReflectionFunction($closure);
 
