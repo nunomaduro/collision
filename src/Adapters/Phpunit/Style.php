@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
-use Closure;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
@@ -43,7 +42,7 @@ final class Style
     /**
      * @var string[]
      */
-    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::TODO,  TestResult::SKIPPED, TestResult::PASS];
+    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::TODO, TestResult::SKIPPED, TestResult::PASS];
 
     /**
      * Style constructor.
@@ -168,7 +167,8 @@ final class Style
                 <div class="mx-2 text-red">
                     <hr/>
                 </div>
-            HTML);
+            HTML
+            );
 
             $testCaseName = $testResult->testCaseName;
             $description = $testResult->description;
@@ -337,8 +337,8 @@ final class Style
             '/vendor\/sulu\/sulu\/src\/Sulu\/Bundle\/TestBundle\/Testing/',
             '/vendor\/webmozart\/assert/',
 
-            $this->ignorePestExtends(...),
             $this->ignorePestPipes(...),
+            $this->ignorePestExtends(...),
         ]);
 
         /** @var \Throwable $throwable */
@@ -444,23 +444,12 @@ final class Style
     {
         if (class_exists(Expectation::class)) {
             $reflection = new ReflectionClass(Expectation::class);
-
-            /** @var array<string, array<int, Closure>> $expectationPipes */
             $expectationPipes = $reflection->getStaticPropertyValue('pipes', []);
 
             foreach ($expectationPipes as $pipes) {
                 foreach ($pipes as $pipeClosure) {
-                    $reflection = new ReflectionFunction($pipeClosure);
-
-                    $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile() ?? '');
-
-                    /** @phpstan-ignore-next-line */
-                    $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
-
-                    if ($sanitizedPath === $sanitizedClosurePath) {
-                        if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
-                            return true;
-                        }
+                    if ($this->isFrameInClosure($frame, $pipeClosure)) {
+                        return true;
                     }
                 }
             }
@@ -476,23 +465,33 @@ final class Style
     {
         if (class_exists(Expectation::class)) {
             $reflection = new ReflectionClass(Expectation::class);
-
-            /** @var array<int, Closure> $extends */
             $extends = $reflection->getStaticPropertyValue('extends', []);
 
             foreach ($extends as $extendClosure) {
-                $reflection = new ReflectionFunction($extendClosure);
-
-                $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile() ?? '');
-
-                /** @phpstan-ignore-next-line */
-                $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
-
-                if ($sanitizedPath === $sanitizedClosurePath) {
-                    if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
-                        return true;
-                    }
+                if ($this->isFrameInClosure($frame, $extendClosure)) {
+                    return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  Frame  $frame
+     */
+    private function isFrameInClosure($frame, \Closure $closure): bool
+    {
+        $reflection = new ReflectionFunction($closure);
+
+        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+
+        /** @phpstan-ignore-next-line */
+        $sanitizedClosurePath = (string) str_replace('\\', '/', $reflection->getFileName());
+
+        if ($sanitizedPath === $sanitizedClosurePath) {
+            if ($reflection->getStartLine() <= $frame->getLine() && $frame->getLine() <= $reflection->getEndLine()) {
+                return true;
             }
         }
 
