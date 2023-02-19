@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.0.5 (2023-02-19)](https://github.com/nunomaduro/collision/compare/v7.0.4...v7.0.5)
+### Added
+- Support for better exception handling on `pestphp/pest` exceptions
+
+### Fixed
+- Requirement of `sebastian/environment` dependency
+
 ## [v7.0.4 (2023-02-17)](https://github.com/nunomaduro/collision/compare/v7.0.3...v7.0.4)
 ### Fixed
 - Colors not being displayed on Windows
