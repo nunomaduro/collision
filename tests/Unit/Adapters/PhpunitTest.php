@@ -48,7 +48,7 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 6 passed (7 assertions)
+  Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (8 assertions)
   Duration:
 EOF,
             $output
