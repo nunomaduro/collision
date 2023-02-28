@@ -341,6 +341,7 @@ final class Style
             $this->ignorePestPipes(...),
             $this->ignorePestExtends(...),
             $this->ignorePestInterceptors(...),
+
         ]);
 
         /** @var \Throwable $throwable */
