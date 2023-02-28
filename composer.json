@@ -13,6 +13,7 @@
             "email": "enunomaduro@gmail.com"
         }
     ],
+    "version": "7.x-dev",
     "require": {
         "php": "^8.1.0",
         "filp/whoops": "^2.14.6",
