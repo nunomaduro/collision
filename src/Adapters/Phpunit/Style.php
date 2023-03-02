@@ -335,6 +335,7 @@ final class Style
         $writer->showTitle(false);
 
         $writer->ignoreFilesIn([
+            '/vendor\/nunomaduro\/collision/',
             '/vendor\/bin\/pest/',
             '/bin\/pest/',
             '/vendor\/pestphp\/pest/',
