@@ -211,6 +211,10 @@ final class Style
             if (($countTests = $state->countTestsInTestSuiteBy($type)) !== 0) {
                 $color = TestResult::makeColor($type);
 
+                if ($type === TestResult::WARN && $countTests < 2) {
+                    $type = 'warning';
+                }
+
                 if ($type === TestResult::TODO && $countTests > 1) {
                     $type = 'todos';
                 }
