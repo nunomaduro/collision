@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
+error_reporting(E_ALL);
+
 class ExampleTest extends TestCase
 {
     /**
