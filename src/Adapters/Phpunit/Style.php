@@ -128,7 +128,7 @@ final class Style
      *    ✓ basic test
      * ```
      */
-    public function writeErrorsSummary(State $state, bool $onFailure): void
+    public function writeErrorsSummary(State $state): void
     {
         $configuration = Registry::get();
         $failTypes = [
@@ -167,8 +167,10 @@ final class Style
             true
         ));
 
-        if (! $onFailure) {
-            $this->output->writeln(['']);
+        if (count($errors) === 0) {
+            $this->output->writeln('');
+
+            return;
         }
 
         array_map(function (TestResult $testResult): void {

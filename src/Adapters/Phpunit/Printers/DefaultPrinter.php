@@ -367,10 +367,7 @@ final class DefaultPrinter
         $failed = class_exists(Result::class) ?
             Result::failed() : (! Facade::result()->wasSuccessful());
 
-        if ($failed) {
-            $onFailure = $result->numberOfTests() !== $result->numberOfTestsRun();
-            $this->style->writeErrorsSummary($this->state, $onFailure);
-        }
+        $this->style->writeErrorsSummary($this->state);
 
         $this->style->writeRecap($this->state, $event->telemetryInfo(), $result);
 
