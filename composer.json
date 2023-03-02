@@ -23,7 +23,7 @@
         "brianium/paratest": "^7.1.0",
         "laravel/framework": "^10.2.0",
         "laravel/pint": "^1.6.0",
-        "laravel/sail": "^1.21.0",
+        "laravel/sail": "^1.21.1",
         "laravel/sanctum": "^3.2.1",
         "laravel/tinker": "^2.8.1",
         "nunomaduro/larastan": "^2.4.1",

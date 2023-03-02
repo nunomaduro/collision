@@ -48,7 +48,7 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:    2 deprecated, 1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (10 assertions)
+  Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (12 assertions)
   Duration:
 EOF,
             $output
@@ -102,7 +102,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    2 deprecated, 1 risky, 1 incomplete, 1 todo, 1 skipped, 8 passed (11 assertions)',
+            'Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 1 todo, 1 skipped, 8 passed (13 assertions)',
             $output
         );
     }

@@ -22,12 +22,13 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
-use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
-use PHPUnit\Event\TestRunner\WarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
@@ -235,7 +236,7 @@ final class DefaultPrinter
     /**
      * Listen to the test runner warning triggered.
      */
-    public function testRunnerWarningTriggered(WarningTriggered $event): void
+    public function testRunnerWarningTriggered(TestRunnerWarningTriggered $event): void
     {
         if (! str_starts_with($event->message(), 'No tests found in class')) {
             $this->style->writeWarning($event->message());
@@ -250,6 +251,16 @@ final class DefaultPrinter
         $throwable = Throwable::from(new Exception($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
+    }
+
+    /**
+     * Listen to the test php warning triggered event.
+     */
+    public function testPhpWarningTriggered(PhpWarningTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
     /**
@@ -270,6 +281,16 @@ final class DefaultPrinter
         $throwable = Throwable::from(new Exception($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
+    }
+
+    /**
+     * Listen to the test warning triggered event.
+     */
+    public function testWarningTriggered(WarningTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
     /**

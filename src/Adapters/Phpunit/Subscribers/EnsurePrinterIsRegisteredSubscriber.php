@@ -29,18 +29,22 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggeredSubscriber;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggeredSubscriber;
+use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggeredSubscriber;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\PreparationStartedSubscriber;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\SkippedSubscriber;
+use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\Test\WarningTriggeredSubscriber;
 use PHPUnit\Event\TestRunner\Configured;
 use PHPUnit\Event\TestRunner\ConfiguredSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
-use PHPUnit\Event\TestRunner\WarningTriggered;
-use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber as TestRunnerWarningTriggeredSubscriber;
 use PHPUnit\Runner\Version;
 
 if (class_exists(Version::class) && (int) Version::series() >= 10) {
@@ -144,9 +148,9 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                     }
                 },
 
-                new class($printer) extends Subscriber implements WarningTriggeredSubscriber
+                new class($printer) extends Subscriber implements TestRunnerWarningTriggeredSubscriber
                 {
-                    public function notify(WarningTriggered $event): void
+                    public function notify(TestRunnerWarningTriggered $event): void
                     {
                         $this->printer()->testRunnerWarningTriggered($event);
                     }
@@ -157,6 +161,14 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                     public function notify(PhpDeprecationTriggered $event): void
                     {
                         $this->printer()->testPhpDeprecationTriggered($event);
+                    }
+                },
+
+                new class($printer) extends Subscriber implements PhpWarningTriggeredSubscriber
+                {
+                    public function notify(PhpWarningTriggered $event): void
+                    {
+                        $this->printer()->testPhpWarningTriggered($event);
                     }
                 },
 
@@ -203,6 +215,14 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                     public function notify(Skipped $event): void
                     {
                         $this->printer()->testSkipped($event);
+                    }
+                },
+
+                new class($printer) extends Subscriber implements WarningTriggeredSubscriber
+                {
+                    public function notify(WarningTriggered $event): void
+                    {
+                        $this->printer()->testWarningTriggered($event);
                     }
                 },
             );
