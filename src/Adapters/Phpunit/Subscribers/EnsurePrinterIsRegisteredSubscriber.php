@@ -13,6 +13,8 @@ use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
+use PHPUnit\Event\Test\DeprecationTriggered;
+use PHPUnit\Event\Test\DeprecationTriggeredSubscriber;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
 use PHPUnit\Event\Test\Failed;
@@ -23,6 +25,8 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PassedSubscriber;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpDeprecationTriggeredSubscriber;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggeredSubscriber;
 use PHPUnit\Event\Test\PreparationStarted;
@@ -132,11 +136,27 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                     }
                 },
 
+                new class($printer) extends Subscriber implements DeprecationTriggeredSubscriber
+                {
+                    public function notify(DeprecationTriggered $event): void
+                    {
+                        $this->printer()->testDeprecationTriggered($event);
+                    }
+                },
+
                 new class($printer) extends Subscriber implements WarningTriggeredSubscriber
                 {
                     public function notify(WarningTriggered $event): void
                     {
                         $this->printer()->testRunnerWarningTriggered($event);
+                    }
+                },
+
+                new class($printer) extends Subscriber implements PhpDeprecationTriggeredSubscriber
+                {
+                    public function notify(PhpDeprecationTriggered $event): void
+                    {
+                        $this->printer()->testPhpDeprecationTriggered($event);
                     }
                 },
 

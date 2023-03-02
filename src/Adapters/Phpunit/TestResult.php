@@ -180,7 +180,7 @@ final class TestResult
     {
         switch ($type) {
             case self::DEPRECATED:
-                return 'd';
+                return '!';
             case self::FAIL:
                 return '⨯';
             case self::SKIPPED:

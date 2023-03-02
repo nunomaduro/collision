@@ -20,6 +20,7 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
@@ -239,6 +240,16 @@ final class DefaultPrinter
         if (! str_starts_with($event->message(), 'No tests found in class')) {
             $this->style->writeWarning($event->message());
         }
+    }
+
+    /**
+     * Listen to the test runner warning triggered.
+     */
+    public function testPhpDeprecationTriggered(PhpDeprecationTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
 
     /**
