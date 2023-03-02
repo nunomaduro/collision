@@ -277,9 +277,12 @@ class TestCommand extends Command
         Options::setInputDefinition($inputDefinition);
         $input = new ArgvInput($options, $inputDefinition);
 
+        /** @var non-empty-string $basePath */
+        $basePath = base_path();
+
         $paraTestOptions = Options::fromConsoleInput(
             $input,
-            getcwd(),
+            $basePath,
         );
 
         if (! $paraTestOptions->configuration->hasCoverageCacheDirectory()) {
