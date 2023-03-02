@@ -42,7 +42,7 @@ class TestCommand extends BaseTestCommand
             return array_merge([PHP_BINARY, '-qrr'], $binary);
         }
 
-        $binary[0] = __DIR__.'/../../../../../' . $binary[0];
+        $binary[0] = __DIR__.'/../../../../../'.$binary[0];
 
         return array_merge([PHP_BINARY], $binary);
     }
