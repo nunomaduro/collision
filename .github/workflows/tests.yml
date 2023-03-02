@@ -37,5 +37,8 @@ jobs:
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
 
-    - name: Run Unit Tests
-      run: composer test:unit
+    - name: Run Unit With PHPUnit
+      run: composer test:unit:phpunit
+
+    - name: Run Unit With Pest
+      run: composer test:unit:pest

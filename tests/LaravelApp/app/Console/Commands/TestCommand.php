@@ -33,13 +33,18 @@ class TestCommand extends BaseTestCommand
      */
     protected function binary()
     {
-        [$_, $command] = parent::binary();
+        $binary = parent::binary();
+
+        unset($binary[0]);
+        $binary = array_values($binary);
 
         if ('phpdbg' === PHP_SAPI) {
-            return [PHP_BINARY, '-qrr', __DIR__.'/../../../../../'.$command];
+            return array_merge([PHP_BINARY, '-qrr'], $binary);
         }
 
-        return [PHP_BINARY, __DIR__.'/../../../../../'.$command];
+        $binary[0] = __DIR__.'/../../../../../' . $binary[0];
+
+        return array_merge([PHP_BINARY], $binary);
     }
 
     /**

@@ -70,14 +70,19 @@
         "lint": "pint -v",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
-        "test:unit": [
+        "test:unit:phpunit": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --colors=always -v"
+        ],
+        "test:unit:pest": [
             "@putenv XDEBUG_MODE=coverage",
             "pest --colors=always -v"
         ],
         "test": [
             "@test:lint",
             "@test:types",
-            "@test:unit"
+            "@test:unit:phpunit",
+            "@test:unit:pest"
         ]
     }
 }
