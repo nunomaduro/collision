@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
+use RuntimeException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Node\Directory;
 use SebastianBergmann\CodeCoverage\Node\File;
 use SebastianBergmann\Environment\Runtime;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Terminal;
+use function Termwind\render;
+use function Termwind\renderUsing;
+use function Termwind\terminal;
 
 /**
  * @internal
@@ -88,10 +91,6 @@ final class Coverage
 
         $totalCoverage = $codeCoverage->getReport()->percentageOfExecutedLines();
 
-        $totalWidth = (new Terminal())->getWidth();
-
-        $dottedLineLength = $totalWidth;
-
         /** @var Directory<File|Directory> $report */
         $report = $codeCoverage->getReport();
 
@@ -106,51 +105,38 @@ final class Coverage
                 $dirname,
                 $basename,
             ]);
-            $rawName = $dirname === '.' ? $basename : implode(DIRECTORY_SEPARATOR, [
-                $dirname,
-                $basename,
-            ]);
-
-            $linesExecutedTakenSize = 0;
-
-            if ($file->percentageOfExecutedLines()->asString() != '0.00%') {
-                $linesExecutedTakenSize = strlen($uncoveredLines = trim(implode(', ', self::getMissingCoverage($file)))) + 1;
-                $name .= sprintf(' <fg=red>%s</>', $uncoveredLines);
-            }
 
             $percentage = $file->numberOfExecutableLines() === 0
                 ? '100.0'
                 : number_format($file->percentageOfExecutedLines()->asFloat(), 1, '.', '');
 
-            $takenSize = strlen($rawName.$percentage) + 8 + $linesExecutedTakenSize; // adding 3 space and percent sign
+            $color = $percentage === '100.0' ? 'green' : ($percentage === '0.0' ? 'red' : 'yellow');
 
-            $percentage = sprintf(
-                '<fg=%s%s>%s</>',
-                $percentage === '100.0' ? 'green' : ($percentage === '0.0' ? 'red' : 'yellow'),
-                $percentage === '100.0' ? ';options=bold' : '',
-                $percentage
-            );
+            $truncateAt = max(1, terminal()->width() - 12);
 
-            $output->writeln(sprintf(
-                '  <fg=white>%s</> <fg=#6C7280>%s</> %s <fg=#6C7280>%%</>',
-                $name,
-                str_repeat('.', max($dottedLineLength - $takenSize, 1)),
-                $percentage
-            ));
+            renderUsing($output);
+            render(<<<HTML
+                <div class="flex mx-2">
+                    <span class="truncate-{$truncateAt}">{$name}</span>
+                    <span class="flex-1 content-repeat-[.] text-gray mx-1"></span>
+                    <span class="text-{$color}">{$percentage}%</span>
+                </div>
+            HTML);
         }
 
-        $output->writeln('');
+        $totalCoverageAsString = $totalCoverage->asFloat() === 0.0
+            ? '0.0'
+            : number_format($totalCoverage->asFloat(), 1, '.', '');
 
-        $rawName = 'Total Coverage';
-
-        $takenSize = strlen($rawName.$totalCoverage->asString()) + 6;
-
-        $output->writeln(sprintf(
-            '  <fg=white;options=bold>%s</> <fg=#6C7280>%s</> %s <fg=#6C7280>%%</>',
-            $rawName,
-            str_repeat('.', max($dottedLineLength - $takenSize, 1)),
-            number_format($totalCoverage->asFloat(), 1, '.', '')
-        ));
+        renderUsing($output);
+        render(<<<HTML
+            <div class="mx-2">
+                <hr class="text-gray" />
+                <div class="w-full text-right">
+                    <span class="ml-1 font-bold">Total: {$totalCoverageAsString} %</span>
+                </div>
+            </div>
+        HTML);
 
         return $totalCoverage->asFloat();
     }
@@ -170,7 +156,7 @@ final class Coverage
         $shouldBeNewLine = true;
 
         $eachLine = function (array $array, array $tests, int $line) use (&$shouldBeNewLine): array {
-            if (count($tests) > 0) {
+            if ($tests !== []) {
                 $shouldBeNewLine = true;
 
                 return $array;
@@ -185,8 +171,8 @@ final class Coverage
 
             $lastKey = count($array) - 1;
 
-            if (array_key_exists($lastKey, $array) && str_contains($array[$lastKey], '..')) {
-                [$from] = explode('..', $array[$lastKey]);
+            if (array_key_exists($lastKey, $array) && str_contains((string) $array[$lastKey], '..')) {
+                [$from] = explode('..', (string) $array[$lastKey]);
                 $array[$lastKey] = $line > $from ? sprintf('%s..%s', $from, $line) : sprintf('%s..%s', $line, $from);
 
                 return $array;
