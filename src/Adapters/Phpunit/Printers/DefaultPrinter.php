@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Adapters\Phpunit\State;
 use NunoMaduro\Collision\Adapters\Phpunit\Style;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use NunoMaduro\Collision\Exceptions\TestOutcome;
 use Pest\Result;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -250,7 +251,7 @@ final class DefaultPrinter
      */
     public function testPhpDeprecationTriggered(PhpDeprecationTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
@@ -260,7 +261,7 @@ final class DefaultPrinter
      */
     public function testPhpNoticeTriggered(PhpNoticeTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
     }
@@ -270,7 +271,7 @@ final class DefaultPrinter
      */
     public function testPhpWarningTriggered(PhpWarningTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
@@ -280,7 +281,7 @@ final class DefaultPrinter
      */
     public function testPhpunitWarningTriggered(PhpunitWarningTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
@@ -290,7 +291,7 @@ final class DefaultPrinter
      */
     public function testDeprecationTriggered(DeprecationTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
@@ -300,7 +301,7 @@ final class DefaultPrinter
      */
     public function testNoticeTriggered(NoticeTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
     }
@@ -310,7 +311,7 @@ final class DefaultPrinter
      */
     public function testWarningTriggered(WarningTriggered $event): void
     {
-        $throwable = Throwable::from(new Exception($event->message()));
+        $throwable = Throwable::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }

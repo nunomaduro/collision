@@ -8,6 +8,7 @@ use Closure;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
+use NunoMaduro\Collision\Exceptions\TestOutcome;
 use NunoMaduro\Collision\Writer;
 use Pest\Expectation;
 use PHPUnit\Event\Code\Throwable;
@@ -189,6 +190,7 @@ final class Style
             $throwableClassName = ! in_array($throwableClassName, [
                 ExpectationFailedException::class,
                 IncompleteTestError::class,
+                TestOutcome::class,
             ], true) ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
                 : '';
 
