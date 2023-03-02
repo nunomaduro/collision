@@ -135,19 +135,31 @@ final class Style
             TestResult::FAIL,
         ];
 
-        if ($configuration->failOnWarning()) {
-            $failTypes[] = TestResult::WARN;
-            $failTypes[] = TestResult::RISKY;
+        if ($configuration->displayDetailsOnTestsThatTriggerNotices()) {
             $failTypes[] = TestResult::NOTICE;
         }
 
-        if ($configuration->failOnIncomplete()) {
+        if ($configuration->displayDetailsOnTestsThatTriggerDeprecations()) {
+            $failTypes[] = TestResult::DEPRECATED;
+        }
+
+        if ($configuration->failOnWarning() || $configuration->displayDetailsOnTestsThatTriggerWarnings()) {
+            $failTypes[] = TestResult::WARN;
+        }
+
+        if ($configuration->failOnRisky()) {
+            $failTypes[] = TestResult::RISKY;
+        }
+
+        if ($configuration->failOnIncomplete() || $configuration->displayDetailsOnIncompleteTests()) {
             $failTypes[] = TestResult::INCOMPLETE;
         }
 
-        if ($configuration->failOnSkipped()) {
+        if ($configuration->failOnSkipped() || $configuration->displayDetailsOnSkippedTests()) {
             $failTypes[] = TestResult::SKIPPED;
         }
+
+        $failTypes = array_unique($failTypes);
 
         $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => in_array(
             $testResult->type,
