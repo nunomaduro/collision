@@ -12,14 +12,14 @@ use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
+use ParaTest\Options;
 use PHPUnit\Runner\Version;
 use RuntimeException;
 use SebastianBergmann\Environment\Console;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
-use ParaTest\Options;
 
 /**
  * @internal
@@ -283,7 +283,7 @@ class TestCommand extends Command
         );
 
         if (! $paraTestOptions->configuration->hasCoverageCacheDirectory()) {
-            $cacheDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . '__laravel_test_cache_directory';
+            $cacheDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'__laravel_test_cache_directory';
             $options[] = '--cache-directory';
             $options[] = $cacheDirectory;
         }
