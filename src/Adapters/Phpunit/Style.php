@@ -161,17 +161,11 @@ final class Style
 
         $failTypes = array_unique($failTypes);
 
-        $errors = array_filter($state->suiteTests, fn (TestResult $testResult) => in_array(
+        $errors = array_values(array_filter($state->suiteTests, fn (TestResult $testResult) => in_array(
             $testResult->type,
             $failTypes,
             true
-        ));
-
-        if (count($errors) === 0) {
-            $this->output->writeln('');
-
-            return;
-        }
+        )));
 
         array_map(function (TestResult $testResult): void {
             if (! $testResult->throwable instanceof Throwable) {
