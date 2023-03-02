@@ -48,7 +48,7 @@ class PhpunitTest extends TestCase
   ✓ deprecation example
   ✓ pass example
 
-  Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 7 passed (8 assertions)
+  Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 8 passed (9 assertions)
   Duration:
 EOF,
             $output
@@ -102,7 +102,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 8 passed (9 assertions)',
+            'Tests:    1 risky, 1 incomplete, 1 todo, 1 skipped, 9 passed (10 assertions)',
             $output
         );
     }
@@ -132,18 +132,18 @@ EOF,
         $this->assertConsoleOutputContainsString(<<<EOF
   Failed asserting that true is false.
 
-  at tests/LaravelApp/tests/Unit/ExampleTest.php:16
-     12▕      * @group fail
-     13▕      */
-     14▕     public function testFailExample()
-     15▕     {
-  ➜  16▕         $code
-     17▕     }
-     18▕$space
-     19▕     /**
-     20▕      * @group todo
+  at tests/LaravelApp/tests/Unit/ExampleTest.php:14
+     10▕      * @group fail
+     11▕      */
+     12▕     public function testFailExample()
+     13▕     {
+  ➜  14▕         $code
+     15▕     }
+     16▕$space
+     17▕     /**
+     18▕      * @group todo
 
-  1   tests/LaravelApp/tests/Unit/ExampleTest.php:16
+  1   tests/LaravelApp/tests/Unit/ExampleTest.php:14
 
 EOF
             , $output);
