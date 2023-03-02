@@ -15,6 +15,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use ReflectionClass;
@@ -190,6 +191,7 @@ final class Style
             $throwableClassName = ! in_array($throwableClassName, [
                 ExpectationFailedException::class,
                 IncompleteTestError::class,
+                SkippedWithMessageException::class,
                 TestOutcome::class,
             ], true) ? sprintf('<span class="px-1 bg-red font-bold">%s</span>', (new ReflectionClass($throwableClassName))->getShortName())
                 : '';
