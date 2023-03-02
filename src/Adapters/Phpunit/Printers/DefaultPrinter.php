@@ -19,8 +19,10 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
@@ -254,6 +256,16 @@ final class DefaultPrinter
     }
 
     /**
+     * Listen to the test runner notice triggered.
+     */
+    public function testPhpNoticeTriggered(PhpNoticeTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
+    }
+
+    /**
      * Listen to the test php warning triggered event.
      */
     public function testPhpWarningTriggered(PhpWarningTriggered $event): void
@@ -281,6 +293,16 @@ final class DefaultPrinter
         $throwable = Throwable::from(new Exception($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
+    }
+
+    /**
+     * Listen to the test warning triggered event.
+     */
+    public function testNoticeTriggered(NoticeTriggered $event): void
+    {
+        $throwable = Throwable::from(new Exception($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
     }
 
     /**

@@ -23,10 +23,14 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
+use PHPUnit\Event\Test\NoticeTriggered;
+use PHPUnit\Event\Test\NoticeTriggeredSubscriber;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PassedSubscriber;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggeredSubscriber;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggeredSubscriber;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggeredSubscriber;
 use PHPUnit\Event\Test\PhpWarningTriggered;
@@ -164,6 +168,14 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                     }
                 },
 
+                new class($printer) extends Subscriber implements PhpNoticeTriggeredSubscriber
+                {
+                    public function notify(PhpNoticeTriggered $event): void
+                    {
+                        $this->printer()->testPhpNoticeTriggered($event);
+                    }
+                },
+
                 new class($printer) extends Subscriber implements PhpWarningTriggeredSubscriber
                 {
                     public function notify(PhpWarningTriggered $event): void
@@ -203,6 +215,15 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                         $this->printer()->testMarkedIncomplete($event);
                     }
                 },
+
+                new class($printer) extends Subscriber implements NoticeTriggeredSubscriber
+                {
+                    public function notify(NoticeTriggered $event): void
+                    {
+                        $this->printer()->testNoticeTriggered($event);
+                    }
+                },
+
                 new class($printer) extends Subscriber implements PassedSubscriber
                 {
                     public function notify(Passed $event): void

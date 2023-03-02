@@ -28,6 +28,8 @@ final class TestResult
 
     public const DEPRECATED = 'deprecated';
 
+    public const NOTICE = 'notice';
+
     public const WARN = 'warnings';
 
     public const RUNS = 'pending';
@@ -77,6 +79,7 @@ final class TestResult
              || $this->type === TestResult::RISKY
              || $this->type === TestResult::SKIPPED
              || $this->type === TestResult::DEPRECATED
+             || $this->type === TestResult::NOTICE
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
@@ -179,14 +182,14 @@ final class TestResult
     public static function makeIcon(string $type): string
     {
         switch ($type) {
-            case self::DEPRECATED:
-                return '!';
             case self::FAIL:
                 return '⨯';
             case self::SKIPPED:
                 return '-';
+            case self::DEPRECATED:
             case self::WARN:
             case self::RISKY:
+            case self::NOTICE:
                 return '!';
             case self::INCOMPLETE:
                 return '…';
@@ -205,12 +208,12 @@ final class TestResult
     public static function makeCompactIcon(string $type): string
     {
         switch ($type) {
-            case self::DEPRECATED:
-                return '!';
             case self::FAIL:
                 return '⨯';
             case self::SKIPPED:
                 return 's';
+            case self::DEPRECATED:
+            case self::NOTICE:
             case self::WARN:
             case self::RISKY:
                 return '!';
@@ -234,6 +237,7 @@ final class TestResult
             case self::FAIL:
                 return 'red';
             case self::DEPRECATED:
+            case self::NOTICE:
             case self::SKIPPED:
             case self::INCOMPLETE:
             case self::RISKY:
@@ -258,6 +262,7 @@ final class TestResult
             case self::FAIL:
                 return 'red';
             case self::DEPRECATED:
+            case self::NOTICE:
             case self::SKIPPED:
             case self::INCOMPLETE:
             case self::RISKY:

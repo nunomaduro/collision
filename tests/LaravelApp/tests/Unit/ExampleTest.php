@@ -28,6 +28,26 @@ class ExampleTest extends TestCase
     }
 
     /**
+     * @group notices
+     */
+    public function testUserNotice()
+    {
+        trigger_error('This is a user notice');
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @group notices
+     */
+    public function testUserNoticeTwo()
+    {
+        trigger_error('This is another user notice');
+
+        $this->assertTrue(true);
+    }
+
+    /**
      * @group warnings
      */
     public function testWarning()

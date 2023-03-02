@@ -43,7 +43,7 @@ final class Style
     /**
      * @var string[]
      */
-    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::TODO, TestResult::SKIPPED, TestResult::PASS];
+    private const TYPES = [TestResult::DEPRECATED, TestResult::FAIL, TestResult::WARN, TestResult::RISKY, TestResult::INCOMPLETE, TestResult::NOTICE, TestResult::TODO, TestResult::SKIPPED, TestResult::PASS];
 
     /**
      * Style constructor.
@@ -138,6 +138,7 @@ final class Style
         if ($configuration->failOnWarning()) {
             $failTypes[] = TestResult::WARN;
             $failTypes[] = TestResult::RISKY;
+            $failTypes[] = TestResult::NOTICE;
         }
 
         if ($configuration->failOnIncomplete()) {
@@ -213,6 +214,10 @@ final class Style
 
                 if ($type === TestResult::WARN && $countTests < 2) {
                     $type = 'warning';
+                }
+
+                if ($type === TestResult::NOTICE && $countTests > 1) {
+                    $type = 'notices';
                 }
 
                 if ($type === TestResult::TODO && $countTests > 1) {
