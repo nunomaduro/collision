@@ -32,7 +32,6 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\TestRunner\TestResult\Facade;
