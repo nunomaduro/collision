@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.1.0 (2023-03-03)](https://github.com/nunomaduro/collision/compare/v7.0.5...v7.1.0)
+### Added
+- Support for `displayDetailsOnIncompleteTests`, `displayDetailsOnSkippedTests`, `displayDetailsOnTestsThatTriggerDeprecations`, `displayDetailsOnTestsThatTriggerErrors`, `displayDetailsOnTestsThatTriggerNotices`, `displayDetailsOnTestsThatTriggerWarnings`
+- Better coverage output for `TestCommand`
+
+### Fixed
+- Parallel mode when cache directory is not available
+
 ## [v7.0.5 (2023-02-19)](https://github.com/nunomaduro/collision/compare/v7.0.4...v7.0.5)
 ### Added
 - Support for better exception handling on `pestphp/pest` exceptions
