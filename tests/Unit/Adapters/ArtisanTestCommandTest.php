@@ -16,31 +16,31 @@ class ArtisanTestCommandTest extends TestCase
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--group', 'coverage']);
         $this->assertStringContainsString('Console/Kernel', $output);
         $this->assertStringContainsString('0.0', $output);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--parallel', '--group', 'coverage']);
         $this->assertStringContainsString('Console/Kernel', $output);
         $this->assertStringContainsString('0.0', $output);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
     }
 
     /** @test */
     public function testMinCoverage(): void
     {
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=0', '--group', 'coverage'], 0);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--parallel', '--group', 'coverage']);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--parallel', '--group', 'coverage'], 1);
-        $this->assertStringContainsString('Total Coverage', $output);
+        $this->assertStringContainsString('Total: ', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
     }
 
