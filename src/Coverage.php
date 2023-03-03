@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
-use RuntimeException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Node\Directory;
 use SebastianBergmann\CodeCoverage\Node\File;

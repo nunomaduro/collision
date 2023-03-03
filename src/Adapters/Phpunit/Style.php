@@ -208,7 +208,7 @@ final class Style
                         %s
                     </span>
                 </div>
-            HTML, $truncateClasses, $testResult->color === 'yellow' ? 'yellow-400' : $testResult->color, $testResult->color === 'yellow' ? 'text-black' : '',$testResult->type, $testCaseName, $description, $throwableClassName));
+            HTML, $truncateClasses, $testResult->color === 'yellow' ? 'yellow-400' : $testResult->color, $testResult->color === 'yellow' ? 'text-black' : '', $testResult->type, $testCaseName, $description, $throwableClassName));
 
             $this->writeError($testResult->throwable);
         }, $errors);
