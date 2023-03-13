@@ -20,7 +20,7 @@
         "symfony/console": "^6.2.7"
     },
     "require-dev": {
-        "brianium/paratest": "^7.1.0",
+        "brianium/paratest": "^7.1.1",
         "laravel/framework": "^10.3.3",
         "laravel/pint": "^1.6.0",
         "laravel/sail": "^1.21.2",
@@ -29,9 +29,12 @@
         "nunomaduro/larastan": "^2.5.1",
         "orchestra/testbench-core": "^8.0.5",
         "pestphp/pest": "^2.0.0",
-        "phpunit/phpunit": "^10.0.15",
+        "phpunit/phpunit": "^10.0.16",
         "sebastian/environment": "^6.0.0",
         "spatie/laravel-ignition": "^2.0.0"
+    },
+    "conflict": {
+        "phpunit/phpunit": "<10.0.16"
     },
     "autoload-dev": {
         "psr-4": {
