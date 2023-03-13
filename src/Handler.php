@@ -32,7 +32,7 @@ final class Handler extends AbstractHandler
      */
     public function handle(): int
     {
-        $this->writer->write($this->getInspector());
+        $this->writer->write($this->getInspector()); // @phpstan-ignore-line
 
         return self::QUIT;
     }
