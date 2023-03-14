@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.1.2 (2023-03-14)](https://github.com/nunomaduro/collision/compare/v7.1.1...v7.1.2)
+### Fixed
+- Displaying of uncovered lines
+
 ## [v7.1.1 (2023-03-13)](https://github.com/nunomaduro/collision/compare/v7.1.0...v7.1.1)
 ### Fixed
 - PHPUnit `>10.0.16` support
