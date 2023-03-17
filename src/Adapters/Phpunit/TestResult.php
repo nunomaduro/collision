@@ -58,6 +58,8 @@ final class TestResult
 
     public string $warning = '';
 
+    public string $warningSource = '';
+
     /**
      * Creates a new TestResult instance.
      */
@@ -83,7 +85,17 @@ final class TestResult
              || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
-            $this->warning = trim((string) preg_replace("/\r|\n/", ' ', $throwable->message()));
+            if (in_array($this->type, [TestResult::DEPRECATED, TestResult::NOTICE])) {
+                foreach (explode("\n", $throwable->stackTrace()) as $line) {
+                    if (strpos($line, 'vendor/nunomaduro/collision') === false) {
+                        $this->warningSource = str_replace(getcwd() . '/', '', $line);
+
+                        break;
+                    }
+                }
+            }
+
+            $this->warning .= trim((string) preg_replace("/\r|\n/", ' ', $throwable->message()));
         }
     }
 
