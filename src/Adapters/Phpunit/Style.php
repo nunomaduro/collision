@@ -446,7 +446,7 @@ final class Style
             $warning = sprintf('<span class="ml-1 text-yellow">%s</span>', $warning);
 
             if (! empty($result->warningSource)) {
-                $warning .= ' // ' .$result->warningSource;
+                $warning .= ' // '.$result->warningSource;
             }
         }
 

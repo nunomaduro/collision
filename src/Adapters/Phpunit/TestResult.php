@@ -88,7 +88,7 @@ final class TestResult
             if (in_array($this->type, [TestResult::DEPRECATED, TestResult::NOTICE])) {
                 foreach (explode("\n", $throwable->stackTrace()) as $line) {
                     if (strpos($line, 'vendor/nunomaduro/collision') === false) {
-                        $this->warningSource = str_replace(getcwd() . '/', '', $line);
+                        $this->warningSource = str_replace(getcwd().'/', '', $line);
 
                         break;
                     }
