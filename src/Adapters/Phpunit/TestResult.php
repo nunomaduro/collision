@@ -96,6 +96,10 @@ final class TestResult
             }
 
             $this->warning .= trim((string) preg_replace("/\r|\n/", ' ', $throwable->message()));
+
+            // pest specific
+            $this->warning = str_replace('__pest_evaluable_', '', $this->warning);
+            $this->warning = str_replace('This test depends on "P\\', 'This test depends on "', $this->warning);
         }
     }
 
