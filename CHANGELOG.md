@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.2.0 (2023-03-19)](https://github.com/nunomaduro/collision/compare/v7.1.2...v7.2.0)
+### Added
+- `--without-databases` option on the Laravel `test` Artisan command
+
 ## [v7.1.2 (2023-03-14)](https://github.com/nunomaduro/collision/compare/v7.1.1...v7.1.2)
 ### Fixed
 - Displaying of uncovered lines
