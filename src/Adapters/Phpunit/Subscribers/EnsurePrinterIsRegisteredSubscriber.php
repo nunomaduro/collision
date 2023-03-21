@@ -248,11 +248,7 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                 },
             ];
 
-            if (method_exists(Facade::class, 'instance')) { // @phpstan-ignore-line
-                Facade::instance()->registerSubscribers(...$subscribers);
-            } else {
-                Facade::registerSubscribers(...$subscribers);
-            }
+            Facade::instance()->registerSubscribers(...$subscribers);
         }
 
         /**
@@ -266,11 +262,7 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
             if ($shouldRegister) {
                 self::$registered = true;
 
-                if (method_exists(Facade::class, 'instance')) { // @phpstan-ignore-line
-                    Facade::instance()->registerSubscriber(new self());
-                } else {
-                    Facade::registerSubscriber(new self());
-                }
+                Facade::instance()->registerSubscriber(new self());
             }
         }
     }
