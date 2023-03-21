@@ -36,6 +36,7 @@ use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TextUI\Configuration\Registry;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -365,8 +366,11 @@ final class DefaultPrinter
             $this->output->writeln(['']);
         }
 
-        $failed = class_exists(Result::class) ?
-            Result::failed() : (! Facade::result()->wasSuccessful());
+        if (class_exists(Result::class)) {
+            $failed = Result::failed(Registry::get(), Facade::result());
+        } else {
+            $failed = ! Facade::result()->wasSuccessful();
+        }
 
         $this->style->writeErrorsSummary($this->state);
 
