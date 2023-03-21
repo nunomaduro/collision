@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.3.2 (2023-03-21)](https://github.com/nunomaduro/collision/compare/v7.3.1...v7.3.2)
+### Fixed
+- Usage of result on Pest
+
 ## [v7.3.1 (2023-03-21)](https://github.com/nunomaduro/collision/compare/v7.3.0...v7.3.1)
 ### Fixed
 - Bad regex on previous improved Laravel stacktrace
