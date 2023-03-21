@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Improved Laravel stacktrace
 
+### Chore
+- Bumps dependencies
+
 ## [v7.2.0 (2023-03-19)](https://github.com/nunomaduro/collision/compare/v7.1.2...v7.2.0)
 ### Added
 - `--without-databases` option on the Laravel `test` Artisan command
