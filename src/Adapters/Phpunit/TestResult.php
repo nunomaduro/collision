@@ -6,6 +6,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
+use Pest\TestSuite;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -169,6 +170,18 @@ final class TestResult
     public static function makeDescription(TestMethod $test): string
     {
         if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+            $methodName = $test->methodName();
+
+            if (str_starts_with($methodName, '__pest_evaluable_')) {
+                $testCase = TestSuite::getInstance()->tests->get($test->testDox()->prettifiedClassName());
+
+                $description = $testCase->getMethod($test->methodName())->description;
+
+                assert(is_string($description));
+
+                return $description;
+            }
+
             return $test->className()::getLatestPrintableTestCaseMethodName();
         }
 
