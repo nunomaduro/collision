@@ -140,6 +140,38 @@ final class TestResult
     }
 
     /**
+     * Creates a new test from the given Pest Parallel Test Case.
+     */
+    public static function fromPestParallelTestCase(Test $test, string $type, Throwable $throwable = null): self
+    {
+        if (! $test instanceof TestMethod) {
+            throw new ShouldNotHappen();
+        }
+
+        if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+            $testCaseName = $test->className()::getPrintableTestCaseName();
+        } else {
+            $testCaseName = $test->className();
+        }
+
+        if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+            $description = $test->testDox()->prettifiedMethodName();
+        } else {
+            $description = self::makeDescription($test);
+        }
+
+        $icon = self::makeIcon($type);
+
+        $compactIcon = self::makeCompactIcon($type);
+
+        $color = self::makeColor($type);
+
+        $compactColor = self::makeCompactColor($type);
+
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $throwable);
+    }
+
+    /**
      * Creates a new test from the given test case.
      */
     public static function fromBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): self
