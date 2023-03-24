@@ -95,10 +95,8 @@ final class Writer
 
         $exception = $inspector->getException();
 
-        $realException = $exception instanceof TestException ? $exception->getThrowable() : $exception;
-
-        if ($realException instanceof CustomEditor && $realException->getCustomEditorFrame()) {
-            $editorFrame = $realException->getCustomEditorFrame();
+        if ($exception instanceof CustomEditor && $exception->getCustomEditorFrame()) {
+            $editorFrame = $exception->getCustomEditorFrame();
         } else {
             $editorFrame = array_shift($frames);
         }
