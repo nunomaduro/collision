@@ -367,7 +367,6 @@ final class DefaultPrinter
         }
 
         if (class_exists(Result::class)) {
-            // @phpstan-ignore-next-line
             $failed = Result::failed(Registry::get(), Facade::result());
         } else {
             $failed = ! Facade::result()->wasSuccessful();
