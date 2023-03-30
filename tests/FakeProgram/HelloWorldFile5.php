@@ -6,9 +6,11 @@ namespace Tests\FakeProgram;
 
 class HelloWorldFile5
 {
-    public static function say(): FakeCustomEditorException
+    public static function say(): FakeRenderableOnCollisionEditorException
     {
-        return (new FakeCustomEditorException('Fail custom editor description'))
-            ->withCustomEditor(__DIR__.'/FakeCustomEditorException.php', 15);
+        return new FakeRenderableOnCollisionEditorException(
+            __DIR__.'/FakeRenderableOnCollisionEditorException.php',
+            16, 'Fail custom editor description'
+        );
     }
 }

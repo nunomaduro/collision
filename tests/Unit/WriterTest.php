@@ -262,23 +262,23 @@ EOF;
         $space = ' ';
         $result = <<<EOF
 
-   Tests\FakeProgram\FakeCustomEditorException$space
+   Tests\FakeProgram\FakeRenderableOnCollisionEditorException$space
 
   Fail custom editor description
 
-  at tests/FakeProgram/FakeCustomEditorException.php:15
-     11▕ use NunoMaduro\Collision\Contracts\RenderlessTrace;
-     12▕$space
-     13▕ class FakeCustomEditorException extends Exception implements CustomEditor
-     14▕ {
-  ➜  15▕     use RendersCustomEditor;
-     16▕$space
-     17▕     public static function make(string \$message): FakeCustomEditorException
-     18▕     {
-     19▕         return new self(\$message);
+  at tests/FakeProgram/FakeRenderableOnCollisionEditorException.php:16
+     12▕ {
+     13▕     public function __construct(private string \$collisionFile, private int \$collisionLine, string \$message)
+     14▕     {
+     15▕         parent::__construct(\$message);
+  ➜  16▕     }
+     17▕$space
+     18▕     /**
+     19▕      * {@inheritDoc}
+     20▕      */
 
   1   tests/FakeProgram/HelloWorldFile5.php:11
-      Tests\FakeProgram\FakeCustomEditorException::("Fail custom editor description")
+      Tests\FakeProgram\FakeRenderableOnCollisionEditorException::("Fail custom editor description")
 
   2   tests/Unit/WriterTest.php:259
       Tests\FakeProgram\HelloWorldFile5::say()
