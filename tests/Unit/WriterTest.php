@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
 use Tests\FakeProgram\HelloWorldFile4;
+use Tests\FakeProgram\HelloWorldFile5;
 use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
@@ -243,6 +244,46 @@ EOF;
 
    Tests\FakeProgram\FakeRenderlessException \n
   Fail renderless description\n
+EOF;
+
+        $this->assertEquals(
+            $writer->getOutput()
+                ->fetch(),
+            $result
+        );
+    }
+
+    /** @test  */
+    public function itSupportsCustomEditorContracts(): void
+    {
+        $inspector = new Inspector(HelloWorldFile5::say());
+
+        ($writer = $this->createWriter())->write($inspector);
+        $space = ' ';
+        $result = <<<EOF
+
+   Tests\FakeProgram\FakeCustomEditorException$space
+
+  Fail custom editor description
+
+  at tests/FakeProgram/FakeCustomEditorException.php:15
+     11▕ use NunoMaduro\Collision\Contracts\RenderlessTrace;
+     12▕$space
+     13▕ class FakeCustomEditorException extends Exception implements CustomEditor
+     14▕ {
+  ➜  15▕     use RendersCustomEditor;
+     16▕$space
+     17▕     public static function make(string \$message): FakeCustomEditorException
+     18▕     {
+     19▕         return new self(\$message);
+
+  1   tests/FakeProgram/HelloWorldFile5.php:11
+      Tests\FakeProgram\FakeCustomEditorException::("Fail custom editor description")
+
+  2   tests/Unit/WriterTest.php:259
+      Tests\FakeProgram\HelloWorldFile5::say()
+
+
 EOF;
 
         $this->assertEquals(
