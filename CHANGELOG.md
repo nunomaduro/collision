@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.4.0 (2023-03-31)](https://github.com/nunomaduro/collision/compare/v7.3.3...v7.4.0)
+### Feat
+- Allows exceptions to be renderable on editor
+
 ## [v7.3.3 (2023-03-21)](https://github.com/nunomaduro/collision/compare/v7.3.2...v7.3.3)
 ### Chore
 - Adds method specific for Pest
