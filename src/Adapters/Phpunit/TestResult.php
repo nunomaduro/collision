@@ -204,24 +204,7 @@ final class TestResult
             return $test->className()::getLatestPrintableTestCaseMethodName();
         }
 
-        $name = $test->name();
-
-        // First, lets replace underscore by spaces.
-        $name = str_replace('_', ' ', $name);
-
-        // Then, replace upper cases by spaces.
-        $name = (string) preg_replace('/([A-Z])/', ' $1', $name);
-
-        // Finally, if it starts with `test`, we remove it.
-        $name = (string) preg_replace('/^test/', '', $name);
-
-        // Removes spaces
-        $name = trim($name);
-
-        // Lower case everything
-        $name = mb_strtolower($name);
-
-        return $name;
+        return $test->testDox()->prettifiedMethodName();
     }
 
     /**
