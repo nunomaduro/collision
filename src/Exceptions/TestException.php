@@ -46,7 +46,7 @@ final class TestException
             $message = $this->throwable->message();
         }
 
-        $regexes  = [
+        $regexes = [
             'To contain' => '/Failed asserting that \'(.*)\' contains "(.*)"\./s',
             'Not to contain' => '/Failed asserting that \'(.*)\' does not contain "(.*)"\./s',
         ];
