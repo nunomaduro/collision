@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.5.0 (2023-04-14)](https://github.com/nunomaduro/collision/compare/v7.4.0...v7.5.0)
+### Feat
+- Support for PHPUnit test runner deprecations
+
 ## [v7.4.0 (2023-03-31)](https://github.com/nunomaduro/collision/compare/v7.3.3...v7.4.0)
 ### Feat
 - Allows exceptions to be renderable on editor
