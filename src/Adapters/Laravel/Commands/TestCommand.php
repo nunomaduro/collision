@@ -389,20 +389,4 @@ class TestCommand extends Command
     {
         return class_exists(\ParaTest\ParaTestCommand::class);
     }
-
-    /**
-     * Get the composer command for the environment.
-     *
-     * @return string
-     */
-    protected function findComposer()
-    {
-        $composerPath = getcwd().'/composer.phar';
-
-        if (file_exists($composerPath)) {
-            return '"'.PHP_BINARY.'" '.$composerPath;
-        }
-
-        return 'composer';
-    }
 }
