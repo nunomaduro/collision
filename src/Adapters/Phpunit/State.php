@@ -67,7 +67,7 @@ final class State
     {
         $this->testCaseName = $test->testCaseName;
 
-        $levels = [
+        $levels = array_flip([
             TestResult::PASS,
             TestResult::RUNS,
             TestResult::TODO,
@@ -78,7 +78,7 @@ final class State
             TestResult::RISKY,
             TestResult::INCOMPLETE,
             TestResult::FAIL,
-        ];
+        ]);
 
         if (isset($this->testCaseTests[$test->id])) {
             $existing = $this->testCaseTests[$test->id];
