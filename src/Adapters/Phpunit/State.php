@@ -67,6 +67,27 @@ final class State
     {
         $this->testCaseName = $test->testCaseName;
 
+        $levels = [
+            TestResult::PASS,
+            TestResult::RUNS,
+            TestResult::TODO,
+            TestResult::SKIPPED,
+            TestResult::WARN,
+            TestResult::NOTICE,
+            TestResult::DEPRECATED,
+            TestResult::RISKY,
+            TestResult::INCOMPLETE,
+            TestResult::FAIL,
+        ];
+
+        if (isset($this->testCaseTests[$test->id])) {
+            $existing = $this->testCaseTests[$test->id];
+
+            if ($levels[$existing->type] >= $levels[$test->type]) {
+                return;
+            }
+        }
+
         $this->testCaseTests[$test->id] = $test;
         $this->toBePrintedCaseTests[$test->id] = $test;
 
