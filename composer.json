@@ -28,8 +28,8 @@
         "laravel/tinker": "^2.8.1",
         "nunomaduro/larastan": "^2.6.0",
         "orchestra/testbench-core": "^8.5.0",
-        "pestphp/pest": "^2.5.2",
-        "phpunit/phpunit": "^10.1.1",
+        "pestphp/pest": "^2.5.3",
+        "phpunit/phpunit": "^10.1.2",
         "sebastian/environment": "^6.0.1",
         "spatie/laravel-ignition": "^2.1.0"
     },
