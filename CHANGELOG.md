@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.5.1 (2023-04-22)](https://github.com/nunomaduro/collision/compare/v7.5.0...v7.5.1)
+### Fix
+- Usage with PHPUnit 10.1.2
+
 ## [v7.5.0 (2023-04-14)](https://github.com/nunomaduro/collision/compare/v7.4.0...v7.5.0)
 ### Feat
 - Support for PHPUnit test runner deprecations
