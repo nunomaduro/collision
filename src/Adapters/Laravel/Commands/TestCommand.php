@@ -243,8 +243,12 @@ class TestCommand extends Command
         return array_merge($this->commonArguments(), ["--configuration=$file"], $options);
     }
 
-    protected function getConfigurationFile(): string {
-
+    /**
+     * Get the configuration file.
+     * @return string
+     */
+    protected function getConfigurationFile()
+    {
         if (! file_exists($file = base_path('phpunit.xml'))) {
             $file = base_path('phpunit.xml.dist');
         }
