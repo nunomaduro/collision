@@ -236,11 +236,7 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--min');
         }));
 
-        if (! file_exists($file = base_path('phpunit.xml'))) {
-            $file = base_path('phpunit.xml.dist');
-        }
-
-        return array_merge($this->commonArguments(), ["--configuration=$file"], $options);
+        return array_merge($this->commonArguments(), ["--configuration=".$this->getConfigurationFile()], $options);
     }
 
     /**
