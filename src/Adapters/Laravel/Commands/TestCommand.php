@@ -243,6 +243,15 @@ class TestCommand extends Command
         return array_merge($this->commonArguments(), ["--configuration=$file"], $options);
     }
 
+    protected function getConfigurationFile(): string {
+
+        if (! file_exists($file = base_path('phpunit.xml'))) {
+            $file = base_path('phpunit.xml.dist');
+        }
+
+        return $file;
+    }
+
     /**
      * Get the array of arguments for running Paratest.
      *
@@ -266,12 +275,8 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--without-databases');
         }));
 
-        if (! file_exists($file = base_path('phpunit.xml'))) {
-            $file = base_path('phpunit.xml.dist');
-        }
-
         $options = array_merge($this->commonArguments(), [
-            "--configuration=$file",
+            "--configuration=".$this->getConfigurationFile(),
             "--runner=\Illuminate\Testing\ParallelRunner",
         ], $options);
 
