@@ -236,11 +236,12 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--min');
         }));
 
-        return array_merge($this->commonArguments(), ["--configuration=".$this->getConfigurationFile()], $options);
+        return array_merge($this->commonArguments(), ['--configuration='.$this->getConfigurationFile()], $options);
     }
 
     /**
      * Get the configuration file.
+     *
      * @return string
      */
     protected function getConfigurationFile()
@@ -276,7 +277,7 @@ class TestCommand extends Command
         }));
 
         $options = array_merge($this->commonArguments(), [
-            "--configuration=".$this->getConfigurationFile(),
+            '--configuration='.$this->getConfigurationFile(),
             "--runner=\Illuminate\Testing\ParallelRunner",
         ], $options);
 
