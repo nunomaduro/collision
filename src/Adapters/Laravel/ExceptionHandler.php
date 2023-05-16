@@ -84,4 +84,26 @@ final class ExceptionHandler implements ExceptionHandlerContract
     {
         return $this->appExceptionHandler->shouldReport($e);
     }
+
+    /**
+     * Register a renderable callback.
+     *
+     * @param  callable  $renderUsing
+     * @return $this
+     */
+    public function reportable(callable $reportUsing)
+    {
+        $this->appExceptionHandler->reportable($reportUsing);
+    }
+
+    /**
+     * Register a reportable callback.
+     *
+     * @param  callable  $reportUsing
+     * @return \Illuminate\Foundation\Exceptions\ReportableHandler
+     */
+    public function renderable(callable $renderUsing)
+    {
+        $this->appExceptionHandler->renderable($renderUsing);
+    }
 }
