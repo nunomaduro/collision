@@ -28,6 +28,7 @@ use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
+use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
@@ -133,6 +134,14 @@ final class DefaultPrinter
     public function setDecorated(bool $decorated): void
     {
         $this->output->setDecorated($decorated);
+    }
+
+    /**
+     * Listen to the runner execution started event.
+     */
+    public function testPrintedUnexpectedOutput(PrintedUnexpectedOutput $printedUnexpectedOutput): void
+    {
+        $this->output->write($printedUnexpectedOutput->output());
     }
 
     /**

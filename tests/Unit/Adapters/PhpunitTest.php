@@ -47,8 +47,11 @@ class PhpunitTest extends TestCase
   ! risky example → This test did not perform any assertions
   ✓ deprecation example
   ✓ pass example
+This is an unexpected output
+   PASS  LaravelApp\\tests\Feature\ExampleWithUnexpectedOutputTest
+  ✓ pass example
 
-  Tests:    1 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 8 passed (14 assertions)
+  Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 8 passed (15 assertions)
   Duration:
 EOF,
             $output
@@ -66,6 +69,26 @@ EOF,
         $this->assertConsoleOutputContainsString(<<<'EOF'
    PASS  my-custom-test-case-name
   ✓ my-custom-test-case-name
+
+  Tests:    1 passed (1 assertions)
+  Duration:
+EOF,
+            $output
+        );
+    }
+
+    /** @test */
+    public function itPrintedUnexpectedOutput(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'unexpected-output',
+        ]);
+
+        $this->assertConsoleOutputContainsString(<<<'EOF'
+This is an unexpected output
+   PASS  LaravelApp\tests\Feature\ExampleWithUnexpectedOutputTest
+  ✓ pass example
 
   Tests:    1 passed (1 assertions)
   Duration:
@@ -102,7 +125,7 @@ EOF,
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    1 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 9 passed (15 assertions)',
+            'Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 9 passed (16 assertions)',
             $output
         );
     }
