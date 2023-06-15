@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelApp\tests\Feature;
 
-use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
 use Tests\TestCase;
 
 class ExampleWithUnexpectedOutputTest extends TestCase
@@ -14,7 +13,7 @@ class ExampleWithUnexpectedOutputTest extends TestCase
      */
     public function testPassExample()
     {
-        echo "This is an unexpected output";
+        echo 'This is an unexpected output';
 
         $this->assertTrue(true);
     }
