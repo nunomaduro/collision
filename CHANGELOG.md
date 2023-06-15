@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.6.0 (2023-06-15)](https://github.com/nunomaduro/collision/compare/v7.5.2...v7.6.0)
+### Added
+- Usage with PHPUnit 10.2.2
+- Support for unexpected output
+
 ## [v7.5.2 (2023-04-22)](https://github.com/nunomaduro/collision/compare/v7.5.1...v7.5.2)
 ### Fix
 - Usage with PHPUnit 10.1.2
@@ -15,11 +20,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Usage with PHPUnit 10.1.2
 
 ## [v7.5.0 (2023-04-14)](https://github.com/nunomaduro/collision/compare/v7.4.0...v7.5.0)
-### Feat
+### Added
 - Support for PHPUnit test runner deprecations
 
 ## [v7.4.0 (2023-03-31)](https://github.com/nunomaduro/collision/compare/v7.3.3...v7.4.0)
-### Feat
+### Added
 - Allows exceptions to be renderable on editor
 
 ## [v7.3.3 (2023-03-21)](https://github.com/nunomaduro/collision/compare/v7.3.2...v7.3.3)
