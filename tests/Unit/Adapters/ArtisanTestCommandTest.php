@@ -175,7 +175,7 @@ EOF;
         ]);
 
         expect($output)
-            ->toContain('Tests:    1 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 4 passed (9 assertions)')
+            ->toContain('Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 3 passed (9 assertions)')
             ->toContain('Top 10 slowest tests:')
             ->toContain('Tests\Feature\ExampleTest > pass example')
             ->toContain('% of ');
