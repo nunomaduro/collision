@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
