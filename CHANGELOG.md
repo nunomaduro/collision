@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v7.7.0 (2023-06-29)](https://github.com/nunomaduro/collision/compare/v7.6.0...v7.7.0)
+### Added
+- reportable support to exception handler in Laravel
+- renderable support to exception handler in Laravel
+
 ## [v7.6.0 (2023-06-15)](https://github.com/nunomaduro/collision/compare/v7.5.2...v7.6.0)
 ### Added
 - Usage with PHPUnit 10.2.2
