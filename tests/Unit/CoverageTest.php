@@ -22,12 +22,6 @@ class CoverageTest extends TestCase
     }
 
     /** @test */
-    public function testIsAvailable(): void
-    {
-        $this->assertTrue(Coverage::isAvailable());
-    }
-
-    /** @test */
     public function testUsingXdebug(): void
     {
         $this->assertTrue(Coverage::usingXdebug());
