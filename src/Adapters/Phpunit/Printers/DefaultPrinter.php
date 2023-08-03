@@ -25,6 +25,8 @@ use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
@@ -314,6 +316,26 @@ final class DefaultPrinter
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
+    }
+
+    /**
+     * Listen to the test phpunit deprecation triggered event.
+     */
+    public function testPhpunitDeprecationTriggered(PhpunitDeprecationTriggered $event): void
+    {
+        $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
+    }
+
+    /**
+     * Listen to the test phpunit error triggered event.
+     */
+    public function testPhpunitErrorTriggered(PhpunitErrorTriggered $event): void
+    {
+        $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
+
+        $this->state->add(TestResult::fromTestCase($event->test(), TestResult::FAIL, $throwable));
     }
 
     /**
