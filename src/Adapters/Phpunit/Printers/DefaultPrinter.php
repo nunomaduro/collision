@@ -7,6 +7,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit\Printers;
 use NunoMaduro\Collision\Adapters\Phpunit\ConfigureIO;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 use NunoMaduro\Collision\Adapters\Phpunit\Style;
+use NunoMaduro\Collision\Adapters\Phpunit\Support\ResultReflection;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestOutcome;
@@ -368,7 +369,9 @@ final class DefaultPrinter
     {
         $result = Facade::result();
 
-        if (Facade::result()->numberOfTests() === 0) {
+
+
+        if (ResultReflection::numberOfTests(Facade::result()) === 0) {
             $this->output->writeln([
                 '',
                 '  <fg=white;options=bold;bg=blue> INFO </> No tests found.',

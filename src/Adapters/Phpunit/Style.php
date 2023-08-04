@@ -6,6 +6,7 @@ namespace NunoMaduro\Collision\Adapters\Phpunit;
 
 use Closure;
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use NunoMaduro\Collision\Adapters\Phpunit\Support\ResultReflection;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Exceptions\TestOutcome;
@@ -240,7 +241,7 @@ final class Style
             }
         }
 
-        $pending = $result->numberOfTests() - $result->numberOfTestsRun();
+        $pending = ResultReflection::numberOfTests($result) - $result->numberOfTestsRun();
         if ($pending > 0) {
             $tests[] = "\e[2m$pending pending\e[22m";
         }
