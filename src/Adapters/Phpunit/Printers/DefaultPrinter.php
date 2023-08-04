@@ -369,8 +369,6 @@ final class DefaultPrinter
     {
         $result = Facade::result();
 
-
-
         if (ResultReflection::numberOfTests(Facade::result()) === 0) {
             $this->output->writeln([
                 '',
