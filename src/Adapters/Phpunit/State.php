@@ -158,7 +158,7 @@ final class State
     public function getTestCaseFontColor(): string
     {
         if ($this->getTestCaseTitleColor() === 'blue') {
-            return 'white';
+            return 'gray';
         }
 
         return $this->getTestCaseTitle() === 'FAIL' ? 'default' : 'black';
