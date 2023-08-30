@@ -260,7 +260,8 @@ final class Writer
 
             // getLine() might return null so cast to int to get 0 instead
             $line = (int) $frame->getLine();
-            $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$line.'</>');
+            $href = $this->getEditorLink($frame);
+            $this->render('at <fg=green;href='.$href.'>'.$file.'</>'.':<fg=green>'.$line.'</>');
 
             $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -308,8 +309,9 @@ final class Writer
                 );
                 $vendorFrames = 0;
             }
+            $href = $this->getEditorLink($frame);
 
-            $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>", (bool) $class && $i > 0);
+            $this->render("<fg=yellow>$pos</><fg=default;options=bold;href=$href>$file</>:<fg=default;options=bold>$line</>", (bool) $class && $i > 0);
             if ($class) {
                 $this->render("<fg=gray>    $class$function($args)</>", false);
             }
@@ -348,5 +350,18 @@ final class Writer
         }
 
         return $filePath;
+    }
+
+    /**
+     * Returns a phpstorm protocol link that opens the file in PhpStorm on the selected line 
+     * @param Frame $frame
+     * @return string
+     */
+    private function getEditorLink(Frame $frame): string
+    {
+        return 'phpstorm://open?' . http_build_query([
+            'file' => (string) $frame->getFile(),
+            'line' => $frame->getLine(),
+        ]);
     }
 }
