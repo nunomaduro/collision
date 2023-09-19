@@ -88,7 +88,6 @@ final class ExceptionHandler implements ExceptionHandlerContract
     /**
      * Register a reportable callback.
      *
-     * @param  callable  $reportUsing
      * @return \Illuminate\Foundation\Exceptions\ReportableHandler
      */
     public function reportable(callable $reportUsing)
@@ -99,7 +98,6 @@ final class ExceptionHandler implements ExceptionHandlerContract
     /**
      * Register a renderable callback.
      *
-     * @param  callable  $renderUsing
      * @return $this
      */
     public function renderable(callable $renderUsing)

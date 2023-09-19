@@ -23,12 +23,13 @@ use ReflectionClass;
 use ReflectionFunction;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-use function Termwind\render;
-use function Termwind\renderUsing;
 use Termwind\Terminal;
-use function Termwind\terminal;
 use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
+
+use function Termwind\render;
+use function Termwind\renderUsing;
+use function Termwind\terminal;
 
 /**
  * @internal

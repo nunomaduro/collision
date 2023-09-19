@@ -258,7 +258,7 @@ final class Highlighter
         foreach ($lines as $i => $line) {
             $coloredLineNumber = $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
 
-            if (null !== $markLine) {
+            if ($markLine !== null) {
                 $snippet .=
                     ($markLine === $i + 1
                         ? $this->color->apply(self::ACTUAL_LINE_MARK, $mark)
