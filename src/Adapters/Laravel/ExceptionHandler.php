@@ -93,7 +93,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function reportable(callable $reportUsing)
     {
-        return $this->appExceptionHandler->reportable($reportUsing); // @phpstan-ignore-line
+        return $this->appExceptionHandler->reportable($reportUsing);
     }
 
     /**
@@ -104,7 +104,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function renderable(callable $renderUsing)
     {
-        $this->appExceptionHandler->renderable($renderUsing); // @phpstan-ignore-line
+        $this->appExceptionHandler->renderable($renderUsing);
 
         return $this;
     }
@@ -116,7 +116,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function dontReportDuplicates()
     {
-        $this->appExceptionHandler->dontReportDuplicates(); // @phpstan-ignore-line
+        $this->appExceptionHandler->dontReportDuplicates();
 
         return $this;
     }
