@@ -86,22 +86,38 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * Register a renderable callback.
+     * Register a reportable callback.
      *
-     * @return $this
+     * @param  callable  $reportUsing
+     * @return \Illuminate\Foundation\Exceptions\ReportableHandler
      */
     public function reportable(callable $reportUsing)
     {
-        $this->appExceptionHandler->reportable($reportUsing); // @phpstan-ignore-line
+        return $this->appExceptionHandler->reportable($reportUsing); // @phpstan-ignore-line
     }
 
     /**
-     * Register a reportable callback.
+     * Register a renderable callback.
      *
-     * @return \Illuminate\Foundation\Exceptions\ReportableHandler
+     * @param  callable  $renderUsing
+     * @return $this
      */
     public function renderable(callable $renderUsing)
     {
         $this->appExceptionHandler->renderable($renderUsing); // @phpstan-ignore-line
+
+        return $this;
+    }
+
+    /**
+     * Do not report duplicate exceptions.
+     *
+     * @return $this
+     */
+    public function dontReportDuplicates()
+    {
+        $this->appExceptionHandler->dontReportDuplicates(); // @phpstan-ignore-line
+
+        return $this;
     }
 }
