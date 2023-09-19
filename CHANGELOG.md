@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [v7.8.0 (2023-09-19)](https://github.com/nunomaduro/collision/compare/v7.7.0...v7.8.0)
+## [v7.9.0 (2023-09-19)](https://github.com/nunomaduro/collision/compare/v7.7.0...v7.9.0)
 ### Added
 - `dontReportDuplicates` support to exception handler in Laravel
 
