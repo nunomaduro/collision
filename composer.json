@@ -35,7 +35,7 @@
     },
     "conflict": {
         "laravel/framework": "<10.26.2 || >=11.0.0",
-        "phpunit/phpunit": "<10.3.5 || >11.0.0"
+        "phpunit/phpunit": "<10.3.5 || >=11.0.0"
     },
     "autoload-dev": {
         "psr-4": {
