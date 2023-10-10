@@ -14,25 +14,24 @@
         }
     ],
     "require": {
-        "php": "^8.1.0",
+        "php": "^8.2.0",
         "filp/whoops": "^2.15.3",
-        "nunomaduro/termwind": "^1.15.1",
-        "symfony/console": "^6.3.4"
+        "nunomaduro/termwind": "^2.0.0",
+        "symfony/console": "^7.0.0"
     },
     "require-dev": {
         "brianium/paratest": "^7.2.8",
-        "laravel/framework": "^10.26.2",
-        "laravel/pint": "^1.13.2",
-        "laravel/sail": "^1.25.0",
-        "laravel/sanctum": "^3.3.1",
-        "laravel/tinker": "^2.8.2",
-        "nunomaduro/larastan": "^2.6.4",
-        "orchestra/testbench-core": "^8.12.1",
-        "pestphp/pest": "^2.20.0",
+        "pestphp/pest": "^2.23.1",
         "phpunit/phpunit": "^10.3.5",
         "sebastian/environment": "^6.0.1",
-        "spatie/laravel-ignition": "^2.3.0"
+        "brianium/paratest": "dev-patch-1 as 7.2.9"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/nunomaduro/paratest"
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "Tests\\Printer\\": "tests/Printer",
@@ -64,6 +63,9 @@
             "providers": [
                 "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-8.x": "8.x-dev"
         }
     },
     "scripts": {
