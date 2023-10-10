@@ -20,18 +20,11 @@
         "symfony/console": "^7.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.2.8",
-        "pestphp/pest": "^2.23.1",
-        "phpunit/phpunit": "^10.3.5",
-        "sebastian/environment": "^6.0.1",
-        "brianium/paratest": "dev-patch-1 as 7.2.9"
+        "brianium/paratest": "^7.3.0",
+        "pestphp/pest": "^2.23.2",
+        "phpunit/phpunit": "^10.4.1",
+        "sebastian/environment": "^6.0.1"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/nunomaduro/paratest"
-        }
-    ],
     "autoload-dev": {
         "psr-4": {
             "Tests\\Printer\\": "tests/Printer",
