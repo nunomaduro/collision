@@ -23,18 +23,18 @@
         "laravel/framework": ">=11.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.2.8",
-        "laravel/framework": "^10.26.2",
-        "laravel/pint": "^1.13.2",
+        "brianium/paratest": "^7.3.0",
+        "laravel/framework": "^10.28.0",
+        "laravel/pint": "^1.13.3",
         "laravel/sail": "^1.25.0",
         "laravel/sanctum": "^3.3.1",
         "laravel/tinker": "^2.8.2",
         "nunomaduro/larastan": "^2.6.4",
-        "orchestra/testbench-core": "^8.12.1",
-        "pestphp/pest": "^2.20.0",
-        "phpunit/phpunit": "^10.3.5",
+        "orchestra/testbench-core": "^8.13.0",
+        "pestphp/pest": "^2.23.2",
+        "phpunit/phpunit": "^10.4.1",
         "sebastian/environment": "^6.0.1",
-        "spatie/laravel-ignition": "^2.3.0"
+        "spatie/laravel-ignition": "^2.3.1"
     },
     "autoload-dev": {
         "psr-4": {
