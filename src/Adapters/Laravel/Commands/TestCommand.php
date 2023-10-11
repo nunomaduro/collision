@@ -74,13 +74,13 @@ class TestCommand extends Command
         $phpunitVersion = Version::id();
 
         if ($phpunitVersion[0].$phpunitVersion[1] !== '10') {
-            throw new RequirementsException('Running Collision 7.x artisan test command requires at least PHPUnit 10.x.');
+            throw new RequirementsException('Running Collision 8.x artisan test command requires at least PHPUnit 10.x.');
         }
 
         $laravelVersion = \Illuminate\Foundation\Application::VERSION;
 
-        if ($laravelVersion[0].$laravelVersion[1] !== '10') { // @phpstan-ignore-line
-            throw new RequirementsException('Running Collision 7.x artisan test command requires at least Laravel 10.x.');
+        if ($laravelVersion[0].$laravelVersion[1] !== '11') { // @phpstan-ignore-line
+            throw new RequirementsException('Running Collision 8.x artisan test command requires at least Laravel 11.x.');
         }
 
         if ($this->option('coverage') && ! Coverage::isAvailable()) {
