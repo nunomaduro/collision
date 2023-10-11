@@ -71,18 +71,6 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $phpunitVersion = Version::id();
-
-        if ($phpunitVersion[0].$phpunitVersion[1] !== '10') {
-            throw new RequirementsException('Running Collision 8.x artisan test command requires at least PHPUnit 10.x.');
-        }
-
-        $laravelVersion = \Illuminate\Foundation\Application::VERSION;
-
-        if ($laravelVersion[0].$laravelVersion[1] !== '11') { // @phpstan-ignore-line
-            throw new RequirementsException('Running Collision 8.x artisan test command requires at least Laravel 11.x.');
-        }
-
         if ($this->option('coverage') && ! Coverage::isAvailable()) {
             $this->output->writeln(sprintf(
                 "\n  <fg=white;bg=red;options=bold> ERROR </> Code coverage driver not available.%s</>",
