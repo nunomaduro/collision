@@ -263,9 +263,7 @@ final class DefaultPrinter
      */
     public function testRunnerWarningTriggered(TestRunnerWarningTriggered $event): void
     {
-        if (! str_starts_with($event->message(), 'No tests found in class')) {
-            $this->style->writeWarning($event->message());
-        }
+        $this->style->writeWarning($event->message());
     }
 
     /**
