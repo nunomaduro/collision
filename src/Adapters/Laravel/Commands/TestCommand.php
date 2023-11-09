@@ -111,7 +111,7 @@ class TestCommand extends Command
 
         $process = (new Process(array_merge(
             // Binary ...
-            $this->binary(),
+            $this->binary($options),
             // Arguments ...
             $parallel ? $this->paratestArguments($options) : $this->phpunitArguments($options)
         ),
@@ -162,9 +162,10 @@ class TestCommand extends Command
     /**
      * Get the PHP binary to execute.
      *
+     * @param  array  $options
      * @return array
      */
-    protected function binary()
+    protected function binary($options)
     {
         if ($this->usingPest()) {
             $command = $this->option('parallel') ? ['vendor/pestphp/pest/bin/pest', '--parallel'] : ['vendor/pestphp/pest/bin/pest'];
@@ -172,11 +173,18 @@ class TestCommand extends Command
             $command = $this->option('parallel') ? ['vendor/brianium/paratest/bin/paratest'] : ['vendor/phpunit/phpunit/phpunit'];
         }
 
+        $phpBinaryArguments = [];
         if ('phpdbg' === PHP_SAPI) {
-            return array_merge([PHP_BINARY, '-qrr'], $command);
+            $phpBinaryArguments[] = '-qrr';
+        }
+        foreach ($options as $key => $option) {
+            if ($option === '-d') {
+                $phpBinaryArguments[] = $option;
+                $phpBinaryArguments[] = $options[$key + 1];
+            }
         }
 
-        return array_merge([PHP_BINARY], $command);
+        return array_merge([PHP_BINARY], $phpBinaryArguments, $command);
     }
 
     /**
@@ -275,6 +283,15 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--drop-databases')
                 && ! Str::startsWith($option, '--without-databases');
         }));
+
+        foreach ($options as $key => $option) {
+            if ($option === '-d') {
+                $options[] = '--passthru-php=\'-d '.$options[$key + 1].'\'';
+
+                unset($options[$key]);
+                unset($options[$key + 1]);
+            }
+        }
 
         $options = array_merge($this->commonArguments(), [
             '--configuration='.$this->getConfigurationFile(),
