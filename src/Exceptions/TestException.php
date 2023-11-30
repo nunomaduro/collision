@@ -47,8 +47,8 @@ final class TestException
         }
 
         $regexes = [
-            'To contain' => '/Failed asserting that \'(.*)\' contains "(.*)"\./s',
-            'Not to contain' => '/Failed asserting that \'(.*)\' does not contain "(.*)"\./s',
+            'To contain' => '/Failed asserting that \'(.*)\' \[[\w-]+\]\(length: [\d]+\) contains "(.*)"/s',
+            'Not to contain' => '/Failed asserting that \'(.*)\' \[[\w-]+\]\(length: [\d]+\) does not contain "(.*)"/s',
         ];
 
         foreach ($regexes as $key => $pattern) {
