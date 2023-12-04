@@ -13,12 +13,12 @@ class ArtisanTestCommandTest extends TestCase
     public function testCoverage(): void
     {
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--group', 'coverage']);
-        $this->assertStringContainsString('Console/Kernel', $output);
+        $this->assertStringContainsString('Models/User', $output);
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total: ', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--parallel', '--group', 'coverage']);
-        $this->assertStringContainsString('Console/Kernel', $output);
+        $this->assertStringContainsString('Models/User', $output);
         $this->assertStringContainsString('0.0', $output);
         $this->assertStringContainsString('Total: ', $output);
     }
@@ -30,9 +30,9 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Total: ', $output);
         $this->assertStringNotContainsString('Code coverage below expected', $output);
 
-        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--parallel', '--group', 'coverage']);
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=10', '--parallel', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total: ', $output);
-        $this->assertStringNotContainsString('Code coverage below expected', $output);
+        $this->assertStringContainsString('Code coverage below expected', $output);
 
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--group', 'coverage'], 1);
         $this->assertStringContainsString('Total: ', $output);

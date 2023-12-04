@@ -19,7 +19,7 @@ bbb
 ccc
 ddd
 eee
-fff' does not contain "Pest".
+fff' [UTF-8](length: 10248) does not contain "Pest" [UTF-8](length: 4).
 EOF;
 
         $expect = <<<'EOF'
@@ -45,7 +45,7 @@ bbb
 ccc
 ddd
 eee
-fff' contains "Pest".
+fff' [UTF-8](length: 10248) contains "Pest" [UTF-8](length: 4).
 EOF;
 
         $expect = <<<'EOF'
