@@ -21,7 +21,7 @@ Collision was created by, and is maintained by **[Nuno Maduro](https://github.co
 
 ## Installation & Usage
 
-> **Requires [PHP 8.1+](https://php.net/releases/)**
+> **Requires [PHP 8.2+](https://php.net/releases/)**
 
 Require Collision using [Composer](https://getcomposer.org):
 
@@ -39,6 +39,7 @@ composer require nunomaduro/collision --dev
  9.x      | 6.x       |           |
  10.x     | 6.x       | 9.x       | 1.x
  10.x     | 7.x       | 10.x      | 2.x
+ 11.x     | 8.x       | 10.x      | 2.x
 
 As an example, here is how to require Collision on Laravel 8.x:
 
