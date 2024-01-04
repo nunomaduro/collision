@@ -21,7 +21,7 @@
     },
     "conflict": {
         "laravel/framework": "<11.0.0 || >=12.0.0",
-        "phpunit/phpunit": "<10.5.1 || >=11.0.0"
+        "phpunit/phpunit": "<10.5.1 || >=12.0.0"
     },
     "require-dev": {
         "laravel/framework": "^11.0.0",
@@ -31,8 +31,8 @@
         "laravel/sanctum": "^4.0.0",
         "nunomaduro/larastan": "^3.0.0",
         "orchestra/testbench-core": "^9.0.0",
-        "pestphp/pest": "^2.27.0",
-        "sebastian/environment": "^6.0.1"
+        "pestphp/pest": "^3.0.0",
+        "sebastian/environment": "^7.0.0"
     },
     "autoload-dev": {
         "psr-4": {
