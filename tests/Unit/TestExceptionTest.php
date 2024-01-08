@@ -6,11 +6,12 @@ namespace Tests\Unit;
 
 use NunoMaduro\Collision\Exceptions\TestException;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TestExceptionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itShortensContainsErrorMessages(): void
     {
         $message = <<<'EOF'
@@ -36,7 +37,7 @@ EOF;
         $this->assertStringContainsString($expect, strip_tags($testException->getMessage()));
     }
 
-    /** @test */
+    #[Test]
     public function itShortensNotContainErrorMessages(): void
     {
         $message = <<<'EOF'

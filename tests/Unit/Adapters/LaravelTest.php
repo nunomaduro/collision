@@ -12,6 +12,7 @@ use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use NunoMaduro\Collision\Adapters\Laravel\Inspector;
 use NunoMaduro\Collision\Provider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -19,7 +20,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class LaravelTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itIsRegisteredOnArtisan(): void
     {
         $app = $this->createApplication();
@@ -31,7 +32,7 @@ class LaravelTest extends TestCase
         $this->assertInstanceOf(ExceptionHandler::class, $app->make(ExceptionHandlerContract::class));
     }
 
-    /** @test */
+    #[Test]
     public function itIsNotRegisteredOnTesting(): void
     {
         $app = $this->createApplication();
@@ -43,7 +44,7 @@ class LaravelTest extends TestCase
         $this->assertNotInstanceOf(ExceptionHandler::class, $app->make(ExceptionHandlerContract::class));
     }
 
-    /** @test */
+    #[Test]
     public function itIsNotRegisteredOnHttp(): void
     {
         $app = $this->createApplication();
@@ -55,7 +56,7 @@ class LaravelTest extends TestCase
         $this->assertNotInstanceOf(ExceptionHandler::class, $app->make(ExceptionHandlerContract::class));
     }
 
-    /** @test */
+    #[Test]
     public function exceptionHandlerRespectsIsContract(): void
     {
         $app = $this->createApplication();
@@ -66,7 +67,7 @@ class LaravelTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itReportsToTheOriginalExceptionHandler(): void
     {
         $app = $this->createApplication();
@@ -78,7 +79,7 @@ class LaravelTest extends TestCase
         $exceptionHandler->report($exception);
     }
 
-    /** @test */
+    #[Test]
     public function itRendersToTheOriginalExceptionHandler(): void
     {
         $app = $this->createApplication();
@@ -91,7 +92,7 @@ class LaravelTest extends TestCase
         $exceptionHandler->render($request, $exception);
     }
 
-    /** @test */
+    #[Test]
     public function itRendersNonSymfonyConsoleExceptionsWithSymfony(): void
     {
         $app = $this->createApplication();
@@ -105,7 +106,7 @@ class LaravelTest extends TestCase
         $exceptionHandler->renderForConsole($output, $exception);
     }
 
-    /** @test */
+    #[Test]
     public function isInspectorGetsTrace(): void
     {
         $method = new ReflectionMethod(Inspector::class, 'getTrace');
@@ -116,7 +117,7 @@ class LaravelTest extends TestCase
         $this->assertSame($method->invokeArgs(new Inspector($exception), [$exception]), $exception->getTrace());
     }
 
-    /** @test */
+    #[Test]
     public function itProvidesOnlyTheProviderContract(): void
     {
         $app = $this->createApplication();

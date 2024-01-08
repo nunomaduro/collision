@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\HasPrintableTestCaseName;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCaseName
@@ -24,9 +25,7 @@ class ExampleWithCustomNameTest extends TestCase implements HasPrintableTestCase
         return 'my-custom-test-case-name';
     }
 
-    /**
-     * @group custom-name
-     */
+    #[Group('custom-name')]
     public function testPassExample()
     {
         $this->assertTrue(true);

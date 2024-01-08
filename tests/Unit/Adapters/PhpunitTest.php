@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itIsAPrinter(): void
     {
         $this->assertInstanceOf(DefaultPrinter::class, new DefaultPrinter(true));
@@ -31,7 +32,7 @@ class PhpunitTest extends TestCase
         self::assertStringNotContainsString($needle, $this->stripConsoleOutput($consoleOutput));
     }
 
-    /** @test */
+    #[Test]
     public function itHasTests(): void
     {
         $output = $this->runCollisionTests([
@@ -57,7 +58,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasCustomTestCaseName(): void
     {
         $output = $this->runCollisionTests([
@@ -76,7 +77,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itPrintedUnexpectedOutput(): void
     {
         $output = $this->runCollisionTests([
@@ -96,7 +97,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasATodo(): void
     {
         $output = $this->runCollisionTests([
@@ -115,7 +116,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasRecap(): void
     {
         $output = $this->runCollisionTests([
@@ -129,7 +130,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itInformsTheUserWhenNoTestsAreExecuted(): void
     {
         $output = $this->runCollisionTests([
@@ -143,7 +144,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasFailure(): void
     {
         $output = $this->runCollisionTests([], 1);
@@ -199,7 +200,7 @@ EOF;
         return $process->getOutput();
     }
 
-    /** @test */
+    #[Test]
     public function itHasOutputInStdoutWithBeStrictAboutOutputDuringTestsFalse(): void
     {
         $process = new Process([

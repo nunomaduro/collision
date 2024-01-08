@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Printer;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 class DatasetsTest extends TestCase
 {

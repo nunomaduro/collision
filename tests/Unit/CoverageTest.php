@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use NunoMaduro\Collision\Coverage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CoverageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function testGetPath(): void
     {
         $temporaryDirectory = implode(DIRECTORY_SEPARATOR, [
@@ -21,7 +22,7 @@ class CoverageTest extends TestCase
         $this->assertSame($temporaryDirectory, Coverage::getPath());
     }
 
-    /** @test */
+    #[Test]
     public function testUsingXdebug(): void
     {
         $this->assertTrue(Coverage::usingXdebug());
