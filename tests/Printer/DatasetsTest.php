@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Tests\Printer;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DatasetsTest extends TestCase
 {
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             'a' => ['Foo'],
@@ -16,9 +17,7 @@ class DatasetsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testWithOutput(string $data)
     {
         echo $data;
