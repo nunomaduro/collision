@@ -13,9 +13,10 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         php: ['8.2', '8.3']
+        pest: ['2.30', '3.0.0']
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
@@ -33,6 +34,9 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Set Pest
+      run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi

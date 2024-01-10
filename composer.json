@@ -13,6 +13,7 @@
             "email": "enunomaduro@gmail.com"
         }
     ],
+    "version": "dev-feat/phpunit11",
     "require": {
         "php": "^8.2.0",
         "filp/whoops": "^2.15.4",
@@ -24,9 +25,9 @@
         "phpunit/phpunit": "<10.5.1 || >=12.0.0"
     },
     "require-dev": {
-        "laravel/framework": "^11.0.0",
+        "laravel/framework": "dev-feat/adds-phpunit11-support as 11.0.0",
         "laravel/pint": "^1.13.6",
-        "laravel/tinker": "dev-develop",
+        "laravel/tinker": "^2.9.0",
         "laravel/sail": "^1.26.2",
         "laravel/sanctum": "^4.0.0",
         "larastan/larastan": "^2.8.0",
