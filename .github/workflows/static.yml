@@ -5,11 +5,8 @@ on: ['push', 'pull_request']
 jobs:
   phpstan:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dependency-version: [prefer-lowest, prefer-stable]
 
-    name: PHPStan ${{ matrix.dependency-version }}
+    name: Static
 
     steps:
     - name: Checkout
@@ -23,7 +20,7 @@ jobs:
         coverage: none
 
     - name: Install Dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+      run: composer update --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Style Tests
       run: composer test:lint
