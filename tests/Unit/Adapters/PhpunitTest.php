@@ -155,18 +155,18 @@ EOF,
         $this->assertConsoleOutputContainsString(<<<EOF
   Failed asserting that true is false.
 
-  at tests/LaravelApp/tests/Unit/ExampleTest.php:16
-     12▕      * @group fail
-     13▕      */
-     14▕     public function testFailExample()
-     15▕     {
-  ➜  16▕         $code
-     17▕     }
-     18▕$space
-     19▕     /**
-     20▕      * @group todo
+  at tests/LaravelApp/tests/Unit/ExampleTest.php:15
+     11▕ {
+     12▕     #[Group('fail')]
+     13▕     public function testFailExample()
+     14▕     {
+  ➜  15▕         $code
+     16▕     }
+     17▕$space
+     18▕     #[Group('todo')]
+     19▕     public function testTodoExample()
 
-  1   tests/LaravelApp/tests/Unit/ExampleTest.php:16
+  1   tests/LaravelApp/tests/Unit/ExampleTest.php:15
 
 EOF
             , $output);

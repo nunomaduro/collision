@@ -281,7 +281,7 @@ EOF;
   1   tests/FakeProgram/HelloWorldFile5.php:11
       Tests\FakeProgram\FakeRenderableOnCollisionEditorException::("Fail custom editor description")
 
-  2   tests/Unit/WriterTest.php:259
+  2   tests/Unit/WriterTest.php:260
       Tests\FakeProgram\HelloWorldFile5::say()
 
 
