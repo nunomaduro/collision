@@ -63,7 +63,7 @@ final class TestResult
     /**
      * Creates a new TestResult instance.
      */
-    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, Throwable $throwable = null)
+    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, ?Throwable $throwable = null)
     {
         $this->id = $id;
         $this->testCaseName = $testCaseName;
@@ -114,7 +114,7 @@ final class TestResult
     /**
      * Creates a new test from the given test case.
      */
-    public static function fromTestCase(Test $test, string $type, Throwable $throwable = null): self
+    public static function fromTestCase(Test $test, string $type, ?Throwable $throwable = null): self
     {
         if (! $test instanceof TestMethod) {
             throw new ShouldNotHappen();
@@ -142,7 +142,7 @@ final class TestResult
     /**
      * Creates a new test from the given Pest Parallel Test Case.
      */
-    public static function fromPestParallelTestCase(Test $test, string $type, Throwable $throwable = null): self
+    public static function fromPestParallelTestCase(Test $test, string $type, ?Throwable $throwable = null): self
     {
         if (! $test instanceof TestMethod) {
             throw new ShouldNotHappen();
