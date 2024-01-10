@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
-/**
- * @group coverage
- */
+#[Group('coverage')]
 class CoverageTest extends TestCase
 {
     public function testExample()

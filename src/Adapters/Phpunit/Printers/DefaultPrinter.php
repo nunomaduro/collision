@@ -110,7 +110,7 @@ final class DefaultPrinter
     /**
      * If the printer instances should be compact.
      */
-    public static function compact(bool $value = null): bool
+    public static function compact(?bool $value = null): bool
     {
         if (! is_null($value)) {
             self::$compact = $value;
@@ -122,7 +122,7 @@ final class DefaultPrinter
     /**
      * If the printer instances should profile.
      */
-    public static function profile(bool $value = null): bool
+    public static function profile(?bool $value = null): bool
     {
         if (! is_null($value)) {
             self::$profile = $value;

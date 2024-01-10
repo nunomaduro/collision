@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itIsAPrinter(): void
     {
         $this->assertInstanceOf(DefaultPrinter::class, new DefaultPrinter(true));
@@ -31,7 +32,7 @@ class PhpunitTest extends TestCase
         self::assertStringNotContainsString($needle, $this->stripConsoleOutput($consoleOutput));
     }
 
-    /** @test */
+    #[Test]
     public function itHasTests(): void
     {
         $output = $this->runCollisionTests([
@@ -57,7 +58,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasCustomTestCaseName(): void
     {
         $output = $this->runCollisionTests([
@@ -76,7 +77,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itPrintedUnexpectedOutput(): void
     {
         $output = $this->runCollisionTests([
@@ -96,7 +97,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasATodo(): void
     {
         $output = $this->runCollisionTests([
@@ -115,7 +116,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasRecap(): void
     {
         $output = $this->runCollisionTests([
@@ -129,7 +130,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itInformsTheUserWhenNoTestsAreExecuted(): void
     {
         $output = $this->runCollisionTests([
@@ -143,7 +144,7 @@ EOF,
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasFailure(): void
     {
         $output = $this->runCollisionTests([], 1);
@@ -154,18 +155,18 @@ EOF,
         $this->assertConsoleOutputContainsString(<<<EOF
   Failed asserting that true is false.
 
-  at tests/LaravelApp/tests/Unit/ExampleTest.php:16
-     12▕      * @group fail
-     13▕      */
-     14▕     public function testFailExample()
-     15▕     {
-  ➜  16▕         $code
-     17▕     }
-     18▕$space
-     19▕     /**
-     20▕      * @group todo
+  at tests/LaravelApp/tests/Unit/ExampleTest.php:15
+     11▕ {
+     12▕     #[Group('fail')]
+     13▕     public function testFailExample()
+     14▕     {
+  ➜  15▕         $code
+     16▕     }
+     17▕$space
+     18▕     #[Group('todo')]
+     19▕     public function testTodoExample()
 
-  1   tests/LaravelApp/tests/Unit/ExampleTest.php:16
+  1   tests/LaravelApp/tests/Unit/ExampleTest.php:15
 
 EOF
             , $output);
@@ -199,7 +200,7 @@ EOF;
         return $process->getOutput();
     }
 
-    /** @test */
+    #[Test]
     public function itHasOutputInStdoutWithBeStrictAboutOutputDuringTestsFalse(): void
     {
         $process = new Process([

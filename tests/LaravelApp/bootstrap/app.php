@@ -15,7 +15,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 |
 */
 
-return Application::configure()
+return Application::configure(dirname(__DIR__))
     ->withProviders()
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

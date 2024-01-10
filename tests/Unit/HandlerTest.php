@@ -6,12 +6,13 @@ namespace Tests\Unit;
 
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Writer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class HandlerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itSetsTheOutput(): void
     {
         $output = new ConsoleOutput();
@@ -21,7 +22,7 @@ class HandlerTest extends TestCase
         $this->assertSame($output, $handler->getWriter()->getOutput());
     }
 
-    /** @test */
+    #[Test]
     public function itGetsTheWriter(): void
     {
         $writer = new Writer();

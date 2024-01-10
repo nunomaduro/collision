@@ -2,23 +2,20 @@
 
 namespace Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 error_reporting(E_ALL);
 
 class ExampleTest extends TestCase
 {
-    /**
-     * @group fail
-     */
+    #[Group('fail')]
     public function testFailExample()
     {
         $this->assertFalse(true);
     }
 
-    /**
-     * @group todo
-     */
+    #[Group('todo')]
     public function testTodoExample()
     {
         $this->markTestSkipped('__TODO__');
@@ -29,9 +26,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group notices
-     */
+    #[Group('notices')]
     public function testUserNotice()
     {
         trigger_error('This is a user notice');
@@ -39,9 +34,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group notices
-     */
+    #[Group('notices')]
     public function testUserNoticeTwo()
     {
         trigger_error('This is another user notice');
@@ -49,9 +42,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group warnings
-     */
+    #[Group('warnings')]
     public function testWarning()
     {
         $this->blabla;
@@ -59,9 +50,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group warnings
-     */
+    #[Group('warnings')]
     public function testUserWarning()
     {
         trigger_error('This is a user warning', E_USER_WARNING);
@@ -69,9 +58,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group deprecations
-     */
+    #[Group('deprecations')]
     public function testDeprecation()
     {
         str_contains(null, null);
@@ -79,9 +66,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @group deprecations
-     */
+    #[Group('deprecations')]
     public function testUserDeprecation()
     {
         trigger_deprecation('foo', '1.0', 'This is a deprecation description');

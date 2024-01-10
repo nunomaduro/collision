@@ -8,6 +8,7 @@ use NunoMaduro\Collision\ConsoleColor;
 use NunoMaduro\Collision\Highlighter;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
 use NunoMaduro\Collision\Writer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -20,7 +21,7 @@ use Whoops\Exception\Inspector;
 
 class WriterTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itGetsTheOutput(): void
     {
         $writer = new Writer(new NullSolutionsRepository(), $output = new ConsoleOutput());
@@ -28,7 +29,7 @@ class WriterTest extends TestCase
         $this->assertEquals($writer->getOutput(), $output);
     }
 
-    /** @test */
+    #[Test]
     public function itSetsTheOutput(): void
     {
         $writer = (new Writer())->setOutput($output = new ConsoleOutput());
@@ -36,7 +37,7 @@ class WriterTest extends TestCase
         $this->assertEquals($writer->getOutput(), $output);
     }
 
-    /** @test */
+    #[Test]
     public function itWritesTheException(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -76,7 +77,7 @@ EOF;
         );
     }
 
-    /** @test */
+    #[Test]
     public function itWritesDetails(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -115,7 +116,7 @@ EOF;
         $this->assertStringContainsString($result, $writer->getOutput()->fetch());
     }
 
-    /** @test */
+    #[Test]
     public function itIgnoresClosures(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -142,7 +143,7 @@ EOF;
         );
     }
 
-    /** @test */
+    #[Test]
     public function itIgnoresFolders(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -168,7 +169,7 @@ EOF;
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHidesEditor(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -198,7 +199,7 @@ EOF;
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHidesTrace(): void
     {
         $inspector = new Inspector(HelloWorldFile1::say());
@@ -233,7 +234,7 @@ EOF;
         );
     }
 
-    /** @test */
+    #[Test]
     public function itSupportsRenderlessContracts(): void
     {
         $inspector = new Inspector(HelloWorldFile4::say());
@@ -253,7 +254,7 @@ EOF;
         );
     }
 
-    /** @test  */
+    #[Test]
     public function itSupportsCustomEditorContracts(): void
     {
         $inspector = new Inspector(HelloWorldFile5::say());
@@ -280,7 +281,7 @@ EOF;
   1   tests/FakeProgram/HelloWorldFile5.php:11
       Tests\FakeProgram\FakeRenderableOnCollisionEditorException::("Fail custom editor description")
 
-  2   tests/Unit/WriterTest.php:259
+  2   tests/Unit/WriterTest.php:260
       Tests\FakeProgram\HelloWorldFile5::say()
 
 

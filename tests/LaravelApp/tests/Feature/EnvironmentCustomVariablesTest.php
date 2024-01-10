@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
-/**
- * @group environmentCustomVariables
- */
+#[Group('environmentCustomVariables')]
 class EnvironmentCustomVariablesTest extends TestCase
 {
-    /**
-     * @group environmentNoCVPhpunit
-     */
+    #[Group('environmentNoCVPhpunit')]
     public function testEnvironmentNoCustomVariablesPhpunit()
     {
         $this->assertEquals(null, env('LARAVEL_PARALLEL_TESTING'));
@@ -23,9 +20,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentNoCVParallel
-     */
+    #[Group('environmentNoCVParallel')]
     public function testEnvironmentNoCustomVariablesParallel()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
@@ -35,9 +30,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentNoCVParallelRecreate
-     */
+    #[Group('environmentNoCVParallelRecreate')]
     public function testEnvironmentNoCustomVariablesParallelWithRecreate()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
@@ -48,9 +41,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentNoCVParallelDrop
-     */
+    #[Group('environmentNoCVParallelDrop')]
     public function testEnvironmentNoCustomVariablesParallelWithDrop()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
@@ -61,9 +52,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentCVPhpunit
-     */
+    #[Group('environmentCVPhpunit')]
     public function testEnvironmentCustomVariablesPhpunit()
     {
         $this->assertEquals(null, env('LARAVEL_PARALLEL_TESTING'));
@@ -73,9 +62,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(null, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentCVParallel
-     */
+    #[Group('environmentCVParallel')]
     public function testEnvironmentCustomVariablesParallel()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
@@ -85,9 +72,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(1, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentCVParallelRecreate
-     */
+    #[Group('environmentCVParallelRecreate')]
     public function testEnvironmentCustomVariablesParallelWithRecreate()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));
@@ -98,9 +83,7 @@ class EnvironmentCustomVariablesTest extends TestCase
         $this->assertEquals(1, env('CUSTOM_ENV_VARIABLE_FOR_PARALLEL'));
     }
 
-    /**
-     * @group environmentCVParallelDrop
-     */
+    #[Group('environmentCVParallelDrop')]
     public function testEnvironmentCustomVariablesParallelWithDrop()
     {
         $this->assertEquals(1, env('LARAVEL_PARALLEL_TESTING'));

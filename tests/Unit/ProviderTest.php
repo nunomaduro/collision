@@ -6,13 +6,14 @@ namespace Tests\Unit;
 
 use NunoMaduro\Collision\Handler;
 use NunoMaduro\Collision\Provider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Whoops\Run;
 use Whoops\RunInterface;
 
 class ProviderTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itRegistersTheErrorHandler(): void
     {
         $handler = new Handler();
@@ -30,7 +31,7 @@ class ProviderTest extends TestCase
         (new Provider($runMock, $handler))->register();
     }
 
-    /** @test */
+    #[Test]
     public function itGetsTheHandler(): void
     {
         $handler = new Handler();
