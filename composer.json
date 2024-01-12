@@ -31,7 +31,7 @@
         "laravel/sanctum": "^4.0.0",
         "larastan/larastan": "^2.8.1",
         "orchestra/testbench-core": "^9.0.0",
-        "pestphp/pest": "^2.30.0 || ^3.0.0",
+        "pestphp/pest": "^2.31.0 || ^3.0.0",
         "sebastian/environment": "^6.0.1 || ^7.0.0"
     },
     "autoload-dev": {
