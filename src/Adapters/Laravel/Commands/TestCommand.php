@@ -269,13 +269,13 @@ class TestCommand extends Command
         ], $options);
 
         $inputDefinition = new InputDefinition();
-        Options::setInputDefinition($inputDefinition); // @phpstan-ignore-line
+        Options::setInputDefinition($inputDefinition);
         $input = new ArgvInput($options, $inputDefinition);
 
         /** @var non-empty-string $basePath */
         $basePath = base_path();
 
-        $paraTestOptions = Options::fromConsoleInput( // @phpstan-ignore-line
+        $paraTestOptions = Options::fromConsoleInput(
             $input,
             $basePath,
         );
