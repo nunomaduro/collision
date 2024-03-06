@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v8.2.0 (2024-03-06)](https://github.com/nunomaduro/collision/compare/v8.1.0...v8.1.1)
+### Chore
+- Bumps dependencies
+
 ## [v8.1.0 (2024-01-12)](https://github.com/nunomaduro/collision/compare/v8.0.0...v8.1.0)
 ### Added
 - Laravel v11 support
