@@ -98,6 +98,77 @@ EOF,
     }
 
     #[Test]
+    public function itPrintsATipWhenItHasAPhpWarning(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'warnings',
+        ]);
+
+        $this->assertConsoleOutputContainsString(<<<'EOF'
+   WARN  Tests\Unit\ExampleTest
+  ! warning → Undefined property: Tests\Unit\ExampleTest::$blabla
+  ! user warning → This is a user warning
+  TIP: use --display-warnings to print details about warnings.
+
+  Tests:    2 warnings (2 assertions)
+  Duration
+EOF,
+            $output
+        );
+    }
+
+    #[Test]
+    public function itDoesNotPrintATipWhenItHasAPhpNoticeOrDeprecation(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'notices',
+        ]);
+
+        $this->assertConsoleOutputNotContainsString(
+            'TIP: use --display-warnings to print details about warnings.',
+            $output,
+        );
+
+        $output = $this->runCollisionTests([
+            '--group',
+            'deprecations',
+        ]);
+
+        $this->assertConsoleOutputNotContainsString(
+            'TIP: use --display-warnings to print details about warnings.',
+            $output,
+        );
+    }
+
+    #[Test]
+    public function itDoesNotPrintATipWhenTestsAreRunWithDisplayWarningsOrFailOnWarningOption(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'warnings',
+            '--display-warnings',
+        ]);
+
+        $this->assertConsoleOutputNotContainsString(
+            'TIP: use --display-warnings to print details about warnings.',
+            $output,
+        );
+
+        $output = $this->runCollisionTests([
+            '--group',
+            'warnings',
+            '--fail-on-warning',
+        ]);
+
+        $this->assertConsoleOutputNotContainsString(
+            'TIP: use --display-warnings to print details about warnings.',
+            $output,
+        );
+    }
+
+    #[Test]
     public function itHasATodo(): void
     {
         $output = $this->runCollisionTests([

@@ -143,6 +143,20 @@ final class State
     }
 
     /**
+     * Check if the test case contains any test with a warning.
+     */
+    public function testCaseHasWarnings(): bool
+    {
+        foreach ($this->testCaseTests as $test) {
+            if ($test->type === TestResult::WARN) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Gets the number of tests that are todos.
      */
     public function todosCount(): int
