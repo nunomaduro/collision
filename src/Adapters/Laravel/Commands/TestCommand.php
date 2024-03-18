@@ -15,6 +15,7 @@ use NunoMaduro\Collision\Coverage;
 use ParaTest\Options;
 use RuntimeException;
 use SebastianBergmann\Environment\Console;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
@@ -25,6 +26,7 @@ use Symfony\Component\Process\Process;
  *
  * @final
  */
+#[AsCommand(name: 'test')]
 class TestCommand extends Command
 {
     /**
