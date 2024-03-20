@@ -213,7 +213,9 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                 {
                     public function notify(PhpWarningTriggered $event): void
                     {
-                        $this->printer()->testPhpWarningTriggered($event);
+                        if (! $event->wasSuppressed()) {
+                            $this->printer()->testPhpWarningTriggered($event);
+                        }
                     }
                 },
 
