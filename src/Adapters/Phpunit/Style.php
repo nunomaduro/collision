@@ -251,12 +251,18 @@ final class Style
 
         $this->output->writeln(['']);
 
+        $notesCount = 0;
+        foreach ($state->suiteTests as $test) {
+            $notesCount += count($test->notes);
+        }
+
         if (! empty($tests)) {
             $this->output->writeln([
                 sprintf(
-                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
+                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions%s)</>',
                     implode('<fg=gray>,</> ', $tests),
-                    $result->numberOfAssertions()
+                    $result->numberOfAssertions(),
+                    $notesCount > 0 ? ', '.$notesCount.($notesCount > 1 ? ' notes' : ' note') : '',
                 ),
             ]);
         }
@@ -463,6 +469,15 @@ final class Style
                 </span>%s
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $description, $warning, $seconds));
+
+        foreach ($result->notes as $note) {
+            render(sprintf(<<<'HTML'
+                <div class="ml-2">
+                    <span class="text-gray"> // %s</span>
+                </div>
+                HTML, $note,
+            ));
+        }
     }
 
     /**
