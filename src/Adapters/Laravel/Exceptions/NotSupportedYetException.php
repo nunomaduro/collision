@@ -11,6 +11,4 @@ use RuntimeException;
 /**
  * @internal
  */
-final class NotSupportedYetException extends RuntimeException implements RenderlessEditor, RenderlessTrace
-{
-}
+final class NotSupportedYetException extends RuntimeException implements RenderlessEditor, RenderlessTrace {}
