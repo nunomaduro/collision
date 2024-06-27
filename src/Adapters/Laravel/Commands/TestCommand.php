@@ -182,7 +182,7 @@ class TestCommand extends Command
 
         if ($this->option('ansi')) {
             $arguments[] = '--colors=always';
-        } elseif ($this->option('no-ansi')) { // @phpstan-ignore-line
+        } elseif ($this->option('no-ansi')) {
             $arguments[] = '--colors=never';
         } elseif ((new Console)->hasColorSupport()) {
             $arguments[] = '--colors=always';
