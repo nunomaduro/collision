@@ -17,21 +17,21 @@
         "php": "^8.2.0",
         "filp/whoops": "^2.15.4",
         "nunomaduro/termwind": "^2.0.1",
-        "symfony/console": "^7.0.4"
+        "symfony/console": "^7.1.1"
     },
     "conflict": {
         "laravel/framework": "<11.0.0 || >=12.0.0",
         "phpunit/phpunit": "<10.5.1 || >=12.0.0"
     },
     "require-dev": {
-        "laravel/framework": "^11.1.1",
-        "laravel/pint": "^1.15.0",
+        "laravel/framework": "^11.12.0",
+        "laravel/pint": "^1.16.1",
         "laravel/tinker": "^2.9.0",
-        "laravel/sail": "^1.29.1",
-        "laravel/sanctum": "^4.0.1",
-        "larastan/larastan": "^2.9.2",
-        "orchestra/testbench-core": "^9.0.9",
-        "pestphp/pest": "^2.34.6 || ^3.0.0",
+        "laravel/sail": "^1.30.0",
+        "laravel/sanctum": "^4.0.2",
+        "larastan/larastan": "^2.9.7",
+        "orchestra/testbench-core": "^9.1.7",
+        "pestphp/pest": "^2.34.8 || ^3.0.0",
         "sebastian/environment": "^6.1.0 || ^7.0.0"
     },
     "autoload-dev": {
