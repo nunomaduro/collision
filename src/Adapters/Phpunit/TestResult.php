@@ -56,6 +56,10 @@ final class TestResult
 
     public array $notes;
 
+    public array $issues;
+
+    public array $prs;
+
     public ?Throwable $throwable;
 
     public string $warning = '';
@@ -65,7 +69,7 @@ final class TestResult
     /**
      * Creates a new TestResult instance.
      */
-    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, array $notes, ?Throwable $throwable = null)
+    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, array $notes, array $issues, array $prs, ?Throwable $throwable = null)
     {
         $this->id = $id;
         $this->testCaseName = $testCaseName;
@@ -76,6 +80,8 @@ final class TestResult
         $this->color = $color;
         $this->compactColor = $compactColor;
         $this->notes = $notes;
+        $this->issues = $issues;
+        $this->prs = $prs;
         $this->throwable = $throwable;
 
         $this->duration = 0.0;
@@ -140,8 +146,10 @@ final class TestResult
         $compactColor = self::makeCompactColor($type);
 
         $notes = method_exists($test->className(), 'getPrintableTestCaseMethodNotes') ? $test->className()::getPrintableTestCaseMethodNotes() : [];
+        $issues = method_exists($test->className(), 'getPrintableTestCaseMethodIssues') ? $test->className()::getPrintableTestCaseMethodIssues() : [];
+        $prs = method_exists($test->className(), 'getPrintableTestCaseMethodPrs') ? $test->className()::getPrintableTestCaseMethodPrs() : [];
 
-        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $notes, $throwable);
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $notes, $issues, $prs, $throwable);
     }
 
     /**
@@ -173,9 +181,7 @@ final class TestResult
 
         $compactColor = self::makeCompactColor($type);
 
-        $notes = method_exists($test, 'getPrintableTestCaseMethodNotes') ? $test::getPrintableTestCaseMethodNotes() : []; // @phpstan-ignore-line
-
-        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $notes, $throwable);
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, [], [], [], $throwable);
     }
 
     /**
@@ -199,7 +205,7 @@ final class TestResult
 
         $compactColor = self::makeCompactColor(self::FAIL);
 
-        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, [], $event->throwable());
+        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, [], [], [], $event->throwable());
     }
 
     /**

@@ -251,18 +251,12 @@ final class Style
 
         $this->output->writeln(['']);
 
-        $notesCount = 0;
-        foreach ($state->suiteTests as $test) {
-            $notesCount += count($test->notes);
-        }
-
         if (! empty($tests)) {
             $this->output->writeln([
                 sprintf(
-                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions%s)</>',
+                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
                     implode('<fg=gray>,</> ', $tests),
                     $result->numberOfAssertions(),
-                    $notesCount > 0 ? ', '.$notesCount.($notesCount > 1 ? ' notes' : ' note') : '',
                 ),
             ]);
         }
@@ -459,7 +453,31 @@ final class Style
             }
         }
 
-        $description = preg_replace('/`([^`]+)`/', '<span class="text-white">$1</span>', $result->description);
+        $description = $result->description;
+
+        $issues = [];
+        $prs = [];
+
+        if (($link = DefaultPrinter::issuesLink()) && count($result->issues) > 0) {
+            $issues = array_map(function (int $issue) use ($link): string {
+                return sprintf('<a href="%s">#%s</a>', sprintf($link, $issue), $issue);
+            }, $result->issues);
+        }
+
+        if (($link = DefaultPrinter::prsLink()) && count($result->prs) > 0) {
+            $prs = array_map(function (int $pr) use ($link): string {
+                return sprintf('<a href="%s">#%s</a>', sprintf($link, $pr), $pr);
+            }, $result->prs);
+        }
+
+        if (count($issues) > 0 || count($prs) > 0) {
+            $description .= ' '.implode(', ', array_merge(
+                $issues,
+                $prs,
+            ));
+        }
+
+        $description = preg_replace('/`([^`]+)`/', '<span class="text-white">$1</span>', $description);
 
         renderUsing($this->output);
         render(sprintf(<<<'HTML'

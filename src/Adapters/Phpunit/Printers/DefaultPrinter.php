@@ -77,6 +77,16 @@ final class DefaultPrinter
     private static bool $profile = false;
 
     /**
+     * The issues link.
+     */
+    private static ?string $issuesLink = null;
+
+    /**
+     * The PRs link.
+     */
+    private static ?string $prsLink = null;
+
+    /**
      * When profiling, holds a list of slow tests.
      */
     private array $profileSlowTests = [];
@@ -117,6 +127,38 @@ final class DefaultPrinter
         }
 
         return ! self::$verbose && self::$compact;
+    }
+
+    /**
+     * Links issues with the given prefix.
+     */
+    public static function linkIssuesWith(string $linkPrefix): void
+    {
+        self::$issuesLink = $linkPrefix;
+    }
+
+    /**
+     * Get the issues link.
+     */
+    public static function issuesLink(): ?string
+    {
+        return self::$issuesLink;
+    }
+
+    /**
+     * Links PRs with the given prefix.
+     */
+    public static function linkPrsWith(string $linkPrefix): void
+    {
+        self::$prsLink = $linkPrefix;
+    }
+
+    /**
+     * Get the PRs link.
+     */
+    public static function prsLink(): ?string
+    {
+        return self::$prsLink;
     }
 
     /**
