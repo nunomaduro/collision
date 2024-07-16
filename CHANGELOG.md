@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [v8.2.0 (2024-03-06)](https://github.com/nunomaduro/collision/compare/v8.1.0...v8.1.1)
+## [v8.3.0 (2024-07-16)](https://github.com/nunomaduro/collision/compare/v8.2.0...v8.3.0)
+### Added
+- Better Ignition support
+
+### Chore
+- Bumps dependencies
+
+## [v8.2.0 (2024-03-06)](https://github.com/nunomaduro/collision/compare/v8.1.0...v8.2.0)
 ### Chore
 - Bumps dependencies
 
