@@ -24,14 +24,14 @@
         "phpunit/phpunit": "<10.5.1 || >=12.0.0"
     },
     "require-dev": {
-        "laravel/framework": "^11.14.0",
-        "laravel/pint": "^1.16.1",
+        "laravel/framework": "^11.16.0",
+        "laravel/pint": "^1.16.2",
         "laravel/tinker": "^2.9.0",
-        "laravel/sail": "^1.30.1",
+        "laravel/sail": "^1.30.2",
         "laravel/sanctum": "^4.0.2",
-        "larastan/larastan": "^2.9.7",
-        "orchestra/testbench-core": "^9.1.8",
-        "pestphp/pest": "^2.34.8 || ^3.0.0",
+        "larastan/larastan": "^2.9.8",
+        "orchestra/testbench-core": "^9.2.1",
+        "pestphp/pest": "^2.34.9 || ^3.0.0",
         "sebastian/environment": "^6.1.0 || ^7.0.0"
     },
     "autoload-dev": {
