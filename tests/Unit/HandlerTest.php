@@ -15,8 +15,8 @@ class HandlerTest extends TestCase
     #[Test]
     public function itSetsTheOutput(): void
     {
-        $output = new ConsoleOutput();
-        $handler = new Handler();
+        $output = new ConsoleOutput;
+        $handler = new Handler;
 
         $handler->setOutput($output);
         $this->assertSame($output, $handler->getWriter()->getOutput());
@@ -25,7 +25,7 @@ class HandlerTest extends TestCase
     #[Test]
     public function itGetsTheWriter(): void
     {
-        $writer = new Writer();
+        $writer = new Writer;
         $handler = new Handler($writer);
 
         $this->assertEquals($handler->getWriter(), $writer);

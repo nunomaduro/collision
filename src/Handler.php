@@ -24,7 +24,7 @@ final class Handler extends AbstractHandler
      */
     public function __construct(?Writer $writer = null)
     {
-        $this->writer = $writer ?: new Writer();
+        $this->writer = $writer ?: new Writer;
     }
 
     /**

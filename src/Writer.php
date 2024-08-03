@@ -81,10 +81,10 @@ final class Writer
         ?ArgumentFormatter $argumentFormatter = null,
         ?Highlighter $highlighter = null
     ) {
-        $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository();
-        $this->output = $output ?: new ConsoleOutput();
-        $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter();
-        $this->highlighter = $highlighter ?: new Highlighter();
+        $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository;
+        $this->output = $output ?: new ConsoleOutput;
+        $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter;
+        $this->highlighter = $highlighter ?: new Highlighter;
     }
 
     public function write(Inspector $inspector): void

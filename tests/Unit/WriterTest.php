@@ -24,7 +24,7 @@ class WriterTest extends TestCase
     #[Test]
     public function itGetsTheOutput(): void
     {
-        $writer = new Writer(new NullSolutionsRepository(), $output = new ConsoleOutput());
+        $writer = new Writer(new NullSolutionsRepository, $output = new ConsoleOutput);
 
         $this->assertEquals($writer->getOutput(), $output);
     }
@@ -32,7 +32,7 @@ class WriterTest extends TestCase
     #[Test]
     public function itSetsTheOutput(): void
     {
-        $writer = (new Writer())->setOutput($output = new ConsoleOutput());
+        $writer = (new Writer)->setOutput($output = new ConsoleOutput);
 
         $this->assertEquals($writer->getOutput(), $output);
     }
@@ -296,10 +296,10 @@ EOF;
 
     protected function createWriter()
     {
-        $output = new BufferedOutput();
+        $output = new BufferedOutput;
 
         $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
 
-        return new Writer(new NullSolutionsRepository(), $output, null, new Highlighter($colorMock));
+        return new Writer(new NullSolutionsRepository, $output, null, new Highlighter($colorMock));
     }
 }
