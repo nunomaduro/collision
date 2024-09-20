@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        php: ['8.2', '8.3']
+        php: ['8.2', '8.3', '8.4']
         pest: ['2.30', '3.0.0']
         dependency-version: [prefer-lowest, prefer-stable]
 
@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -34,6 +34,9 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Set Collision version
+      run: composer config version "8.x-dev"
 
     - name: Set Pest
       run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
