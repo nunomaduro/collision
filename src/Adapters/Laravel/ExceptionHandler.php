@@ -86,36 +86,14 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
-     * Register a reportable callback.
+     * Dynamically call methods on the underlying component.
      *
-     * @return \Illuminate\Foundation\Exceptions\ReportableHandler
+     * @param  string $method
+     * @param  array $parameters
+     * @return mixed
      */
-    public function reportable(callable $reportUsing)
+    public function __call($method, $arguments)
     {
-        return $this->appExceptionHandler->reportable($reportUsing);
-    }
-
-    /**
-     * Register a renderable callback.
-     *
-     * @return $this
-     */
-    public function renderable(callable $renderUsing)
-    {
-        $this->appExceptionHandler->renderable($renderUsing);
-
-        return $this;
-    }
-
-    /**
-     * Do not report duplicate exceptions.
-     *
-     * @return $this
-     */
-    public function dontReportDuplicates()
-    {
-        $this->appExceptionHandler->dontReportDuplicates();
-
-        return $this;
+        return $this->appExceptionHandler->{$method}(...$arguments);
     }
 }
