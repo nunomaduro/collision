@@ -15,8 +15,11 @@ class ArtisanTestCommandTest extends TestCase
     public function testCoverage(): void
     {
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--group', 'coverage']);
+        $this->assertStringContainsString('Code Coverage:', $output);
         $this->assertStringContainsString('Models/User', $output);
         $this->assertStringContainsString('0.0', $output);
+        $this->assertStringContainsString('Http/Controllers/Controller', $output);
+        $this->assertStringContainsString('100.0', $output);
         $this->assertStringContainsString('Total: ', $output);
 
         /**
@@ -48,6 +51,18 @@ class ArtisanTestCommandTest extends TestCase
         $this->assertStringContainsString('Total: ', $output);
         $this->assertStringContainsString('Code coverage below expected', $output);
         */
+    }
+
+    #[Test]
+    public function testHideFullCoverage(): void
+    {
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--hide-full-coverage', '--group', 'coverage'], 0);
+        $this->assertStringContainsString('Code Coverage (files with full coverage not printed):', $output);
+        $this->assertStringContainsString('Models/User', $output);
+        $this->assertStringContainsString('0.0', $output);
+        $this->assertStringNotContainsString('Http/Controllers/Controller', $output);
+        $this->assertStringNotContainsString('100.0', $output);
+        $this->assertStringContainsString('Total: ', $output);
     }
 
     #[Test]
