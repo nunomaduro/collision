@@ -223,6 +223,10 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--min');
         }));
 
+        if (!empty(preg_grep('/^--configuration=|-c/', $options))) {
+            return array_merge($this->commonArguments(), $options);
+        }
+        
         return array_merge($this->commonArguments(), ['--configuration='.$this->getConfigurationFile()], $options);
     }
 
