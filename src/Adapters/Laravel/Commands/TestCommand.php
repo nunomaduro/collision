@@ -79,7 +79,7 @@ class TestCommand extends Command
 
         $laravelVersion = \Illuminate\Foundation\Application::VERSION;
 
-        if ($laravelVersion[0].$laravelVersion[1] !== '10') { // @phpstan-ignore-line
+        if ($laravelVersion[0].$laravelVersion[1] !== '10') {
             throw new RequirementsException('Running Collision 7.x artisan test command requires at least Laravel 10.x.');
         }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Spatie\Ignition\Contracts\Solution;
+use Spatie\ErrorSolutions\Contracts\Solution;
 use Throwable;
 
 /**
