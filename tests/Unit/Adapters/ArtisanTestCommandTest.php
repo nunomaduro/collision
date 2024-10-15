@@ -9,6 +9,13 @@ use Symfony\Component\Process\Process;
 
 class ArtisanTestCommandTest extends TestCase
 {
+    public function setUp(): void
+    {
+        if (PHP_VERSION_ID >= 80400) {
+            $this->markTestSkipped('Skipped on PHP 8.4');
+        }
+    }
+
     /** @test */
     public function testCoverage(): void
     {

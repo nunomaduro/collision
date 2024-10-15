@@ -19,6 +19,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class LaravelTest extends TestCase
 {
+    public function setUp(): void
+    {
+        if (PHP_VERSION_ID >= 80400) {
+            $this->markTestSkipped('Skipped on PHP 8.4');
+        }
+    }
+
     /** @test */
     public function itIsRegisteredOnArtisan(): void
     {

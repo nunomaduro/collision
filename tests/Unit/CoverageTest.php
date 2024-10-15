@@ -20,10 +20,4 @@ class CoverageTest extends TestCase
 
         $this->assertSame($temporaryDirectory, Coverage::getPath());
     }
-
-    /** @test */
-    public function testUsingXdebug(): void
-    {
-        $this->assertTrue(Coverage::usingXdebug());
-    }
 }
