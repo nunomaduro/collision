@@ -23,7 +23,7 @@
         "laravel/framework": ">=11.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.4.8",
+        "brianium/paratest": "^7.3.1",
         "laravel/framework": "^10.48.22",
         "laravel/pint": "^1.18.1",
         "laravel/sail": "^1.36.0",
@@ -31,7 +31,7 @@
         "laravel/tinker": "^2.10.0",
         "nunomaduro/larastan": "^2.9.8",
         "orchestra/testbench-core": "^8.28.3",
-        "pestphp/pest": "^2",
+        "pestphp/pest": "^2.35.1",
         "phpunit/phpunit": "^10.5.36",
         "sebastian/environment": "^6.1.0",
         "spatie/laravel-ignition": "^2.8.0"
