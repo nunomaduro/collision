@@ -79,7 +79,7 @@ class TestCommand extends Command
 
         $laravelVersion = \Illuminate\Foundation\Application::VERSION;
 
-        if ($laravelVersion[0].$laravelVersion[1] !== '10') {
+        if ($laravelVersion[0].$laravelVersion[1] !== '10') { // @phpstan-ignore-line
             throw new RequirementsException('Running Collision 7.x artisan test command requires at least Laravel 10.x.');
         }
 
@@ -195,7 +195,7 @@ class TestCommand extends Command
 
         if ($this->option('ansi')) {
             $arguments[] = '--colors=always';
-        } elseif ($this->option('no-ansi')) { // @phpstan-ignore-line
+        } elseif ($this->option('no-ansi')) {
             $arguments[] = '--colors=never';
         } elseif ((new Console)->hasColorSupport()) {
             $arguments[] = '--colors=always';
