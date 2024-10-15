@@ -12,15 +12,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        php: ['8.2', '8.3']
-        pest: ['2.30', '3.0.0']
+        php: ['8.2', '8.3', '8.4']
+        pest: ['2.36.0', '3.4.0']
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - ${{ matrix.dependency-version }}
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
