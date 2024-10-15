@@ -102,7 +102,7 @@ class ConsoleColor
             } elseif ($this->isValidStyle($s)) {
                 $sequences[] = $this->styleSequence($s);
             } else {
-                throw new ShouldNotHappen();
+                throw new ShouldNotHappen;
             }
         }
 

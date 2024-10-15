@@ -79,7 +79,7 @@ final class Highlighter
      */
     public function __construct(?ConsoleColor $color = null, bool $UTF8 = true)
     {
-        $this->color = $color ?: new ConsoleColor();
+        $this->color = $color ?: new ConsoleColor;
 
         foreach (self::DEFAULT_THEME as $name => $styles) {
             if (! $this->color->hasTheme($name)) {

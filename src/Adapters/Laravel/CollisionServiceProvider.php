@@ -48,7 +48,7 @@ class CollisionServiceProvider extends ServiceProvider
 
                     $solutionsRepository = new IgnitionSolutionsRepository($solutionProviderRepository);
                 } else {
-                    $solutionsRepository = new NullSolutionsRepository();
+                    $solutionsRepository = new NullSolutionsRepository;
                 }
 
                 $writer = new Writer($solutionsRepository);

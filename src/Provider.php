@@ -29,8 +29,8 @@ final class Provider
      */
     public function __construct(?RunInterface $run = null, ?Handler $handler = null)
     {
-        $this->run = $run ?: new Run();
-        $this->handler = $handler ?: new Handler();
+        $this->run = $run ?: new Run;
+        $this->handler = $handler ?: new Handler;
     }
 
     /**

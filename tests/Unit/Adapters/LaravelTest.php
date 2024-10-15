@@ -77,7 +77,7 @@ class LaravelTest extends TestCase
     public function itReportsToTheOriginalExceptionHandler(): void
     {
         $app = $this->createApplication();
-        $exception = new Exception();
+        $exception = new Exception;
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('report')->with($exception);
 
@@ -89,8 +89,8 @@ class LaravelTest extends TestCase
     public function itRendersToTheOriginalExceptionHandler(): void
     {
         $app = $this->createApplication();
-        $exception = new Exception();
-        $request = new \stdClass();
+        $exception = new Exception;
+        $request = new \stdClass;
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('render')->with($request, $exception);
 
@@ -102,8 +102,8 @@ class LaravelTest extends TestCase
     public function itRendersNonSymfonyConsoleExceptionsWithSymfony(): void
     {
         $app = $this->createApplication();
-        $exception = new InvalidArgumentException();
-        $output = new BufferedOutput();
+        $exception = new InvalidArgumentException;
+        $output = new BufferedOutput;
 
         $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
         $originalExceptionHandlerMock->expects($this->once())->method('renderForConsole')->with($output, $exception);

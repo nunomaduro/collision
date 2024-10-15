@@ -303,7 +303,7 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
             if ($shouldRegister) {
                 self::$registered = true;
 
-                Facade::instance()->registerSubscriber(new self());
+                Facade::instance()->registerSubscriber(new self);
             }
         }
     }
