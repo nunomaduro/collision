@@ -122,6 +122,18 @@ final class Style
                 }
             }
         });
+
+        $configuration = Registry::get();
+
+        if (
+            $state->testCaseHasWarnings() &&
+            ! $configuration->failOnWarning() &&
+            ! $configuration->displayDetailsOnTestsThatTriggerWarnings()
+        ) {
+            $this->output->writeln(
+                '  <fg=yellow>TIP:</> <fg=gray>use --display-warnings to print details about warnings.</>'
+            );
+        }
     }
 
     /**
