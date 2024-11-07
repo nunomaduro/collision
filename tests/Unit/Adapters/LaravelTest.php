@@ -20,6 +20,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class LaravelTest extends TestCase
 {
+    public function setUp(): void
+    {
+        if (PHP_VERSION_ID >= 80400) {
+            $this->markTestSkipped('Test skipped on PHP 8.4');
+        }
+    }
+
     #[Test]
     public function itIsRegisteredOnArtisan(): void
     {
