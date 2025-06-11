@@ -348,6 +348,7 @@ final class Style
             '/vendor\/nunomaduro\/collision/',
             '/vendor\/bin\/pest/',
             '/bin\/pest/',
+            '/vendor\/brianium\/paratest/',
             '/vendor\/pestphp\/pest/',
             '/vendor\/pestphp\/pest-plugin-arch/',
             '/vendor\/phpspec\/prophecy-phpunit/',

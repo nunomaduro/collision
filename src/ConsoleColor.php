@@ -218,8 +218,8 @@ class ConsoleColor
 
         preg_match(self::COLOR256_REGEXP, $style, $matches);
 
-        $type = $matches[1] === 'bg_' ? self::BACKGROUND : self::FOREGROUND; // @phpstan-ignore-line
-        $value = $matches[2]; // @phpstan-ignore-line
+        $type = $matches[1] === 'bg_' ? self::BACKGROUND : self::FOREGROUND;
+        $value = $matches[2];
 
         return "$type;5;$value";
     }
