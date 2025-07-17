@@ -201,9 +201,9 @@ final class TestResult
      */
     public static function makeDescription(TestMethod $test): string
     {
-        if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
-            return $test->className()::getLatestPrintableTestCaseMethodName();
-        }
+        // if (is_subclass_of($test->className(), HasPrintableTestCaseName::class)) {
+        //     return $test->className()::getLatestPrintableTestCaseMethodName();
+        // }
 
         $name = $test->name();
 
@@ -216,11 +216,14 @@ final class TestResult
         // Finally, if it starts with `test`, we remove it.
         $name = (string) preg_replace('/^test/', '', $name);
 
-        // Removes spaces
-        $name = trim($name);
-
         // Lower case everything
         $name = mb_strtolower($name);
+
+        // Remove possible pest evaluable prefix
+        $name = str_replace('pest evaluable', '', $name);
+
+        // Removes spaces
+        $name = trim($name);
 
         return $name;
     }
