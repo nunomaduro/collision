@@ -104,7 +104,7 @@ class TestCommand extends Command
         ),
             null,
             // Envs ...
-            $parallel ? $this->paratestEnvironmentVariables() : $this->phpunitEnvironmentVariables(),
+            $parallel ? $this->paratestEnvironmentVariables($options) : $this->phpunitEnvironmentVariables($options),
         ))->setTimeout(null);
 
         try {
@@ -296,17 +296,17 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected function phpunitEnvironmentVariables()
+    protected function phpunitEnvironmentVariables($options)
     {
         $variables = [
             'COLLISION_PRINTER' => 'DefaultPrinter',
         ];
 
-        if ($this->option('compact')) {
+        if (in_array('--compact', $options)) {
             $variables['COLLISION_PRINTER_COMPACT'] = 'true';
         }
 
-        if ($this->option('profile')) {
+        if (in_array('--profile', $options)) {
             $variables['COLLISION_PRINTER_PROFILE'] = 'true';
         }
 
@@ -318,13 +318,13 @@ class TestCommand extends Command
      *
      * @return array
      */
-    protected function paratestEnvironmentVariables()
+    protected function paratestEnvironmentVariables($options)
     {
         return [
             'LARAVEL_PARALLEL_TESTING' => 1,
-            'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
-            'LARAVEL_PARALLEL_TESTING_DROP_DATABASES' => $this->option('drop-databases'),
-            'LARAVEL_PARALLEL_TESTING_WITHOUT_DATABASES' => $this->option('without-databases'),
+            'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => in_array('--recreate-databases', $options),
+            'LARAVEL_PARALLEL_TESTING_DROP_DATABASES' => in_array('--drop-databases', $options),
+            'LARAVEL_PARALLEL_TESTING_WITHOUT_DATABASES' => in_array('--without-databases', $options),
         ];
     }
 

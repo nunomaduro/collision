@@ -54,11 +54,11 @@ class TestCommand extends BaseTestCommand
      *
      * @return array
      */
-    protected function phpunitEnvironmentVariables()
+    protected function phpunitEnvironmentVariables($options)
     {
         if ($this->option('custom-argument')) {
             return array_merge(
-                parent::phpunitEnvironmentVariables(),
+                parent::phpunitEnvironmentVariables($options),
                 [
                     'CUSTOM_ENV_VARIABLE' => 1,
                     'CUSTOM_ENV_VARIABLE_FOR_PHPUNIT' => 1,
@@ -66,7 +66,7 @@ class TestCommand extends BaseTestCommand
             );
         }
 
-        return parent::phpunitEnvironmentVariables();
+        return parent::phpunitEnvironmentVariables($options);
     }
 
     /**
@@ -74,11 +74,11 @@ class TestCommand extends BaseTestCommand
      *
      * @return array
      */
-    protected function paratestEnvironmentVariables()
+    protected function paratestEnvironmentVariables($options)
     {
         if ($this->option('custom-argument')) {
             return array_merge(
-                parent::paratestEnvironmentVariables(),
+                parent::paratestEnvironmentVariables($options),
                 [
                     'CUSTOM_ENV_VARIABLE' => 1,
                     'CUSTOM_ENV_VARIABLE_FOR_PARALLEL' => 1,
@@ -86,7 +86,7 @@ class TestCommand extends BaseTestCommand
             );
         }
 
-        return parent::paratestEnvironmentVariables();
+        return parent::paratestEnvironmentVariables($options);
     }
 
     /**
