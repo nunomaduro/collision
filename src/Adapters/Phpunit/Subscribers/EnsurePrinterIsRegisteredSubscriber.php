@@ -9,6 +9,8 @@ use NunoMaduro\Collision\Adapters\Phpunit\Printers\ReportablePrinter;
 use PHPUnit\Event\Application\Started;
 use PHPUnit\Event\Application\StartedSubscriber;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\AfterLastTestMethodErroredSubscriber;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -124,6 +126,14 @@ if (class_exists(Version::class) && (int) Version::series() >= 10) {
                 },
 
                 // Test > Hook Methods
+
+                new class($printer) extends Subscriber implements AfterLastTestMethodErroredSubscriber
+                {
+                    public function notify(AfterLastTestMethodErrored $event): void
+                    {
+                        $this->printer()->testAfterLastTestMethodErrored($event);
+                    }
+                },
 
                 new class($printer) extends Subscriber implements BeforeFirstTestMethodErroredSubscriber
                 {
