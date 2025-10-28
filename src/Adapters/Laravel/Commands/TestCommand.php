@@ -8,6 +8,7 @@ use Dotenv\Exception\InvalidPathException;
 use Dotenv\Parser\Parser;
 use Dotenv\Store\StoreBuilder;
 use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
@@ -27,12 +28,15 @@ use Symfony\Component\Process\Process;
  */
 class TestCommand extends Command
 {
+    use ConfirmableTrait;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'test
+        {--force : Force the operation to run when in production}
         {--without-tty : Disable output to TTY}
         {--compact : Indicates whether the compact printer should be used}
         {--coverage : Indicates whether code coverage information should be collected}
@@ -70,6 +74,10 @@ class TestCommand extends Command
      */
     public function handle()
     {
+        if (! $this->confirmToProceed()) {
+            return 1;
+        }
+
         if ($this->option('coverage') && ! Coverage::isAvailable()) {
             $this->output->writeln(sprintf(
                 "\n  <fg=white;bg=red;options=bold> ERROR </> Code coverage driver not available.%s</>",
