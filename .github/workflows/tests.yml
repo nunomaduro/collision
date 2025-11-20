@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.0', '12.0']
+        laravel: ['11.46.1', '12.39']
         dependency-version: [prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
@@ -64,7 +64,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.9', '12.0']
+        laravel: ['11.46.1', '12.39']
         dependency-version: [prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
