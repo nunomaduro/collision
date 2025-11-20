@@ -12,11 +12,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.46.1', '12.39']
-        dependency-version: [prefer-stable]
+        php: ['8.2', '8.3', '8.4']
+        laravel: ['11.0', '12.0']
+        pest: ['3.7.2']
+        dependency-version: [prefer-lowest, prefer-stable]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     services:
       mysql:
@@ -44,12 +45,15 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-        
+
     - name: Set Collision version
       run: composer config version "8.x-dev"
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
+
+    - name: Set Pest
+      run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
@@ -57,15 +61,19 @@ jobs:
     - name: Run Unit With Pest
       run: composer test:unit:pest
 
-  
+
   phpunit_tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.46.1', '12.39']
+        php: ['8.2', '8.3', '8.4']
+        laravel: ['11.9', '12.0']
+        phpunit: ['11.5.9', '12.0']
         dependency-version: [prefer-stable]
+        exclude:
+          - phpunit: '12.0'
+            php: '8.2'
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
@@ -95,12 +103,17 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-        
+
     - name: Set Collision version
       run: composer config version "8.x-dev"
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
+
+    - name: Set PHPUnit
+      run: |
+        composer remove pestphp/pest --dev --no-interaction --no-update
+        composer require phpunit/phpunit:^${{ matrix.phpunit }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
