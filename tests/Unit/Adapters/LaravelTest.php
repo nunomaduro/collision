@@ -110,7 +110,6 @@ class LaravelTest extends TestCase
     public function is_inspector_gets_trace(): void
     {
         $method = new ReflectionMethod(Inspector::class, 'getTrace');
-        $method->setAccessible(true);
 
         $exception = new Exception('Foo');
 
