@@ -16,7 +16,7 @@ jobs:
         laravel: ['11.0', '12.0']
         dependency-version: [prefer-stable]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     services:
       mysql:
@@ -50,9 +50,6 @@ jobs:
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
-
-    - name: Set Pest
-      run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
@@ -104,11 +101,6 @@ jobs:
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
-
-    - name: Set PHPUnit
-      run: |
-        composer remove pestphp/pest --dev --no-interaction --no-update
-        composer require phpunit/phpunit:^${{ matrix.phpunit }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
