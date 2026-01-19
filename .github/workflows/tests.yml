@@ -14,10 +14,11 @@ jobs:
         os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4']
         laravel: ['11.0', '12.0']
+        symfony: ['7.4', '8.0']
         pest: ['3.7.2']
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
 
     services:
       mysql:
@@ -51,6 +52,9 @@ jobs:
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
+
+    - name: Set Symfony
+      run: composer require symfony/console:^${{ matrix.symfony }} --no-interaction --no-update
 
     - name: Set Pest
       run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
@@ -69,13 +73,14 @@ jobs:
         os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4']
         laravel: ['11.9', '12.0']
+        symfony: ['7.4', '8.0']
         phpunit: ['11.5.9', '12.0']
         dependency-version: [prefer-stable]
         exclude:
           - phpunit: '12.0'
             php: '8.2'
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
 
     services:
       mysql:
@@ -109,6 +114,9 @@ jobs:
 
     - name: Set Laravel
       run: composer require laravel/framework:^${{ matrix.laravel }} --dev --no-interaction --no-update
+
+    - name: Set Symfony
+      run: composer require symfony/console:^${{ matrix.symfony }} --no-interaction --no-update
 
     - name: Set PHPUnit
       run: |

@@ -17,7 +17,7 @@
         "php": "^8.2.0",
         "filp/whoops": "^2.18.4",
         "nunomaduro/termwind": "^2.3.3",
-        "symfony/console": "^7.4.3"
+        "symfony/console": "^7.4.3 || ^8.0.3"
     },
     "conflict": {
         "laravel/framework": "<11.44.2 || >=13.0.0",
