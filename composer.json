@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^8.2.0",
+        "php": "^8.3.0",
         "filp/whoops": "^2.18.4",
         "nunomaduro/termwind": "^2.3.3",
         "symfony/console": "^7.4.4 || ^8.0.3"
