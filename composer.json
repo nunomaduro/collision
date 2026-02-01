@@ -20,7 +20,7 @@
         "symfony/console": "^7.4.3 || ^8.0.3"
     },
     "conflict": {
-        "laravel/framework": "<11.44.2 || >=13.0.0",
+        "laravel/framework": "<11.44.2 || >=14.0.0",
         "phpunit/phpunit": "<11.5.15 || >=13.0.0"
     },
     "require-dev": {
