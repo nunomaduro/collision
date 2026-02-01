@@ -5,10 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nunomaduro/collision/actions"><img src="https://img.shields.io/github/actions/workflow/status/nunomaduro/collision/tests.yml?branch=v7.x&label=tests&style=round-square" alt="Build Status"></img></a>
+  <a href="https://github.com/nunomaduro/collision/actions"><img src="https://img.shields.io/github/actions/workflow/status/nunomaduro/collision/tests.yml?branch=v8.x&label=tests&style=round-square" alt="Build Status"></img></a>
   <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/g/nunomaduro/collision.svg" alt="Quality Score"></img></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/d/total.svg" alt="Total Downloads"></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/license.svg" alt="License"></a>
+  <a href="https://whyphp.dev"><img src="https://img.shields.io/badge/Why_PHP-in_2026-7A86E8?style=flat-square&labelColor=18181b" alt="Why PHP in 2026"></a>
 </p>
 
 ---
