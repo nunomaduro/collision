@@ -19,7 +19,8 @@ jobs:
         dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
-
+          - php: '8.2'
+            pest: '4.0.0'
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
 
@@ -81,6 +82,8 @@ jobs:
         dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
+          - php: '8.2'
+            phpunit: '12.0.0'
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
 
