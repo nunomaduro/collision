@@ -24,13 +24,13 @@
         "phpunit/phpunit": "<11.5.50 || >=13.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.16.1",
+        "brianium/paratest": "^7.8.5",
         "laravel/framework": "^11.48.0 || ^12.49.0",
         "laravel/pint": "^1.27.0",
         "larastan/larastan": "^3.9.1",
         "orchestra/testbench-core": "^9.12.0 || ^10.9.0",
         "pestphp/pest": "^3.8.5 || ^4.3.2",
-        "sebastian/environment": "^8.0.3"
+        "sebastian/environment": "^7.2.1 || ^8.0.3"
     },
     "autoload-dev": {
         "psr-4": {
@@ -72,14 +72,8 @@
         "lint": "pint -v",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
-        "test:unit:phpunit": [
-            "@putenv XDEBUG_MODE=coverage",
-            "phpunit --colors=always"
-        ],
-        "test:unit:pest": [
-            "@putenv XDEBUG_MODE=coverage",
-            "pest --colors=always -v"
-        ],
+        "test:unit:phpunit": "XDEBUG_MODE=coverage phpunit --colors=always",
+        "test:unit:pest": "XDEBUG_MODE=coverage pest --colors=always",
         "test": [
             "@test:lint",
             "@test:types",

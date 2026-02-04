@@ -117,7 +117,7 @@ class TestCommand extends Command
 
         try {
             $exitCode = $process->run(function ($type, $line) {
-                $this->output->write($line); // @phpstan-ignore-line
+                $this->output->write($line);
             });
         } catch (ProcessSignaledException $e) {
             if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {

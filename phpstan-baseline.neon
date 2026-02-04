@@ -85,12 +85,6 @@ parameters:
 			path: src/Adapters/Laravel/Commands/TestCommand.php
 
 		-
-			message: '#^Parameter \#1 \$messages of method Illuminate\\Console\\OutputStyle\:\:write\(\) expects iterable\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Adapters/Laravel/Commands/TestCommand.php
-
-		-
 			message: '#^Parameter \#1 \$name of method Dotenv\\Repository\\RepositoryInterface\:\:clear\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
