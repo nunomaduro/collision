@@ -12,11 +12,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        php: ['8.3', '8.4', '8.5']
+        php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['11.0', '12.0']
         symfony: ['7.4', '8.0']
-        pest: ['4.0.0']
-        dependency-version: [prefer-lowest, prefer-stable]
+        pest: ['3.0.0', '4.0.0']
+        dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
 
@@ -74,10 +74,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        php: ['8.3', '8.4', '8.5']
+        php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['11.0', '12.0']
         symfony: ['7.4', '8.0']
-        phpunit: ['12.0.0']
+        phpunit: ['11.0.0', '12.0.0']
         dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
