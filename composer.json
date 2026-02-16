@@ -69,6 +69,8 @@
         }
     },
     "scripts": {
+        "post-update-cmd": "@fix:pdo-constant",
+        "fix:pdo-constant": "@php scripts/fix-pdo-constant.php",
         "lint": "pint -v",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
