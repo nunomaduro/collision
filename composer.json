@@ -16,21 +16,21 @@
     "require": {
         "php": "^8.2.0",
         "filp/whoops": "^2.18.4",
-        "nunomaduro/termwind": "^2.3.3",
+        "nunomaduro/termwind": "^2.4.0",
         "symfony/console": "^7.4.4 || ^8.0.4"
     },
     "conflict": {
         "laravel/framework": "<11.48.0 || >=14.0.0",
-        "phpunit/phpunit": "<11.5.50 || >=13.0.0"
+        "phpunit/phpunit": "<11.5.50 || >=14.0.0"
     },
     "require-dev": {
         "brianium/paratest": "^7.8.5",
-        "laravel/framework": "^11.48.0 || ^12.51.0",
+        "laravel/framework": "^11.48.0 || ^12.52.0",
         "laravel/pint": "^1.27.1",
         "larastan/larastan": "^3.9.2",
         "orchestra/testbench-core": "^9.12.0 || ^10.9.0",
-        "pestphp/pest": "^3.8.5 || ^4.3.2",
-        "sebastian/environment": "^7.2.1 || ^8.0.3"
+        "pestphp/pest": "^3.8.5 || ^4.4.1 || ^5.0.0",
+        "sebastian/environment": "^7.2.1 || ^8.0.3 || ^9.0.0"
     },
     "autoload-dev": {
         "psr-4": {
