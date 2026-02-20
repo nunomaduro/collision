@@ -6,27 +6,29 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pest_tests:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['11.0', '12.0']
         symfony: ['7.4', '8.0']
         pest: ['3.0.0', '4.0.0']
-        dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
           - php: '8.2'
             pest: '4.0.0'
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
 
     services:
       mysql:
-        image: mysql:8
+        image: mysql:8.4
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel
@@ -36,7 +38,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -50,6 +52,18 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
     - name: Set Collision version
       run: composer config version "8.x-dev"
@@ -64,32 +78,30 @@ jobs:
       run: composer require pestphp/pest:^${{ matrix.pest }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+      run: composer update --prefer-stable --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Unit With Pest
       run: composer test:unit:pest
 
 
   phpunit_tests:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
         php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['11.0', '12.0']
         symfony: ['7.4', '8.0']
         phpunit: ['11.0.0', '12.0.0']
-        dependency-version: [prefer-stable]
         exclude:
           - symfony: '8.0' # pending laravel 13...
           - php: '8.2'
             phpunit: '12.0.0'
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
 
     services:
       mysql:
-        image: mysql:8
+        image: mysql:8.4
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel
@@ -99,7 +111,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -113,6 +125,18 @@ jobs:
       run: |
         echo "::add-matcher::${{ runner.tool_cache }}/php.json"
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
     - name: Set Collision version
       run: composer config version "8.x-dev"
@@ -129,7 +153,7 @@ jobs:
         composer require phpunit/phpunit:^${{ matrix.phpunit }} --dev --no-interaction --no-update
 
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+      run: composer update --prefer-stable --no-interaction --prefer-dist --no-progress --ansi
 
     - name: Run Unit With PHPUnit
       run: composer test:unit:phpunit

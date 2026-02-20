@@ -37,8 +37,10 @@ class PhpunitTest extends TestCase
     public function it_has_tests(): void
     {
         $output = $this->runCollisionTests([
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables,custom-name',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
+            '--exclude-group=custom-name',
         ]);
 
         $this->assertConsoleOutputContainsString(<<<EOF
@@ -121,8 +123,9 @@ EOF,
     public function it_has_recap(): void
     {
         $output = $this->runCollisionTests([
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
         ]);
 
         $this->assertConsoleOutputContainsString(
@@ -142,8 +145,9 @@ EOF,
         $output = $this->runCollisionTests([
             '--order-by=random',
             '--random-order-seed=123',
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
         ]);
 
         $this->assertConsoleOutputContainsString(

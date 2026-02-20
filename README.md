@@ -48,7 +48,7 @@ composer require nunomaduro/collision --dev
  9.x, 10.x  | 6.x       |                  |               |
  10.x       | 6.x       | 9.x              | 1.x           |
  10.x       | 7.x       | 10.x             | 2.x           |
- 11.x, 12.x | 8.x       | 10.x, 11.x, 12.x | 2.x, 3.x, 4.x |
+ 11.x, 12.x | 8.x       | 10.x, 11.x, 12.x, 13.x | 2.x, 3.x, 4.x, 5.x |
 
 As an example, here is how to require Collision on Laravel 8.x:
 
