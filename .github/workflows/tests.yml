@@ -30,6 +30,8 @@ jobs:
             pest: '4.0.0'
           - php: '8.2'
             laravel: '13.0'
+          - php: '8.3'
+            laravel: '13.0'
 
     name: PHP ${{ matrix.php }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
 
@@ -109,6 +111,8 @@ jobs:
           - php: '8.2'
             phpunit: '12.0.0'
           - php: '8.2'
+            laravel: '13.0'
+          - php: '8.3'
             laravel: '13.0'
 
     name: PHP ${{ matrix.php }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
