@@ -16,13 +16,20 @@ jobs:
     strategy:
       matrix:
         php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.0', '12.0']
+        laravel: ['11.0', '12.0', '13.0']
         symfony: ['7.4', '8.0']
         pest: ['3.0.0', '4.0.0']
         exclude:
-          - symfony: '8.0' # pending laravel 13...
+          - laravel: '11.0'
+            symfony: '8.0'
+          - laravel: '12.0'
+            symfony: '8.0'
+          - laravel: '13.0'
+            symfony: '7.4'
           - php: '8.2'
             pest: '4.0.0'
+          - php: '8.2'
+            laravel: '13.0'
 
     name: PHP ${{ matrix.php }} - Pest ${{ matrix.pest }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
 
@@ -89,13 +96,20 @@ jobs:
     strategy:
       matrix:
         php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['11.0', '12.0']
+        laravel: ['11.0', '12.0', '13.0']
         symfony: ['7.4', '8.0']
         phpunit: ['11.0.0', '12.0.0']
         exclude:
-          - symfony: '8.0' # pending laravel 13...
+          - laravel: '11.0'
+            symfony: '8.0'
+          - laravel: '12.0'
+            symfony: '8.0'
+          - laravel: '13.0'
+            symfony: '7.4'
           - php: '8.2'
             phpunit: '12.0.0'
+          - php: '8.2'
+            laravel: '13.0'
 
     name: PHP ${{ matrix.php }} - PHPUnit ${{ matrix.phpunit }} - Laravel ${{ matrix.laravel }} - Symfony ${{ matrix.symfony }}
 
