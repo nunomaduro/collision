@@ -11,6 +11,7 @@ use NunoMaduro\Collision\Adapters\Phpunit\Support\ResultReflection;
 use NunoMaduro\Collision\Adapters\Phpunit\TestResult;
 use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestOutcome;
+use Pest\Collision\Events;
 use Pest\Result;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -100,7 +101,7 @@ final class DefaultPrinter
 
         ConfigureIO::of(new ArgvInput, $this->output);
 
-        class_exists(\Pest\Collision\Events::class) && \Pest\Collision\Events::setOutput($this->output);
+        class_exists(Events::class) && Events::setOutput($this->output);
 
         self::$verbose = $this->output->isVerbose();
 
