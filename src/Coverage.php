@@ -90,12 +90,13 @@ final class Coverage
         $codeCoverage = require $reportPath;
         unlink($reportPath);
 
+        // @phpstan-ignore-next-line
         if (is_array($codeCoverage)) {
             /** @var Facade $test */
-            $facade = Facade::fromSerializedData($codeCoverage);
+            $facade = Facade::fromSerializedData($codeCoverage); // @phpstan-ignore-line
 
             /** @var Directory<File|Directory> $report */
-            $report = (fn () => $this->report)->call($facade);
+            $report = (fn () => $this->report)->call($facade); // @phpstan-ignore-line
         } else {
             /** @var Directory<File|Directory> $report */
             $report = $codeCoverage->getReport();
