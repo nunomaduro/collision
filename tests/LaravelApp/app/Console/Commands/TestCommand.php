@@ -25,6 +25,7 @@ class TestCommand extends BaseTestCommand
         {--recreate-databases : Indicates if the test databases should be re-created}
         {--drop-databases : Indicates if the test databases should be dropped}
         {--without-databases : Indicates if database configuration should be performed}
+        {--without-cache : Indicates if cache configuration should be performed}
         {--c|custom-argument : Add custom env variables}
 ';
 
