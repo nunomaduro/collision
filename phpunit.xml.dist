@@ -6,6 +6,7 @@
          bootstrap="vendor/autoload.php"
          cacheResult="false"
          colors="true"
+         failOnEmptyTestSuite="false"
          failOnRisky="true"
          failOnWarning="true"
          processIsolation="false"
