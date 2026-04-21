@@ -162,6 +162,14 @@ final class DefaultPrinter
     }
 
     /**
+     * Removes all registered recap callbacks.
+     */
+    public static function flushRecapCallbacks(): void
+    {
+        self::$recapCallbacks = [];
+    }
+
+    /**
      * Defines if the output should be decorated or not.
      */
     public function setDecorated(bool $decorated): void

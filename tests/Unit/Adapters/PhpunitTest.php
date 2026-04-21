@@ -5,17 +5,48 @@ declare(strict_types=1);
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
+use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        DefaultPrinter::flushRecapCallbacks();
+    }
+
+    protected function tearDown(): void
+    {
+        DefaultPrinter::flushRecapCallbacks();
+    }
+
     #[Test]
     public function it_is_a_printer(): void
     {
         $this->assertInstanceOf(DefaultPrinter::class, new DefaultPrinter(true));
+    }
+
+    #[Test]
+    public function it_registers_recap_callbacks(): void
+    {
+        $this->assertSame([], DefaultPrinter::recapCallbacks());
+
+        $first = fn (State $state, Info $telemetry, PHPUnitTestResult $result): string => 'first';
+        $second = fn (State $state, Info $telemetry, PHPUnitTestResult $result): string => 'second';
+
+        DefaultPrinter::addRecap($first);
+        DefaultPrinter::addRecap($second);
+
+        $this->assertSame([$first, $second], DefaultPrinter::recapCallbacks());
+
+        DefaultPrinter::flushRecapCallbacks();
+
+        $this->assertSame([], DefaultPrinter::recapCallbacks());
     }
 
     private function stripConsoleOutput(string $consoleOutput)
