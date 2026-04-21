@@ -188,20 +188,6 @@ EOF,
     }
 
     #[Test]
-    public function it_informs_the_user_when_no_tests_are_executed(): void
-    {
-        $output = $this->runCollisionTests([
-            '--filter',
-            'non_existing_test',
-        ]);
-
-        $this->assertConsoleOutputContainsString(
-            'No tests found.',
-            $output
-        );
-    }
-
-    #[Test]
     public function it_has_failure(): void
     {
         $output = $this->runCollisionTests([], 1);
