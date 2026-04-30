@@ -15,25 +15,22 @@
     ],
     "require": {
         "php": "^8.2.0",
-        "filp/whoops": "^2.18.1",
-        "nunomaduro/termwind": "^2.3.1",
-        "symfony/console": "^7.3.0"
+        "filp/whoops": "^2.18.4",
+        "nunomaduro/termwind": "^2.4.0",
+        "symfony/console": "^7.4.8 || ^8.0.8"
     },
     "conflict": {
-        "laravel/framework": "<11.44.2 || >=13.0.0",
-        "phpunit/phpunit": "<11.5.15 || >=13.0.0"
+        "laravel/framework": "<11.48.0 || >=14.0.0",
+        "phpunit/phpunit": "<11.5.50 || >=14.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.8.3",
-        "laravel/framework": "^11.44.2 || ^12.18",
-        "laravel/pint": "^1.22.1",
-        "laravel/tinker": "^2.10.1",
-        "laravel/sail": "^1.43.1",
-        "laravel/sanctum": "^4.1.1",
-        "larastan/larastan": "^3.4.2",
-        "orchestra/testbench-core": "^9.12.0 || ^10.4",
-        "pestphp/pest": "^3.8.2",
-        "sebastian/environment": "^7.2.1 || ^8.0"
+        "brianium/paratest": "^7.8.5",
+        "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.5.0",
+        "laravel/pint": "^1.29.1",
+        "larastan/larastan": "^3.9.6",
+        "orchestra/testbench-core": "^9.12.0 || ^10.12.1 || ^11.2.1",
+        "pestphp/pest": "^3.8.5 || ^4.4.3 || ^5.0.0",
+        "sebastian/environment": "^7.2.1 || ^8.0.4 || ^9.3.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -72,17 +69,13 @@
         }
     },
     "scripts": {
+        "post-update-cmd": "@fix:pdo-constant",
+        "fix:pdo-constant": "@php scripts/fix-pdo-constant.php",
         "lint": "pint -v",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi",
-        "test:unit:phpunit": [
-            "@putenv XDEBUG_MODE=coverage",
-            "phpunit --colors=always"
-        ],
-        "test:unit:pest": [
-            "@putenv XDEBUG_MODE=coverage",
-            "pest --colors=always -v"
-        ],
+        "test:unit:phpunit": "XDEBUG_MODE=coverage phpunit --colors=always",
+        "test:unit:pest": "XDEBUG_MODE=coverage pest --colors=always",
         "test": [
             "@test:lint",
             "@test:types",

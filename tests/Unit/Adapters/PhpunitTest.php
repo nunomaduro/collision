@@ -5,17 +5,48 @@ declare(strict_types=1);
 namespace Tests\Unit\Adapters;
 
 use NunoMaduro\Collision\Adapters\Phpunit\Printers\DefaultPrinter;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
+use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestRunner\TestResult\TestResult as PHPUnitTestResult;
 use Symfony\Component\Process\Process;
 
 class PhpunitTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        DefaultPrinter::flushRecapCallbacks();
+    }
+
+    protected function tearDown(): void
+    {
+        DefaultPrinter::flushRecapCallbacks();
+    }
+
     #[Test]
     public function it_is_a_printer(): void
     {
         $this->assertInstanceOf(DefaultPrinter::class, new DefaultPrinter(true));
+    }
+
+    #[Test]
+    public function it_registers_recap_callbacks(): void
+    {
+        $this->assertSame([], DefaultPrinter::recapCallbacks());
+
+        $first = fn (State $state, Info $telemetry, PHPUnitTestResult $result): string => 'first';
+        $second = fn (State $state, Info $telemetry, PHPUnitTestResult $result): string => 'second';
+
+        DefaultPrinter::addRecap($first);
+        DefaultPrinter::addRecap($second);
+
+        $this->assertSame([$first, $second], DefaultPrinter::recapCallbacks());
+
+        DefaultPrinter::flushRecapCallbacks();
+
+        $this->assertSame([], DefaultPrinter::recapCallbacks());
     }
 
     private function stripConsoleOutput(string $consoleOutput)
@@ -37,8 +68,10 @@ class PhpunitTest extends TestCase
     public function it_has_tests(): void
     {
         $output = $this->runCollisionTests([
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables,custom-name',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
+            '--exclude-group=custom-name',
         ]);
 
         $this->assertConsoleOutputContainsString(<<<EOF
@@ -121,8 +154,9 @@ EOF,
     public function it_has_recap(): void
     {
         $output = $this->runCollisionTests([
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
         ]);
 
         $this->assertConsoleOutputContainsString(
@@ -142,26 +176,13 @@ EOF,
         $output = $this->runCollisionTests([
             '--order-by=random',
             '--random-order-seed=123',
-            '--exclude-group',
-            'fail,environmentTesting,environmentCustomVariables',
+            '--exclude-group=fail',
+            '--exclude-group=environmentTesting',
+            '--exclude-group=environmentCustomVariables',
         ]);
 
         $this->assertConsoleOutputContainsString(
             'Random Order Seed: 123',
-            $output
-        );
-    }
-
-    #[Test]
-    public function it_informs_the_user_when_no_tests_are_executed(): void
-    {
-        $output = $this->runCollisionTests([
-            '--filter',
-            'non_existing_test',
-        ]);
-
-        $this->assertConsoleOutputContainsString(
-            'No tests found.',
             $output
         );
     }

@@ -11,6 +11,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestException;
 use NunoMaduro\Collision\Exceptions\TestOutcome;
 use NunoMaduro\Collision\Writer;
+use Pest\Collision\Events;
 use Pest\Expectation;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Info;
@@ -253,11 +254,20 @@ final class Style
         $this->output->writeln(['']);
 
         if (! empty($tests)) {
+            $extra = '';
+            foreach (DefaultPrinter::recapCallbacks() as $callback) {
+                $output = $callback($state, $telemetry, $result);
+                if ($output !== '') {
+                    $extra .= '<fg=gray>,</> '.$output;
+                }
+            }
+
             $this->output->writeln([
                 sprintf(
-                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions)</>',
+                    '  <fg=gray>Tests:</>    <fg=default>%s</><fg=gray> (%s assertions%s)</>',
                     implode('<fg=gray>,</> ', $tests),
                     $result->numberOfAssertions(),
+                    $extra,
                 ),
             ]);
         }
@@ -471,8 +481,8 @@ final class Style
         /** @var string $description */
         $description = preg_replace('/`([^`]+)`/', '<span class="text-white">$1</span>', $description);
 
-        if (class_exists(\Pest\Collision\Events::class)) {
-            $description = \Pest\Collision\Events::beforeTestMethodDescription($result, $description);
+        if (class_exists(Events::class)) {
+            $description = Events::beforeTestMethodDescription($result, $description);
         }
 
         renderUsing($this->output);
@@ -484,7 +494,7 @@ final class Style
             </div>
         HTML, $seconds === '' ? '' : 'flex space-x-1 justify-between', $truncateClasses, $result->color, $result->icon, $description, $warning, $seconds));
 
-        class_exists(\Pest\Collision\Events::class) && \Pest\Collision\Events::afterTestMethodDescription($result);
+        class_exists(Events::class) && Events::afterTestMethodDescription($result);
     }
 
     /**

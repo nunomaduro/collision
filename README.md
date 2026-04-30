@@ -5,10 +5,12 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nunomaduro/collision/actions"><img src="https://img.shields.io/github/actions/workflow/status/nunomaduro/collision/tests.yml?branch=v7.x&label=tests&style=round-square" alt="Build Status"></img></a>
+  <a href="https://github.com/nunomaduro/collision/actions"><img src="https://img.shields.io/github/actions/workflow/status/nunomaduro/collision/tests.yml?branch=v8.x&label=tests&style=round-square" alt="Build Status"></img></a>
   <a href="https://scrutinizer-ci.com/g/nunomaduro/collision"><img src="https://img.shields.io/scrutinizer/g/nunomaduro/collision.svg" alt="Quality Score"></img></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/d/total.svg" alt="Total Downloads"></a>
   <a href="https://packagist.org/packages/nunomaduro/collision"><img src="https://poser.pugx.org/nunomaduro/collision/license.svg" alt="License"></a>
+  <a href="https://whyphp.dev"><img src="https://img.shields.io/badge/Why_PHP-in_2026-7A86E8?style=flat-square&labelColor=18181b" alt="Why PHP in 2026"></a>
+  <a href="https://youtube.com/@nunomaduro?sub_confirmation=1"><img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCO_hYZF2gb_CyG5sA7ArlGg?style=flat&label=youtube&color=brightgreen"></a>
 </p>
 
 ---
@@ -39,15 +41,15 @@ composer require nunomaduro/collision --dev
 
 ## Version Compatibility
 
- Laravel    | Collision | PHPUnit          | Pest     |
-:-----------|:----------|:-----------------|:---------|
- 6.x        | 3.x       |                  |          |
- 7.x        | 4.x       |                  |          |
- 8.x        | 5.x       |                  |          |
- 9.x, 10.x  | 6.x       |                  |          |
- 10.x       | 6.x       | 9.x              | 1.x      |
- 10.x       | 7.x       | 10.x             | 2.x      |
- 11.x, 12.x | 8.x       | 10.x, 11.x, 12.x | 2.x, 3.x |
+ Laravel    | Collision | PHPUnit          | Pest          |
+:-----------|:----------|:-----------------|:--------------|
+ 6.x        | 3.x       |                  |               |
+ 7.x        | 4.x       |                  |               |
+ 8.x        | 5.x       |                  |               |
+ 9.x, 10.x  | 6.x       |                  |               |
+ 10.x       | 6.x       | 9.x              | 1.x           |
+ 10.x       | 7.x       | 10.x             | 2.x           |
+ 11.x, 12.x | 8.x       | 10.x, 11.x, 12.x, 13.x | 2.x, 3.x, 4.x, 5.x |
 
 As an example, here is how to require Collision on Laravel 8.x:
 

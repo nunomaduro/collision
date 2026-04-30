@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
 use NunoMaduro\Collision\Coverage;
 use ParaTest\Options;
+use ParaTest\ParaTestCommand;
 use RuntimeException;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -42,6 +43,7 @@ class TestCommand extends Command
         {--recreate-databases : Indicates if the test databases should be re-created}
         {--drop-databases : Indicates if the test databases should be dropped}
         {--without-databases : Indicates if database configuration should be performed}
+        {--without-cache : Indicates if cache configuration should be performed}
     ';
 
     /**
@@ -262,7 +264,8 @@ class TestCommand extends Command
                 && ! Str::startsWith($option, '--parallel')
                 && ! Str::startsWith($option, '--recreate-databases')
                 && ! Str::startsWith($option, '--drop-databases')
-                && ! Str::startsWith($option, '--without-databases');
+                && ! Str::startsWith($option, '--without-databases')
+                && ! Str::startsWith($option, '--without-cache');
         }));
 
         $options = array_merge($this->commonArguments(), [
@@ -325,6 +328,7 @@ class TestCommand extends Command
             'LARAVEL_PARALLEL_TESTING_RECREATE_DATABASES' => $this->option('recreate-databases'),
             'LARAVEL_PARALLEL_TESTING_DROP_DATABASES' => $this->option('drop-databases'),
             'LARAVEL_PARALLEL_TESTING_WITHOUT_DATABASES' => $this->option('without-databases'),
+            'LARAVEL_PARALLEL_TESTING_WITHOUT_CACHE' => $this->option('without-cache'),
         ];
     }
 
@@ -382,6 +386,6 @@ class TestCommand extends Command
      */
     protected function isParallelDependenciesInstalled()
     {
-        return class_exists(\ParaTest\ParaTestCommand::class);
+        return class_exists(ParaTestCommand::class);
     }
 }

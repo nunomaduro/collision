@@ -7,6 +7,7 @@ namespace NunoMaduro\Collision;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Node\Directory;
 use SebastianBergmann\CodeCoverage\Node\File;
+use SebastianBergmann\CodeCoverage\Report\Facade;
 use SebastianBergmann\Environment\Runtime;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -89,10 +90,19 @@ final class Coverage
         $codeCoverage = require $reportPath;
         unlink($reportPath);
 
-        $totalCoverage = $codeCoverage->getReport()->percentageOfExecutedLines();
+        // @phpstan-ignore-next-line
+        if (is_array($codeCoverage)) {
+            /** @var Facade $test */
+            $facade = Facade::fromSerializedData($codeCoverage); // @phpstan-ignore-line
 
-        /** @var Directory<File|Directory> $report */
-        $report = $codeCoverage->getReport();
+            /** @var Directory<File|Directory> $report */
+            $report = (fn () => $this->report)->call($facade); // @phpstan-ignore-line
+        } else {
+            /** @var Directory<File|Directory> $report */
+            $report = $codeCoverage->getReport();
+        }
+
+        $totalCoverage = $report->percentageOfExecutedLines();
 
         foreach ($report->getIterator() as $file) {
             if (! $file instanceof File) {

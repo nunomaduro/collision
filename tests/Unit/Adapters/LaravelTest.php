@@ -8,11 +8,13 @@ use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Exceptions\Handler;
 use NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider;
 use NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler;
 use NunoMaduro\Collision\Adapters\Laravel\Inspector;
 use NunoMaduro\Collision\Provider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -110,7 +112,6 @@ class LaravelTest extends TestCase
     public function is_inspector_gets_trace(): void
     {
         $method = new ReflectionMethod(Inspector::class, 'getTrace');
-        $method->setAccessible(true);
 
         $exception = new Exception('Foo');
 
@@ -128,7 +129,7 @@ class LaravelTest extends TestCase
     /**
      * Creates a new instance of Laravel Application.
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      */
     private function createApplication()
     {
@@ -139,7 +140,7 @@ class LaravelTest extends TestCase
         $app->singleton(
             ExceptionHandlerContract::class,
             function () use ($app) {
-                return new \Illuminate\Foundation\Exceptions\Handler($app);
+                return new Handler($app);
             }
         );
 
