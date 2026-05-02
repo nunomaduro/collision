@@ -237,6 +237,22 @@ final class DefaultPrinter
             throw new ShouldNotHappen;
         }
 
+        $this->ensureCaseBoundary($test);
+    }
+
+    /**
+     * Flush the previous test case summary if the given test belongs to a new case.
+     *
+     * Some PHPUnit events (e.g. deprecation triggers from class autoloading) fire
+     * for a test before its `testPreparationStarted`. Without flushing here, the
+     * previous case's tests would be silently merged under the new case's header.
+     */
+    private function ensureCaseBoundary(\PHPUnit\Event\Code\Test $test): void
+    {
+        if (! $test instanceof TestMethod) {
+            return;
+        }
+
         if ($this->state->testCaseHasChanged($test)) {
             $this->style->writeCurrentTestCaseSummary($this->state);
 
@@ -313,6 +329,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
 
@@ -323,6 +340,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
     }
 
@@ -333,6 +351,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
@@ -343,6 +362,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
@@ -353,6 +373,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
 
@@ -363,6 +384,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::DEPRECATED, $throwable));
     }
 
@@ -383,6 +405,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::NOTICE, $throwable));
     }
 
@@ -393,6 +416,7 @@ final class DefaultPrinter
     {
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
+        $this->ensureCaseBoundary($event->test());
         $this->state->add(TestResult::fromTestCase($event->test(), TestResult::WARN, $throwable));
     }
 
