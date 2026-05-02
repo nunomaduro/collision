@@ -429,6 +429,18 @@ final class Style
         $this->output->write(sprintf('<fg=%s;options=bold>%s</>', $result->compactColor, $result->compactIcon));
 
         $this->compactProcessed++;
+
+        if ($result->type === TestResult::RISKY && $result->warning !== '') {
+            $this->output->writeln('');
+            $this->output->writeln(sprintf(
+                '  <fg=yellow;options=bold>↳ %s</> <fg=gray>// %s > %s</>',
+                trim((string) preg_replace("/\r|\n/", ' ', $result->warning)),
+                $result->testCaseName,
+                $result->description,
+            ));
+            $this->output->write('  ');
+            $this->compactProcessed = 0;
+        }
     }
 
     /**
