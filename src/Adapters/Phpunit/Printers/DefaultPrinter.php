@@ -14,6 +14,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use NunoMaduro\Collision\Exceptions\TestOutcome;
 use Pest\Collision\Events;
 use Pest\Result;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Info;
@@ -247,7 +248,7 @@ final class DefaultPrinter
      * for a test before its `testPreparationStarted`. Without flushing here, the
      * previous case's tests would be silently merged under the new case's header.
      */
-    private function ensureCaseBoundary(\PHPUnit\Event\Code\Test $test): void
+    private function ensureCaseBoundary(Test $test): void
     {
         if (! $test instanceof TestMethod) {
             return;

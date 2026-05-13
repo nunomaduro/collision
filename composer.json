@@ -17,7 +17,7 @@
         "php": "^8.2.0",
         "filp/whoops": "^2.18.4",
         "nunomaduro/termwind": "^2.4.0",
-        "symfony/console": "^7.4.9 || ^8.0.9"
+        "symfony/console": "^7.4.9 || ^8.0.11"
     },
     "conflict": {
         "laravel/framework": "<11.48.0 || >=14.0.0",
@@ -25,10 +25,10 @@
     },
     "require-dev": {
         "brianium/paratest": "^7.8.5",
-        "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.7.0",
+        "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.9.0",
         "laravel/pint": "^1.29.1",
         "larastan/larastan": "^3.9.6",
-        "orchestra/testbench-core": "^9.12.0 || ^10.12.1 || ^11.3.1",
+        "orchestra/testbench-core": "^9.12.0 || ^10.12.1 || ^11.3.2",
         "pestphp/pest": "^3.8.5 || ^4.6.3 || ^5.0.0",
         "sebastian/environment": "^7.2.1 || ^8.1.0 || ^9.3.0"
     },
