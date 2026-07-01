@@ -66,6 +66,21 @@ class ArtisanTestCommandTest extends TestCase
     }
 
     #[Test]
+    public function test_configuration(): void
+    {
+        $output = $this->runTests([
+            './tests/LaravelApp/artisan',
+            'test',
+            '--configuration',
+            'tests/LaravelApp/phpunit.xml',
+            '--group',
+            'environment',
+        ]);
+
+        $this->assertStringNotContainsString('cannot be used more than once', $output);
+    }
+
+    #[Test]
     public function test_env(): void
     {
         if (file_exists('./vendor/bin/pest')) {
