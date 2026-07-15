@@ -361,6 +361,7 @@ final class Style
             '/vendor\/brianium\/paratest/',
             '/vendor\/pestphp\/pest/',
             '/vendor\/pestphp\/pest-plugin-arch/',
+            '/vendor\/pestphp\/pest-plugin-evals/',
             '/vendor\/pestphp\/pest-plugin-browser/',
             '/vendor\/phpspec\/prophecy-phpunit/',
             '/vendor\/phpspec\/prophecy/',
