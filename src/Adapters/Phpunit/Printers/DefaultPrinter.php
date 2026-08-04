@@ -18,6 +18,7 @@ use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -259,6 +260,14 @@ final class DefaultPrinter
 
             $this->state->moveTo($test);
         }
+    }
+
+    /**
+     * Listen to the test errored event.
+     */
+    public function testAfterLastTestMethodErrored(AfterLastTestMethodErrored $event): void
+    {
+        $this->state->add(TestResult::fromAfterLastTestMethodErrored($event));
     }
 
     /**
