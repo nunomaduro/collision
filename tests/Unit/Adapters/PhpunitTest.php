@@ -296,4 +296,27 @@ EOF;
             $process->getOutput()
         );
     }
+
+    #[Test]
+    public function itShowsWarningsOnEmptyTests(): void
+    {
+        $process = new Process([
+            './vendor/bin/pest',
+            '-c',
+            'tests/LaravelApp/phpunit.xml',
+            'tests/TestEmptyCaseWithStdoutOutput',
+            '--disallow-test-output',
+        ], __DIR__.'/../../..', [
+            'COLLISION_PRINTER' => 'DefaultPrinter',
+            'COLLISION_IGNORE_DURATION' => 'true',
+        ]);
+
+        $process->run();
+
+        $basePath = getcwd();
+
+        $this->assertConsoleOutputContainsString("WARN  No tests found", $process->getOutput()
+        );
+
+    }
 }
