@@ -81,6 +81,11 @@ final class DefaultPrinter
     private static bool $profile = false;
 
     /**
+     * The number of slowest tests to display when profiling.
+     */
+    private static int $profileSlowTestsCount = 10;
+
+    /**
      * When profiling, holds a list of slow tests.
      */
     private array $profileSlowTests = [];
@@ -142,6 +147,18 @@ final class DefaultPrinter
         }
 
         return self::$profile;
+    }
+
+    /**
+     * The number of slowest tests to display when profiling.
+     */
+    public static function profileSlowTestsCount(?int $value = null): int
+    {
+        if (! is_null($value)) {
+            self::$profileSlowTestsCount = $value;
+        }
+
+        return self::$profileSlowTestsCount;
     }
 
     /**
@@ -216,12 +233,12 @@ final class DefaultPrinter
         if (self::$profile) {
             $this->profileSlowTests[$event->test()->id()] = $result;
 
-            // Sort the slow tests by time, and keep only 10 of them.
+            // Sort the slow tests by time, and keep only the configured number of them.
             uasort($this->profileSlowTests, static function (TestResult $a, TestResult $b) {
                 return $b->duration <=> $a->duration;
             });
 
-            $this->profileSlowTests = array_slice($this->profileSlowTests, 0, 10);
+            $this->profileSlowTests = array_slice($this->profileSlowTests, 0, self::$profileSlowTestsCount);
         }
     }
 

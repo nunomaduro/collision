@@ -23,6 +23,7 @@ class PhpunitTest extends TestCase
     protected function tearDown(): void
     {
         DefaultPrinter::flushRecapCallbacks();
+        DefaultPrinter::profileSlowTestsCount(10);
     }
 
     #[Test]
@@ -47,6 +48,16 @@ class PhpunitTest extends TestCase
         DefaultPrinter::flushRecapCallbacks();
 
         $this->assertSame([], DefaultPrinter::recapCallbacks());
+    }
+
+    #[Test]
+    public function it_configures_the_profile_slow_tests_count(): void
+    {
+        $this->assertSame(10, DefaultPrinter::profileSlowTestsCount());
+
+        $this->assertSame(5, DefaultPrinter::profileSlowTestsCount(5));
+
+        $this->assertSame(5, DefaultPrinter::profileSlowTestsCount());
     }
 
     private function stripConsoleOutput(string $consoleOutput)
