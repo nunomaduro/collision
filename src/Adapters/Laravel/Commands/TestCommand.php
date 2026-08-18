@@ -18,6 +18,9 @@ use RuntimeException;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
@@ -63,6 +66,62 @@ class TestCommand extends Command
         parent::__construct();
 
         $this->ignoreValidationErrors();
+    }
+
+    /**
+     * Run the console command.
+     */
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
+        $this->registerForwardedOptions();
+
+        return parent::run($input, $output);
+    }
+
+    /**
+     * Declare the options that are only meant to be forwarded to the underlying
+     * test runner.
+     *
+     * Options such as ParaTest's `--processes` are not part of this command's
+     * definition. Because the command ignores validation errors, Symfony's
+     * parser stops at the first one it does not know and silently drops every
+     * token after it, so the command still runs but with the wrong options.
+     * Declaring them up front keeps the whole input parsable.
+     */
+    protected function registerForwardedOptions(): void
+    {
+        // The application options are merged in as well, so that an option this
+        // command does not declare itself, such as `--env`, is not mistaken for
+        // one that needs declaring. Options are added to the native definition
+        // because `run()` rebuilds the merged one from it.
+        $this->mergeApplicationDefinition();
+
+        $definition = $this->getDefinition();
+        $nativeDefinition = $this->getNativeDefinition();
+
+        $tokens = $_SERVER['argv'] ?? [];
+
+        if (! is_array($tokens)) {
+            return;
+        }
+
+        foreach ($tokens as $token) {
+            if (! is_string($token) || $token === '--' || ! str_starts_with($token, '--')) {
+                continue;
+            }
+
+            $name = substr($token, 2);
+
+            if (($position = strpos($name, '=')) !== false) {
+                $name = substr($name, 0, $position);
+            }
+
+            if ($name === '' || $definition->hasOption($name) || $definition->hasNegation($name)) {
+                continue;
+            }
+
+            $nativeDefinition->addOption(new InputOption($name, null, InputOption::VALUE_OPTIONAL));
+        }
     }
 
     /**
