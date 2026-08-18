@@ -153,6 +153,19 @@ EOF
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
     }
 
+    #[Test]
+    public function test_profile_is_not_forwarded_to_paratest(): void
+    {
+        // `--profile` is passed to the printer through an environment variable,
+        // so ParaTest must never receive it as an argument.
+        $this->runTests([
+            './tests/LaravelApp/artisan', 'test',
+            '--parallel',
+            '--profile',
+            '--group', 'environmentNoCVParallel',
+        ]);
+    }
+
     private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
         $arguments = array_merge($arguments, [
