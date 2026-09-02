@@ -48,6 +48,26 @@ class ArtisanTestCommandTest extends TestCase
     }
 
     #[Test]
+    public function test_exactly_coverage(): void
+    {
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--exactly=0', '--group', 'coverage'], 0);
+        $this->assertStringContainsString('Total: ', $output);
+        $this->assertStringNotContainsString('Code coverage not exactly', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--exactly=100', '--group', 'coverage'], 1);
+        $this->assertStringContainsString('Total: ', $output);
+        $this->assertStringContainsString('Code coverage not exactly', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--exactly=100', '--parallel', '--group', 'coverage'], 1);
+        $this->assertStringContainsString('Total: ', $output);
+        $this->assertStringContainsString('Code coverage not exactly', $output);
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--min=99', '--exactly=0', '--group', 'coverage'], 1);
+        $this->assertStringContainsString('Code coverage below expected', $output);
+        $this->assertStringNotContainsString('Code coverage not exactly', $output);
+    }
+
+    #[Test]
     public function test_hide_full_coverage(): void
     {
         $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--coverage', '--compact', '--group', 'coverage'], 0);

@@ -19,6 +19,7 @@ class TestCommand extends BaseTestCommand
         {--compact : Indicates whether the compact printer should be used}
         {--coverage : Indicates whether code coverage information should be collected}
         {--min= : Indicates the minimum threshold enforcement for code coverage}
+        {--exactly= : Indicates the exact threshold enforcement for code coverage}
         {--quiet-coverage : Do not report any files where code coverage is 100%}
         {--p|parallel : Indicates if the tests should run in parallel}
         {--profile : Lists top 10 slowest tests}

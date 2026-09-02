@@ -38,6 +38,7 @@ class TestCommand extends Command
         {--compact : Indicates whether the compact printer should be used}
         {--coverage : Indicates whether code coverage information should be collected}
         {--min= : Indicates the minimum threshold enforcement for code coverage}
+        {--exactly= : Indicates the exact threshold enforcement for code coverage}
         {--p|parallel : Indicates if the tests should run in parallel}
         {--profile : Lists top 10 slowest tests}
         {--recreate-databases : Indicates if the test databases should be re-created}
@@ -143,6 +144,19 @@ class TestCommand extends Command
                     number_format($coverage, 1),
                     number_format((float) $this->option('min'), 1)
                 ));
+            } elseif ($this->option('exactly') !== null) {
+                $truncatedExactly = floor((float) $this->option('exactly') * 10) / 10;
+                $truncatedCoverage = floor($coverage * 10) / 10;
+
+                $exitCode = (int) ($truncatedCoverage !== $truncatedExactly);
+
+                if ($exitCode === 1) {
+                    $this->output->writeln(sprintf(
+                        "\n  <fg=white;bg=red;options=bold> FAIL </> Code coverage not exactly:<fg=red;options=bold> %s %%</>. Expected:<fg=white;options=bold> %s %%</>.",
+                        number_format($truncatedCoverage, 1),
+                        number_format($truncatedExactly, 1)
+                    ));
+                }
             }
         }
 
@@ -223,7 +237,8 @@ class TestCommand extends Command
                 && $option != '--profile'
                 && $option != '--ansi'
                 && $option != '--no-ansi'
-                && ! Str::startsWith($option, '--min');
+                && ! Str::startsWith($option, '--min')
+                && ! Str::startsWith($option, '--exactly');
         }));
 
         return array_merge($this->commonArguments(), ['--configuration='.$this->getConfigurationFile()], $options);
@@ -259,6 +274,7 @@ class TestCommand extends Command
                 && $option != '--ansi'
                 && $option != '--no-ansi'
                 && ! Str::startsWith($option, '--min')
+                && ! Str::startsWith($option, '--exactly')
                 && ! Str::startsWith($option, '-p')
                 && ! Str::startsWith($option, '--compact')
                 && ! Str::startsWith($option, '--parallel')
