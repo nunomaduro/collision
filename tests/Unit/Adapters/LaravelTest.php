@@ -88,10 +88,18 @@ class LaravelTest extends TestCase
         $exception = new Exception;
         $originalExceptionHandlerMock = $this->createMock(Handler::class);
         $originalExceptionHandlerMock->expects($this->once())->method('shouldStopRetries')->with($exception)->willReturn(true);
-
         $exceptionHandler = new ExceptionHandler($app, $originalExceptionHandlerMock);
-
         $this->assertTrue($exceptionHandler->shouldStopRetries($exception));
+    }
+
+    #[Test]
+    public function it_does_not_stop_retries_when_the_original_exception_handler_does_not_support_it(): void
+    {
+        $app = $this->createApplication();
+        $exception = new Exception;
+        $originalExceptionHandlerMock = $this->createMock(ExceptionHandlerContract::class);
+        $exceptionHandler = new ExceptionHandler($app, $originalExceptionHandlerMock);
+        $this->assertFalse($exceptionHandler->shouldStopRetries($exception));
     }
 
     #[Test]

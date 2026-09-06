@@ -93,7 +93,9 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function shouldStopRetries(Throwable $e)
     {
-        return $this->appExceptionHandler->shouldStopRetries($e);
+        return method_exists($this->appExceptionHandler, 'shouldStopRetries')
+            ? $this->appExceptionHandler->shouldStopRetries($e)
+            : false;
     }
 
     /**
