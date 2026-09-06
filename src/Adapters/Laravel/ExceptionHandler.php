@@ -87,6 +87,18 @@ final class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
+     * Determine if the exception should stop job retries.
+     *
+     * @return bool
+     */
+    public function shouldStopRetries(Throwable $e)
+    {
+        return method_exists($this->appExceptionHandler, 'shouldStopRetries')
+            ? $this->appExceptionHandler->shouldStopRetries($e)
+            : false;
+    }
+
+    /**
      * Register a reportable callback.
      *
      * @return ReportableHandler
