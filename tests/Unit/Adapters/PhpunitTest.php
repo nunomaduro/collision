@@ -72,6 +72,7 @@ class PhpunitTest extends TestCase
             '--exclude-group=environmentTesting',
             '--exclude-group=environmentCustomVariables',
             '--exclude-group=custom-name',
+            '--exclude-group=suppressed-warning',
         ]);
 
         $this->assertConsoleOutputContainsString(<<<EOF
@@ -85,11 +86,27 @@ This is an unexpected output
    PASS  LaravelApp\\tests\Feature\ExampleWithUnexpectedOutputTest
   ✓ pass example
 
-  Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 8 passed (15 assertions)
+  Tests:    1 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 9 passed (15 assertions)
   Duration:
 EOF,
             $output
         );
+    }
+
+    #[Test]
+    public function it_ignores_issues_that_php_suppressed(): void
+    {
+        $output = $this->runCollisionTests([
+            '--group',
+            'suppressed-warning',
+        ]);
+
+        // PHPUnit discards a suppressed issue unless the matching
+        // ignoreSuppressionOf* source setting is enabled, so the printer must
+        // not report one either.
+        $this->assertConsoleOutputContainsString('✓ suppressed warning example', $output);
+        $this->assertConsoleOutputContainsString('! unsuppressed warning example → file_get_contents(', $output);
+        $this->assertConsoleOutputContainsString('Tests:    1 warning, 1 passed', $output);
     }
 
     #[Test]
@@ -157,10 +174,11 @@ EOF,
             '--exclude-group=fail',
             '--exclude-group=environmentTesting',
             '--exclude-group=environmentCustomVariables',
+            '--exclude-group=suppressed-warning',
         ]);
 
         $this->assertConsoleOutputContainsString(
-            'Tests:    2 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 9 passed (16 assertions)',
+            'Tests:    1 deprecated, 2 warnings, 1 risky, 1 incomplete, 2 notices, 1 todo, 1 skipped, 10 passed (16 assertions)',
             $output
         );
 
@@ -179,6 +197,7 @@ EOF,
             '--exclude-group=fail',
             '--exclude-group=environmentTesting',
             '--exclude-group=environmentCustomVariables',
+            '--exclude-group=suppressed-warning',
         ]);
 
         $this->assertConsoleOutputContainsString(
