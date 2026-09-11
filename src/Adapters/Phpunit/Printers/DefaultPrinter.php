@@ -262,6 +262,36 @@ final class DefaultPrinter
     }
 
     /**
+     * Determine whether an issue PHP suppressed should be ignored.
+     *
+     * PHPUnit reports a suppressed issue only when the matching
+     * `ignoreSuppressionOf*` source setting is enabled, and discards it
+     * otherwise - see `PHPUnit\TestRunner\IssueFilter`. Rendering suppressed
+     * issues regardless does not just show what the user asked PHPUnit to
+     * hide: `ensureCaseBoundary()` flushes output immediately, so a suppressed
+     * issue raised while a class is being autoloaded re-enters the autoloader
+     * from inside the `include` that is still in progress.
+     */
+    private function isIgnoredSuppressedIssue(
+        DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event,
+    ): bool {
+        if (! $event->wasSuppressed()) {
+            return false;
+        }
+
+        $source = Registry::get()->source();
+
+        return match (true) {
+            $event instanceof PhpDeprecationTriggered => ! $source->ignoreSuppressionOfPhpDeprecations(),
+            $event instanceof DeprecationTriggered => ! $source->ignoreSuppressionOfDeprecations(),
+            $event instanceof PhpNoticeTriggered => ! $source->ignoreSuppressionOfPhpNotices(),
+            $event instanceof NoticeTriggered => ! $source->ignoreSuppressionOfNotices(),
+            $event instanceof PhpWarningTriggered => ! $source->ignoreSuppressionOfPhpWarnings(),
+            $event instanceof WarningTriggered => ! $source->ignoreSuppressionOfWarnings(),
+        };
+    }
+
+    /**
      * Listen to the test errored event.
      */
     public function testBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
@@ -328,6 +358,10 @@ final class DefaultPrinter
      */
     public function testPhpDeprecationTriggered(PhpDeprecationTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -339,6 +373,10 @@ final class DefaultPrinter
      */
     public function testPhpNoticeTriggered(PhpNoticeTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -350,6 +388,10 @@ final class DefaultPrinter
      */
     public function testPhpWarningTriggered(PhpWarningTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -372,6 +414,10 @@ final class DefaultPrinter
      */
     public function testDeprecationTriggered(DeprecationTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -404,6 +450,10 @@ final class DefaultPrinter
      */
     public function testNoticeTriggered(NoticeTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -415,6 +465,10 @@ final class DefaultPrinter
      */
     public function testWarningTriggered(WarningTriggered $event): void
     {
+        if ($this->isIgnoredSuppressedIssue($event)) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
