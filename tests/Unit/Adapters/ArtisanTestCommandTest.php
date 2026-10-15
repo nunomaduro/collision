@@ -203,4 +203,16 @@ EOF;
             ->toContain('Tests\Feature\ExampleTest > pass example')
             ->toContain('% of ');
     }
+
+    #[Test]
+    public function test_parallel_with_pest_only_options(): void
+    {
+        if (! file_exists('./vendor/bin/pest')) {
+            $this->markTestSkipped('Pest is not installed.');
+        }
+
+        $output = $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--bail', '--group', 'environmentNoCVParallel']);
+
+        $this->assertStringContainsString('Tests:    1 passed (5 assertions)', $output);
+    }
 }

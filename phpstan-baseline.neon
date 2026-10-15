@@ -67,12 +67,6 @@ parameters:
 			path: src/Adapters/Laravel/Commands/TestCommand.php
 
 		-
-			message: '#^Parameter \#1 \$argv of class Symfony\\Component\\Console\\Input\\ArgvInput constructor expects list\<string\>\|null, non\-empty\-array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Adapters/Laravel/Commands/TestCommand.php
-
-		-
 			message: '#^Parameter \#1 \$array of function array_slice expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
