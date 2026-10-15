@@ -275,7 +275,7 @@ class TestCommand extends Command
 
         $inputDefinition = new InputDefinition;
         Options::setInputDefinition($inputDefinition);
-        $input = new ArgvInput($options, $inputDefinition);
+        $input = new ArgvInput($this->knownParatestOptions($options, $inputDefinition), $inputDefinition);
 
         /** @var non-empty-string $basePath */
         $basePath = base_path();
@@ -292,6 +292,59 @@ class TestCommand extends Command
         }
 
         return $options;
+    }
+
+    /**
+     * Get the subset of the given options that ParaTest recognizes.
+     *
+     * Options only known by Pest, such as "--tia" or "--bail", are still
+     * forwarded to the binary, but must not reach the ParaTest input parser.
+     *
+     * @param  array<mixed>  $options
+     * @param  InputDefinition  $definition
+     * @return list<string>
+     */
+    protected function knownParatestOptions($options, $definition)
+    {
+        $options = array_values($options);
+
+        $known = [];
+
+        foreach ($options as $index => $option) {
+            if (! is_string($option) || ! Str::startsWith($option, '-')) {
+                continue;
+            }
+
+            $name = Str::before($option, '=');
+
+            $isLongOption = Str::startsWith($name, '--');
+
+            if ($isLongOption && ! $definition->hasOption(substr($name, 2))) {
+                continue;
+            }
+
+            if (! $isLongOption && ! $definition->hasShortcut(substr($name, 1, 1))) {
+                continue;
+            }
+
+            $known[] = $option;
+
+            $inputOption = $isLongOption
+                ? $definition->getOption(substr($name, 2))
+                : $definition->getOptionForShortcut(substr($name, 1, 1));
+
+            $next = $options[$index + 1] ?? null;
+
+            if ($name === $option
+                && $inputOption->acceptValue()
+                && ($isLongOption || strlen($name) === 2)
+                && is_string($next)
+                && ! Str::startsWith($next, '-')) {
+                $known[] = $next;
+            }
+        }
+
+        return $known;
     }
 
     /**
