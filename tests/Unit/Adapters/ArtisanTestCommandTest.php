@@ -111,6 +111,14 @@ EOF
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--parallel', '--drop-databases', '--group', 'environmentTesting']);
     }
 
+    #[Test]
+    public function test_verbosity_options_are_not_forwarded(): void
+    {
+        foreach (['-v', '-vv', '-vvv', '--verbose'] as $option) {
+            $this->runTests(['./tests/LaravelApp/artisan', 'test', $option, '--group', 'coverage']);
+        }
+    }
+
     #[AfterClass]
     public static function cleanUp()
     {
