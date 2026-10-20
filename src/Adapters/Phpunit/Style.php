@@ -246,7 +246,11 @@ final class Style
 
         $pending = ResultReflection::numberOfTests($result) - $result->numberOfTestsRun();
         if ($pending > 0) {
-            $tests[] = "\e[2m$pending pending\e[22m";
+            // Symfony's formatter has no "dim" style, so the escape sequence
+            // is written by hand and only when the output is decorated.
+            $tests[] = $this->output->isDecorated()
+                ? "\e[2m$pending pending\e[22m"
+                : "$pending pending";
         }
 
         $timeElapsed = number_format($telemetry->durationSinceStart()->asFloat(), 2, '.', '');
