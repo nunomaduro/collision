@@ -98,6 +98,14 @@ final class Highlighter
     }
 
     /**
+     * Defines whether the highlighted content should be colored.
+     */
+    public function setDecorated(?bool $decorated): void
+    {
+        $this->color->setDecorated($decorated);
+    }
+
+    /**
      * Highlights the provided content.
      */
     public function highlight(string $content, int $line): string
