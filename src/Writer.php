@@ -264,6 +264,8 @@ final class Writer
             $line = (int) $frame->getLine();
             $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$line.'</>');
 
+            $this->highlighter->setDecorated($this->output->isDecorated());
+
             $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
             $this->output->writeln($content);
@@ -305,8 +307,12 @@ final class Writer
             $pos = str_pad((string) ((int) $i + 1), 4, ' ');
 
             if ($vendorFrames > 0) {
+                // Symfony's formatter has no "dim" style, so the escape sequence
+                // is written by hand and only when the output is decorated.
                 $this->output->writeln(
-                    sprintf("      \e[2m+%s vendor frames \e[22m", $vendorFrames)
+                    $this->output->isDecorated()
+                        ? sprintf("      \e[2m+%s vendor frames \e[22m", $vendorFrames)
+                        : sprintf('      +%s vendor frames', $vendorFrames)
                 );
                 $vendorFrames = 0;
             }
