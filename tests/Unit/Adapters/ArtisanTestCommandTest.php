@@ -153,6 +153,15 @@ EOF
         $this->runTests(['./tests/LaravelApp/artisan', 'test', '--custom-argument', '--parallel', '--drop-databases', '--group', 'environmentCVParallelDrop']);
     }
 
+    #[Test]
+    public function test_options_after_undeclared_tokens_are_not_lost(): void
+    {
+        // `--processes` belongs to ParaTest and the path to PHPUnit, so neither is declared by
+        // the command. The command's own options that follow them must still be applied.
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', '--processes=2', '--parallel', '--recreate-databases', '--custom-argument', '--group', 'environmentCVParallelRecreate']);
+        $this->runTests(['./tests/LaravelApp/artisan', 'test', 'tests/LaravelApp/tests/Feature', '--parallel', '--recreate-databases', '--custom-argument', '--group', 'environmentCVParallelRecreate']);
+    }
+
     private function runTests(array $arguments, int $expectedExitCode = 0): string
     {
         $arguments = array_merge($arguments, [
