@@ -9,6 +9,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 
 /**
@@ -173,9 +174,9 @@ final class TestResult
     }
 
     /**
-     * Creates a new test from the given test case.
+     * Creates a new test from the given test error event.
      */
-    public static function fromBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): self
+    public static function fromTestErrorEvent(AfterLastTestMethodErrored|BeforeFirstTestMethodErrored $event): self
     {
         if (is_subclass_of($event->testClassName(), HasPrintableTestCaseName::class)) {
             $testCaseName = $event->testClassName()::getPrintableTestCaseName();
@@ -194,6 +195,22 @@ final class TestResult
         $compactColor = self::makeCompactColor(self::FAIL);
 
         return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, [], $event->throwable());
+    }
+
+    /**
+     * Creates a new test from a AfterLastTestMethodErrored event.
+     */
+    public static function fromAfterLastTestMethodErrored(AfterLastTestMethodErrored $event): self
+    {
+        return self::fromTestErrorEvent($event);
+    }
+
+    /**
+     * Creates a new test from a BeforeFirstTestMethodErrored event.
+     */
+    public static function fromBeforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): self
+    {
+        return self::fromTestErrorEvent($event);
     }
 
     /**
