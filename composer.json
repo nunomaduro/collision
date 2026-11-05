@@ -15,22 +15,22 @@
     ],
     "require": {
         "php": "^8.2.0",
-        "filp/whoops": "^2.18.4",
+        "filp/whoops": "^2.19.2",
         "nunomaduro/termwind": "^2.4.0",
-        "symfony/console": "^7.4.14 || ^8.1.2"
+        "symfony/console": "^7.4.14 || ^8.1.11"
     },
     "conflict": {
         "laravel/framework": "<11.48.0 || >=14.0.0",
         "phpunit/phpunit": "<11.5.50 || >=14.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.23.1",
-        "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.23.0",
-        "laravel/pint": "^1.30.3",
-        "larastan/larastan": "^3.10.0",
-        "orchestra/testbench-core": "^9.12.0 || ^10.12.1 || ^11.3.5",
-        "pestphp/pest": "^3.8.5 || ^4.7.5 || ^5.0.3",
-        "sebastian/environment": "^7.2.1 || ^8.1.2 || ^9.3.2"
+        "brianium/paratest": "^7.27.5",
+        "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.40.0",
+        "laravel/pint": "^1.32.1",
+        "larastan/larastan": "^3.14.0",
+        "orchestra/testbench-core": "^9.12.0 || ^10.12.1 || ^11.6.0",
+        "pestphp/pest": "^3.8.5 || ^4.7.5 || ^5.3.5",
+        "sebastian/environment": "^7.2.1 || ^8.1.2 || ^9.3.3"
     },
     "autoload-dev": {
         "psr-4": {
