@@ -24,7 +24,7 @@
         "phpunit/phpunit": "<11.5.50 || >=14.0.0"
     },
     "require-dev": {
-        "brianium/paratest": "^7.8.5",
+        "brianium/paratest": "^7.8.6",
         "laravel/framework": "^11.48.0 || ^12.56.0 || ^13.40.0",
         "laravel/pint": "^1.30.4",
         "larastan/larastan": "^3.14.0",
