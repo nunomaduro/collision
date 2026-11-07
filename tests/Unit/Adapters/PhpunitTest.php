@@ -215,7 +215,35 @@ EOF
             , $output);
     }
 
-    private function runCollisionTests(array $arguments = [], int $exitCode = 0): string
+    #[Test]
+    public function it_does_not_report_warnings_restricted_to_the_source(): void
+    {
+        $output = $this->runCollisionTests(
+            ['--group', 'warnings'],
+            configuration: 'tests/LaravelApp/phpunit.restrict-issues.xml',
+        );
+
+        // The warnings are raised in `tests`, outside of the configured
+        // `<source>`, so PHPUnit does not report them and neither should we.
+        $this->assertConsoleOutputNotContainsString('This is a user warning', $output);
+        $this->assertConsoleOutputNotContainsString('Undefined property', $output);
+        $this->assertConsoleOutputContainsString('2 passed', $output);
+    }
+
+    #[Test]
+    public function it_does_not_report_notices_restricted_to_the_source(): void
+    {
+        $output = $this->runCollisionTests(
+            ['--group', 'notices'],
+            configuration: 'tests/LaravelApp/phpunit.restrict-issues.xml',
+        );
+
+        $this->assertConsoleOutputNotContainsString('This is a user notice', $output);
+        $this->assertConsoleOutputNotContainsString('This is another user notice', $output);
+        $this->assertConsoleOutputContainsString('2 passed', $output);
+    }
+
+    private function runCollisionTests(array $arguments = [], int $exitCode = 0, string $configuration = 'tests/LaravelApp/phpunit.xml'): string
     {
         if (! file_exists('./vendor/bin/pest')) {
             $this->markTestSkipped('Pest is not installed.');
@@ -224,7 +252,7 @@ EOF
         $process = new Process(array_merge([
             './vendor/pestphp/pest/bin/pest',
             '-c',
-            'tests/LaravelApp/phpunit.xml',
+            $configuration,
             '--colors=never',
         ], $arguments), __DIR__.'/../../..', [
             'COLLISION_PRINTER' => 'DefaultPrinter',
