@@ -218,6 +218,7 @@ class TestCommand extends Command
             return ! Str::startsWith($option, '--env=')
                 && $option != '-q'
                 && $option != '--quiet'
+                && ! in_array($option, ['-v', '-vv', '-vvv', '--verbose'], true)
                 && $option != '--coverage'
                 && $option != '--compact'
                 && $option != '--profile'
