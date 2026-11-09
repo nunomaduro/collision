@@ -236,8 +236,16 @@ class TestCommand extends Command
      */
     protected function getConfigurationFile()
     {
-        if (! file_exists($file = base_path('phpunit.xml'))) {
-            $file = base_path('phpunit.xml.dist');
+        $candidates = [
+            'phpunit.xml',
+            'phpunit.dist.xml',
+            'phpunit.xml.dist',
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (file_exists($file = base_path($candidate))) {
+                break;
+            }
         }
 
         return $file;
