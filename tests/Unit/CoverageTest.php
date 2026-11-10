@@ -25,6 +25,12 @@ class CoverageTest extends TestCase
     #[Test]
     public function test_using_xdebug(): void
     {
-        $this->assertTrue(Coverage::usingXdebug());
+        $this->assertSame(extension_loaded('xdebug'), Coverage::usingXdebug());
+    }
+
+    #[Test]
+    public function test_is_available(): void
+    {
+        $this->assertTrue(Coverage::isAvailable());
     }
 }
