@@ -294,6 +294,20 @@ EOF;
         );
     }
 
+    #[Test]
+    public function it_does_not_color_the_editor_when_the_output_is_not_decorated(): void
+    {
+        $inspector = new Inspector(HelloWorldFile1::say());
+
+        $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
+        $colorMock->method('isSupported')->willReturn(true);
+
+        $writer = new Writer(new NullSolutionsRepository, new BufferedOutput, null, new Highlighter($colorMock));
+        $writer->write($inspector);
+
+        $this->assertStringNotContainsString("\e[", $writer->getOutput()->fetch());
+    }
+
     protected function createWriter()
     {
         $output = new BufferedOutput;

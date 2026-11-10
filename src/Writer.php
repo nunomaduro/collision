@@ -266,6 +266,10 @@ final class Writer
 
             $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
+            if (! $this->output->isDecorated()) {
+                $content = (string) preg_replace('/\e\[[\d;]*m/', '', $content);
+            }
+
             $this->output->writeln($content);
         }
 
