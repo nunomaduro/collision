@@ -45,6 +45,7 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -324,6 +325,24 @@ final class DefaultPrinter
     }
 
     /**
+     * Whether the issue was raised outside of the configured `<source>` while
+     * that source restricts issues of this kind, in which case PHPUnit does
+     * not report it either.
+     *
+     * @param  'restrictNotices'|'restrictWarnings'  $restriction
+     */
+    private function isOutsideOfRestrictedSource(string $file, string $restriction): bool
+    {
+        if ($file === '') {
+            return false;
+        }
+
+        $source = Registry::get()->source();
+
+        return $source->{$restriction}() && ! SourceFilter::instance()->includes($file);
+    }
+
+    /**
      * Listen to the test runner warning triggered.
      */
     public function testPhpDeprecationTriggered(PhpDeprecationTriggered $event): void
@@ -339,6 +358,10 @@ final class DefaultPrinter
      */
     public function testPhpNoticeTriggered(PhpNoticeTriggered $event): void
     {
+        if ($this->isOutsideOfRestrictedSource($event->file(), 'restrictNotices')) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -350,6 +373,10 @@ final class DefaultPrinter
      */
     public function testPhpWarningTriggered(PhpWarningTriggered $event): void
     {
+        if ($this->isOutsideOfRestrictedSource($event->file(), 'restrictWarnings')) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -404,6 +431,10 @@ final class DefaultPrinter
      */
     public function testNoticeTriggered(NoticeTriggered $event): void
     {
+        if ($this->isOutsideOfRestrictedSource($event->file(), 'restrictNotices')) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
@@ -415,6 +446,10 @@ final class DefaultPrinter
      */
     public function testWarningTriggered(WarningTriggered $event): void
     {
+        if ($this->isOutsideOfRestrictedSource($event->file(), 'restrictWarnings')) {
+            return;
+        }
+
         $throwable = ThrowableBuilder::from(new TestOutcome($event->message()));
 
         $this->ensureCaseBoundary($event->test());
