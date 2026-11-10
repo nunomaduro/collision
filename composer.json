@@ -26,7 +26,7 @@
     "require-dev": {
         "brianium/paratest": "^7.8.6",
         "laravel/framework": "^11.57.1 || ^12.72.0 || ^13.40.0",
-        "laravel/pint": "^1.32.1",
+        "laravel/pint": "^1.30.4",
         "larastan/larastan": "^3.14.0",
         "orchestra/testbench-core": "^9.24.0 || ^10.16.0 || ^11.6.0",
         "pestphp/pest": "^3.8.7 || ^4.7.8 || ^5.3.5",
