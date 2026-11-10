@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Tests\FakeProgram\HelloWorldFile1;
 use Tests\FakeProgram\HelloWorldFile4;
 use Tests\FakeProgram\HelloWorldFile5;
+use Tests\FakeProgram\vendor\HelloWorldVendorFile;
 use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
@@ -281,7 +282,7 @@ EOF;
   1   tests/FakeProgram/HelloWorldFile5.php:11
       Tests\FakeProgram\FakeRenderableOnCollisionEditorException::("Fail custom editor description")
 
-  2   tests/Unit/WriterTest.php:260
+  2   tests/Unit/WriterTest.php:261
       Tests\FakeProgram\HelloWorldFile5::say()
 
 
@@ -292,6 +293,41 @@ EOF;
                 ->fetch(),
             $result
         );
+    }
+
+    #[Test]
+    public function it_does_not_decorate_the_output_when_the_output_is_not_decorated(): void
+    {
+        $inspector = new Inspector(HelloWorldVendorFile::say());
+
+        $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
+        $colorMock->method('isSupported')->willReturn(true);
+
+        $writer = new Writer(new NullSolutionsRepository, new BufferedOutput, null, new Highlighter($colorMock));
+        $writer->write($inspector);
+
+        $output = $writer->getOutput()->fetch();
+
+        $this->assertStringNotContainsString("\e[", $output);
+        $this->assertStringContainsString('➜  11▕', $output);
+        $this->assertStringContainsString('+1 vendor frames', $output);
+    }
+
+    #[Test]
+    public function it_decorates_the_output_when_the_output_is_decorated(): void
+    {
+        $inspector = new Inspector(HelloWorldVendorFile::say());
+
+        $colorMock = $this->createPartialMock(ConsoleColor::class, ['isSupported']);
+        $colorMock->method('isSupported')->willReturn(false);
+
+        $writer = new Writer(new NullSolutionsRepository, new BufferedOutput(decorated: true), null, new Highlighter($colorMock));
+        $writer->write($inspector);
+
+        $output = $writer->getOutput()->fetch();
+
+        $this->assertStringContainsString("      \e[2m+1 vendor frames \e[22m", $output);
+        $this->assertStringContainsString("\e[31;1m  ➜ \e[0m", $output);
     }
 
     protected function createWriter()
