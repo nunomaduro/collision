@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use NunoMaduro\Collision\Adapters\Laravel\Exceptions\RequirementsException;
+use NunoMaduro\Collision\Adapters\Laravel\Inputs\ForwardedArgvInput;
 use NunoMaduro\Collision\Coverage;
 use ParaTest\Options;
 use ParaTest\ParaTestCommand;
@@ -18,6 +19,8 @@ use RuntimeException;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\Process;
 
@@ -63,6 +66,18 @@ class TestCommand extends Command
         parent::__construct();
 
         $this->ignoreValidationErrors();
+    }
+
+    /**
+     * Run the console command.
+     */
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
+        if ($input instanceof ArgvInput && ! $input instanceof ForwardedArgvInput) {
+            $input = ForwardedArgvInput::fromArgvInput($input);
+        }
+
+        return parent::run($input, $output);
     }
 
     /**
