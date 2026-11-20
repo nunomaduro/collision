@@ -25,6 +25,8 @@ class ConsoleColor
 
     private bool $forceStyle = false;
 
+    private ?bool $decorated = null;
+
     /** @var array */
     private const STYLES = [
         'none' => null,
@@ -83,7 +85,7 @@ class ConsoleColor
      */
     public function apply(array|string $style, string $text): string
     {
-        if (! $this->isStyleForced() && ! $this->isSupported()) {
+        if (! $this->shouldApply()) {
             return $text;
         }
 
@@ -120,6 +122,11 @@ class ConsoleColor
     public function setForceStyle(bool $forceStyle): void
     {
         $this->forceStyle = $forceStyle;
+    }
+
+    public function setDecorated(?bool $decorated): void
+    {
+        $this->decorated = $decorated;
     }
 
     public function isStyleForced(): bool
@@ -194,6 +201,16 @@ class ConsoleColor
     public function getPossibleStyles(): array
     {
         return array_keys(self::STYLES);
+    }
+
+    private function shouldApply(): bool
+    {
+        // The COLLISION_FORCE_COLORS variable is for internal purposes only
+        if ($this->isStyleForced() || getenv('COLLISION_FORCE_COLORS') !== false) {
+            return true;
+        }
+
+        return $this->decorated ?? $this->isSupported();
     }
 
     private function themeSequence(string $name): array
